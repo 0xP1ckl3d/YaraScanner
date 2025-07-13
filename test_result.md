@@ -134,15 +134,18 @@ backend:
 
   - task: "File scanning API endpoint"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: "NA"
           agent: "main"
           comment: "Implemented POST /api/scan endpoint for file uploads with YARA matching. Need to test file upload and scanning functionality."
+        - working: true
+          agent: "testing"
+          comment: "✅ File scanning API endpoint fully functional. Tested single file upload, multiple file uploads, empty upload validation (returns 422), and file size limit enforcement (rejects >20MB with 413). YARA scanning working correctly with proper status determination."
 
   - task: "Text scanning API endpoint"
     implemented: true
