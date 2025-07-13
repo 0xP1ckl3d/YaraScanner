@@ -52,8 +52,8 @@ YARA_RULES_COMMIT=$(cd yara/yara-rules && git rev-parse HEAD)
 log "Yara-Rules commit: $YARA_RULES_COMMIT"
 
 # 3. Fetch 100DaysofYARA 2025
-clone_or_update "https://github.com/100DaysofYARA/2025.git" "yara/100days-2025" "main"
-YARA_100DAYS_COMMIT=$(cd yara/100days-2025 && git rev-parse HEAD)
+clone_or_update "https://github.com/100DaysofYARA/2025.git" "yara/100DaysofYARA-2025" "main"
+YARA_100DAYS_COMMIT=$(cd yara/100DaysofYARA-2025 && git rev-parse HEAD)
 log "100DaysofYARA commit: $YARA_100DAYS_COMMIT"
 
 # 4. NEW: Fetch Neo23x0 signature-base
