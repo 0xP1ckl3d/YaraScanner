@@ -114,6 +114,11 @@ YARA_COUNT=$(find yara/ -name "*.yar" -o -name "*.yara" 2>/dev/null | wc -l)
 
 log "Found $SIGMA_COUNT Sigma rules and $YARA_COUNT YARA rules"
 
+# Export variables for Python script
+export SIGMA_COMMIT YARA_RULES_COMMIT YARA_100DAYS_COMMIT SIGNATURE_BASE_COMMIT
+export MANDIANT_COMMIT YARA_SIGS_COMMIT BOXER_COMMIT ELASTIC_COMMIT
+export SIGMA_COUNT YARA_COUNT
+
 # Generate comprehensive metadata file
 python3 << 'EOF'
 import json
