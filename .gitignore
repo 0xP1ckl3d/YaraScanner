@@ -5,7 +5,113 @@
 .vscode/
 
 # Dependencies
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Node.js
 node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.eslintcache
+
+# Build outputs
+dist/
+build/
+
+# Logs
+*.log
+logs/
+/var/log/
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+.nyc_output
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+*.tmp
+
+# Application specific
+/rules/yara/
+/rules/sigma/
+/rules/compiled/*.yc
+/rules/compiled/*.yar
+/rules/compiled/*.debug*
+/tmp/edrscan/
+
+# Keep structure but ignore contents of these directories
+/rules/local/*
+!/rules/local/.gitkeep
+
+# Environment files (keep templates)
+backend/.env
+frontend/.env
+
+# Test files
+test_files/
+*_test_*.py
+test_result.md
+
+# Development files
+.emergent/
+.gitconfig
+backend_test.py
+test_bug_fix.py
 /node_modules
 /.pnp
 .pnp.js
