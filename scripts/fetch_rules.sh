@@ -135,7 +135,7 @@ log "Fetching ninoseki boxer..."
 if [ ! -d "yara/boxer" ]; then
     git clone --depth 1 https://github.com/ninoseki/boxer.git yara/boxer
 else
-    cd yara/boxer && git pull origin master && cd ../..
+    cd yara/boxer && git pull origin main 2>/dev/null || git pull origin master && cd ../..
 fi
 BOXER_COMMIT=$(cd yara/boxer && git rev-parse HEAD)
 update_source "ninoseki/boxer" "$BOXER_COMMIT" "yara"
