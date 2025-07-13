@@ -12,7 +12,7 @@ log() {
     echo "$(date '+%Y-%m-%d %H:%M:%S') - $1"
 }
 
-# Function to clone or update repo
+# Function to clone or update repo with error handling
 clone_or_update() {
     local repo_url="$1"
     local target_dir="$2"
@@ -20,14 +20,24 @@ clone_or_update() {
     
     if [ ! -d "$target_dir" ]; then
         log "Cloning $repo_url to $target_dir..."
-        git clone --depth 1 --branch "$branch" "$repo_url" "$target_dir" 2>/dev/null || \
-        git clone --depth 1 "$repo_url" "$target_dir"
+        if git clone --depth 1 --branch "$branch" "$repo_url" "$target_dir" 2>/dev/null || \
+           git clone --depth 1 "$repo_url" "$target_dir" 2>/dev/null; then
+            log "✅ Successfully cloned $repo_url"
+        else
+            log "⚠️  Failed to clone $repo_url - skipping"
+            return 1
+        fi
     else
         log "Updating $target_dir..."
         cd "$target_dir"
-        git pull origin "$branch" 2>/dev/null || git pull origin master 2>/dev/null || git pull
+        if git pull origin "$branch" 2>/dev/null || git pull origin master 2>/dev/null || git pull 2>/dev/null; then
+            log "✅ Successfully updated $target_dir"
+        else
+            log "⚠️  Failed to update $target_dir - using existing"
+        fi
         cd - > /dev/null
     fi
+    return 0
 }
 
 # Initialize sources metadata
