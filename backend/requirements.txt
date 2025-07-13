@@ -27,3 +27,5 @@ yara-python>=4.3.1
 sigmatools>=0.23.1
 pyyaml>=6.0.1
 aiofiles>=24.1.0
+psutil>=5.9.0
+python-magic>=0.4.27
