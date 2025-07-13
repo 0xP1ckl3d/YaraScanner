@@ -1,0 +1,10 @@
+{
+  "brand-green": "#37B34A",
+  "brand-dark": "#142237", 
+  "brand-light": "#F5F7FA",
+  "accent-lime": "#A9E044",
+  "accent-teal": "#1FBED6",
+  "status-clean": "#9BA3AF",
+  "status-suspicious": "#1FBED6",
+  "status-bad": "#D0312D"
+}
