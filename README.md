@@ -1,7 +1,7 @@
 # EDR-Safe Scanner v2
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![React](https://img.shields.io/badge/react-18.0+-61dafb.svg)](https://reactjs.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688.svg)](https://fastapi.tiangolo.com/)
 
@@ -11,17 +11,17 @@
 
 ### Core Capabilities
 - **🔒 100% Offline Operation** - No data leaves your environment
-- **🎯 Multi-Engine Detection** - YARA + Sigma rule integration
+- **🎯 Multi-Engine Detection** - YARA + Sigma rule integration with **9,000+ compiled rules**
 - **📦 Modular Architecture** - Specialized detection bundles (PE, Scripts, Webshells, Generic)
 - **⚡ High Performance** - <100ms scan times, <2GB memory usage
-- **🌐 Modern Web Interface** - Professional React-based dashboard
+- **🌐 Modern React UI** - Professional dashboard with Infotrust branding
 - **📊 Real-time Monitoring** - Live memory usage and rule statistics
 
 ### Security Features
 - **🛡️ Secure File Handling** - Path traversal protection, zip bomb prevention
 - **🔐 Archive Analysis** - Intelligent extraction with safety limits
 - **📏 Size Limits** - 20MB upload limit with configurable thresholds
-- **🧹 Auto Cleanup** - Secure temporary file management
+- **🧹 Auto Cleanup** - Secure temporary file management with janitor thread
 - **🔍 Content Validation** - MIME type detection and validation
 
 ### Detection Coverage
@@ -63,7 +63,7 @@ open http://localhost:3000
 The scanner will automatically:
 1. Fetch YARA/Sigma rules from 8+ public repositories
 2. Compile rules into optimized detection bundles
-3. Start the web interface and API server
+3. Start the React web interface and FastAPI server
 
 ## 🛠️ Installation
 
@@ -73,7 +73,7 @@ The scanner will automatically:
 - Docker 20.0+
 - Docker Compose 2.0+
 - 4GB RAM minimum
-- 10GB disk space
+- 2GB disk space (thanks to multi-stage build)
 
 ```bash
 # Clone repository
@@ -97,12 +97,19 @@ docker-compose logs -f edr-scanner
 docker-compose ps
 ```
 
+### Multi-Stage Docker Build
+
+The application uses an optimized multi-stage Docker build:
+
+- **Frontend Builder Stage**: Compiles React app
+- **Rule Builder Stage**: Fetches and compiles YARA/Sigma rules
+- **Production Stage**: Minimal runtime image (<450MB)
+
 ### Option 2: Manual Installation
 
 **Prerequisites:**
-- Python 3.11+
-- Node.js 18+
-- MongoDB 7.0+
+- Python 3.12+
+- Node.js 20+
 - Git
 - 4GB RAM minimum
 
@@ -115,7 +122,7 @@ cd edr-safe-scanner
 
 # Install system dependencies (Ubuntu/Debian)
 sudo apt-get update
-sudo apt-get install -y libmagic1 libmagic-dev git wget unzip
+sudo apt-get install -y libmagic1 libmagic-dev git wget
 
 # Setup Python environment
 cd backend
@@ -126,10 +133,6 @@ pip install -r requirements.txt
 # Configure environment
 cp .env.template .env
 nano .env  # Edit configuration
-
-# Setup MongoDB
-# Install MongoDB 7.0+ and start service
-sudo systemctl start mongod
 ```
 
 #### Frontend Setup
@@ -137,14 +140,14 @@ sudo systemctl start mongod
 ```bash
 # Install Node.js dependencies
 cd ../frontend
-npm install
+yarn install
 
 # Configure environment
 cp .env.template .env
 nano .env  # Set REACT_APP_BACKEND_URL
 
 # Build production version
-npm run build
+yarn build
 ```
 
 #### Rule Setup
@@ -187,12 +190,9 @@ open http://localhost:3000
 #### Backend Configuration (`backend/.env`)
 
 ```bash
-# Database
-MONGO_URL=mongodb://localhost:27017
-DB_NAME=edr_scanner
-
 # Security
 ADMIN_TOKEN=your-secure-admin-token  # Optional: enables /admin/refresh
+FRONTEND_ORIGIN=http://localhost:3000  # CORS configuration
 
 # External Services (Optional)
 YARAIFY_KEY=your-api-key  # Premium YARAify rules
@@ -305,6 +305,17 @@ The scanner automatically fetches rules from:
 | [Elastic Protections](https://github.com/elastic/protections-artifacts) | YARA | 400+ | Elastic Security rules |
 | [YARA Forge](https://yarahq.github.io/) | YARA | 2,000+ | Curated rule collection |
 
+**Current Total: 8,908 compiled rules**
+
+### Weekly Auto-Update
+
+The scanner includes an automatic weekly refresh system:
+
+- **Refresh Worker**: Dedicated Python worker replaces cron
+- **Schedule**: Every Monday at 3:00 AM AEST
+- **Process**: Fetch latest rules → Compile → Restart backend
+- **Logging**: Comprehensive logging to `/var/log/rule_refresh.log`
+
 ### Adding Custom Rules
 
 #### Local YARA Rules
@@ -332,51 +343,16 @@ EOF
 python3 scripts/compile_rules_v2.py
 ```
 
-#### Custom Sigma Rules
-
-```bash
-# Add Sigma rules (will be converted to YARA)
-mkdir -p rules/sigma/custom
-cat > rules/sigma/custom/custom_rule.yml << 'EOF'
-title: Custom PowerShell Detection
-description: Detects suspicious PowerShell activity
-author: Your Name
-logsource:
-    product: windows
-    service: powershell
-detection:
-    selection:
-        EventID: 4103
-        Message|contains:
-            - 'Invoke-Expression'
-            - 'DownloadString'
-    condition: selection
-EOF
-
-# Recompile rules
-python3 scripts/compile_rules_v2.py
-```
-
-#### Private Rule Repositories
-
-```bash
-# Add private repository to fetch script
-# Edit scripts/fetch_rules_v2.sh
-
-# Add authentication if needed
-git clone https://username:token@github.com/org/private-rules.git yara/private
-```
-
 ### Rule Bundle Management
 
 The scanner organizes rules into specialized bundles:
 
 #### Bundle Types
 
-- **`generic.yc`** - General malware patterns, helper rules
-- **`scripts.yc`** - PowerShell, VBS, JavaScript, Python scripts  
-- **`pe.yc`** - PE executables, packed binaries, DLLs
-- **`webshells.yc`** - Web-based backdoors and shells
+- **`generic.yc`** - General malware patterns, helper rules (4,851 rules)
+- **`scripts.yc`** - PowerShell, VBS, JavaScript, Python scripts (1,688 rules)
+- **`pe.yc`** - PE executables, packed binaries, DLLs (2,059 rules)
+- **`webshells.yc`** - Web-based backdoors and shells (310 rules)
 
 #### Bundle Selection Logic
 
@@ -427,13 +403,6 @@ curl -X POST "http://localhost:8001/api/scan" \
 #### `POST /api/scan/text`
 Scan text content
 
-**Request:**
-```bash
-curl -X POST "http://localhost:8001/api/scan/text" \
-  -F "content=powershell -enc ZXZpbCBjb2Rl" \
-  -F "filename=suspicious.ps1"
-```
-
 #### `GET /api/rules/stats`
 Get rule statistics and system info
 
@@ -442,12 +411,12 @@ Get rule statistics and system info
 {
   "built": "2024-01-15T09:00:00Z",
   "bundle_counts": {
-    "generic": 5318,
-    "scripts": 1726,
-    "pe": 2106,
-    "webshells": 45
+    "generic": 4851,
+    "scripts": 1688,
+    "pe": 2059,
+    "webshells": 310
   },
-  "total_rules": 9195,
+  "total_rules": 8908,
   "rss_mb": 83.7,
   "local_count": 5
 }
@@ -458,27 +427,6 @@ Get rule source information
 
 #### `POST /api/admin/refresh`
 Refresh rules (requires admin token)
-
-**Request:**
-```bash
-curl -X POST "http://localhost:8001/api/admin/refresh" \
-  -F "admin_token=your-admin-token"
-```
-
-### Status Codes
-
-- `200` - Success
-- `400` - Bad request (invalid parameters)
-- `413` - Payload too large (>20MB)
-- `422` - Validation error
-- `500` - Internal server error
-- `503` - Service unavailable (rules not loaded)
-
-### Rate Limiting
-
-- **File scans**: No built-in rate limiting
-- **Concurrent uploads**: Limited by `--workers 2` setting
-- **Memory protection**: Automatic cleanup prevents exhaustion
 
 ## 🔒 Security Considerations
 
@@ -492,14 +440,14 @@ curl -X POST "http://localhost:8001/api/admin/refresh" \
 
 ✅ **Secure Processing**
 - Temporary file isolation (`/tmp/edrscan/`)
-- Automatic cleanup after scanning
+- Janitor thread for automatic cleanup
 - No file persistence beyond scan duration
 - UUID-based temporary filenames with 0600 permissions
 
 ✅ **Network Security**
+- Environment-based CORS configuration
 - No outbound connections during runtime
 - All rule fetching at build/update time only
-- No telemetry or analytics
 - Complete air-gap operation support
 
 ✅ **Memory Protection**
@@ -508,9 +456,7 @@ curl -X POST "http://localhost:8001/api/admin/refresh" \
 - Automatic garbage collection
 - Resource exhaustion prevention
 
-### Security Best Practices
-
-#### Deployment Security
+### Deployment Security
 
 ```bash
 # Use non-root user (recommended)
@@ -519,46 +465,16 @@ docker run --user 1000:1000 edr-scanner
 # Restrict network access
 docker run --network none edr-scanner  # Air-gapped mode
 
-# Mount read-only volumes
-docker run -v /rules:/app/rules:ro edr-scanner
-
 # Set resource limits
 docker run --memory=2g --cpus=2 edr-scanner
 ```
-
-#### File Handling Security
-
-- Files are processed in isolated temporary directories
-- No file contents are logged or persisted
-- Archive extraction has depth and size limits
-- Malicious filenames are sanitized automatically
-
-#### Network Security
-
-- No external API calls during scanning
-- Rule updates only at deployment/maintenance windows
-- Support for completely offline operation
-- No user data transmission
-
-### Known Limitations
-
-⚠️ **Performance Limits**
-- 20MB maximum file size per upload
-- 30MB maximum archive extraction size
-- 2GB RAM usage limit
-
-⚠️ **Detection Limits**
-- Static analysis only (no dynamic execution)
-- YARA/Sigma rule dependent detection
-- No machine learning or behavioral analysis
 
 ## 🧪 Development
 
 ### Prerequisites
 
-- Python 3.11+
-- Node.js 18+
-- MongoDB 7.0+
+- Python 3.12+
+- Node.js 20+
 - Git
 - Docker (optional)
 
@@ -574,36 +490,23 @@ cd backend
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-pip install -r requirements-dev.txt  # If you create dev requirements
 
 # Frontend development setup
 cd ../frontend
-npm install
-npm install --save-dev @testing-library/react @testing-library/jest-dom
+yarn install
 
 # Start development servers
 # Terminal 1: Backend
 cd backend && python -m uvicorn server:app --reload --port 8001
 
 # Terminal 2: Frontend  
-cd frontend && npm start
-
-# Terminal 3: MongoDB
-mongod --dbpath ./data/db
+cd frontend && yarn start
 ```
 
 ### Running Tests
 
 ```bash
-# Backend tests
-cd backend
-python -m pytest tests/ -v
-
-# Frontend tests
-cd frontend
-npm test
-
-# Integration tests
+# Backend integration tests
 cd tests
 python test_scanner_enhanced_v2.py
 
@@ -611,52 +514,9 @@ python test_scanner_enhanced_v2.py
 python scripts/security_review.py
 ```
 
-### Code Style
-
-```bash
-# Python formatting
-cd backend
-black .
-isort .
-flake8 .
-
-# JavaScript formatting
-cd frontend
-npm run lint
-npm run format
-```
-
-### Adding New Features
-
-1. **New Detection Rules**: Add to `rules/local/` directory
-2. **New Bundles**: Modify `scripts/compile_rules_v2.py`
-3. **New Endpoints**: Add to `backend/server.py`
-4. **UI Changes**: Modify `frontend/src/App.js`
-
-### Performance Optimization
-
-```bash
-# Profile memory usage
-python -m memory_profiler backend/server.py
-
-# Profile rule compilation
-python -m cProfile scripts/compile_rules_v2.py
-
-# Optimize bundle loading
-# Monitor bundle-specific performance in logs
-```
-
 ## 🤝 Contributing
 
 We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
-
-### Quick Contribution Guide
-
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
 
 ### Areas for Contribution
 
@@ -677,13 +537,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **YARA** - For the powerful pattern matching engine
 - **Rule Contributors** - All the security researchers contributing to open-source rule sets
 - **Security Community** - For continuous feedback and improvements
-
-## 📞 Support
-
-- **Documentation**: Check this README and inline code comments
-- **Issues**: Open a GitHub issue for bugs or feature requests
-- **Security Issues**: Email security@your-domain.com for responsible disclosure
-- **Discussions**: Use GitHub Discussions for questions and community support
 
 ---
 
