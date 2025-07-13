@@ -109,6 +109,7 @@ if [ -f "yara/yara-forge-full.zip" ]; then
 fi
 
 # Count rules
+cd /app/rules
 SIGMA_COUNT=$(find sigma/ -name "*.yml" -o -name "*.yaml" 2>/dev/null | wc -l)
 YARA_COUNT=$(find yara/ -name "*.yar" -o -name "*.yara" 2>/dev/null | wc -l)
 
