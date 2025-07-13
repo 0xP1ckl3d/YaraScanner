@@ -213,7 +213,7 @@ class YARARuleCompiler:
         patterns = [
             '/app/rules/yara/yara-rules/**/*.yar',
             '/app/rules/yara/yara-rules/**/*.yara',
-            '/app/rules/yara/100days-2025/**/*.yar',
+            '/app/rules/yara/100DaysofYARA-2025/**/*.yar',  # Fixed path
             '/app/rules/yara/signature-base/**/*.yar',
             '/app/rules/yara/malware-research/**/*.yar',
             '/app/rules/yara/yara_signatures/**/*.yar',
