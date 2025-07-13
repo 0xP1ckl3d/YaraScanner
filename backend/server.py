@@ -13,12 +13,14 @@ import magic
 import psutil
 import zipfile
 import shutil
+import threading
+import time
+import subprocess
 from pathlib import Path
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
 import uuid
 from datetime import datetime
-import subprocess
 import asyncio
 import re
 
@@ -45,11 +47,15 @@ compiled_bundles = {
 }
 rules_metadata = None
 
-# Security configuration
+# Security configuration with enhanced temp file handling
 MAX_FILE_SIZE = 20 * 1024 * 1024  # 20MB
 MAX_EXTRACTED_SIZE = 30 * 1024 * 1024  # 30MB for zip extraction
 MAX_ARCHIVE_DEPTH = 3
-TEMP_SCAN_DIR = Path("/tmp/edrscan")
+TEMP_SCAN_BASE = "/tmp"  # Base directory for temp files
+
+# Secure temp directory management
+temp_scan_dir = None
+janitor_thread = None
 
 # Configure logging
 logging.basicConfig(
@@ -82,10 +88,58 @@ class RulesStats(BaseModel):
     rss_mb: float
     local_count: Optional[int] = None
 
+def setup_temp_directory():
+    """Setup secure temporary directory with janitor thread"""
+    global temp_scan_dir, janitor_thread
+    
+    # Create secure temp directory
+    temp_scan_dir = tempfile.mkdtemp(dir=TEMP_SCAN_BASE, prefix='edrscan-')
+    os.chmod(temp_scan_dir, 0o700)
+    
+    # Start janitor thread for cleanup
+    def janitor():
+        while True:
+            try:
+                current_time = time.time()
+                for item in Path(temp_scan_dir).iterdir():
+                    if item.is_file() and (current_time - item.stat().st_mtime) > 600:  # 10 minutes
+                        item.unlink(missing_ok=True)
+                time.sleep(60)  # Check every minute
+            except Exception as e:
+                logger.warning(f"Janitor thread error: {e}")
+                time.sleep(60)
+    
+    if janitor_thread is None or not janitor_thread.is_alive():
+        janitor_thread = threading.Thread(target=janitor, daemon=True)
+        janitor_thread.start()
+        logger.info(f"Temp directory setup: {temp_scan_dir}")
+
+def create_secure_temp_file(prefix="scan_", suffix=""):
+    """Create a secure temporary file with restricted permissions"""
+    fd, path = tempfile.mkstemp(dir=temp_scan_dir, prefix=prefix, suffix=suffix)
+    os.chmod(path, 0o600)  # Owner read/write only
+    os.close(fd)
+    return Path(path)
+
 def get_memory_usage_mb():
     """Get current RSS memory usage in MB"""
     process = psutil.Process()
     return process.memory_info().rss / 1024 / 1024
+
+def clean_temp_file(filepath: Path):
+    """Securely clean up temporary file"""
+    try:
+        if filepath.exists():
+            filepath.unlink()
+    except Exception as e:
+        logger.warning(f"Failed to clean temp file {filepath}: {e}")
+
+def validate_filename(filename: str) -> str:
+    """Validate and sanitize filename to prevent path traversal"""
+    # Remove path separators and normalize
+    safe_name = os.path.basename(filename)
+    safe_name = re.sub(r'[^\w\-_\.]', '_', safe_name)
+    return safe_name[:100]  # Limit length
 
 def detect_file_type(content: bytes, filename: str = "") -> str:
     """Detect file type to determine which bundle to use"""
@@ -120,7 +174,7 @@ def detect_file_type(content: bytes, filename: str = "") -> str:
         # Check for web content
         try:
             content_str = content.decode('utf-8', errors='ignore')[:2000].lower()
-            web_indicators = ['<?php', '<%', 'eval(', 'shell_exec', '$_post', '$_get']
+            web_indicators = ['<?php', '<%', 'eval(', 'shell_exec', '$_post', '$_get', 'base64_decode', 'system(']
             if any(indicator in content_str for indicator in web_indicators):
                 return 'webshells'
         except:
@@ -170,68 +224,90 @@ async def load_yara_rules():
         logger.error(f"Error loading rules metadata: {e}")
         rules_metadata = None
 
-def setup_temp_directory():
-    """Setup secure temporary directory for scanning"""
-    TEMP_SCAN_DIR.mkdir(exist_ok=True, mode=0o700)
-
-def clean_temp_file(filepath: Path):
-    """Securely clean up temporary file"""
+def safe_upx_unpack(file_path: Path) -> bytes:
+    """Safely unpack UPX file in isolated environment"""
+    temp_file = None
     try:
-        if filepath.exists():
-            filepath.unlink()
+        # Create secure copy for UPX processing
+        temp_file = create_secure_temp_file(prefix="upx_", suffix=".tmp")
+        shutil.copy2(file_path, temp_file)
+        
+        # Run UPX unpack with security restrictions
+        result = subprocess.run(
+            ['upx', '-d', str(temp_file)],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            timeout=30,
+            check=False  # Don't raise on non-zero exit
+        )
+        
+        # Read unpacked content
+        with open(temp_file, 'rb') as f:
+            return f.read()
+            
+    except (subprocess.TimeoutExpired, FileNotFoundError):
+        # UPX not available or timeout - return original content
+        with open(file_path, 'rb') as f:
+            return f.read()
     except Exception as e:
-        logger.warning(f"Failed to clean temp file {filepath}: {e}")
-
-def validate_filename(filename: str) -> str:
-    """Validate and sanitize filename to prevent path traversal"""
-    # Remove path separators and normalize
-    safe_name = os.path.basename(filename)
-    safe_name = re.sub(r'[^\w\-_\.]', '_', safe_name)
-    return safe_name[:100]  # Limit length
+        logger.warning(f"UPX unpack failed: {e}")
+        with open(file_path, 'rb') as f:
+            return f.read()
+    finally:
+        if temp_file:
+            clean_temp_file(temp_file)
 
 async def extract_and_scan_archive(content: bytes, filename: str) -> List[ScanResult]:
-    """Extract and scan archive contents with security checks"""
+    """Extract and scan archive contents with enhanced security checks"""
     results = []
     temp_dir = None
     
     try:
         # Create temporary directory for extraction
-        temp_dir = TEMP_SCAN_DIR / str(uuid.uuid4())
-        temp_dir.mkdir(mode=0o700)
+        temp_dir = Path(tempfile.mkdtemp(dir=temp_scan_dir, prefix='archive_'))
+        temp_dir.chmod(0o700)
         
         # Save archive to temp file
         archive_path = temp_dir / "archive.zip"
         with open(archive_path, 'wb') as f:
             f.write(content)
         
-        # Extract with security checks
+        # Extract with enhanced security checks
         with zipfile.ZipFile(archive_path, 'r') as zip_ref:
             total_extracted = 0
-            depth_count = 0
+            file_count = 0
             
-            for member in zip_ref.namelist():
-                # Check for path traversal
-                if '..' in member or member.startswith('/'):
+            for member in zip_ref.namelist()[:100]:  # Limit to 100 files
+                # Enhanced path traversal check
+                if '..' in member or member.startswith('/') or '\\' in member:
                     continue
                     
                 # Check extraction depth
                 if member.count('/') > MAX_ARCHIVE_DEPTH:
                     continue
                     
-                # Extract member
+                # Extract member with size check
                 try:
                     member_data = zip_ref.read(member)
                     total_extracted += len(member_data)
                     
-                    # Check total extracted size
+                    # Abort if total extracted size exceeds limit
                     if total_extracted > MAX_EXTRACTED_SIZE:
-                        logger.warning("Archive extraction size limit exceeded")
+                        logger.warning(f"Archive {filename}: extraction size limit exceeded")
                         break
+                        
+                    # Skip empty files
+                    if len(member_data) == 0:
+                        continue
                         
                     # Scan extracted file
                     member_filename = os.path.basename(member)
                     scan_result = await scan_content(member_data, f"{filename}:{member_filename}")
                     results.append(scan_result)
+                    
+                    file_count += 1
+                    if file_count >= 50:  # Limit files processed
+                        break
                     
                 except Exception as e:
                     logger.warning(f"Failed to extract member {member}: {e}")
@@ -284,7 +360,7 @@ async def scan_content(content: bytes, filename: str) -> ScanResult:
             
             # Enhanced status classification
             high_severity_indicators = [
-                'mimikatz', 'bad', 'malware', 'trojan', 'backdoor', 'dropper', 'exploit'
+                'mimikatz', 'bad', 'malware', 'trojan', 'backdoor', 'dropper', 'exploit', 'ransomware'
             ]
             
             # Check rule names for severity indicators
@@ -349,18 +425,27 @@ async def scan_files(files: List[UploadFile] = File(...)):
             await file.seek(0)
             
             # Create secure temporary file
-            temp_file = TEMP_SCAN_DIR / f"{uuid.uuid4()}_{safe_filename}"
+            temp_file = create_secure_temp_file(prefix="upload_", suffix=f"_{safe_filename}")
             with open(temp_file, 'wb') as f:
                 f.write(content)
-            temp_file.chmod(0o600)
             
             # Check if it's an archive (zip file)
             if safe_filename.lower().endswith('.zip') or content.startswith(b'PK'):
                 archive_results = await extract_and_scan_archive(content, safe_filename)
                 results.extend(archive_results)
             else:
-                # Regular file scanning
-                scan_result = await scan_content(content, safe_filename)
+                # Check for UPX packed files
+                if content.startswith(b'UPX!') or b'UPX0' in content[:100]:
+                    try:
+                        unpacked_content = safe_upx_unpack(temp_file)
+                        scan_result = await scan_content(unpacked_content, f"{safe_filename}[unpacked]")
+                    except Exception as e:
+                        logger.warning(f"UPX unpack failed for {safe_filename}: {e}")
+                        scan_result = await scan_content(content, safe_filename)
+                else:
+                    # Regular file scanning
+                    scan_result = await scan_content(content, safe_filename)
+                    
                 results.append(scan_result)
             
         except Exception as e:
@@ -531,12 +616,14 @@ async def startup_event():
 # Include the router in the main app
 app.include_router(api_router)
 
+# Enhanced CORS with environment-based origin control
+allowed_origins = os.getenv('FRONTEND_ORIGIN', 'http://localhost:3000').split(',')
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=allowed_origins,  # Restricted to env-configured origins
+    allow_methods=["GET", "POST"],  # Limited methods
+    allow_headers=["Content-Type", "Authorization"],  # Limited headers
 )
 
 @app.on_event("shutdown")
@@ -544,5 +631,5 @@ async def shutdown_db_client():
     client.close()
     
     # Cleanup temp directory
-    if TEMP_SCAN_DIR.exists():
-        shutil.rmtree(TEMP_SCAN_DIR, ignore_errors=True)
+    if temp_scan_dir and Path(temp_scan_dir).exists():
+        shutil.rmtree(temp_scan_dir, ignore_errors=True)
