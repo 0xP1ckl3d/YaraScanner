@@ -369,7 +369,7 @@ class YARARuleCompiler:
             return False
     
     def compile_bundle_safe(self, bundle_name, rules):
-        """Compile bundle with individual rule validation"""
+        """Compile bundle with individual rule validation - NO CEILING LIMITS"""
         self.log(f"Safe compiling {bundle_name} with {len(rules)} rules...")
         
         working_rules = []
@@ -382,9 +382,9 @@ class YARARuleCompiler:
         elif bundle_name == 'scripts':
             imports.append('import "hash"')
             
-        # Test rules in batches to maximize successful compilation
+        # Process ALL rules without artificial limits
         batch_size = 50
-        for i in range(0, min(len(rules), 2000), batch_size):  # Process up to 2000 rules
+        for i in range(0, len(rules), batch_size):  # Process ALL rules, no ceiling
             batch = rules[i:i+batch_size]
             batch_working = []
             
@@ -443,10 +443,10 @@ class YARARuleCompiler:
                 bundle_path = self.compiled_dir / f"{bundle_name}.yc"
                 compiled.save(str(bundle_path))
                 
-                self.log(f"✅ {bundle_name}.yc safely compiled ({len(working_rules)} rules)")
+                self.log(f"✅ {bundle_name}.yc compiled successfully ({len(working_rules)} rules)")
                 return True
             except Exception as e:
-                self.log(f"❌ Safe compilation also failed for {bundle_name}: {e}")
+                self.log(f"❌ Final compilation failed for {bundle_name}: {e}")
                 
         return False
             
