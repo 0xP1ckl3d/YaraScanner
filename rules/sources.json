@@ -1,14 +1,5 @@
 {
-  "built": "2025-07-13T06:52:23+00:00",
-  "sources": [
-    {"repo": "SigmaHQ/sigma", "commit": "a55bc212ad50e92aed59adf9b2842b818ef38b5c"},
-    {"repo": "Yara-Rules/rules", "commit": "0f93570194a80d2f2032869055808b0ddcdfb360"},
-    {"repo": "100DaysofYARA/2025", "commit": "cce9dd70054ad4c931033ebb99fb31577f9da263"},
-    {"repo": "yarahq.github.io", "type": "bundle"},
-    {"repo": "YARAify", "enabled": false}
-  ],
-  "counts": {
-    "sigma_rules": 0,
-    "yara_rules": 0
-  }
+  "built": "",
+  "sources": [],
+  "counts": {}
 }
