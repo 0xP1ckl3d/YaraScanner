@@ -303,16 +303,32 @@ async def scan_files(files: List[UploadFile] = File(...)):
             # Scan with YARA
             matches = compiled_rules.match(data=content)
             
-            # Determine status based on matches
+            # Determine status based on matches and rule severity
             if not matches:
                 status = "clean"
                 match_names = []
-            elif len(matches) <= 2:
-                status = "suspicious"
-                match_names = [match.rule for match in matches]
             else:
-                status = "bad"
                 match_names = [match.rule for match in matches]
+                
+                # Enhanced status classification
+                high_severity_indicators = [
+                    'mimikatz', 'bad', 'malware', 'trojan', 'backdoor', 'dropper'
+                ]
+                
+                # Check rule names for severity indicators
+                rule_text = ' '.join(match_names).lower()
+                
+                # Count high severity matches
+                high_severity_count = sum(1 for indicator in high_severity_indicators 
+                                    if indicator in rule_text)
+                
+                # Determine final status
+                if high_severity_count >= 1 or len(matches) >= 4:
+                    status = "bad"
+                elif len(matches) >= 1:
+                    status = "suspicious"
+                else:
+                    status = "clean"
             
             results.append(ScanResult(
                 filename=file.filename or "unknown",
