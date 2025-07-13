@@ -373,6 +373,7 @@ class YARARuleCompiler:
         self.log(f"Safe compiling {bundle_name} with {len(rules)} rules...")
         
         working_rules = []
+        seen_rule_names = set()
         
         # Add imports if needed
         imports = []
@@ -381,15 +382,52 @@ class YARARuleCompiler:
         elif bundle_name == 'scripts':
             imports.append('import "hash"')
             
-        # Test each rule individually
-        for i, rule in enumerate(rules):
-            try:
-                test_content = '\n'.join(imports + ['', rule]) if imports else rule
-                yara.compile(source=test_content)
-                working_rules.append(rule)
-            except:
-                continue  # Skip problematic rules
+        # Test rules in batches to maximize successful compilation
+        batch_size = 50
+        for i in range(0, min(len(rules), 2000), batch_size):  # Process up to 2000 rules
+            batch = rules[i:i+batch_size]
+            batch_working = []
+            
+            for rule in batch:
+                # Extract rule name to avoid duplicates
+                rule_name_match = re.search(r'rule\s+([a-zA-Z_][a-zA-Z0-9_]*)', rule)
+                if rule_name_match:
+                    rule_name = rule_name_match.group(1)
+                    if rule_name in seen_rule_names:
+                        continue  # Skip duplicate rule names
+                    seen_rule_names.add(rule_name)
                 
+                try:
+                    test_content = '\n'.join(imports + ['', rule]) if imports else rule
+                    yara.compile(source=test_content)
+                    batch_working.append(rule)
+                except:
+                    continue  # Skip problematic rules
+                    
+            # Test batch compilation
+            if batch_working:
+                try:
+                    batch_content = '\n'.join(imports + ['']) if imports else ''
+                    batch_content += '\n\n'.join(batch_working)
+                    
+                    # Test if this batch compiles with existing working rules
+                    full_test = '\n'.join(imports + ['']) if imports else ''
+                    full_test += '\n\n'.join(working_rules + batch_working)
+                    
+                    yara.compile(source=full_test)
+                    working_rules.extend(batch_working)
+                    self.log(f"  Added {len(batch_working)} rules from batch {i//batch_size + 1}")
+                except:
+                    # If batch fails, try individual rules
+                    for rule in batch_working:
+                        try:
+                            test_content = '\n'.join(imports + ['']) if imports else ''
+                            test_content += '\n\n'.join(working_rules + [rule])
+                            yara.compile(source=test_content)
+                            working_rules.append(rule)
+                        except:
+                            continue
+                            
         if working_rules:
             # Final compilation with working rules
             combined_content = []
