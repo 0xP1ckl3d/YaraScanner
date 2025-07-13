@@ -232,50 +232,74 @@ class YARARuleCompiler:
             with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
                 content = f.read()
                 
-            # Skip files with problematic imports/includes
-            if re.search(r'include\s+["\']|import\s+["\'](?!pe|math|hash)["\']', content):
+            # Skip files with problematic imports/includes or known issues
+            if any(skip in content.lower() for skip in ['cuckoo', 'private rule', 'global rule']):
                 return []
                 
-            # Clean up content
+            # Skip files with imports other than standard ones
+            if re.search(r'import\s+["\'](?!pe|math|hash|elf|dotnet)["\']', content):
+                return []
+                
+            # Clean up content - remove problematic imports/includes
             content = re.sub(r'include\s+["\'][^"\']*["\']', '', content)
-            content = re.sub(r'import\s+["\'](?!pe|math|hash)[^"\']*["\']', '', content)
+            content = re.sub(r'import\s+["\'](?!pe|math|hash|elf|dotnet)[^"\']*["\']', '', content)
             
-            # Split into individual rules
+            # Split into individual rules - improved parsing
             rules = []
-            rule_pattern = r'rule\s+[a-zA-Z_][a-zA-Z0-9_]*\s*[:{]'
-            matches = list(re.finditer(rule_pattern, content, re.IGNORECASE))
             
-            for i, match in enumerate(matches):
-                start = match.start()
-                
+            # Find rule boundaries more accurately
+            rule_starts = []
+            for match in re.finditer(r'^\s*rule\s+[a-zA-Z_][a-zA-Z0-9_]*\s*[:{]', content, re.MULTILINE | re.IGNORECASE):
+                rule_starts.append(match.start())
+            
+            # Extract each rule
+            for i, start in enumerate(rule_starts):
                 # Find the end of this rule
-                brace_count = 0
-                end = start
-                in_rule = False
+                end = rule_starts[i + 1] if i + 1 < len(rule_starts) else len(content)
                 
-                for j, char in enumerate(content[start:], start):
-                    if char == '{':
-                        brace_count += 1
-                        in_rule = True
-                    elif char == '}' and in_rule:
-                        brace_count -= 1
-                        if brace_count == 0:
-                            end = j + 1
-                            break
-                            
-                if end > start:
-                    rule_content = content[start:end].strip()
-                    
-                    # Basic validation
-                    if 'condition:' in rule_content and '{' in rule_content:
-                        if not self.is_duplicate_rule(rule_content):
-                            rules.append(rule_content)
+                # Extract rule content
+                rule_content = content[start:end].strip()
+                
+                # Validate rule structure
+                if self.validate_rule_structure(rule_content):
+                    if not self.is_duplicate_rule(rule_content):
+                        rules.append(rule_content)
                         
             return rules
             
         except Exception as e:
             self.log(f"Warning: Failed to process {filepath}: {e}")
             return []
+    
+    def validate_rule_structure(self, rule_content):
+        """Validate that rule has proper structure"""
+        # Must have rule declaration
+        if not re.search(r'rule\s+[a-zA-Z_][a-zA-Z0-9_]*', rule_content, re.IGNORECASE):
+            return False
+            
+        # Must have condition section
+        if 'condition:' not in rule_content.lower():
+            return False
+            
+        # Check for balanced braces
+        open_braces = rule_content.count('{')
+        close_braces = rule_content.count('}')
+        if open_braces != close_braces or open_braces == 0:
+            return False
+            
+        # Ensure rule ends with }
+        if not rule_content.strip().endswith('}'):
+            return False
+            
+        # Check for incomplete strings section
+        strings_match = re.search(r'strings:\s*(.*?)\s*condition:', rule_content, re.DOTALL | re.IGNORECASE)
+        if strings_match:
+            strings_section = strings_match.group(1).strip()
+            # Check for incomplete string definitions
+            if strings_section and not re.search(r'\$\w+\s*=.*(?:"[^"]*"|/[^/]*/|\{[^}]*\})', strings_section):
+                return False
+                
+        return True
             
     def compile_bundle(self, bundle_name, rules):
         """Compile rules into a specific bundle"""
