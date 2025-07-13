@@ -53,50 +53,50 @@ log "Starting enhanced rule collection..."
 
 # 1. Fetch SigmaHQ Sigma rules
 clone_or_update "https://github.com/SigmaHQ/sigma.git" "sigma/sigma" "main"
-SIGMA_COMMIT=$(cd sigma/sigma && git rev-parse HEAD)
+SIGMA_COMMIT=$(cd sigma/sigma 2>/dev/null && git rev-parse HEAD 2>/dev/null || echo "unknown")
 log "SigmaHQ commit: $SIGMA_COMMIT"
 
 # 2. Fetch Yara-Rules
 clone_or_update "https://github.com/Yara-Rules/rules.git" "yara/yara-rules" "master"
-YARA_RULES_COMMIT=$(cd yara/yara-rules && git rev-parse HEAD)
+YARA_RULES_COMMIT=$(cd yara/yara-rules 2>/dev/null && git rev-parse HEAD 2>/dev/null || echo "unknown")
 log "Yara-Rules commit: $YARA_RULES_COMMIT"
 
 # 3. Fetch 100DaysofYARA 2025
 clone_or_update "https://github.com/100DaysofYARA/2025.git" "yara/100DaysofYARA-2025" "main"
-YARA_100DAYS_COMMIT=$(cd yara/100DaysofYARA-2025 && git rev-parse HEAD)
+YARA_100DAYS_COMMIT=$(cd yara/100DaysofYARA-2025 2>/dev/null && git rev-parse HEAD 2>/dev/null || echo "unknown")
 log "100DaysofYARA commit: $YARA_100DAYS_COMMIT"
 
-# 4. NEW: Fetch Neo23x0 signature-base
+# 4. Fetch Neo23x0 signature-base
 clone_or_update "https://github.com/Neo23x0/signature-base.git" "yara/signature-base" "master"
-SIGNATURE_BASE_COMMIT=$(cd yara/signature-base && git rev-parse HEAD)
+SIGNATURE_BASE_COMMIT=$(cd yara/signature-base 2>/dev/null && git rev-parse HEAD 2>/dev/null || echo "unknown")
 log "signature-base commit: $SIGNATURE_BASE_COMMIT"
 
-# 5. NEW: Fetch Mandiant malware-research (if available)
+# 5. Fetch Mandiant malware-research (if available)
+MANDIANT_COMMIT="not_available"
 if clone_or_update "https://github.com/mandiant/malware-research.git" "yara/malware-research" "master"; then
-    MANDIANT_COMMIT=$(cd yara/malware-research && git rev-parse HEAD)
-    update_source "mandiant/malware-research" "$MANDIANT_COMMIT" "yara"
+    MANDIANT_COMMIT=$(cd yara/malware-research 2>/dev/null && git rev-parse HEAD 2>/dev/null || echo "unknown")
     log "malware-research commit: $MANDIANT_COMMIT"
 fi
 
-# 6. NEW: Fetch 0x4E0x650x6F yara_signatures (if available)
+# 6. Fetch 0x4E0x650x6F yara_signatures (if available)
+YARA_SIGS_COMMIT="not_available"
 if clone_or_update "https://github.com/0x4E0x650x6F/yara_signatures.git" "yara/yara_signatures" "main" || \
    clone_or_update "https://github.com/0x4E0x650x6F/yara_signatures.git" "yara/yara_signatures" "master"; then
-    YARA_SIGS_COMMIT=$(cd yara/yara_signatures && git rev-parse HEAD)
-    update_source "0x4E0x650x6F/yara_signatures" "$YARA_SIGS_COMMIT" "yara"
+    YARA_SIGS_COMMIT=$(cd yara/yara_signatures 2>/dev/null && git rev-parse HEAD 2>/dev/null || echo "unknown")
     log "yara_signatures commit: $YARA_SIGS_COMMIT"
 fi
 
-# 7. NEW: Fetch ninoseki boxer (if available)
+# 7. Fetch ninoseki boxer (if available)
+BOXER_COMMIT="not_available"
 if clone_or_update "https://github.com/ninoseki/boxer.git" "yara/boxer" "main" || \
    clone_or_update "https://github.com/ninoseki/boxer.git" "yara/boxer" "master"; then
-    BOXER_COMMIT=$(cd yara/boxer && git rev-parse HEAD)
-    update_source "ninoseki/boxer" "$BOXER_COMMIT" "yara"
+    BOXER_COMMIT=$(cd yara/boxer 2>/dev/null && git rev-parse HEAD 2>/dev/null || echo "unknown")
     log "boxer commit: $BOXER_COMMIT"
 fi
 
-# 8. NEW: Fetch Elastic protections-artifacts
+# 8. Fetch Elastic protections-artifacts
 clone_or_update "https://github.com/elastic/protections-artifacts.git" "yara/protections-artifacts" "main"
-ELASTIC_COMMIT=$(cd yara/protections-artifacts && git rev-parse HEAD)
+ELASTIC_COMMIT=$(cd yara/protections-artifacts 2>/dev/null && git rev-parse HEAD 2>/dev/null || echo "unknown")
 log "protections-artifacts commit: $ELASTIC_COMMIT"
 
 # 9. Fetch YARA Forge bundle (optional)
