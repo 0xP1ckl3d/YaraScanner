@@ -1,57 +1,85 @@
-FROM python:3.11-slim
+# Build stage for frontend and rule compilation
+FROM node:20-slim as frontend-builder
 
-# Install system dependencies
+WORKDIR /app/frontend
+COPY frontend/package.json frontend/yarn.lock ./
+RUN yarn install --frozen-lockfile --production
+
+COPY frontend/ ./
+RUN yarn build
+
+# Rule compilation stage
+FROM python:3.12-slim as rule-builder
+
+# Install build dependencies
 RUN apt-get update && apt-get install -y \
     git \
     wget \
-    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy rule fetching and compilation scripts
+COPY scripts/fetch_rules_v2.sh scripts/compile_rules_v2.py scripts/
+RUN chmod +x scripts/*.sh scripts/*.py
+
+# Install Python dependencies for rule compilation
+COPY backend/requirements.txt backend/
+RUN pip install --no-cache-dir -r backend/requirements.txt
+
+# Create rule directories and fetch/compile rules
+RUN mkdir -p rules/{sigma,yara,compiled,local} \
+    && scripts/fetch_rules_v2.sh \
+    && python3 scripts/compile_rules_v2.py
+
+# Production stage - minimal runtime image
+FROM python:3.12-slim
+
+# Install runtime dependencies only
+RUN apt-get update && apt-get install -y \
     libmagic1 \
     libmagic-mgc \
     curl \
-    cron \
     supervisor \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install Node.js for frontend
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
-    && apt-get install -y nodejs
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
 
 # Create application directory
 WORKDIR /app
 
-# Copy requirements and install Python dependencies
-COPY backend/requirements.txt /app/backend/
-RUN pip install --no-cache-dir -r backend/requirements.txt
+# Copy Python requirements and install runtime dependencies
+COPY backend/requirements.txt backend/
+RUN pip install --no-cache-dir -r backend/requirements.txt \
+    && pip cache purge
 
-# Copy application code
-COPY . /app/
+# Copy backend application
+COPY backend/ backend/
 
-# Setup frontend dependencies
-WORKDIR /app/frontend
-RUN npm install && npm run build
+# Copy compiled frontend from builder stage
+COPY --from=frontend-builder /app/frontend/build frontend/build
 
-# Setup rule directories
-WORKDIR /app
-RUN mkdir -p /app/rules/{sigma,yara,compiled,local} \
+# Copy compiled rules from rule-builder stage
+COPY --from=rule-builder /app/rules/compiled rules/compiled
+COPY --from=rule-builder /app/rules/sources.json rules/sources.json
+
+# Copy runtime scripts (excluding build-time scripts)
+COPY scripts/refresh_worker.py scripts/weekly_refresh.sh scripts/
+RUN chmod +x scripts/*.py scripts/*.sh
+
+# Create local rules directory for user uploads
+RUN mkdir -p rules/local \
     && mkdir -p /tmp/edrscan \
     && chmod 700 /tmp/edrscan
 
 # Copy environment templates
-RUN cp backend/.env.template backend/.env \
-    && cp frontend/.env.template frontend/.env
+COPY backend/.env.template backend/.env
+COPY frontend/.env.template frontend/.env
 
-# Make scripts executable
-RUN chmod +x /app/scripts/*.sh /app/scripts/*.py
-
-# Fetch and compile rules at build time
-RUN /app/scripts/fetch_rules_v2.sh \
-    && python3 /app/scripts/compile_rules_v2.py
-
-# Setup supervisor
+# Copy supervisor configuration
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Setup weekly cron job
-RUN echo "0 3 * * 1 root /app/scripts/weekly_refresh.sh >> /var/log/rule_refresh.log 2>&1" >> /etc/crontab
+# Create log directories
+RUN mkdir -p /var/log/supervisor
 
 # Expose ports
 EXPOSE 3000 8001
