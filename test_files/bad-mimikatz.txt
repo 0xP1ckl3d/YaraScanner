@@ -1,0 +1,6 @@
+Starting mimikatz execution...
+sekurlsa::logonpasswords
+crypto::capi
+privilege::debug
+lsadump::sam
+# Clear mimikatz indicators - should be flagged as bad
