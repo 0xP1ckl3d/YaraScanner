@@ -366,10 +366,10 @@ class YARARuleCompiler:
             with open(debug_path, 'w') as f:
                 f.write(combined_rules)
             
-            # Try compiling with fewer rules to find problematic ones
-            if len(valid_rules) > 500:
-                self.log(f"Trying compilation with expanded rule set for {bundle_name}...")
-                return self.compile_bundle_safe(bundle_name, valid_rules[:2000])  # Try more rules
+            # Try compiling with expanded rule set for webshells too
+            if len(valid_rules) > 10:
+                self.log(f"Trying safe compilation for {bundle_name}...")
+                return self.compile_bundle_safe(bundle_name, valid_rules)  # Try all rules with safe method
             
             return False
         except Exception as e:
