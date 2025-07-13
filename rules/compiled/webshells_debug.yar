@@ -1,15 +1,3 @@
-rule WMI_strings
-{
-    meta:
-        description = "Accesses the WMI"
-        author = "Ivan Kwiatkowski (@JusticeRage)"
-    strings:
-        // WMI namespaces which may be referenced in the ConnectServer call. All in the form of "ROOT\something"
-        $a0 = /ROOT\\(CIMV2|AccessLogging|ADFS|aspnet|Cli|Hardware|interop|InventoryLogging|Microsoft.{10}|Policy|RSOP|SECURITY|ServiceModel|snmpStandardCimv2|subscription|virtualization|WebAdministration|WMI)/ nocase ascii wide
-    condition:
-        any of them
-}
-
 rule mwi_document: exploitdoc maldoc
 {
     meta:
@@ -81,6 +69,507 @@ rule Email_Generic_PHP_Mailer_Script
     condition:
         not  any of ($donotwant*) and not any of ($legit*)
         and all of ($eml*) and 2 of ($mailer*)
+}
+
+rule php_backdoor_php {
+	meta:
+		description = "Semi-Auto-generated  - file php-backdoor.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "2b5cb105c4ea9b5ebc64705b4bd86bf7"
+	strings:
+		$s0 = "http://michaeldaw.org   2006"
+		$s1 = "or http://<? echo $SERVER_NAME.$REQUEST_URI; ?>?d=c:/windows on win"
+		$s3 = "coded by z0mbie"
+	condition:
+		1 of them
+}
+
+rule Liz0ziM_Private_Safe_Mode_Command_Execuriton_Bypass_Exploit_php {
+	meta:
+		description = "Semi-Auto-generated  - file Liz0ziM Private Safe Mode Command Execuriton Bypass Exploit.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "c6eeacbe779518ea78b8f7ed5f63fc11"
+	strings:
+		$s0 = "<option value=\"cat /var/cpanel/accounting.log\">/var/cpanel/accounting.log</opt"
+		$s1 = "Liz0ziM Private Safe Mode Command Execuriton Bypass"
+		$s2 = "echo \"<b><font color=red>Kimim Ben :=)</font></b>:$uid<br>\";" fullword
+	condition:
+		1 of them
+}
+
+rule shankar_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file shankar.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "6eb9db6a3974e511b7951b8f7e7136bb"
+	strings:
+		$sAuthor = "ShAnKaR"
+		$s0 = "<input type=checkbox name='dd' \".(isset($_POST['dd'])?'checked':'').\">DB<input"
+		$s3 = "Show<input type=text size=5 value=\".((isset($_POST['br_st']) && isset($_POST['b"
+	condition:
+		1 of ($s*) and $sAuthor
+}
+
+rule Casus15_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file Casus15.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "5e2ede2d1c4fa1fcc3cbfe0c005d7b13"
+	strings:
+		$s0 = "copy ( $dosya_gonder2, \"$dir/$dosya_gonder2_name\") ? print(\"$dosya_gonder2_na"
+		$s2 = "echo \"<center><font size='$sayi' color='#FFFFFF'>HACKLERIN<font color='#008000'"
+		$s3 = "value='Calistirmak istediginiz "
+	condition:
+		1 of them
+}
+
+rule Tool_asp {
+	meta:
+		description = "Semi-Auto-generated  - file Tool.asp.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "8febea6ca6051ae5e2ad4c78f4b9c1f2"
+	strings:
+		$s0 = "mailto:rhfactor@antisocial.com"
+		$s2 = "?raiz=root"
+		$s3 = "DIGO CORROMPIDO<BR>CORRUPT CODE"
+		$s4 = "key = \"5DCADAC1902E59F7273E1902E5AD8414B1902E5ABF3E661902E5B554FC41902E53205CA0"
+	condition:
+		2 of them
+}
+
+rule NT_Addy_asp {
+	meta:
+		description = "Semi-Auto-generated  - file NT Addy.asp.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "2e0d1bae844c9a8e6e351297d77a1fec"
+	strings:
+		$s0 = "NTDaddy v1.9 by obzerve of fux0r inc"
+		$s2 = "<ERROR: THIS IS NOT A TEXT FILE>"
+		$s4 = "RAW D.O.S. COMMAND INTERFACE"
+	condition:
+		1 of them
+}
+
+rule SimAttacker___Vrsion_1_0_0___priv8_4_My_friend_php {
+	meta:
+		description = "Semi-Auto-generated  - file SimAttacker - Vrsion 1.0.0 - priv8 4 My friend.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "089ff24d978aeff2b4b2869f0c7d38a3"
+	strings:
+		$s0 = "SimAttacker - Vrsion : 1.0.0 - priv8 4 My friend"
+		$s3 = " fputs ($fp ,\"\\n*********************************************\\nWelcome T0 Sim"
+		$s4 = "echo \"<a target='_blank' href='?id=fm&fedit=$dir$file'><span style='text-decora"
+	condition:
+		1 of them
+}
+
+rule RemExp_asp {
+	meta:
+		description = "Semi-Auto-generated  - file RemExp.asp.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "aa1d8491f4e2894dbdb91eec1abc2244"
+	strings:
+		$s0 = "<title>Remote Explorer</title>"
+		$s3 = " FSO.CopyFile Request.QueryString(\"FolderPath\") & Request.QueryString(\"CopyFi"
+		$s4 = "<td bgcolor=\"<%=BgColor%>\" title=\"<%=File.Name%>\"> <a href= \"showcode.asp?f"
+	condition:
+		2 of them
+}
+
+rule klasvayv_asp {
+	meta:
+		description = "Semi-Auto-generated  - file klasvayv.asp.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "2b3e64bf8462fc3d008a3d1012da64ef"
+	strings:
+		$s1 = "set aktifklas=request.querystring(\"aktifklas\")"
+		$s2 = "action=\"klasvayv.asp?klasorac=1&aktifklas=<%=aktifklas%>&klas=<%=aktifklas%>"
+		$s3 = "<font color=\"#858585\">www.aventgrup.net"
+		$s4 = "style=\"BACKGROUND-COLOR: #95B4CC; BORDER-BOTTOM: #000000 1px inset; BORDER-LEFT"
+	condition:
+		1 of them
+}
+
+rule rst_sql_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file rst_sql.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "0961641a4ab2b8cb4d2beca593a92010"
+	strings:
+		$s0 = "C:\\tmp\\dump_"
+		$s1 = "RST MySQL"
+		$s2 = "http://rst.void.ru"
+		$s3 = "$st_form_bg='R0lGODlhCQAJAIAAAOfo6u7w8yH5BAAAAAAALAAAAAAJAAkAAAIPjAOnuJfNHJh0qtfw0lcVADs=';"
+	condition:
+		2 of them
+}
+
+rule uploader_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file uploader.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "0b53b67bb3b004a8681e1458dd1895d0"
+	strings:
+		$s2 = "move_uploaded_file($userfile, \"entrika.php\"); " fullword
+		$s3 = "Send this file: <INPUT NAME=\"userfile\" TYPE=\"file\">" fullword
+		$s4 = "<INPUT TYPE=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"100000\">" fullword
+	condition:
+		2 of them
+}
+
+rule telnet_pl {
+	meta:
+		description = "Semi-Auto-generated  - file telnet.pl.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "dd9dba14383064e219e29396e242c1ec"
+	strings:
+		$s0 = "W A R N I N G: Private Server"
+		$s2 = "$Message = q$<pre><font color=\"#669999\"> _____  _____  _____          _____   "
+	condition:
+		all of them
+}
+
+rule Dx_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file Dx.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "9cfe372d49fe8bf2fac8e1c534153d9b"
+	strings:
+		$s0 = "print \"\\n\".'Tip: to view the file \"as is\" - open the page in <a href=\"'.Dx"
+		$s2 = "$DEF_PORTS=array (1=>'tcpmux (TCP Port Service Multiplexer)',2=>'Management Util"
+		$s3 = "$ra44  = rand(1,99999);$sj98 = \"sh-$ra44\";$ml = \"$sd98\";$a5 = $_SERVER['HTTP"
+	condition:
+		1 of them
+}
+
+rule sig_2008_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file 2008.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "3e4ba470d4c38765e4b16ed930facf2c"
+	strings:
+		$s0 = "Codz by angel(4ngel)"
+		$s1 = "Web: http://www.4ngel.net"
+		$s2 = "$admin['cookielife'] = 86400;"
+		$s3 = "$errmsg = 'The file you want Downloadable was nonexistent';"
+	condition:
+		1 of them
+}
+
+rule Rem_View_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file Rem View.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "29420106d9a81553ef0d1ca72b9934d9"
+	strings:
+		$s0 = "$php=\"/* line 1 */\\n\\n// \".mm(\"for example, uncomment next line\").\""
+		$s2 = "<input type=submit value='\".mm(\"Delete all dir/files recursive\").\" (rm -fr)'"
+		$s4 ="Welcome to phpRemoteView (RemView)"
+	condition:
+		1 of them
+}
+
+rule aZRaiLPhp_v1_0_php {
+	meta:
+		description = "Semi-Auto-generated  - file aZRaiLPhp v1.0.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "26b2d3943395682e36da06ed493a3715"
+	strings:
+		$s0 = "azrailphp"
+		$s1 = "<br><center><INPUT TYPE='SUBMIT' NAME='dy' VALUE='Dosya Yolla!'></center>"
+		$s3 = "<center><INPUT TYPE='submit' name='okmf' value='TAMAM'></center>"
+	condition:
+		2 of them
+}
+
+rule Moroccan_Spamers_Ma_EditioN_By_GhOsT_php {
+	meta:
+		description = "Semi-Auto-generated  - file Moroccan Spamers Ma-EditioN By GhOsT.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "d1b7b311a7ffffebf51437d7cd97dc65"
+	strings:
+		$s0 = ";$sd98=\"john.barker446@gmail.com\""
+		$s1 = "print \"Sending mail to $to....... \";"
+		$s2 = "<td colspan=\"2\" width=\"715\" background=\"/simparts/images/cellpic1.gif\" hei"
+	condition:
+		1 of them
+}
+
+rule Reader_asp {
+	meta:
+		description = "Semi-Auto-generated  - file Reader.asp.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "ad1a362e0a24c4475335e3e891a01731"
+	strings:
+		$s1 = "Mehdi & HolyDemon"
+		$s2 = "www.infilak."
+		$s3 = "'*T@*r@#@&mms^PdbYbVuBcAAA==^#~@%><form method=post name=inf><table width=\"75%"
+	condition:
+		2 of them
+}
+
+rule jspshall_jsp {
+	meta:
+		description = "Semi-Auto-generated  - file jspshall.jsp.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "efe0f6edaa512c4e1fdca4eeda77b7ee"
+	strings:
+		$s0 = "kj021320"
+		$s1 = "case 'T':systemTools(out);break;"
+		$s2 = "out.println(\"<tr><td>\"+ico(50)+f[i].getName()+\"</td><td> file"
+	condition:
+		2 of them
+}
+
+rule connectback2_pl {
+	meta:
+		description = "Semi-Auto-generated  - file connectback2.pl.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "473b7d226ea6ebaacc24504bd740822e"
+	strings:
+		$s0 = "#We Are: MasterKid, AleXutz, FatMan & MiKuTuL                                   "
+		$s1 = "echo --==Userinfo==-- ; id;echo;echo --==Directory==-- ; pwd;echo; echo --==Shel"
+		$s2 = "ConnectBack Backdoor"
+	condition:
+		1 of them
+}
+
+rule DefaceKeeper_0_2_php {
+	meta:
+		description = "Semi-Auto-generated  - file DefaceKeeper_0.2.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "713c54c3da3031bc614a8a55dccd7e7f"
+	strings:
+		$s0 = "target fi1e:<br><input type=\"text\" name=\"target\" value=\"index.php\"></br>" fullword
+		$s1 = "eval(base64_decode(\"ZXZhbChiYXNlNjRfZGVjb2RlKCJhV2R1YjNKbFgzVnpaWEpmWVdKdmNuUW9"
+		$s2 = "<img src=\"http://s43.radikal.ru/i101/1004/d8/ced1f6b2f5a9.png\" align=\"center"
+	condition:
+		1 of them
+}
+
+rule kacak_asp {
+	meta:
+		description = "Semi-Auto-generated  - file kacak.asp.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "907d95d46785db21331a0324972dda8c"
+	strings:
+		$s0 = "Kacak FSO 1.0"
+		$s1 = "if request.querystring(\"TGH\") = \"1\" then"
+		$s3 = "<font color=\"#858585\">BuqX</font></a></font><font face=\"Verdana\" style="
+		$s4 = "mailto:BuqX@hotmail.com"
+	condition:
+		1 of them
+}
+
+rule PHP_Backdoor_Connect_pl_php {
+	meta:
+		description = "Semi-Auto-generated  - file PHP Backdoor Connect.pl.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "57fcd9560dac244aeaf95fd606621900"
+	strings:
+		$s0 = "LorD of IRAN HACKERS SABOTAGE"
+		$s1 = "LorD-C0d3r-NT"
+		$s2 = "echo --==Userinfo==-- ;"
+	condition:
+		1 of them
+}
+
+rule Antichat_Socks5_Server_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file Antichat Socks5 Server.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "cbe9eafbc4d86842a61a54d98e5b61f1"
+	strings:
+		$s0 = "$port = base_convert(bin2hex(substr($reqmessage[$id], 3+$reqlen+1, 2)), 16, 10);" fullword
+		$s3 = "#   [+] Domain name address type"
+		$s4 = "www.antichat.ru"
+	condition:
+		1 of them
+}
+
+rule EFSO_2_asp {
+	meta:
+		description = "Semi-Auto-generated  - file EFSO_2.asp.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "b5fde9682fd63415ae211d53c6bfaa4d"
+	strings:
+		$s0 = "Ejder was HERE"
+		$s1 = "*~PU*&BP[_)f!8c2F*@#@&~,P~P,~P&q~8BPmS~9~~lB~X`V,_,F&*~,jcW~~[_c3TRFFzq@#@&PP,~~"
+	condition:
+		2 of them
+}
+
+rule Sincap_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file Sincap.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "b68b90ff6012a103e57d141ed38a7ee9"
+	strings:
+		$s0 = "$baglan=fopen(\"/tmp/$ekinci\",'r');"
+		$s2 = "$tampon4=$tampon3-1"
+		$s3 = "@aventgrup.net"
+	condition:
+		2 of them
+}
+
+rule Test_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file Test.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "77e331abd03b6915c6c6c7fe999fcb50"
+	strings:
+		$s0 = "$yazi = \"test\" . \"\\r\\n\";" fullword
+		$s2 = "fwrite ($fp, \"$yazi\");" fullword
+		$s3 = "$entry_line=\"HACKed by EntriKa\";" fullword
+	condition:
+		1 of them
+}
+
+rule mysql_tool_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file mysql_tool.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "5fbe4d8edeb2769eda5f4add9bab901e"
+	strings:
+		$s0 = "$error_text = '<strong>Failed selecting database \"'.$this->db['"
+		$s1 = "$ra44  = rand(1,99999);$sj98 = \"sh-$ra44\";$ml = \"$sd98\";$a5 = $_SERV"
+		$s4 = "<div align=\"center\">The backup process has now started<br "
+	condition:
+		1 of them
+}
+
+rule Zehir_4_asp {
+	meta:
+		description = "Semi-Auto-generated  - file Zehir 4.asp.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "7f4e12e159360743ec016273c3b9108c"
+	strings:
+		$s2 = "</a><a href='\"&dosyapath&\"?status=10&dPath=\"&f1.path&\"&path=\"&path&\"&Time="
+		$s4 = "<input type=submit value=\"Test Et!\" onclick=\""
+	condition:
+		1 of them
+}
+
+rule sh_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file sh.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "330af9337ae51d0bac175ba7076d6299"
+	strings:
+		$s1 = "$ar_file=array('/etc/passwd','/etc/shadow','/etc/master.passwd','/etc/fstab','/e"
+		$s2 = "Show <input type=text size=5 value=\".((isset($_POST['br_st']))?$_POST['br_st']:"
+	condition:
+		1 of them
+}
+
+rule phpbackdoor15_php {
+	meta:
+		description = "Semi-Auto-generated  - file phpbackdoor15.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "0fdb401a49fc2e481e3dfd697078334b"
+	strings:
+		$s1 = "echo \"fichier telecharge dans \".good_link(\"./\".$_FILES[\"fic\"][\"na"
+		$s2 = "if(move_uploaded_file($_FILES[\"fic\"][\"tmp_name\"],good_link(\"./\".$_FI"
+		$s3 = "echo \"Cliquez sur un nom de fichier pour lancer son telechargement. Cliquez s"
+	condition:
+		1 of them
+}
+
+rule sql_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file sql.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "8334249cbb969f2d33d678fec2b680c5"
+	strings:
+		$s1 = "fputs ($fp, \"# RST MySQL tools\\r\\n# Home page: http://rst.void.ru\\r\\n#"
+		$s2 = "http://rst.void.ru"
+		$s3 = "print \"<a href=\\\"$_SERVER[PHP_SELF]?s=$s&login=$login&passwd=$passwd&"
+	condition:
+		1 of them
+}
+
+rule telnet_cgi {
+	meta:
+		description = "Semi-Auto-generated  - file telnet.cgi.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "dee697481383052980c20c48de1598d1"
+	strings:
+		$s0 = "www.rohitab.com"
+		$s1 = "W A R N I N G: Private Server"
+		$s2 = "print \"Set-Cookie: SAVEDPWD=;\\n\"; # remove password cookie"
+		$s3 = "$Prompt = $WinNT ? \"$CurrentDir> \" : \"[admin\\@$ServerName $C"
+	condition:
+		1 of them
+}
+
+rule backdoorfr_php {
+	meta:
+		description = "Semi-Auto-generated  - file backdoorfr.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "91e4afc7444ed258640e85bcaf0fecfc"
+	strings:
+		$s1 = "www.victime.com/index.php?page=http://emplacement_de_la_backdoor.php , ou en tan"
+		$s2 = "print(\"<br>Provenance du mail : <input type=\\\"text\\\" name=\\\"provenanc"
+	condition:
+		1 of them
+}
+
+rule aspydrv_asp {
+	meta:
+		description = "Semi-Auto-generated  - file aspydrv.asp.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "1c01f8a88baee39aa1cebec644bbcb99"
+		score = 60
+	strings:
+		$s0 = "If mcolFormElem.Exists(LCase(sIndex)) Then Form = mcolFormElem.Item(LCase(sIndex))"
+		$s1 = "password"
+		$s2 = "session(\"shagman\")="
+	condition:
+		2 of them
+}
+
+rule MySQL_Web_Interface_Version_0_8_php {
+	meta:
+		description = "Semi-Auto-generated  - file MySQL Web Interface Version 0.8.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "36d4f34d0a22080f47bb1cb94107c60f"
+	strings:
+		$s0 = "SooMin Kim"
+		$s1 = "http://popeye.snu.ac.kr/~smkim/mysql"
+		$s2 = "href='$PHP_SELF?action=dropField&dbname=$dbname&tablename=$tablename"
+		$s3 = "<th>Type</th><th>&nbspM&nbsp</th><th>&nbspD&nbsp</th><th>unsigned</th><th>zerofi"
+	condition:
+		2 of them
+}
+
+rule HawkEye_PHP_Panel {
+	meta:
+		description = "Detects HawkEye Keyloggers PHP Panel"
+		author = "Florian Roth"
+		date = "2014/12/14"
+		score = 60
+	strings:
+		$s0 = "$fname = $_GET['fname'];" ascii fullword
+		$s1 = "$data = $_GET['data'];" ascii fullword
+		$s2 = "unlink($fname);" ascii fullword
+		$s3 = "echo \"Success\";" fullword ascii
+	condition:
+		all of ($s*) and filesize < 600
+}
+
+rule SoakSoak_Infected_Wordpress {
+	meta:
+		description = "Detects a SoakSoak infected Wordpress site http://goo.gl/1GzWUX"
+		reference = "http://goo.gl/1GzWUX"
+		author = "Florian Roth"
+		date = "2014/12/15"
+		score = 60
+	strings:
+		$s0 = "wp_enqueue_script(\"swfobject\");" ascii fullword
+		$s1 = "function FuncQueueObject()" ascii fullword
+		$s2 = "add_action(\"wp_enqueue_scripts\", 'FuncQueueObject');" ascii fullword
+	condition:
+		all of ($s*)
 }
 
 rule php_anuna
@@ -243,79 +732,6 @@ rule APT_NGO_wuaclt
 
   condition:
     ($a and $b and $c) or ($d and $e) or ($f and $g and $h)
-}
-
-rule lazaruswannacry {
-   meta:
-      description = "Rule based on shared code between Feb 2017 Wannacry sample and Lazarus backdoor from Feb 2015 discovered by Neel Mehta"
-      date = "2017-05-15"
-      reference = "https://twitter.com/neelmehta/status/864164081116225536"
-      author = "Costin G. Raiu, Kaspersky Lab"
-      version = "1.0"
-      hash = "9c7c7149387a1c79679a87dd1ba755bc"
-      hash = "ac21c8ad899727137c4b94458d7aa8d8"
-   strings:
-      $a1 = { 51 53 55 8B 6C 24 10 56 57 6A 20 8B 45 00 8D 75 04 24 01 0C 01 46 89 45 00 C6 46 FF 03 C6 06 01 46 56 E8 }
-      $a2 = { 03 00 04 00 05 00 06 00 08 00 09 00 0A 00 0D 00 10 00 11 00 12 00 13 00 14 00 15 00 16 00 2F 00 30 00 31 00 32 00 33 00 34 00 35 00 36 00 37 00 38 00 39 00 3C 00 3D 00 3E 00 3F 00 40 00 41 00 44 00 45 00 46 00 62 00 63 00 64 00 66 00 67 00 68 00 69 00 6A 00 6B 00 84 00 87 00 88 00 96 00 FF 00 01 C0 02 C0 03 C0 04 C0 05 C0 06 C0 07 C0 08 C0 09 C0 0A C0 0B C0 0C C0 0D C0 0E C0 0F C0 10 C0 11 C0 12 C0 13 C0 14 C0 23 C0 24 C0 27 C0 2B C0 2C C0 FF FE }
-   condition:
-      uint16(0) == 0x5A4D and filesize < 15000000 and all of them
-}
-
-rule APT_Derusbi_Gen
-{
-
-meta:
-    author = "ThreatConnect Intelligence Research Team"
-
-strings:
-    $2 = "273ce6-b29f-90d618c0" wide ascii
-    $A = "Ace123dx" fullword wide ascii
-    $A1 = "Ace123dxl!" fullword wide ascii
-    $A2 = "Ace123dx!@#x" fullword wide ascii
-    $C = "/Catelog/login1.asp" wide ascii
-    $DF = "~DFTMP$$$$$.1" wide ascii
-    $G = "GET /Query.asp?loginid=" wide ascii
-    $L = "LoadConfigFromReg failded" wide ascii
-    $L1 = "LoadConfigFromBuildin success" wide ascii
-    $ph = "/photoe/photo.asp HTTP" wide ascii
-    $PO = "POST /photos/photo.asp" wide ascii
-    $PC = "PCC_IDENT" wide ascii
-
-condition:
-    any of them
-}
-
-rule php_malfunctions {
-    strings:
-        $ = "eval("
-        $ = "gzinflate("
-        $ = "str_rot13("
-        $ = "base64_decode("
-    condition: 
-        3 of them and filesize < 500KB
-}
-
-rule php_obf_malfunctions {
-    strings:
-        $ = "eval(base64_decode"
-        $ = "eval(gzinflate"
-        $ = "str_rot13(base64_decode"
-    condition: 
-        any of them and filesize < 500KB
-}
-
-rule obf_base64_decode {
-    strings: 
-        $ = "\\x62\\x61\\x73\\145\\x36\\x34\\x5f\\x64\\x65\\143\\x6f\\144\\145"
-    condition: 
-        any of them and filesize < 500KB
-}
-
-rule php_uname {
-    strings: 
-        $ = "php_uname()"
-    condition: 
-        any of them and filesize < 500KB
 }
 
 rule CookieTools {
@@ -487,6 +903,19 @@ rule unknown2 {
 		$s7 = " (*.txt)|*.txt" fullword wide
 	condition:
 		uint16(0) == 0x5a4d and filesize < 300KB and 4 of them
+}
+
+rule md5_9b59cb5b557e46e1487ef891cedaccf7 {
+    strings: 
+        $jpg = { FF D8 FF E0 ?? ?? 4A 46 49 46 00 01 }
+		/*
+        // https://en.wikipedia.org/wiki/List_of_file_signatures
+        // magic module is not standard compiled in on our platform
+        // otherwise: condition: magic.mime_type() == /^image/
+        // $jpg = { 4A 46 49 46 00 01 }
+        */
+        $php = "<?php"
+    condition: ($jpg at 0) and $php
 }
 
 rule sigma_ransomware {
@@ -806,27 +1235,6 @@ rule apt_duqu2_loaders
 		( (uint16(0) == 0x5a4d) and ( (any of ($a*)) or (all of ($b*)) or (all of ($c*)) ) and filesize < 100000 ) or ( (uint32(0) == 0xe011cfd0) and ( (any of ($a*)) or (all of ($b*)) or (all of ($c*)) or (any of ($d*)) ) and filesize < 20000000 )
 }
 
-rule apt_duqu2_drivers 
-{ 
-
-    meta:
-		copyright = "Kaspersky Lab"
-		description = "Rule to detect Duqu 2.0 drivers"
-		last_modified = "2015-06-09"
-		version = "1.0"
-	
-    strings:
-		$a1 = "\\DosDevices\\port_optimizer" wide nocase 
-		$a2 = "romanian.antihacker" 
-		$a3 = "PortOptimizerTermSrv" wide 
-		$a4 = "ugly.gorilla1"
-		$b1 = "NdisIMCopySendCompletePerPacketInfo" 
-		$b2 = "NdisReEnumerateProtocolBindings"
-		$b3 = "NdisOpenProtocolConfiguration"
-	condition:
-		uint16(0) == 0x5A4D and (any of ($a*) ) and (2 of ($b*)) and filesize < 100000
-}
-
 rule Duqu2_Generic1 
 {
 
@@ -930,25 +1338,6 @@ rule APT_Kaspersky_Duqu2_msi3_32
 	
     condition:
 		uint16(0) == 0x5a4d and filesize < 72KB and all of them
-}
-
-rule SafeNetStrings : SafeNet Family
-{
-    meta:
-        description = "Strings used by SafeNet"
-        author = "Seth Hardy"
-        last_modified = "2014-07-16"
-        
-    strings:
-        $ = "6dNfg8Upn5fBzGgj8licQHblQvLnUY19z5zcNKNFdsDhUzuI8otEsBODrzFCqCKr"
-        $ = "/safe/record.php"
-        $ = "_Rm.bat" wide ascii
-        $ = "try\x0d\x0a\x09\x09\x09\x09  del %s" wide ascii
-        $ = "Ext.org" wide ascii
-        
-    condition:
-        any of them
-
 }
 
 rule LinuxAESDDoS
@@ -1117,23 +1506,6 @@ rule apt_equation_equationlaser_runtimeclasses
         any of them
 }
 
-rule apt_equation_cryptotable
-{
-
-    meta:
-        copyright = "Kaspersky Lab"
-        description = "Rule to detect the crypto library used in Equation group malware"
-        version = "1.0"
-        last_modified = "2015-02-16"
-        reference = "https://securelist.com/blog/"
-
-    strings:
-        $a={37 DF E8 B6 C7 9C 0B AE 91 EF F0 3B 90 C6 80 85 5D 19 4B 45 44 12 3C E2 0D 5C 1C 7B C4 FF D6 05 17 14 4F 03 74 1E 41 DA 8F 7D DE 7E 99 F1 35 AC B8 46 93 CE 23 82 07 EB 2B D4 72 71 40 F3 B0 F7 78 D7 4C D1 55 1A 39 83 18 FA E1 9A 56 B1 96 AB A6 30 C5 5F BE 0C 50 C1}
-
-    condition:
-        $a
-}
-
 rule Equation_Kaspersky_GreyFishInstaller
 {
 
@@ -1225,23 +1597,6 @@ rule unpacked_shiva_ransomware {
    condition:
 
       ( uint16(0) == 0x5a4d and filesize < 800KB ) and all of them 
-}
-
-rule YayihStrings : Yayih Family
-{
-    meta:
-        description = "Yayih Identifying Strings"
-        author = "Seth Hardy"
-        last_modified = "2014-07-11"
-        
-    strings:
-        $ = "/bbs/info.asp"
-        $ = "\\msinfo.exe"
-        $ = "%s\\%srcs.pdf"
-        $ = "\\aumLib.ini"
-
-    condition:
-       any of them
 }
 
 rule PAS_TOOL_PHP_WEB_KIT_mod 
@@ -1463,24 +1818,6 @@ rule suspicious_packer_section : packer PE {
         uint16(0) == 0x5a4d and uint32be(uint32(0x3c)) == 0x50450000 and (
             for any of them : ( $ in (0..1024) )
         )
-}
-
-rule cxpidStrings
-{
-    meta:
-        description = "cxpid Identifying Strings"
-        author = "Seth Hardy"
-        last_modified = "2014-06-23"
-        
-    strings:
-        $ = "/cxpid/submit.php?SessionID="
-        $ = "/cxgid/"
-        $ = "E21BC52BEA2FEF26D005CF"
-        $ = "E21BC52BEA39E435C40CD8"
-        $ = "                   -,L-,O+,Q-,R-,Y-,S-"
-        
-    condition:
-       any of them
 }
 
 rule StealthWasp_s_Basic_PortScanner_v1_2 {
@@ -1710,38 +2047,6 @@ rule aspbackdoor_entice {
 		all of them
 }
 
-rule nAspyUpdateCode : nAspyUpdate Family 
-{
-    meta:
-        description = "nAspyUpdate code features"
-        author = "Seth Hardy"
-        last_modified = "2014-07-14"
-    
-    strings:
-        // decryption loop in dropper
-        $ = { 8A 54 24 14 8A 01 32 C2 02 C2 88 01 41 4E 75 F4 }
-        
-    condition:
-        any of them
-}
-
-rule nAspyUpdateStrings : nAspyUpdate Family
-{
-    meta:
-        description = "nAspyUpdate Identifying Strings"
-        author = "Seth Hardy"
-        last_modified = "2014-07-14"
-        
-    strings:
-        $ = "\\httpclient.txt"
-        $ = "password <=14"
-        $ = "/%ldn.txt"
-        $ = "Kill You\x00"
-        
-    condition:
-        any of them
-}
-
 rule nAspyUpdate : Family
 {
     meta:
@@ -1908,35 +2213,6 @@ rule Codoso_PGV_PVID_1
         $s8 = "WUServiceMain" fullword ascii /* Goodware String - occured 2 times */
     condition:
         ( uint16(0) == 0x5a4d and ( 1 of ($x*) or 3 of them ) ) or 5 of them
-}
-
-rule MiniDionis_readerView 
-{
-
-    meta:
-        description = "MiniDionis Malware - file readerView.exe / adobe.exe"
-        author = "Florian Roth"
-        reference = "http://www.kernelmode.info/forum/viewtopic.php?f=16&t=3950"
-        date = "2015-07-20"
-        /* Original Hash */
-        hash1 = "ee5eb9d57c3611e91a27bb1fc2d0aaa6bbfa6c69ab16e65e7123c7c49d46f145"
-        /* Derived Samples */
-        hash2 = "a713982d04d2048a575912a5fc37c93091619becd5b21e96f049890435940004"
-        hash3 = "88a40d5b679bccf9641009514b3d18b09e68b609ffaf414574a6eca6536e8b8f"
-        hash4 = "97d8725e39d263ed21856477ed09738755134b5c0d0b9ae86ebb1cdd4cdc18b7"
-        hash5 = "ed7abf93963395ce9c9cba83a864acb4ed5b6e57fd9a6153f0248b8ccc4fdb46"
-        hash6 = "56ac764b81eb216ebed5a5ad38e703805ba3e1ca7d63501ba60a1fb52c7ebb6e"
-
-    strings:
-        $s1 = "%ws_out%ws" fullword wide /* score: '8.00' */
-        $s2 = "dnlibsh" fullword ascii /* score: '7.00' */
-
-        $op0 = { 0f b6 80 68 0e 41 00 0b c8 c1 e1 08 0f b6 c2 8b } /* Opcode */
-        $op1 = { 8b ce e8 f8 01 00 00 85 c0 74 41 83 7d f8 00 0f } /* Opcode */
-        $op2 = { e8 2f a2 ff ff 83 20 00 83 c8 ff 5f 5e 5d c3 55 } /* Opcode */
-
-    condition:
-        uint16(0) == 0x5a4d and filesize < 500KB and all of ($s*) and 1 of ($op*)
 }
 
 rule Malicious_SFX1 
@@ -2257,20 +2533,6 @@ condition:
 
 }
 
-rule gate_php_js {
-    /* token=KjsS29Msl&host= */
-    strings: 
-		$ = /\/gate.php\?token=.{,10}&host=/
-    condition: any of them
-}
-
-rule mag_php_js {
-    strings: 
-        $ = "onepage|checkout|onestep|firecheckout|onestepcheckout"
-        $ = "'one|check'"
-    condition: any of them
-}
-
 rule HKTL_NET_GUID_CasperStager {
     meta:
         description = "Detects c# red/black-team tools via typelibguid"
@@ -2352,43 +2614,6 @@ rule MiniASP
         any of them
 }
 
-rule PM_Email_Sent_By_PHP_Script
-{
-  strings:
-    $php1="X-PHP-Script" fullword
-    $php2="X-PHP-Originating-Script" fullword
-    $php3="/usr/bin/php" fullword
-
-  condition:
-    any of them
-}
-
-rule xDedic_SysScan_unpacked : crimeware {
-meta:
-author = " Kaspersky Lab"
-ref = "https://securelist.com/files/2016/06/xDedic_marketplace_ENG.pdf"
-maltype = "crimeware"
-type ="crimeware"
-filetype = "Win32 EXE"
-date = "2016-03-14"
-version = "1.0"
-hash = "fac495be1c71012682ebb27092060b43"
-hash = "e8cc69231e209db7968397e8a244d104"
-hash = "a53847a51561a7e76fd034043b9aa36d"
-hash = "e8691fa5872c528cd8e72b82e7880e98"
-hash = "F661b50d45400e7052a2427919e2f777"
-strings:
-$a1="/c ping -n 2 127.0.0.1 & del \"SysScan.exe\"" ascii wide
-$a2="SysScan DEBUG Mode!!!" ascii wide
-$a3="This rechecking? (set 0/1 or press enter key)" ascii wide
-$a4="http://37.49.224.144:8189/manual_result" ascii wide
-$b1="Checker end work!" ascii wide
-$b2="Trying send result..." ascii wide
-condition:
-((uint16(0) == 0x5A4D)) and (filesize < 5000000) and
-((any of ($a*)) or (all of ($b*)))
-}
-
 rule hancitor {
 	meta:
 		description = "Memory string yara for Hancitor"
@@ -2436,32 +2661,6 @@ rule Unidentified_Malware_Two {
       ($my_string_one and $my_string_two)
       or ($my_string_three or $my_string_four)
       or ($my_string_five and $my_string_six)
-}
-
-rule iexpl0reStrings : iexpl0re Family
-{
-    meta:
-        description = "Strings used by iexpl0re"
-        author = "Seth Hardy"
-        last_modified = "2014-07-21"
-        
-    strings:
-        $ = "%USERPROFILE%\\IEXPL0RE.EXE"
-        $ = "\"<770j (("
-        $ = "\\Users\\%s\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\IEXPL0RE.LNK"
-        $ = "\\Documents and Settings\\%s\\Application Data\\Microsoft\\Internet Explorer\\IEXPL0RE.EXE"
-        $ = "LoaderV5.dll"
-        // stage 2
-        $ = "POST /index%0.9d.asp HTTP/1.1"
-        $ = "GET /search?n=%0.9d&"
-        $ = "DUDE_AM_I_SHARP-3.14159265358979x6.626176"
-        $ = "WHO_A_R_E_YOU?2.99792458x1.25663706143592"
-        $ = "BASTARD_&&_BITCHES_%0.8x"
-        $ = "c:\\bbb\\eee.txt"
-        
-    condition:
-        any of them
-
 }
 
 rule HKTL_NET_NAME_aspnetcore_bypassing_authentication {
@@ -2842,54 +3041,6 @@ condition:
    12 of them
 }
 
-rule zeroaccess_js : EK js
-{
-meta:
-   author = "Josh Berry"
-   date = "2016-06-27"
-   description = "ZeroAccess Exploit Kit Detection"
-   hash0 = "a9f30483a197cfdc65b4a70b8eb738ab"
-   sample_filetype = "js-html"
-   yaragenerator = "https://github.com/Xen0ph0n/YaraGenerator"
-strings:
-   $string0 = "Square ad tag  (tile"
-   $string1 = "  adRandNum "
-   $string2 = " cellspacing"
-   $string3 = "\\n//-->\\n</script>"
-   $string4 = "format"
-   $string5 = "//-->' "
-   $string6 = "2287974446"
-   $string7 = "NoScrBeg "
-   $string8 = "-- start adblade -->' "
-   $string9 = "3427054556"
-   $string10 = "        while (i >"
-   $string11 = "return '<table width"
-   $string12 = "</scr' "
-   $string13 = " s.substring(0, i"
-   $string14 = " /></a></noscript>' "
-   $string15 = "    else { isEmail "
-   $string16 = ").submit();"
-   $string17 = " border"
-   $string18 = "pub-8301011321395982"
-condition:
-   18 of them
-}
-rule zeroaccess_js2 : EK js
-{
-meta:
-   author = "Josh Berry"
-   date = "2016-06-27"
-   description = "ZeroAccess Exploit Kit Detection"
-   hash0 = "b5fda04856b98c254d33548cc1c1216c"
-   sample_filetype = "js-html"
-   yaragenerator = "https://github.com/Xen0ph0n/YaraGenerator"
-strings:
-   $string0 = "ApiClientConfig"
-   $string1 = "function/.test(pa.toString())"
-   $string2 = "background-image:url(http:\\/\\/static.ak.fbcdn.net\\/rsrc.php\\/v2\\/y6\\/x\\/s816eWC-2sl.gif)}"
-   $string3 = "Music.init"
-   $string4 = "',header:'bool',recommendations:'bool',site:'hostname'}
-
 rule ASProtectvIfyouknowthisversionpostonPEiDboardh2
 {
       meta:
@@ -2957,31 +3108,6 @@ rule Joomla_cve_2023_23752_exploit_detection
     $vulnPathPasswords    = /GET\s+\/api\/index\.php\/v1\/config\/application\?public=true[^\r\n]*\s200\s/
   condition:
 	($vulnPathUsers or $vulnPathPasswords)
-}
-
-rule hacktool_windows_mimikatz_modules
-{
-    meta:
-        description = "Mimikatz credential dump tool: Modules"
-        reference = "https://github.com/gentilkiwi/mimikatz"
-        author = "@fusionrace"
-        modified = "2023-07-26"
-        md5_1 = "0c87c0ca04f0ab626b5137409dded15ac66c058be6df09e22a636cc2bcb021b8"
-        md5_2 = "0c91f4ca25aedf306d68edaea63b84efec0385321eacf25419a3050f2394ee3b"
-        md5_3 = "09054be3cc568f57321be32e769ae3ccaf21653e5d1e3db85b5af4421c200669"
-        md5_4 = "004c07dcd04b4e81f73aacd99c7351337f894e4dac6c91dcfaadb4a1510a967c"
-        md5_5 = "0fee62bae204cf89d954d2cbf82a76b771744b981aef4c651caab43436b5a143"
-    strings:
-        $s1 = "mimilib" fullword ascii wide
-        $s2 = "mimidrv" fullword ascii wide
-        $s3 = "mimilove" fullword ascii wide
-
-        $fp1 = "SgrmEnclave" wide
-        $fp2 = "Kaspersky Lab Anti-Rootkit Monitor Driver" wide
-    condition:
-        uint16(0) == 0x5a4d and filesize < 800KB and /* Added by Florian Roth to avoid false positives */
-        1 of ($s*) and 
-        not 1 of ($fp*)
 }
 
 rule SUSP_ELF_SPARC_Hunting_SBZ_UniqueStrings {
@@ -3103,6 +3229,35 @@ rule APT_Lazarus_RAT_Jun18_1 {
       )
 }
 
+rule sql_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file sql.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "8334249cbb969f2d33d678fec2b680c5"
+		id = "41730336-0dce-5ed9-95b0-c911a4e3cb48"
+	strings:
+		$s1 = "fputs ($fp, \"# RST MySQL tools\\r\\n# Home page: http://rst.void.ru\\r\\n#"
+		$s2 = "http://rst.void.ru"
+		$s3 = "print \"<a href=\\\"$_SERVER[PHP_SELF]?s=$s&login=$login&passwd=$passwd&"
+	condition:
+		1 of them
+		and not uint32(0) == 0x6D783F3C /* <?xm */
+}
+
+rule telnet_cgi {
+	meta:
+		description = "Semi-Auto-generated  - file telnet.cgi.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "dee697481383052980c20c48de1598d1"
+		id = "4ca3dace-cd80-58e4-a4de-47dcc64dac0e"
+	strings:
+		$s1 = "W A R N I N G: Private Server"
+		$s2 = "print \"Set-Cookie: SAVEDPWD=;\\n\"; # remove password cookie"
+		$s3 = "$Prompt = $WinNT ? \"$CurrentDir> \" : \"[admin\\@$ServerName $C"
+	condition:
+		1 of them
+}
+
 rule APT_lazaruswannacry {
    meta:
       description = "Rule based on shared code between Feb 2017 Wannacry sample and Lazarus backdoor from Feb 2015 discovered by Neel Mehta"
@@ -3182,25 +3337,6 @@ rule LOG_EXPL_MOVEit_Exploitation_Indicator_Jun23_2 {
    condition:
       1 of ($a*) and 3 of ($s*)
       or all of ($s*)
-}
-
-rule apt_equation_exploitlib_mutexes {
-    meta:
-        copyright = "Kaspersky Lab"
-        description = "Rule to detect Equation group's Exploitation library http://goo.gl/ivt8EW"
-        version = "1.0"
-		date = "2016-02-15"
-        modified = "2023-01-27"
-        reference = "http://securelist.com/blog/research/68750/equation-the-death-star-of-malware-galaxy/"
-        id = "d060bfd7-fb16-55d3-8a39-1197fdd8e759"
-    strings:
-        $a1="prkMtx" wide
-        $a2="cnFormSyncExFBC" wide
-        $a3="cnFormVoidFBC" wide
-        $a4="cnFormSyncExFBC"
-        $a5="cnFormVoidFBC"
-    condition:
-        uint16(0) == 0x5A4D and any of ($a*)
 }
 
 rule Equation_Kaspersky_TripleFantasy_1 {
@@ -3388,50 +3524,6 @@ rule Equation_Kaspersky_EOP_Package {
 		$s6 = "cnFormVoidFBC" fullword wide
 	condition:
 		uint16(0) == 0x5a4d and filesize < 100000 and all of ($s*)
-}
-
-rule Equation_Kaspersky_TripleFantasy_Loader {
-	meta:
-		description = "Equation Group Malware - TripleFantasy Loader"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "http://goo.gl/ivt8EW"
-		date = "2015/02/16"
-		hash = "4ce6e77a11b443cc7cbe439b71bf39a39d3d7fa3"
-		id = "562e7855-f011-5985-91c0-622b2fec32f8"
-	strings:
-		$x1 = "Original Innovations, LLC" fullword wide
-		$x2 = "Moniter Resource Protocol" fullword wide
-		$x3 = "ahlhcib.dll" fullword wide
-
-		$s0 = "hnetcfg.HNetGetSharingServicesPage" fullword ascii
-		$s1 = "hnetcfg.IcfGetOperationalMode" fullword ascii
-		$s2 = "hnetcfg.IcfGetDynamicFwPorts" fullword ascii
-		$s3 = "hnetcfg.HNetFreeFirewallLoggingSettings" fullword ascii
-		$s4 = "hnetcfg.HNetGetShareAndBridgeSettings" fullword ascii
-		$s5 = "hnetcfg.HNetGetFirewallSettingsPage" fullword ascii
-	condition:
-		uint16(0) == 0x5a4d and filesize < 50000 and ( all of ($x*) and all of ($s*) )
-}
-
-rule Equation_Kaspersky_SuspiciousString {
-	meta:
-		description = "Equation Group Malware - suspicious string found in sample"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "http://goo.gl/ivt8EW"
-		date = "2015/02/17"
-		score = 60
-		id = "a5f203a7-0c50-5658-89f4-44533ed4eef0"
-	strings:
-		$s1 = "i386\\DesertWinterDriver.pdb" fullword
-		$s2 = "Performing UR-specific post-install..."
-		$s3 = "Timeout waiting for the \"canInstallNow\" event from the implant-specific EXE!"
-		$s4 = "STRAITSHOOTER30.exe"
-		$s5 = "standalonegrok_2.1.1.1"
-		$s6 = "c:\\users\\rmgree5\\"
-	condition:
-		uint16(0) == 0x5a4d and filesize < 500000 and all of ($s*)
 }
 
 rule CN_Honker_Injection_Transit_jmCook {
@@ -3911,50 +4003,6 @@ rule APT_Malware_CommentCrew_MiniASP {
 		( 1 of ($x*) ) or 
 		( all of ($z*) ) or 
 		( 8 of ($s*) )
-}
-
-rule Nautilus_forensic_artificats {
-    meta:
-        description = "Rule for detection of Nautilus related strings"
-        author = "NCSC UK / Florian Roth"
-        date = "2017/11/23"
-        score = 60
-        reference = "https://www.ncsc.gov.uk/alerts/turla-group-malware"
-        id = "0c0a24da-4dbc-543a-9ec0-a5b1ec75c889"
-    strings:
-        $ = "App_Web_juvjerf3.dll" fullword ascii
-        $ = "App_Web_vcplrg8q.dll" fullword ascii
-        $ = "ar_all2.txt" fullword ascii
-        $ = "ar_sa.txt" fullword ascii
-        $ = "Convert.FromBase64String(temp[1])" fullword ascii
-        $ = "D68gq#5p0(3Ndsk!" fullword ascii
-        $ = "dcomnetsrv" fullword ascii
-        $ = "ERRORF~1.ASP" fullword ascii
-        $ = "intelliAdminRpc" fullword ascii
-        $ = "J8fs4F4rnP7nFl#f" fullword ascii
-        $ = "Msnb.exe" fullword ascii
-        $ = "nautilus-service.dll"
-        $ = "Neuron_service" fullword ascii
-        $ = "owa_ar2.bat" fullword ascii
-        $ = "payload.x64.dll.system" fullword ascii
-        $ = "service.x64.dll.system" fullword ascii
-    condition:
-        1 of them
-}
-
-rule StoneDrill_main_sub {
-   meta:
-      author = "Kaspersky Lab"
-      description = "Rule to detect StoneDrill (decrypted) samples"
-      hash1 = "d01781f1246fd1b64e09170bd6600fe1"
-      hash2 = "ac3c25534c076623192b9381f926ba0d"
-      reference = "https://securelist.com/blog/research/77725/from-shamoon-to-stonedrill/"
-      version = "1.0"
-      id = "92f53e6a-8f49-5ffa-8c16-3ec3e6f2bdcd"
-   strings:
-      $code = {B8 08 00 FE 7F FF 30 8F 44 24 ?? 68 B4 0F 00 00 FF 15 ?? ?? ?? 00 B8 08 00 FE 7F FF 30 8F 44 24 ?? 8B ?? 24 [1 - 4] 2B ?? 24 [6] F7 ?1 [5 - 12] 00}
-   condition:
-      uint16(0) == 0x5A4D and $code and filesize < 5000000
 }
 
 rule APT_UNC5221_Ivanti_ForensicArtifacts_Jan24_1 {
@@ -5046,22 +5094,6 @@ rule CoreImpact_sysdll_exe {
       $s0 or 6 of them
 }
 
-rule SecurityXploded_Producer_String {
-   meta:
-      description = "Detects hacktools by SecurityXploded"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "http://securityxploded.com/browser-password-dump.php"
-      date = "2017-07-13"
-      score = 60
-      hash1 = "d57847db5458acabc87daee6f30173348ac5956eb25e6b845636e25f5a56ac59"
-      id = "739c4ba1-5126-51cc-a2dd-cdac2737e29a"
-   strings:
-      $x1 = "http://securityxploded.com" fullword ascii
-   condition:
-      ( uint16(0) == 0x5a4d and all of them )
-}
-
 rule Casper_Backdoor_x86 {
    meta:
       description = "Casper French Espionage Malware - Win32/ProxyBot.B - x86 Payload http://goo.gl/VRJNLo"
@@ -5622,87 +5654,6 @@ rule APT15_Malware_Mar18_BS2005 {
          1 of ($x*) or
          2 of them
       )
-}
-
-rule CobaltStrike_Resources_Smbstager_Bin_v2_5_through_v4_x
-{
-	meta:
-		description = "Cobalt Strike's resources/smbstager.bin signature for versions 2.5 to 4.x"
-		hash =  "946af5a23e5403ea1caccb2e0988ec1526b375a3e919189f16491eeabc3e7d8c"
-		author = "gssincla@google.com"
-		reference = "https://cloud.google.com/blog/products/identity-security/making-cobalt-strike-harder-for-threat-actors-to-abuse"
-		date = "2022-11-18"
-		
-		id = "074b7d83-e3d8-541c-804b-2417c21f54d5"
-	strings:
-	/*
-		31 ??     xor     eax, eax
-		AC        lodsb
-		C1 ?? 0D  ror     edi, 0Dh
-		01 ??     add     edi, eax
-		38 ??     cmp     al, ah
-		75 ??     jnz     short loc_10000054
-		03 [2]    add     edi, [ebp-8]
-		3B [2]    cmp     edi, [ebp+24h]
-		75 ??     jnz     short loc_1000004A
-		5?        pop     eax
-		8B ?? 24  mov     ebx, [eax+24h]
-		01 ??     add     ebx, edx
-		66 8B [2] mov     cx, [ebx+ecx*2]
-		8B ?? 1C  mov     ebx, [eax+1Ch]
-		01 ??     add     ebx, edx
-		8B ?? 8B  mov     eax, [ebx+ecx*4]
-		01 ??     add     eax, edx
-		89 [3]    mov     [esp+28h+var_4], eax
-		5?        pop     ebx
-		5?        pop     ebx
-	*/
-
-	$apiLocator = {
-			31 ?? 
-			AC
-			C1 ?? 0D 
-			01 ?? 
-			38 ?? 
-			75 ?? 
-			03 [2]
-			3B [2]
-			75 ?? 
-			5? 
-			8B ?? 24 
-			01 ?? 
-			66 8B [2]
-			8B ?? 1C 
-			01 ?? 
-			8B ?? 8B 
-			01 ?? 
-			89 [3]
-			5? 
-			5? 
-		}
-
-    // the signature for the stagers overlap significantly. Looking for smbstager.bin specific bytes helps delineate sample types
-	  $smb = { 68 C6 96 87 52 }	
-	  
-	  // This code block helps differentiate between smbstager.bin and metasploit's engine which has reasonable level of overlap
-	  	/*
-		6A 40          push    40h ; '@'
-		68 00 10 00 00 push    1000h
-		68 FF FF 07 00 push    7FFFFh
-		6A 00          push    0
-		68 58 A4 53 E5 push    VirtualAlloc
-	*/
-
-	$smbstart = {
-			6A 40
-			68 00 10 00 00
-			68 FF FF 07 00
-			6A 00
-			68 58 A4 53 E5
-		}
-	
-	condition:
-		$apiLocator and $smb and $smbstart
 }
 
 rule TurlaMosquito_Mal_6 {

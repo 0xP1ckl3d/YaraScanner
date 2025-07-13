@@ -4,13 +4,13 @@
   "counts": {},
   "compilation": {
     "bundles": {
-      "generic": 0,
-      "pe": 0,
-      "webshells": 0,
-      "scripts": 0
+      "generic": 5318,
+      "scripts": 1726,
+      "webshells": 328,
+      "pe": 2106
     },
-    "total_unique_rules": 15325,
-    "duplicates_removed": 3996,
-    "memory_usage_mb": 65.3203125
+    "total_unique_rules": 9473,
+    "duplicates_removed": 1253,
+    "memory_usage_mb": 58.09765625
   }
 }

