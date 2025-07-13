@@ -1,5 +1,5 @@
 {
-  "built": "2025-07-13T12:31:36.713816",
+  "built": "2025-07-13T12:34:39.889278Z",
   "sources": [
     {
       "repo": "SigmaHQ/sigma",
@@ -35,5 +35,17 @@
     "sigma_rules": 3801,
     "yara_rules": 1953,
     "total_sources": 6
+  },
+  "compilation": {
+    "bundles": {
+      "generic": 5380,
+      "scripts": 1764,
+      "webshells": 334,
+      "pe": 2109
+    },
+    "total_unique_rules": 9582,
+    "duplicates_removed": 1144,
+    "memory_usage_mb": 69.3984375,
+    "compiled_at": "2025-07-13T12:34:39.889278Z"
   }
 }
