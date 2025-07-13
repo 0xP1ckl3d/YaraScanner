@@ -1,5 +1,16 @@
 {
   "built": "",
   "sources": [],
-  "counts": {}
+  "counts": {},
+  "compilation": {
+    "bundles": {
+      "generic": 0,
+      "pe": 0,
+      "webshells": 0,
+      "scripts": 0
+    },
+    "total_unique_rules": 15325,
+    "duplicates_removed": 3996,
+    "memory_usage_mb": 65.3203125
+  }
 }
