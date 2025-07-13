@@ -564,7 +564,7 @@ echo "$(date): Weekly refresh completed successfully"
         return True
         
     def update_compilation_stats(self, compiled_bundles, total_rules):
-        """Update sources.json with compilation statistics"""
+        """Update sources.json with compilation statistics and proper timestamp"""
         sources_file = self.rules_dir / "sources.json"
         
         try:
@@ -574,18 +574,26 @@ echo "$(date): Weekly refresh completed successfully"
             else:
                 data = {"sources": []}
                 
+            # Update build timestamp with current ISO-8601 UTC time
+            from datetime import datetime
+            build_timestamp = datetime.utcnow().isoformat() + 'Z'
+            
             # Add compilation metadata
             data.update({
+                "built": build_timestamp,  # Always update with fresh timestamp on successful compilation
                 "compilation": {
                     "bundles": compiled_bundles,
                     "total_unique_rules": total_rules,
                     "duplicates_removed": self.duplicate_count,
-                    "memory_usage_mb": self.get_memory_usage_mb()
+                    "memory_usage_mb": self.get_memory_usage_mb(),
+                    "compiled_at": build_timestamp
                 }
             })
             
             with open(sources_file, 'w') as f:
                 json.dump(data, f, indent=2)
+                
+            self.log(f"✅ Metadata updated with timestamp: {build_timestamp}")
                 
         except Exception as e:
             self.log(f"Warning: Could not update compilation stats: {e}")
