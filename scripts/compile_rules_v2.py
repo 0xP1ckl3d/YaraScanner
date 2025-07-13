@@ -134,7 +134,11 @@ class YARARuleCompiler:
         return process.memory_info().rss / 1024 / 1024
         
     def hash_rule_content(self, rule_content):
-        """Create hash of rule content for deduplication"""
+        """Create hash of rule content for deduplication - includes rule name"""
+        # Extract rule name for better deduplication
+        rule_name_match = re.search(r'rule\s+([a-zA-Z_][a-zA-Z0-9_]*)', rule_content)
+        rule_name = rule_name_match.group(1) if rule_name_match else "unknown"
+        
         # Extract strings and condition sections for comparison
         strings_match = re.search(r'strings:\s*(.*?)\s*condition:', rule_content, re.DOTALL | re.IGNORECASE)
         condition_match = re.search(r'condition:\s*(.*?)\s*}', rule_content, re.DOTALL | re.IGNORECASE)
@@ -148,15 +152,12 @@ class YARARuleCompiler:
             string_lines = [line.strip() for line in strings_section.split('\n') if line.strip() and '$' in line]
             string_lines.sort()
             
-            content_to_hash = '\n'.join(string_lines) + '\n' + condition_section
+            # Include rule name in hash to avoid accidental merges
+            content_to_hash = f"rule:{rule_name}\n" + '\n'.join(string_lines) + '\n' + condition_section
             return hashlib.md5(content_to_hash.encode()).hexdigest()
         
-        # Fallback to simple rule name hash
-        rule_match = re.search(r'rule\s+([a-zA-Z_][a-zA-Z0-9_]*)', rule_content)
-        if rule_match:
-            return hashlib.md5(rule_match.group(1).encode()).hexdigest()
-        
-        return hashlib.md5(rule_content.encode()).hexdigest()
+        # Fallback to rule name hash
+        return hashlib.md5(f"rule:{rule_name}".encode()).hexdigest()
         
     def is_duplicate_rule(self, rule_content):
         """Check if rule is duplicate based on content hash"""
