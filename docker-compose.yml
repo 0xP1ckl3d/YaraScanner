@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  edr-scanner:
+    build: .
+    ports:
+      - "3000:3000"    # Frontend
+      - "8001:8001"    # Backend API
+    environment:
+      - MONGO_URL=mongodb://mongo:27017
+      - DB_NAME=edr_scanner
+      - ENVIRONMENT=production
+    volumes:
+      - ./rules/local:/app/rules/local
+      - ./logs:/var/log
+    depends_on:
+      - mongo
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/api/rules/stats"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  mongo:
+    image: mongo:7.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+      - ./docker/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    environment:
+      - MONGO_INITDB_DATABASE=edr_scanner
+    restart: unless-stopped
+
+volumes:
+  mongo_data:
