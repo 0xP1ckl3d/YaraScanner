@@ -164,15 +164,18 @@ backend:
 
   - task: "Rules metadata API endpoint"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: "NA"
           agent: "main"
           comment: "Implemented GET /api/rules/latest endpoint to return rule metadata. Need to test response format."
+        - working: true
+          agent: "testing"
+          comment: "✅ Rules metadata API endpoint working perfectly. Returns proper JSON with built timestamp, sources array (SigmaHQ, Yara-Rules, 100DaysofYARA, yarahq.github.io), and total_rules count. Response structure matches RulesInfo model specification."
 
   - task: "Admin refresh API endpoint"
     implemented: true
