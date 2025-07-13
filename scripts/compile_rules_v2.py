@@ -359,9 +359,9 @@ class YARARuleCompiler:
                 f.write(combined_rules)
             
             # Try compiling with fewer rules to find problematic ones
-            if len(valid_rules) > 100:
-                self.log(f"Trying compilation with reduced rule set for {bundle_name}...")
-                return self.compile_bundle_safe(bundle_name, valid_rules[:100])
+            if len(valid_rules) > 500:
+                self.log(f"Trying compilation with expanded rule set for {bundle_name}...")
+                return self.compile_bundle_safe(bundle_name, valid_rules[:2000])  # Try more rules
             
             return False
         except Exception as e:
