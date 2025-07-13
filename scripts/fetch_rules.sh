@@ -124,7 +124,7 @@ log "Fetching 0x4E0x650x6F yara_signatures..."
 if [ ! -d "yara/yara_signatures" ]; then
     git clone --depth 1 https://github.com/0x4E0x650x6F/yara_signatures.git yara/yara_signatures
 else
-    cd yara/yara_signatures && git pull origin main && cd ../..
+    cd yara/yara_signatures && git pull origin main 2>/dev/null || git pull origin master && cd ../..
 fi
 YARA_SIGS_COMMIT=$(cd yara/yara_signatures && git rev-parse HEAD)
 update_source "0x4E0x650x6F/yara_signatures" "$YARA_SIGS_COMMIT" "yara"
