@@ -149,15 +149,18 @@ backend:
 
   - task: "Text scanning API endpoint"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: "NA"
           agent: "main"
           comment: "Implemented POST /api/scan/text endpoint for raw text scanning. Need to test text content scanning."
+        - working: true
+          agent: "testing"
+          comment: "✅ Text scanning API endpoint working correctly. Tested with clean text, malicious content (malware/virus/trojan keywords), and various text inputs. YARA rules properly detect suspicious content and return appropriate status (clean/suspicious/bad) with match details."
 
   - task: "Rules metadata API endpoint"
     implemented: true
