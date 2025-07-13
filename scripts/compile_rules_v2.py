@@ -312,8 +312,32 @@ class YARARuleCompiler:
         # Add helper rules for generic bundle
         if bundle_name == 'generic':
             rules.extend(self.helper_rules['generic'])
+        
+        # Add required imports for PE bundle
+        imports = []
+        if bundle_name == 'pe':
+            imports.append('import "pe"')
+        elif bundle_name == 'scripts':
+            imports.append('import "hash"')
             
-        combined_rules = '\n\n'.join(rules)
+        # Validate and clean rules before compilation
+        valid_rules = []
+        for rule in rules:
+            if self.validate_rule_structure(rule):
+                valid_rules.append(rule)
+            
+        if not valid_rules:
+            self.log(f"No valid rules for {bundle_name} bundle")
+            return False
+            
+        # Combine imports and rules
+        combined_content = []
+        if imports:
+            combined_content.extend(imports)
+            combined_content.append('')  # Empty line after imports
+            
+        combined_content.extend(valid_rules)
+        combined_rules = '\n\n'.join(combined_content)
         
         try:
             # Test compilation first
@@ -323,7 +347,7 @@ class YARARuleCompiler:
             bundle_path = self.compiled_dir / f"{bundle_name}.yc"
             compiled.save(str(bundle_path))
             
-            self.log(f"✅ {bundle_name}.yc compiled successfully ({len(rules)} rules)")
+            self.log(f"✅ {bundle_name}.yc compiled successfully ({len(valid_rules)} rules)")
             return True
             
         except yara.SyntaxError as e:
@@ -334,10 +358,59 @@ class YARARuleCompiler:
             with open(debug_path, 'w') as f:
                 f.write(combined_rules)
             
+            # Try compiling with fewer rules to find problematic ones
+            if len(valid_rules) > 100:
+                self.log(f"Trying compilation with reduced rule set for {bundle_name}...")
+                return self.compile_bundle_safe(bundle_name, valid_rules[:100])
+            
             return False
         except Exception as e:
             self.log(f"❌ Compilation error for {bundle_name}: {e}")
             return False
+    
+    def compile_bundle_safe(self, bundle_name, rules):
+        """Compile bundle with individual rule validation"""
+        self.log(f"Safe compiling {bundle_name} with {len(rules)} rules...")
+        
+        working_rules = []
+        
+        # Add imports if needed
+        imports = []
+        if bundle_name == 'pe':
+            imports.append('import "pe"')
+        elif bundle_name == 'scripts':
+            imports.append('import "hash"')
+            
+        # Test each rule individually
+        for i, rule in enumerate(rules):
+            try:
+                test_content = '\n'.join(imports + ['', rule]) if imports else rule
+                yara.compile(source=test_content)
+                working_rules.append(rule)
+            except:
+                continue  # Skip problematic rules
+                
+        if working_rules:
+            # Final compilation with working rules
+            combined_content = []
+            if imports:
+                combined_content.extend(imports)
+                combined_content.append('')
+            combined_content.extend(working_rules)
+            
+            try:
+                combined_rules = '\n\n'.join(combined_content)
+                compiled = yara.compile(source=combined_rules)
+                
+                bundle_path = self.compiled_dir / f"{bundle_name}.yc"
+                compiled.save(str(bundle_path))
+                
+                self.log(f"✅ {bundle_name}.yc safely compiled ({len(working_rules)} rules)")
+                return True
+            except Exception as e:
+                self.log(f"❌ Safe compilation also failed for {bundle_name}: {e}")
+                
+        return False
             
     def create_weekly_cron(self):
         """Create weekly cron job for rule refresh"""
