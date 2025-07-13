@@ -115,29 +115,58 @@ YARA_COUNT=$(find yara/ -name "*.yar" -o -name "*.yara" 2>/dev/null | wc -l)
 log "Found $SIGMA_COUNT Sigma rules and $YARA_COUNT YARA rules"
 
 # Generate comprehensive metadata file
-python3 << EOF
+python3 << 'EOF'
 import json
+import os
 from datetime import datetime
+
+# Get commit variables from environment, with fallbacks
+sigma_commit = os.environ.get('SIGMA_COMMIT', 'unknown')
+yara_rules_commit = os.environ.get('YARA_RULES_COMMIT', 'unknown')
+yara_100days_commit = os.environ.get('YARA_100DAYS_COMMIT', 'unknown')
+signature_base_commit = os.environ.get('SIGNATURE_BASE_COMMIT', 'unknown')
+mandiant_commit = os.environ.get('MANDIANT_COMMIT', 'not_available')
+yara_sigs_commit = os.environ.get('YARA_SIGS_COMMIT', 'not_available')
+boxer_commit = os.environ.get('BOXER_COMMIT', 'not_available')
+elastic_commit = os.environ.get('ELASTIC_COMMIT', 'unknown')
+
+# Get rule counts
+sigma_count = int(os.environ.get('SIGMA_COUNT', '0'))
+yara_count = int(os.environ.get('YARA_COUNT', '0'))
 
 sources_data = {
     "built": datetime.now().isoformat(),
     "sources": [
-        {"repo": "SigmaHQ/sigma", "commit": "$SIGMA_COMMIT", "type": "sigma"},
-        {"repo": "Yara-Rules/rules", "commit": "$YARA_RULES_COMMIT", "type": "yara"},
-        {"repo": "100DaysofYARA/2025", "commit": "$YARA_100DAYS_COMMIT", "type": "yara"},
-        {"repo": "Neo23x0/signature-base", "commit": "$SIGNATURE_BASE_COMMIT", "type": "yara"},
-        {"repo": "mandiant/malware-research", "commit": "$MANDIANT_COMMIT", "type": "yara"},
-        {"repo": "0x4E0x650x6F/yara_signatures", "commit": "$YARA_SIGS_COMMIT", "type": "yara"},
-        {"repo": "ninoseki/boxer", "commit": "$BOXER_COMMIT", "type": "yara"},
-        {"repo": "elastic/protections-artifacts", "commit": "$ELASTIC_COMMIT", "type": "yara"},
-        {"repo": "yarahq.github.io", "type": "bundle"}
+        {"repo": "SigmaHQ/sigma", "commit": sigma_commit, "type": "sigma"},
+        {"repo": "Yara-Rules/rules", "commit": yara_rules_commit, "type": "yara"},
+        {"repo": "100DaysofYARA/2025", "commit": yara_100days_commit, "type": "yara"},
+        {"repo": "Neo23x0/signature-base", "commit": signature_base_commit, "type": "yara"},
+        {"repo": "elastic/protections-artifacts", "commit": elastic_commit, "type": "yara"},
     ],
     "counts": {
-        "sigma_rules": $SIGMA_COUNT,
-        "yara_rules": $YARA_COUNT,
-        "total_sources": 9
+        "sigma_rules": sigma_count,
+        "yara_rules": yara_count,
+        "total_sources": 5
     }
 }
+
+# Add optional sources if available
+if mandiant_commit != 'not_available':
+    sources_data["sources"].append({"repo": "mandiant/malware-research", "commit": mandiant_commit, "type": "yara"})
+    sources_data["counts"]["total_sources"] += 1
+
+if yara_sigs_commit != 'not_available':
+    sources_data["sources"].append({"repo": "0x4E0x650x6F/yara_signatures", "commit": yara_sigs_commit, "type": "yara"})
+    sources_data["counts"]["total_sources"] += 1
+
+if boxer_commit != 'not_available':
+    sources_data["sources"].append({"repo": "ninoseki/boxer", "commit": boxer_commit, "type": "yara"})
+    sources_data["counts"]["total_sources"] += 1
+
+# Add YARA Forge if downloaded
+if os.path.exists('/app/rules/yara/yara-forge-full.zip'):
+    sources_data["sources"].append({"repo": "yarahq.github.io", "type": "bundle"})
+    sources_data["counts"]["total_sources"] += 1
 
 with open('/app/rules/sources.json', 'w') as f:
     json.dump(sources_data, f, indent=2)
