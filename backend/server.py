@@ -144,13 +144,14 @@ def create_basic_yara_from_sigma(sigma_file):
                 escaped = keyword.replace('\\\\', '\\\\\\\\').replace('"', '\\\\"')
                 strings_section.append(f'        $s{i} = "{escaped}" nocase')
             
+            newline = chr(10)
             yara_rule = f'''rule {rule_name} {{
     meta:
         description = "{description.replace('"', '\\\\"')}"
         source = "Sigma Rule: {title}"
         
     strings:
-{chr(10).join(strings_section)}
+{newline.join(strings_section)}
         
     condition:
         any of them
