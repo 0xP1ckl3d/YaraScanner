@@ -6,11 +6,11 @@
     "bundles": {
       "generic": 5318,
       "scripts": 1726,
-      "webshells": 328,
+      "webshells": 0,
       "pe": 2106
     },
     "total_unique_rules": 9473,
     "duplicates_removed": 1253,
-    "memory_usage_mb": 58.16796875
+    "memory_usage_mb": 62.03515625
   }
 }
