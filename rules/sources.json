@@ -1,5 +1,5 @@
 {
-  "built": "2025-07-13T12:31:07.489638",
+  "built": "2025-07-13T12:31:36.713816",
   "sources": [
     {
       "repo": "SigmaHQ/sigma",
@@ -32,8 +32,8 @@
     }
   ],
   "counts": {
-    "sigma_rules": 0,
-    "yara_rules": 0,
+    "sigma_rules": 3801,
+    "yara_rules": 1953,
     "total_sources": 6
   }
 }
