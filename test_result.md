@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "EDR-Safe Scanner – local YARA/Sigma sweeper for payload or source files. Build a local scanner that fetches YARA/Sigma rules from multiple sources, converts Sigma to YARA, compiles them, and provides scanning API endpoints for file analysis."
+user_problem_statement: "EDR-Safe Scanner v2 Enhancement Sprint: Complete local YARA/Sigma sweeper with modular bundle architecture, Infotrust branding, expanded testing, and security hardening. Build CPU-only scanner staying ≤2GB RSS with dynamic bundle loading, comprehensive threat detection, and production-ready UI."
 
 backend:
   - task: "Rule fetching system"
