@@ -71,24 +71,28 @@ clone_or_update "https://github.com/Neo23x0/signature-base.git" "yara/signature-
 SIGNATURE_BASE_COMMIT=$(cd yara/signature-base && git rev-parse HEAD)
 log "signature-base commit: $SIGNATURE_BASE_COMMIT"
 
-# 5. NEW: Fetch Mandiant malware-research
-clone_or_update "https://github.com/mandiant/malware-research.git" "yara/malware-research" "master"
-MANDIANT_COMMIT=$(cd yara/malware-research && git rev-parse HEAD)
-log "malware-research commit: $MANDIANT_COMMIT"
-
-# 6. NEW: Fetch 0x4E0x650x6F yara_signatures (try both branches)
-if ! clone_or_update "https://github.com/0x4E0x650x6F/yara_signatures.git" "yara/yara_signatures" "main"; then
-    clone_or_update "https://github.com/0x4E0x650x6F/yara_signatures.git" "yara/yara_signatures" "master"
+# 5. NEW: Fetch Mandiant malware-research (if available)
+if clone_or_update "https://github.com/mandiant/malware-research.git" "yara/malware-research" "master"; then
+    MANDIANT_COMMIT=$(cd yara/malware-research && git rev-parse HEAD)
+    update_source "mandiant/malware-research" "$MANDIANT_COMMIT" "yara"
+    log "malware-research commit: $MANDIANT_COMMIT"
 fi
-YARA_SIGS_COMMIT=$(cd yara/yara_signatures && git rev-parse HEAD)
-log "yara_signatures commit: $YARA_SIGS_COMMIT"
 
-# 7. NEW: Fetch ninoseki boxer (try both branches)
-if ! clone_or_update "https://github.com/ninoseki/boxer.git" "yara/boxer" "main"; then
-    clone_or_update "https://github.com/ninoseki/boxer.git" "yara/boxer" "master"
+# 6. NEW: Fetch 0x4E0x650x6F yara_signatures (if available)
+if clone_or_update "https://github.com/0x4E0x650x6F/yara_signatures.git" "yara/yara_signatures" "main" || \
+   clone_or_update "https://github.com/0x4E0x650x6F/yara_signatures.git" "yara/yara_signatures" "master"; then
+    YARA_SIGS_COMMIT=$(cd yara/yara_signatures && git rev-parse HEAD)
+    update_source "0x4E0x650x6F/yara_signatures" "$YARA_SIGS_COMMIT" "yara"
+    log "yara_signatures commit: $YARA_SIGS_COMMIT"
 fi
-BOXER_COMMIT=$(cd yara/boxer && git rev-parse HEAD)
-log "boxer commit: $BOXER_COMMIT"
+
+# 7. NEW: Fetch ninoseki boxer (if available)
+if clone_or_update "https://github.com/ninoseki/boxer.git" "yara/boxer" "main" || \
+   clone_or_update "https://github.com/ninoseki/boxer.git" "yara/boxer" "master"; then
+    BOXER_COMMIT=$(cd yara/boxer && git rev-parse HEAD)
+    update_source "ninoseki/boxer" "$BOXER_COMMIT" "yara"
+    log "boxer commit: $BOXER_COMMIT"
+fi
 
 # 8. NEW: Fetch Elastic protections-artifacts
 clone_or_update "https://github.com/elastic/protections-artifacts.git" "yara/protections-artifacts" "main"
