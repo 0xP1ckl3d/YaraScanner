@@ -27,7 +27,7 @@ class YARARuleCompiler:
         self.compiled_dir.mkdir(exist_ok=True)
         self.local_dir.mkdir(exist_ok=True)
         
-        # Rule categorization patterns
+        # Bundle categorization patterns with enhanced webshell detection
         self.bundle_patterns = {
             'pe': [
                 r'import\s+"pe"',
@@ -51,11 +51,18 @@ class YARARuleCompiler:
             'webshells': [
                 r'webshell',
                 r'<?php|<%|asp',
-                r'eval\s*\(',
-                r'base64_decode',
-                r'shell_exec|system\(',
+                r'eval\(|assert\(',
+                r'base64_decode\(',
+                r'gzinflate\(',
+                r'cmd=system',
+                r'shell_exec',
                 r'backdoor.*web',
-                r'upload.*shell'
+                r'upload.*shell',
+                r'whoami\.php',
+                r'\$_post|\$_get',
+                r'system\(',
+                r'passthru\(',
+                r'exec\('
             ]
         }
         
