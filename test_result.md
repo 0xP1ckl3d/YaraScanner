@@ -267,9 +267,8 @@ metadata:
 
 test_plan:
   current_focus:
-    - "File scanning API endpoint"
-    - "Text scanning API endpoint"
-    - "Rules metadata API endpoint"
+    - "Infotrust branding and UI design"
+    - "Security and performance features"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
