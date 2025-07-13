@@ -2142,6 +2142,19 @@ rule webshell_r57_1_4_0 {
 		all of them
 }
 
+rule webshell_jsp_hsxa1 {
+	meta:
+		description = "Web Shell - file hsxa1.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "5686d5a38c6f5b8c55095af95c2b0244"
+	strings:
+		$s0 = "<%@ page language=\"java\" pageEncoding=\"gbk\"%><jsp:directive.page import=\"ja"
+	condition:
+		all of them
+}
+
 rule webshell_asp_ajn {
 	meta:
 		description = "Web Shell - file ajn.asp"
@@ -2368,6 +2381,19 @@ rule webshell_php_moon {
 		2 of them
 }
 
+rule webshell_jsp_jdbc {
+	meta:
+		description = "Web Shell - file jdbc.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "23b0e6f91a8f0d93b9c51a2a442119ce"
+	strings:
+		$s4 = "String cs = request.getParameter(\"z0\")==null?\"gbk\": request.getParameter(\"z"
+	condition:
+		all of them
+}
+
 rule webshell_minupload {
 	meta:
 		description = "Web Shell - file minupload.jsp"
@@ -2419,6 +2445,19 @@ rule webshell_jsp_asd {
 	strings:
 		$s3 = "<%@ page language=\"java\" pageEncoding=\"gbk\"%>" fullword
 		$s6 = "<input size=\"100\" value=\"<%=application.getRealPath(\"/\") %>\" name=\"url"
+	condition:
+		all of them
+}
+
+rule webshell_jsp_inback3 {
+	meta:
+		description = "Web Shell - file inback3.jsp"
+		author = "Florian Roth"
+		date = "2014/01/28"
+		score = 70
+		hash = "ea5612492780a26b8aa7e5cedd9b8f4e"
+	strings:
+		$s0 = "<%if(request.getParameter(\"f\")!=null)(new java.io.FileOutputStream(application"
 	condition:
 		all of them
 }
@@ -4875,6 +4914,17 @@ rule WebShell_php_webshells_matamu {
 		$s16 = "/* The last / in work_dir were the first charecter." fullword
 	condition:
 		2 of them
+}
+
+rule WebShell_hiddens_shell_v1 {
+	meta:
+		description = "PHP Webshells Github Archive - file hiddens shell v1.php"
+		author = "Florian Roth"
+		hash = "1674bd40eb98b48427c547bf9143aa7fbe2f4a59"
+	strings:
+		$s0 = "<?$d='G7mHWQ9vvXiL/QX2oZ2VTDpo6g3FYAa6X+8DMIzcD0eHZaBZH7jFpZzUz7XNenxSYvBP2Wy36U"
+	condition:
+		all of them
 }
 
 rule WebShell_c99_madnet {
@@ -13930,6 +13980,35 @@ rule IMPLANT_2_v9 {
       uint32(0) == 0x46445025 or uint32(1) == 0x6674725C) and all of them
 }
 
+rule IMPLANT_2_v10 {
+   meta:
+      description = "CORESHELL/SOURFACE Implant by APT28"
+      author = "US CERT"
+      reference = "https://www.us-cert.gov/ncas/current-activity/2017/02/10/Enhanced-Analysis-GRIZZLY-STEPPE"
+      date = "2017-02-10"
+      score = 85
+   strings:
+      $STR1 = { 83 ?? 06 [7-17] fa [0-10] 45 [2-4] 48 [2-4] e8 [2] FF FF [6-8]
+         48 8d [3] 48 89 [3] 45 [2] 4? [1-2] 01}
+   condition:
+      (uint16(0) == 0x5A4D) and all of them
+}
+
+rule IMPLANT_2_v11 {
+   meta:
+      description = "CORESHELL/SOURFACE Implant by APT28"
+      author = "US CERT"
+      reference = "https://www.us-cert.gov/ncas/current-activity/2017/02/10/Enhanced-Analysis-GRIZZLY-STEPPE"
+      date = "2017-02-10"
+      score = 85
+   strings:
+      $STR1 = {55 8b ec 6a fe 68 [4] 68 [4] 64 A1 00 00 00 00 50 83 EC 0C 53
+         56 57 A1 [4] 31 45 F8 33 C5 50 8D 45 F0 64 A3 00 00 00 00 [8-14] 68
+         [4] 6a 01 [1-2] FF 15 [4] FF 15 [4] 3D B7 00 00 00 75 27}
+   condition:
+      (uint16(0) == 0x5A4D) and all of them
+}
+
 rule IMPLANT_2_v12 {
    meta:
       description = "CORESHELL/SOURFACE Implant by APT28"
@@ -13957,6 +14036,31 @@ rule IMPLANT_2_v13 {
          [6-8] 48 8d [3] 48 89 [3] 45 [2] 4? [1-2] 01}
    condition:
       (uint16(0) == 0x5A4D) and all of them
+}
+
+rule IMPLANT_2_v14 {
+   meta:
+      description = "CORESHELL/SOURFACE Implant by APT28"
+      author = "US CERT"
+      reference = "https://www.us-cert.gov/ncas/current-activity/2017/02/10/Enhanced-Analysis-GRIZZLY-STEPPE"
+      date = "2017-02-10"
+      score = 85
+   strings:
+      $STR1 = {8B ?? 44 89 44 24 60 41 F7 E0 8B F2 B8 AB AA AA AA C1 EE 02 89
+         74 24 58 44 8B ?? 41 F7 ?? 8B CA BA 03 00 00 00 C1 E9 02 89 0C 24 8D
+         04 49 03 C0 44 2B ?? 44 89 ?? 24 04 3B F1 0F 83 ?? 01 00 00 8D 1C 76
+         4C 89 6C 24  }
+      $STR2 = {C5 41 F7 E0 ?? ?? ?? ?? ?? ?? 8D 0C 52 03 C9 2B C1 8B C8 ?? 8D
+         04 ?? 46 0F B6 0C ?? 40 02 C7 41 8D 48 FF 44 32 C8 B8 AB AA AA AA F7
+         E1 C1 EA 02 8D 04 52 03 C0 2B C8 B8 AB AA AA AA 46 22 0C ?? 41 8D 48
+         FE F7 E1 C1 EA 02 8D 04 52 03 C0 2B C8 8B C1 }
+      $STR3 = {41 F7 E0 C1 EA 02 41 8B C0 8D 0C 52 03 C9 2B C1 8B C8 42 8D 04
+         1B 46 0F B6 0C ?? 40 02 C6 41 8D 48 FF 44 32 C8 B8 AB AA AA AA F7 E1
+         C1 EA 02 8D 04 52 03 C0 2B C8 B8 AB AA AA AA }
+      $STR4 = {46 22 0C ?? 41 8D 48 FE F7 E1 C1 EA 02 8D 04 52 8B 54 24 58 03
+         C0 2B C8 8B C1 0F B6 4F FF 42 0F B6 04 ?? 41 0F AF CB C1 }
+   condition:
+      (uint16(0) == 0x5A4D) and any of them
 }
 
 rule IMPLANT_2_v15 {
@@ -14137,6 +14241,24 @@ rule ShellCreator2
 
   condition:
     all of them
+}
+
+rule OPCLEAVER_ShellCreator2
+{
+
+    meta:
+        description = "Shell Creator used by attackers in Operation Cleaver to create ASPX web shells"
+        reference = "http://cylance.com/assets/Cleaver/Cylance_Operation_Cleaver_Report.pdf"
+        date = "2014/12/02"
+        author = "Cylance Inc."
+        score = "70"
+
+    strings:
+        $s1 = "ShellCreator2.Properties"
+        $s2 = "set_IV"
+
+    condition:
+        all of them
 }
 
 rule FinSpy_2
@@ -16238,6 +16360,22 @@ rule WEBSHELL_H4ntu_Shell_Powered_Tsoi {
       and 1 of them
 }
 
+rule webshell_Worse_Linux_Shell_1 {
+	meta:
+		description = "Web Shell - file Worse Linux Shell.php"
+		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+		author = "Florian Roth (Nextron Systems)"
+		date = "2014/01/28"
+		old_rule_name = "webshell_Worse_Linux_Shell"
+		score = 70
+		hash = "8338c8d9eab10bd38a7116eb534b5fa2"
+		id = "393e738a-b4c2-5630-a55f-c3caee4ff75e"
+	strings:
+		$s0 = "system(\"mv \".$_FILES['_upl']['tmp_name'].\" \".$currentWD"
+	condition:
+		all of them
+}
+
 rule webshell_webshell_123 {
 	meta:
 		description = "Web shells - generated from file webshell-123.php"
@@ -16257,6 +16395,312 @@ rule webshell_webshell_123 {
 		2 of them
 }
 
+rule _nst_php_php_img_php_php_nstview_php_php {
+	meta:
+		description = "Semi-Auto-generated  - from files nst.php.php.txt, img.php.php.txt, nstview.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		hash0 = "ddaf9f1986d17284de83a17fe5f9fd94"
+		hash1 = "17a07bb84e137b8aa60f87cd6bfab748"
+		hash2 = "4745d510fed4378e4b1730f56f25e569"
+		id = "238242f5-4e57-5edb-8806-ea5e06f1f637"
+	strings:
+		$s0 = "<tr><form method=post><td><font color=red><b>Back connect:</b></font></td><td><i"
+		$s1 = "$perl_proxy_scp = \"IyEvdXNyL2Jpbi9wZXJsICANCiMhL3Vzci91c2MvcGVybC81LjAwNC9iaW4v"
+		$s2 = "<tr><form method=post><td><font color=red><b>Backdoor:</b></font></td><td><input"
+	condition:
+		1 of them
+}
+
+rule _w_php_php_c99madshell_v2_1_php_php_wacking_php_php_SpecialShell_99_php_php {
+	meta:
+		description = "Semi-Auto-generated "
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		hash0 = "38a3f9f2aa47c2e940695f3dba6a7bb2"
+		hash1 = "3ca5886cd54d495dc95793579611f59a"
+		hash2 = "9c5bb5e3a46ec28039e8986324e42792"
+		hash3 = "09609851caa129e40b0d56e90dfc476c"
+		id = "ee1fd555-f1bc-59a5-998c-f6098de8623e"
+	strings:
+		$s2 = "echo \"<hr size=\\\"1\\\" noshade><b>Done!</b><br>Total time (secs.): \".$ft"
+		$s3 = "$fqb_log .= \"\\r\\n------------------------------------------\\r\\nDone!\\r"
+	condition:
+		1 of them
+}
+
+rule _w_php_php_c99madshell_v2_1_php_php_wacking_php_php_c99shell_v1_0_php_php_c99php_SpecialShell_99_php_php {
+	meta:
+		description = "Semi-Auto-generated "
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		hash0 = "38a3f9f2aa47c2e940695f3dba6a7bb2"
+		hash1 = "3ca5886cd54d495dc95793579611f59a"
+		hash2 = "9c5bb5e3a46ec28039e8986324e42792"
+		hash3 = "d8ae5819a0a2349ec552cbcf3a62c975"
+		hash4 = "9e9ae0332ada9c3797d6cee92c2ede62"
+		hash5 = "09609851caa129e40b0d56e90dfc476c"
+		id = "ce88027c-ae08-59f3-948d-6f3d58515468"
+	strings:
+		$s0 = "$sess_data[\"cut\"] = array(); c99_s"
+		$s3 = "if ((!eregi(\"http://\",$uploadurl)) and (!eregi(\"https://\",$uploadurl))"
+	condition:
+		1 of them
+}
+
+rule _w_php_php_wacking_php_php_SpecialShell_99_php_php {
+	meta:
+		description = "Semi-Auto-generated  - from files w.php.php.txt, wacking.php.php.txt, SpecialShell_99.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		hash0 = "38a3f9f2aa47c2e940695f3dba6a7bb2"
+		hash1 = "9c5bb5e3a46ec28039e8986324e42792"
+		hash2 = "09609851caa129e40b0d56e90dfc476c"
+		id = "c01ad0e5-1aff-5128-9d0c-5d0967532a4b"
+	strings:
+		$s0 = "\"<td>&nbsp;<a href=\\\"\".$sql_surl.\"sql_act=query&sql_query=\".ur"
+		$s2 = "c99sh_sqlquery"
+	condition:
+		1 of them
+}
+
+rule _r577_php_php_SnIpEr_SA_Shell_php_r57_php_php_spy_php_php_s_php_php {
+	meta:
+		description = "Semi-Auto-generated "
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		hash0 = "0714f80f35c1fddef1f8938b8d42a4c8"
+		hash1 = "911195a9b7c010f61b66439d9048f400"
+		hash2 = "eddf7a8fde1e50a7f2a817ef7cece24f"
+		hash3 = "eed14de3907c9aa2550d95550d1a2d5f"
+		hash4 = "817671e1bdc85e04cc3440bbd9288800"
+		id = "44b53124-c8b6-545b-819f-77fd65e5d61b"
+	strings:
+		$s0 = "echo sr(15,\"<b>\".$lang[$language.'_text"
+		$s1 = ".$arrow.\"</b>\",in('text','"
+	condition:
+		2 of them
+}
+
+rule _r577_php_php_SnIpEr_SA_Shell_php_r57_php_php {
+	meta:
+		description = "Semi-Auto-generated  - from files r577.php.php.txt, SnIpEr_SA Shell.php.txt, r57.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		hash0 = "0714f80f35c1fddef1f8938b8d42a4c8"
+		hash1 = "911195a9b7c010f61b66439d9048f400"
+		hash2 = "eddf7a8fde1e50a7f2a817ef7cece24f"
+		id = "44b53124-c8b6-545b-819f-77fd65e5d61b"
+	strings:
+		$s0 = "'ru_text9' =>'???????? ????? ? ???????? ??? ? /bin/bash'," fullword
+		$s1 = "$name='ec371748dc2da624b35a4f8f685dd122'"
+		$s2 = "rst.void.ru"
+	condition:
+		3 of them
+}
+
+rule _wacking_php_php_1_SpecialShell_99_php_php_c100_php {
+	meta:
+		description = "Semi-Auto-generated  - from files wacking.php.php.txt, 1.txt, SpecialShell_99.php.php.txt, c100.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		hash0 = "9c5bb5e3a46ec28039e8986324e42792"
+		hash1 = "44542e5c3e9790815c49d5f9beffbbf2"
+		hash2 = "09609851caa129e40b0d56e90dfc476c"
+		hash3 = "38fd7e45f9c11a37463c3ded1c76af4c"
+		id = "3dac5550-598a-5a0f-95c3-2e0162a686ee"
+	strings:
+		$s0 = "if(eregi(\"./shbd $por\",$scan))"
+		$s1 = "$_POST['backconnectip']"
+		$s2 = "$_POST['backcconnmsg']"
+	condition:
+		1 of them
+}
+
+rule _r577_php_php_r57_php_php_r57_Shell_php_php_spy_php_php_s_php_php {
+	meta:
+		description = "Semi-Auto-generated  - from files r577.php.php.txt, r57.php.php.txt, r57 Shell.php.php.txt, spy.php.php.txt, s.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		hash0 = "0714f80f35c1fddef1f8938b8d42a4c8"
+		hash1 = "eddf7a8fde1e50a7f2a817ef7cece24f"
+		hash2 = "8023394542cddf8aee5dec6072ed02b5"
+		hash3 = "eed14de3907c9aa2550d95550d1a2d5f"
+		hash4 = "817671e1bdc85e04cc3440bbd9288800"
+		id = "093892f6-ff53-5bd1-b7b2-fea21a9258aa"
+	strings:
+		$s1 = "if(rmdir($_POST['mk_name']))"
+		$s2 = "$r .= '<tr><td>'.ws(3).'<font face=Verdana size=-2><b>'.$key.'</b></font></td>"
+		$s3 = "if(unlink($_POST['mk_name'])) echo \"<table width=100% cellpadding=0 cell"
+	condition:
+		2 of them
+}
+
+rule _w_php_php_wacking_php_php_SsEs_php_php_SpecialShell_99_php_php {
+	meta:
+		description = "Semi-Auto-generated  - from files w.php.php.txt, wacking.php.php.txt, SsEs.php.php.txt, SpecialShell_99.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		hash0 = "38a3f9f2aa47c2e940695f3dba6a7bb2"
+		hash1 = "9c5bb5e3a46ec28039e8986324e42792"
+		hash2 = "6cd50a14ea0da0df6a246a60c8f6f9c9"
+		hash3 = "09609851caa129e40b0d56e90dfc476c"
+		id = "81480945-b684-50b6-9431-4ab7a786b214"
+	strings:
+		$s0 = "\"ext_avi\"=>array(\"ext_avi\",\"ext_mov\",\"ext_mvi"
+		$s1 = "echo \"<b>Execute file:</b><form action=\\\"\".$surl.\"\\\" method=POST><inpu"
+		$s2 = "\"ext_htaccess\"=>array(\"ext_htaccess\",\"ext_htpasswd"
+	condition:
+		1 of them
+}
+
+rule _w_php_php_c99madshell_v2_1_php_php_wacking_php_php_c99shell_v1_0_php_php_c99php {
+	meta:
+		description = "Semi-Auto-generated "
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		hash0 = "38a3f9f2aa47c2e940695f3dba6a7bb2"
+		hash1 = "3ca5886cd54d495dc95793579611f59a"
+		hash2 = "9c5bb5e3a46ec28039e8986324e42792"
+		hash3 = "d8ae5819a0a2349ec552cbcf3a62c975"
+		hash4 = "9e9ae0332ada9c3797d6cee92c2ede62"
+		id = "ce88027c-ae08-59f3-948d-6f3d58515468"
+	strings:
+		$s0 = "@ini_set(\"highlight" fullword
+		$s1 = "echo \"<b>Result of execution this PHP-code</b>:<br>\";" fullword
+		$s2 = "{$row[] = \"<b>Owner/Group</b>\";}" fullword
+	condition:
+		2 of them
+}
+
+rule _GFS_web_shell_ver_3_1_7___PRiV8_php_nshell_php_php_gfs_sh_php_php {
+	meta:
+		description = "Semi-Auto-generated  - from files GFS web-shell ver 3.1.7 - PRiV8.php.txt, nshell.php.php.txt, gfs_sh.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		hash0 = "be0f67f3e995517d18859ed57b4b4389"
+		hash1 = "4a44d82da21438e32d4f514ab35c26b6"
+		hash2 = "f618f41f7ebeb5e5076986a66593afd1"
+		id = "4d1dd87b-1ffd-564d-9411-c5d2fc01ae0f"
+	strings:
+		$s2 = "echo $uname.\"</font><br><b>\";" fullword
+		$s3 = "while(!feof($f)) { $res.=fread($f,1024); }" fullword
+		$s4 = "echo \"user=\".@get_current_user().\" uid=\".@getmyuid().\" gid=\".@getmygid()"
+	condition:
+		2 of them
+}
+
+rule _w_php_php_c99madshell_v2_1_php_php_wacking_php_php_c99shell_v1_0_php_php_SpecialShell_99_php_php {
+	meta:
+		description = "Semi-Auto-generated "
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		hash0 = "38a3f9f2aa47c2e940695f3dba6a7bb2"
+		hash1 = "3ca5886cd54d495dc95793579611f59a"
+		hash2 = "9c5bb5e3a46ec28039e8986324e42792"
+		hash3 = "d8ae5819a0a2349ec552cbcf3a62c975"
+		hash4 = "09609851caa129e40b0d56e90dfc476c"
+		id = "ce88027c-ae08-59f3-948d-6f3d58515468"
+	strings:
+		$s0 = "c99ftpbrutecheck"
+		$s1 = "$ftpquick_t = round(getmicrotime()-$ftpquick_st,4);" fullword
+		$s2 = "$fqb_lenght = $nixpwdperpage;" fullword
+		$s3 = "$sock = @ftp_connect($host,$port,$timeout);" fullword
+	condition:
+		2 of them
+}
+
+rule _c99shell_v1_0_php_php_c99php_SsEs_php_php {
+	meta:
+		description = "Semi-Auto-generated  - from files c99shell_v1.0.php.php.txt, c99php.txt, SsEs.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		hash0 = "d8ae5819a0a2349ec552cbcf3a62c975"
+		hash1 = "9e9ae0332ada9c3797d6cee92c2ede62"
+		hash2 = "6cd50a14ea0da0df6a246a60c8f6f9c9"
+		id = "ce88027c-ae08-59f3-948d-6f3d58515468"
+	strings:
+		$s3 = "if (!empty($delerr)) {echo \"<b>Deleting with errors:</b><br>\".$delerr;}" fullword
+	condition:
+		1 of them
+}
+
+rule _nst_php_php_cybershell_php_php_img_php_php_nstview_php_php {
+	meta:
+		description = "Semi-Auto-generated  - from files nst.php.php.txt, cybershell.php.php.txt, img.php.php.txt, nstview.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		hash0 = "ddaf9f1986d17284de83a17fe5f9fd94"
+		hash1 = "ef8828e0bc0641a655de3932199c0527"
+		hash2 = "17a07bb84e137b8aa60f87cd6bfab748"
+		hash3 = "4745d510fed4378e4b1730f56f25e569"
+		id = "cc4dc0e9-dbb1-560b-ae36-23d3e16a407f"
+	strings:
+		$s0 = "@$rto=$_POST['rto'];" fullword
+		$s2 = "SCROLLBAR-TRACK-COLOR: #91AAFF" fullword
+		$s3 = "$to1=str_replace(\"//\",\"/\",$to1);" fullword
+	condition:
+		2 of them
+}
+
+rule _c99shell_v1_0_php_php_c99php_1_c2007_php_php_c100_php {
+	meta:
+		description = "Semi-Auto-generated  - from files c99shell_v1.0.php.php.txt, c99php.txt, 1.txt, c2007.php.php.txt, c100.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		hash0 = "d8ae5819a0a2349ec552cbcf3a62c975"
+		hash1 = "9e9ae0332ada9c3797d6cee92c2ede62"
+		hash2 = "44542e5c3e9790815c49d5f9beffbbf2"
+		hash3 = "d089e7168373a0634e1ac18c0ee00085"
+		hash4 = "38fd7e45f9c11a37463c3ded1c76af4c"
+		id = "ce88027c-ae08-59f3-948d-6f3d58515468"
+	strings:
+		$s0 = "$result = mysql_query(\"SHOW PROCESSLIST\", $sql_sock); " fullword
+	condition:
+		all of them
+}
+
+rule _w_php_php_c99madshell_v2_1_php_php_wacking_php_php_1_SpecialShell_99_php_php {
+	meta:
+		description = "Semi-Auto-generated "
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		hash0 = "38a3f9f2aa47c2e940695f3dba6a7bb2"
+		hash1 = "3ca5886cd54d495dc95793579611f59a"
+		hash2 = "9c5bb5e3a46ec28039e8986324e42792"
+		hash3 = "44542e5c3e9790815c49d5f9beffbbf2"
+		hash4 = "09609851caa129e40b0d56e90dfc476c"
+		id = "4915146e-141c-5515-ac5a-61901d42dc40"
+	strings:
+		$s0 = "if ($total === FALSE) {$total = 0;}" fullword
+		$s1 = "$free_percent = round(100/($total/$free),2);" fullword
+		$s2 = "if (!$bool) {$bool = is_dir($letter.\":\\\\\");}" fullword
+		$s3 = "$bool = $isdiskette = in_array($letter,$safemode_diskettes);" fullword
+	condition:
+		2 of them
+}
+
+rule WebShell_IronShell_4 {
+	meta:
+		description = "PHP Webshells Github Archive - file ironshell.php"
+		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+		author = "Florian Roth (Nextron Systems)"
+		old_rule_name = "WebShell_ironshell"
+		hash = "d47b8ba98ea8061404defc6b3a30839c4444a262"
+		id = "06e87e02-372b-5d4e-be52-5515a068665b"
+	strings:
+		$s0 = "<title>'.getenv(\"HTTP_HOST\").' ~ Shell I</title>" fullword
+		$s2 = "$link = mysql_connect($_POST['host'], $_POST['username'], $_POST"
+		$s4 = "error_reporting(0); //If there is an error, we'll show it, k?" fullword
+		$s8 = "print \"<form action=\\\"\".$me.\"?p=chmod&file=\".$content.\"&d"
+		$s15 = "if(!is_numeric($_POST['timelimit']))" fullword
+		$s16 = "if($_POST['chars'] == \"9999\")" fullword
+		$s17 = "<option value=\\\"az\\\">a - zzzzz</option>" fullword
+		$s18 = "print shell_exec($command);" fullword
+	condition:
+		3 of them
+}
+
 rule WEBSHELL_H4ntu_Shell_Powered_Tsoi_2 {
    meta:
       description = "PHP Webshells Github Archive - file h4ntu shell [powered by tsoi].php"
@@ -16272,6 +16716,105 @@ rule WEBSHELL_H4ntu_Shell_Powered_Tsoi_2 {
       $s4 = "echo \"<p><font size=2 face=Verdana><b>This Is The Server Information</b></font>"
    condition:
       filesize <2MB and 2 of them
+}
+
+rule WebShell_Liz0ziM_Private_Safe_Mode_Command_Execuriton_Bypass_Exploit_2 {
+	meta:
+		description = "PHP Webshells Github Archive - file Liz0ziM Private Safe Mode Command Execuriton Bypass Exploit.php"
+		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+		author = "Florian Roth (Nextron Systems)"
+		old_rule_name = "WebShell_Liz0ziM_Private_Safe_Mode_Command_Execuriton_Bypass_Exploit"
+		hash = "b2b797707e09c12ff5e632af84b394ad41a46fa4"
+		id = "b647f529-be81-51ad-b671-84aec410e133"
+	strings:
+		$s4 = "$liz0zim=shell_exec($_POST[liz0]); " fullword
+		$s6 = "$liz0=shell_exec($_POST[baba]); " fullword
+		$s9 = "echo \"<b><font color=blue>Liz0ziM Private Safe Mode Command Execuriton Bypass E"
+		$s12 = " :=) :</font><select size=\"1\" name=\"liz0\">" fullword
+		$s13 = "<option value=\"cat /etc/passwd\">/etc/passwd</option>" fullword
+	condition:
+		1 of them
+}
+
+rule WebShell_PHP_Backdoor_2 {
+	meta:
+		description = "PHP Webshells Github Archive - file php-backdoor.php"
+		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+		author = "Florian Roth (Nextron Systems)"
+		old_rule_name = "WebShell_php_backdoor"
+		hash = "b190c03af4f3fb52adc20eb0f5d4d151020c74fe"
+		id = "65e1305b-4fc7-5885-b3df-92846bb57fe3"
+	strings:
+		$s5 = "http://<? echo $SERVER_NAME.$REQUEST_URI; ?>?d=/etc on *nix" fullword
+		$s6 = "// a simple php backdoor | coded by z0mbie [30.08.03] | http://freenet.am/~zombi"
+		$s11 = "if(!isset($_REQUEST['dir'])) die('hey,specify directory!');" fullword
+		$s13 = "else echo \"<a href='$PHP_SELF?f=$d/$dir'><font color=black>\";" fullword
+		$s15 = "<pre><form action=\"<? echo $PHP_SELF; ?>\" METHOD=GET >execute command: <input "
+	condition:
+		1 of them
+}
+
+rule WebShell_aZRaiLPhp_v1_0_2 {
+	meta:
+		description = "PHP Webshells Github Archive - file aZRaiLPhp v1.0.php"
+		old_rule_name = "WebShell_aZRaiLPhp_v1_0"
+		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+		author = "Florian Roth (Nextron Systems)"
+		hash = "a2c609d1a8c8ba3d706d1d70bef69e63f239782b"
+		id = "10546549-e16d-567d-9d88-3d37fe8ff03f"
+	strings:
+		$s0 = "<font size='+1'color='#0000FF'>aZRaiLPhP'nin URL'si: http://$HTTP_HOST$RED"
+		$s4 = "$fileperm=base_convert($_POST['fileperm'],8,10);" fullword
+		$s19 = "touch (\"$path/$dismi\") or die(\"Dosya Olu" fullword
+		$s20 = "echo \"<div align=left><a href='./$this_file?dir=$path/$file'>G" fullword
+	condition:
+		2 of them
+}
+
+rule EditServer_EXE {
+	meta:
+		description = "Webshells Auto-generated - file EditServer.exe"
+		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+		author = "Florian Roth (Nextron Systems)"
+		hash = "f945de25e0eba3bdaf1455b3a62b9832"
+		id = "97928144-0112-5288-8f95-acf7a0d56e71"
+	strings:
+		$s2 = "Server %s Have Been Configured"
+		$s5 = "The Server Password Exceeds 32 Characters"
+		$s8 = "9--Set Procecess Name To Inject DLL"
+	condition:
+		all of them
+}
+
+rule WEBSHELL_PHP_1 {
+	meta:
+		description = "Webshells Auto-generated - file phpshell.php"
+		old_rule_name = "phpshell"
+		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+		author = "Florian Roth (Nextron Systems)"
+		hash = "1dccb1ea9f24ffbd085571c88585517b"
+		id = "d0107af3-e484-54cf-a238-dd1e71efd3f6"
+	strings:
+		$s1 = "echo \"<input size=\\\"100\\\" type=\\\"text\\\" name=\\\"newfile\\\" value=\\\"$inputfile\\\"><b"
+		$s2 = "$img[$id] = \"<img height=\\\"16\\\" width=\\\"16\\\" border=\\\"0\\\" src=\\\"$REMOTE_IMAGE_UR"
+		$s3 = "$file = str_replace(\"\\\\\", \"/\", str_replace(\"//\", \"/\", str_replace(\"\\\\\\\\\", \"\\\\\", "
+	condition:
+		all of them
+}
+
+rule EditServer_2 {
+	meta:
+		description = "Webshells Auto-generated - file EditServer.exe"
+		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+		author = "Florian Roth (Nextron Systems)"
+		hash = "5c1f25a4d206c83cdfb006b3eb4c09ba"
+		id = "bd254bd9-fd23-5807-9347-2a559089b7c5"
+	strings:
+		$s0 = "@HOTMAIL.COM"
+		$s1 = "Press Any Ke"
+		$s3 = "glish MenuZ"
+	condition:
+		all of them
 }
 
 rule Webshell_Backdoor_PHP_Agent_r57_mod_bizzz_shell_r57 {
@@ -26232,6 +26775,25 @@ rule HKTL_CN_update_PcMain {
       uint16(0) == 0x5a4d and filesize < 500KB and 4 of them
 }
 
+rule HKTL_CN_Project1 {
+	meta:
+		description = "Chinese Hacktool Set - file Project1.exe"
+		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+		author = "Florian Roth (Nextron Systems)"
+		reference = "http://tools.zjqhr.com/"
+		date = "2015-06-13"
+		modified = "2023-01-06"
+		old_rule_name = "Project1"
+		hash = "d1a5e3b646a16a7fcccf03759bd0f96480111c96"
+		id = "12cc7a82-d7a9-58c6-b283-3bb0df477cd8"
+	strings:
+		$s1 = "EXEC master.dbo.sp_addextendedproc 'xp_cmdshell','xplog70.dll'" fullword ascii
+		$s2 = "Password.txt" fullword ascii
+		$s3 = "LoginPrompt" fullword ascii
+	condition:
+		uint16(0) == 0x5a4d and filesize < 5000KB and all of them
+}
+
 rule cndcom_cndcom {
 	meta:
 		description = "Chinese Hacktool Set - file cndcom.exe"
@@ -27143,6 +27705,81 @@ rule APT_Tick_HomamDownloader_Jun18 {
       $s11 = "Mozilla/4.0 (compatible; MSIE 8.0; Win32)" fullword ascii /* Goodware String - occured 3 times */
    condition:
       uint16(0) == 0x5a4d and filesize < 30KB and 3 of them
+}
+
+rule RAT_BlackNix
+{
+	meta:
+		author = "Kevin Breen <kevin@techanarchy.net>"
+		date = "01.04.2014"
+		description = "Detects BlackNix RAT"
+		reference = "http://malwareconfig.com/stats/BlackNix"
+		maltype = "Remote Access Trojan"
+		filetype = "exe"
+
+		id = "d7814184-3ae4-53f1-a602-c3fbc02573c3"
+	strings:
+		$a1 = "SETTINGS" wide
+		$a2 = "Mark Adler"
+		$a3 = "Random-Number-Here"
+		$a4 = "RemoteShell"
+		$a5 = "SystemInfo"
+
+	condition:
+		all of them
+}
+
+rule RAT_DarkComet
+{
+	meta:
+		author = "Kevin Breen <kevin@techanarchy.net>"
+		date = "01.04.2014"
+		description = "Detects DarkComet RAT"
+		reference = "http://malwareconfig.com/stats/DarkComet"
+		maltype = "Remote Access Trojan"
+		filetype = "exe"
+
+		id = "e6fd0269-dd0c-58c0-a1a3-24c2aed916ee"
+	strings:
+		// Versions 2x
+		$a1 = "#BOT#URLUpdate"
+		$a2 = "Command successfully executed!"
+		$a3 = "MUTEXNAME" wide
+		$a4 = "NETDATA" wide
+		// Versions 3x & 4x & 5x
+		$b1 = "FastMM Borland Edition"
+		$b2 = "%s, ClassID: %s"
+		$b3 = "I wasn't able to open the hosts file"
+		$b4 = "#BOT#VisitUrl"
+		$b5 = "#KCMDDC"
+
+	condition:
+		all of ($a*) or all of ($b*)
+}
+
+rule RAT_PythoRAT
+{
+	meta:
+		author = "Kevin Breen <kevin@techanarchy.net>"
+		date = "01.04.2014"
+		description = "Detects Python RAT"
+		reference = "http://malwareconfig.com/stats/PythoRAT"
+		maltype = "Remote Access Trojan"
+		filetype = "exe"
+
+		id = "fc98c513-1abf-5331-b351-f6182e5b19c5"
+	strings:
+		$a = "TKeylogger"
+		$b = "uFileTransfer"
+		$c = "TTDownload"
+		$d = "SETTINGS"
+		$e = "Unknown" wide
+		$f = "#@#@#"
+		$g = "PluginData"
+		$i = "OnPluginMessage"
+
+	condition:
+		all of them
 }
 
 rule RAT_Sakula
@@ -29663,6 +30300,21 @@ rule CVE_2017_8759_SOAP_via_JS {
       ( filesize < 3KB and 1 of them )
 }
 
+rule HKTL_Empire_PowerUp {
+   meta:
+      description = "Detects Empire component - file PowerUp.ps1"
+      license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+      author = "Florian Roth (Nextron Systems)"
+      reference = "https://github.com/adaptivethreat/Empire"
+      date = "2016-11-05"
+      hash1 = "ad9a5dff257828ba5f15331d59dd4def3989537b3b6375495d0c08394460268c"
+      id = "e79d093e-7481-52a3-a350-4d1b6d8955cd"
+   strings:
+      $x2 = "$PoolPasswordCmd = 'c:\\windows\\system32\\inetsrv\\appcmd.exe list apppool" fullword ascii
+   condition:
+      ( uint16(0) == 0x233c and filesize < 2000KB and 1 of them ) or all of them
+}
+
 rule Empire_ReflectivePick_x64_orig {
    meta:
       description = "Detects Empire component - file ReflectivePick_x64_orig.dll"
@@ -30825,6 +31477,89 @@ rule CobaltStrike_Sleeve_BeaconLoader_VA_x86_o_v4_3_v4_4_v4_5_and_v4_6
       88 10
       EB D6
     }
+    
+  condition:
+    all of them
+}
+
+rule CobaltStrike_Sleeve_BeaconLoader_VA_x64_o_v4_3_v4_4_v4_5_and_v4_6
+{
+  meta:
+    description = "Cobalt Strike's sleeve/BeaconLoader.VA.x64.o (VirtualAlloc) Versions 4.3 through at least 4.6"
+    hash =  "ac090a0707aa5ccd2c645b523bd23a25999990cf6895fce3bfa3b025e3e8a1c9"
+		author = "gssincla@google.com"
+		reference = "https://cloud.google.com/blog/products/identity-security/making-cobalt-strike-harder-for-threat-actors-to-abuse"
+		date = "2022-11-18"
+    
+    id = "8ca04f82-a8a8-5162-8b0c-8a7bce678a85"
+  strings:
+    /*
+      C6 44 24 48 56 mov     [rsp+88h+var_40], 56h ; 'V'
+      C6 44 24 49 69 mov     [rsp+88h+var_40+1], 69h ; 'i'
+      C6 44 24 4A 72 mov     [rsp+88h+var_40+2], 72h ; 'r'
+      C6 44 24 4B 74 mov     [rsp+88h+var_40+3], 74h ; 't'
+      C6 44 24 4C 75 mov     [rsp+88h+var_40+4], 75h ; 'u'
+      C6 44 24 4D 61 mov     [rsp+88h+var_40+5], 61h ; 'a'
+      C6 44 24 4E 6C mov     [rsp+88h+var_40+6], 6Ch ; 'l'
+      C6 44 24 4F 41 mov     [rsp+88h+var_40+7], 41h ; 'A'
+      C6 44 24 50 6C mov     [rsp+88h+var_40+8], 6Ch ; 'l'
+      C6 44 24 51 6C mov     [rsp+88h+var_40+9], 6Ch ; 'l'
+      C6 44 24 52 6F mov     [rsp+88h+var_40+0Ah], 6Fh ; 'o'
+      C6 44 24 53 63 mov     [rsp+88h+var_40+0Bh], 63h ; 'c'
+      C6 44 24 54 00 mov     [rsp+88h+var_40+0Ch], 0
+    */
+
+    $core_sig = {
+      C6 44 24 48 56
+      C6 44 24 49 69
+      C6 44 24 4A 72
+      C6 44 24 4B 74
+      C6 44 24 4C 75
+      C6 44 24 4D 61
+      C6 44 24 4E 6C
+      C6 44 24 4F 41
+      C6 44 24 50 6C
+      C6 44 24 51 6C
+      C6 44 24 52 6F
+      C6 44 24 53 63
+      C6 44 24 54 00
+    }
+
+
+    /*
+      8B 04 24       mov     eax, [rsp+18h+var_18]
+      FF C0          inc     eax
+      89 04 24       mov     [rsp+18h+var_18], eax
+      8B 44 24 28    mov     eax, [rsp+18h+arg_8]
+      39 04 24       cmp     [rsp+18h+var_18], eax
+      73 20          jnb     short loc_2E7
+      8B 04 24       mov     eax, [rsp+18h+var_18]
+      0F B6 4C 24 30 movzx   ecx, [rsp+18h+arg_10]
+      48 8B 54 24 20 mov     rdx, [rsp+18h+arg_0]
+      0F BE 04 02    movsx   eax, byte ptr [rdx+rax]
+      33 C1          xor     eax, ecx
+      8B 0C 24       mov     ecx, [rsp+18h+var_18]
+      48 8B 54 24 20 mov     rdx, [rsp+18h+arg_0]
+      88 04 0A       mov     [rdx+rcx], al
+    */
+
+    $deobfuscator = {
+      8B 04 24
+      FF C0
+      89 04 24
+      8B 44 24 28
+      39 04 24
+      73 20
+      8B 04 24
+      0F B6 4C 24 30
+      48 8B 54 24 20
+      0F BE 04 02
+      33 C1
+      8B 0C 24
+      48 8B 54 24 20
+      88 04 0A
+    }
+
     
   condition:
     all of them

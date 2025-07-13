@@ -1,5 +1,17 @@
 {
-  "built": "",
+  "built": "2025-07-13T11:49:53.108495Z",
   "sources": [],
-  "counts": {}
+  "counts": {},
+  "compilation": {
+    "bundles": {
+      "generic": 5380,
+      "scripts": 1764,
+      "webshells": 0,
+      "pe": 2109
+    },
+    "total_unique_rules": 9582,
+    "duplicates_removed": 1144,
+    "memory_usage_mb": 64.04296875,
+    "compiled_at": "2025-07-13T11:49:53.108495Z"
+  }
 }

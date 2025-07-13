@@ -1450,6 +1450,20 @@ rule EquationGroup_envisioncollision {
       ( uint16(0) == 0x2123 and filesize < 20KB and 1 of ($x*) ) or ( 2 of them )
 }
 
+rule EquationGroup_promptkill {
+   meta:
+      description = "Equation Group hack tool leaked by ShadowBrokers- file promptkill"
+      author = "Florian Roth"
+      reference = "https://medium.com/@shadowbrokerss/dont-forget-your-base-867d304a94b1"
+      date = "2017-04-08"
+      hash1 = "b448204503849926be249a9bafbfc1e36ef16421c5d3cfac5dac91f35eeaa52d"
+   strings:
+      $x1 = "exec(\"xterm $xargs -e /current/tmp/promptkill.kid.$tag $pid\");" fullword ascii
+      $x2 = "$xargs=\"-title \\\"Kill process $pid?\\\" -name \\\"Kill process $pid?\\\" -bg white -fg red -geometry 202x19+0+0\" ;" fullword ascii
+   condition:
+      filesize < 250KB and 1 of them
+}
+
 rule EquationGroup_morerats_client_addkey {
    meta:
       description = "Equation Group hack tool set"
@@ -3258,6 +3272,56 @@ rule telnet_cgi {
 		1 of them
 }
 
+rule _1_c2007_php_php_c100_php {
+	meta:
+		description = "Semi-Auto-generated  - from files 1.txt, c2007.php.php.txt, c100.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		hash0 = "44542e5c3e9790815c49d5f9beffbbf2"
+		hash1 = "d089e7168373a0634e1ac18c0ee00085"
+		hash2 = "38fd7e45f9c11a37463c3ded1c76af4c"
+		id = "00ada6a4-a32a-5184-867d-e10a8c95c41c"
+	strings:
+		$s0 = "echo \"<b>Changing file-mode (\".$d.$f.\"), \".view_perms_color($d.$f).\" (\""
+		$s3 = "echo \"<td>&nbsp;<a href=\\\"\".$sql_surl.\"sql_act=query&sql_query=\".ur"
+	condition:
+		1 of them
+}
+
+rule _r577_php_php_spy_php_php_s_php_php {
+	meta:
+		description = "Semi-Auto-generated  - from files r577.php.php.txt, spy.php.php.txt, s.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		hash0 = "0714f80f35c1fddef1f8938b8d42a4c8"
+		hash1 = "eed14de3907c9aa2550d95550d1a2d5f"
+		hash2 = "817671e1bdc85e04cc3440bbd9288800"
+		id = "d287136c-534b-51a4-88fc-40ef9f22d910"
+	strings:
+		$s2 = "echo $te.\"<div align=center><textarea cols=35 name=db_query>\".(!empty($_POST['"
+		$s3 = "echo sr(45,\"<b>\".$lang[$language.'_text80'].$arrow.\"</b>\",\"<select name=db>"
+	condition:
+		1 of them
+}
+
+rule _r577_php_php_r57_php_php_spy_php_php_s_php_php {
+	meta:
+		description = "Semi-Auto-generated  - from files r577.php.php.txt, r57.php.php.txt, spy.php.php.txt, s.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		hash0 = "0714f80f35c1fddef1f8938b8d42a4c8"
+		hash1 = "eddf7a8fde1e50a7f2a817ef7cece24f"
+		hash2 = "eed14de3907c9aa2550d95550d1a2d5f"
+		hash3 = "817671e1bdc85e04cc3440bbd9288800"
+		id = "022d2255-50cd-500b-8d91-8e34f3c46fcf"
+	strings:
+		$s0 = "$res = mssql_query(\"select * from r57_temp_table\",$db);" fullword
+		$s2 = "'eng_text30'=>'Cat file'," fullword
+		$s3 = "@mssql_query(\"drop table r57_temp_table\",$db);" fullword
+	condition:
+		1 of them
+}
+
 rule APT_lazaruswannacry {
    meta:
       description = "Rule based on shared code between Feb 2017 Wannacry sample and Lazarus backdoor from Feb 2015 discovered by Neel Mehta"
@@ -5011,6 +5075,27 @@ rule CookieTools {
 		uint16(0) == 0x5a4d and filesize < 5000KB and 4 of them
 }
 
+rule HKTL_CN_Dos_GetPass {
+	meta:
+		description = "Chinese Hacktool Set - file GetPass.exe"
+		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+		author = "Florian Roth (Nextron Systems)"
+		reference = "http://tools.zjqhr.com/"
+		date = "2015-06-13"
+		modified = "2023-01-06"
+		old_rule_name = "Dos_GetPass"
+		hash = "d18d952b24110b83abd17e042f9deee679de6a1a"
+		id = "08635096-474c-5fdf-825e-6c7c8c8d4061"
+	strings:
+		$s0 = "GetLogonS" ascii
+		$s3 = "/showthread.php?t=156643" ascii
+		$s8 = "To Run As Administ" ascii
+		$s18 = "EnableDebugPrivileg" fullword ascii
+		$s19 = "sedebugnameValue" fullword ascii
+	condition:
+		uint16(0) == 0x5a4d and filesize < 890KB and all of them
+}
+
 rule Sword1_5 {
 	meta:
 		description = "Chinese Hacktool Set - file Sword1.5.exe"
@@ -5125,6 +5210,35 @@ rule Casper_Backdoor_x86 {
    condition:
       ( filesize < 250KB and all of ($s*) ) or
       ( 3 of ($x*) and 2 of ($y*) and 2 of ($z*) )
+}
+
+rule RAT_SpyGate
+{
+	meta:
+		author = "Kevin Breen <kevin@techanarchy.net>"
+		date = "01.04.2014"
+		description = "Detects SpyGate RAT"
+		reference = "http://malwareconfig.com/stats/SpyGate"
+		maltype = "Remote Access Trojan"
+		filetype = "exe"
+
+		id = "ed015770-81ff-5d9c-8bd0-3c225e400724"
+	strings:
+		$split = "abccba"
+		$a1 = "abccbaSpyGateRATabccba" //$a = Version 0.2.6
+		$a2 = "StubX.pdb"
+		$a3 = "abccbaDanabccb"
+		$b1 = "monikerString" nocase //$b = Version 2.0
+		$b2 = "virustotal1"
+		$b3 = "get_CurrentDomain"
+		$c1 = "shutdowncomputer" wide //$c = Version 2.9
+		$c2 = "shutdown -r -t 00" wide
+		$c3 = "set cdaudio door closed" wide
+		$c4 = "FileManagerSplit" wide
+		$c5 = "Chating With >> [~Hacker~]" wide
+
+	condition:
+		(all of ($a*) and #split > 40) or (all of ($b*) and #split > 10) or (all of ($c*))
 }
 
 rule PAS_TOOL_PHP_WEB_KIT_mod {

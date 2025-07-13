@@ -22121,6 +22121,24 @@ rule APT_TA18_149A_Joanap_Sample3 {
       )
 }
 
+rule _c99shell_v1_0_php_php_c99php_SsEs_php_php_ctt_sh_php_php {
+	meta:
+		description = "Semi-Auto-generated  - from files c99shell_v1.0.php.php.txt, c99php.txt, SsEs.php.php.txt, ctt_sh.php.php.txt"
+		author = "Neo23x0 Yara BRG + customization by Stefan -dfate- Molls"
+		super_rule = 1
+		hash0 = "d8ae5819a0a2349ec552cbcf3a62c975"
+		hash1 = "9e9ae0332ada9c3797d6cee92c2ede62"
+		hash2 = "6cd50a14ea0da0df6a246a60c8f6f9c9"
+		hash3 = "671cad517edd254352fe7e0c7c981c39"
+		id = "ce88027c-ae08-59f3-948d-6f3d58515468"
+	strings:
+		$s0 = "\"AAAAACH5BAEAAAkALAAAAAAUABQAAAR0MMlJqyzFalqEQJuGEQSCnWg6FogpkHAMF4HAJsWh7/ze\""
+		$s2 = "\"mTP/zDP//2YAAGYAM2YAZmYAmWYAzGYA/2YzAGYzM2YzZmYzmWYzzGYz/2ZmAGZmM2ZmZmZmmWZm\""
+		$s4 = "\"R0lGODlhFAAUAKL/AP/4/8DAwH9/AP/4AL+/vwAAAAAAAAAAACH5BAEAAAEALAAAAAAUABQAQAMo\""
+	condition:
+		2 of them
+}
+
 rule Unspecified_Malware_Jul17_2C {
    meta:
       description = "Unspecified Malware - CN relation"
@@ -24614,6 +24632,35 @@ rule Gazer_certificate_subject {
             pe.signatures[i].subject contains "Solid Loop" or
             pe.signatures[i].subject contains "Ultimate Computer Support"
          )
+}
+
+rule HiddenCobra_r4_wiper_1 {
+   meta:
+      author = "NCCIC Partner"
+      date = "2017-12-12"
+      description = "Detects HiddenCobra Wiper"
+      reference = "https://www.us-cert.gov/sites/default/files/publications/MAR-10135536.11.WHITE.pdf"
+      id = "4978c190-7b66-5cea-96df-809f85620986"
+   strings:
+      $mbr_code = { 33 C0 8E D0 BC 00 7C FB 50 07 50 1F FC BE 5D 7C 33 C9 41 81 F9 00 ?? 74 24 B4 43 B0 00 CD 13 FE C2 80 FA 84 7C F3 B2 80 BF 65 7C 81 05 00 04 83 55 02 00 83 55 04 00 83 55 06 00 EB D5 BE 4D 7C B4 43 B0 00 CD 13 33 C9 BE 5D 7C EB C5 }
+      $controlServiceFoundlnBoth = { 83 EC 1C 57 68 3F 00 0F 00 6A 00 6A 00 FF 15 ?? ?? ?? ?? 8B F8 85 FF 74 44 8B 44 24 24 53 56 6A 24 50 57 FF 15 ?? ?? ?? ?? 8B 1D ?? ?? ?? ?? 8B F0 85 F6 74 1C 8D 4C 24 0C 51 6A 01 56 FF 15 ?? ?? ?? ?? 68 E8 03 00 00 FF 15 ?? ?? ?? ?? 56 FF D3 57 FF D3 5E 5B 33 C0 5F 83 C4 1C C3 33 C0 5F 83 C4 1C C3 }
+   condition:
+      uint16(0) == 0x5a4d and uint16(uint32(0x3c)) == 0x4550 and any of them
+}
+
+rule HiddenCobra_r4_wiper_2 {
+   meta:
+      author = "NCCIC Partner"
+      date = "2017-12-12"
+      description = "Detects HiddenCobra Wiper"
+      reference = "https://www.us-cert.gov/sites/default/files/publications/MAR-10135536.11.WHITE.pdf"
+      id = "75acc3cb-90dd-58e8-b094-ed3f28650b1b"
+   strings:
+      // BIOS Extended Write
+      $PhysicalDriveSTR = "\\\\.\\PhysicalDrive" wide
+      $ExtendedWrite = { B4 43 B0 00 CD 13 }
+   condition:
+      uint16(0) == 0x5a4d and uint16(uint32(0x3c)) == 0x4550 and all of them
 }
 
 rule ATM_Malware_DispenserXFS {
