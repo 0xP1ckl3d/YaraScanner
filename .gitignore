@@ -112,6 +112,11 @@ test_result.md
 .gitconfig
 backend_test.py
 test_bug_fix.py
+
+# Obsolete files (removed from repo)
+scripts/fetch_rules.sh
+scripts/compile_rules.py
+REPOSITORY.md
 /node_modules
 /.pnp
 .pnp.js
