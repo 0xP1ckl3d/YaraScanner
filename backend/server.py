@@ -328,52 +328,86 @@ async def extract_and_scan_archive(content: bytes, filename: str) -> List[ScanRe
     return results
 
 async def scan_content(content: bytes, filename: str) -> ScanResult:
-    """Scan content with appropriate YARA bundle"""
+    """Scan content against ALL YARA bundles for comprehensive detection"""
     try:
-        # Detect file type and select bundle
-        file_type = detect_file_type(content, filename)
+        # Get primary bundle suggestion based on file type
+        primary_bundle = detect_file_type(content, filename)
         
-        # Load appropriate bundle
-        bundle = await load_yara_bundle(file_type)
+        # Define scanning order with primary bundle first for performance
+        bundle_order = [primary_bundle]
+        all_bundles = ['generic', 'scripts', 'pe', 'webshells']
         
-        if bundle is None:
-            # Fallback to generic bundle
-            bundle = await load_yara_bundle('generic')
-            
-        if bundle is None:
+        # Add remaining bundles to ensure comprehensive scanning
+        for bundle in all_bundles:
+            if bundle not in bundle_order:
+                bundle_order.append(bundle)
+        
+        all_matches = []
+        bundles_scanned = []
+        
+        # Scan against ALL bundles for comprehensive detection
+        for bundle_name in bundle_order:
+            try:
+                bundle = await load_yara_bundle(bundle_name)
+                if bundle is not None:
+                    bundle_matches = bundle.match(data=content)
+                    if bundle_matches:
+                        all_matches.extend(bundle_matches)
+                        bundles_scanned.append(bundle_name)
+                    else:
+                        bundles_scanned.append(bundle_name)
+            except Exception as e:
+                logger.warning(f"Error scanning with {bundle_name} bundle: {e}")
+                continue
+        
+        # If no bundles could be loaded, that's an error
+        if not bundles_scanned:
             return ScanResult(
                 filename=filename,
-                status="error",
+                status="error", 
                 matches=["No YARA bundles available"],
                 bundle_used=None
             )
         
-        # Scan with YARA
-        matches = bundle.match(data=content)
+        # Process all matches and remove duplicates
+        unique_matches = {}
+        for match in all_matches:
+            unique_matches[match.rule] = match
+        
+        match_names = list(unique_matches.keys())
         
         # Determine status based on matches and rule severity
-        if not matches:
+        if not match_names:
             status = "clean"
-            match_names = []
         else:
-            match_names = [match.rule for match in matches]
-            
-            # Enhanced status classification
+            # Enhanced status classification with more aggressive detection
             high_severity_indicators = [
-                'mimikatz', 'bad', 'malware', 'trojan', 'backdoor', 'dropper', 'exploit', 'ransomware'
+                'mimikatz', 'bad', 'malware', 'trojan', 'backdoor', 'dropper', 
+                'exploit', 'ransomware', 'apt', 'cobalt', 'beacon', 'meterpreter',
+                'shellcode', 'payload', 'injector', 'stealer', 'keylogger',
+                'rootkit', 'virus', 'worm', 'adware', 'spyware'
+            ]
+            
+            medium_severity_indicators = [
+                'suspicious', 'generic', 'packed', 'obfuscat', 'encoded',
+                'powershell', 'script', 'downloader', 'dropper', 'webshell'
             ]
             
             # Check rule names for severity indicators
             rule_text = ' '.join(match_names).lower()
             
-            # Count high severity matches
+            # Count severity matches
             high_severity_count = sum(1 for indicator in high_severity_indicators 
                                     if indicator in rule_text)
+            medium_severity_count = sum(1 for indicator in medium_severity_indicators 
+                                      if indicator in rule_text)
             
-            # Determine final status
-            if high_severity_count >= 1 or len(matches) >= 4:
+            # Determine final status with industry-standard thresholds
+            if high_severity_count >= 1:
                 status = "bad"
-            elif len(matches) >= 1:
+            elif len(match_names) >= 3 or medium_severity_count >= 2:
+                status = "bad"  # Multiple indicators suggest malware
+            elif len(match_names) >= 1 or medium_severity_count >= 1:
                 status = "suspicious"
             else:
                 status = "clean"
@@ -382,7 +416,7 @@ async def scan_content(content: bytes, filename: str) -> ScanResult:
             filename=filename,
             status=status,
             matches=match_names,
-            bundle_used=file_type
+            bundle_used=f"all_bundles({len(bundles_scanned)})"
         )
         
     except Exception as e:
