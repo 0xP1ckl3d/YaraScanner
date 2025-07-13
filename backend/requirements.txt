@@ -24,7 +24,6 @@ python-multipart>=0.0.9
 jq>=1.6.0
 typer>=0.9.0
 yara-python>=4.3.1
-pysigma>=0.11.0
-pysigma-backend-yara
+sigmatools>=0.23.1
 pyyaml>=6.0.1
 aiofiles>=24.1.0
