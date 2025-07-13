@@ -347,16 +347,35 @@ async def scan_text(content: str = Form(...), filename: str = Form(default="text
         # Scan with YARA
         matches = compiled_rules.match(data=content.encode('utf-8'))
         
-        # Determine status based on matches
+        # Determine status based on matches and rule severity
         if not matches:
             status = "clean"
             match_names = []
-        elif len(matches) <= 2:
-            status = "suspicious"
-            match_names = [match.rule for match in matches]
         else:
-            status = "bad"
             match_names = [match.rule for match in matches]
+            
+            # Enhanced status classification
+            high_severity_indicators = [
+                'mimikatz', 'bad', 'malware', 'trojan', 'backdoor', 'dropper'
+            ]
+            medium_severity_indicators = [
+                'suspicious', 'obfuscat', 'encoded', 'upx', 'packer', 'powershell'
+            ]
+            
+            # Check rule names and metadata for severity indicators
+            rule_text = ' '.join(match_names).lower()
+            
+            # Count high severity matches
+            high_severity_count = sum(1 for indicator in high_severity_indicators 
+                                    if indicator in rule_text)
+            
+            # Determine final status
+            if high_severity_count >= 1 or len(matches) >= 4:
+                status = "bad"
+            elif len(matches) >= 1:
+                status = "suspicious"
+            else:
+                status = "clean"
         
         result = ScanResult(
             filename=filename,
